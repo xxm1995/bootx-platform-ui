@@ -11342,6 +11342,11 @@ vuex@^3.1.1:
   resolved "https://registry.yarnpkg.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
   integrity sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==
 
+vxe-table@^3.3.11:
+  version "3.3.11"
+  resolved "https://registry.nlark.com/vxe-table/download/vxe-table-3.3.11.tgz#07baeaea1cee6e90c6adaa49d978377fa4c5313f"
+  integrity sha1-B7rq6hzubpDGrapJ2Xg3f6TFMT8=
+
 w3c-hr-time@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/w3c-hr-time/-/w3c-hr-time-1.0.2.tgz#0a89cdf5cc15822df9c360543676963e0cc308cd"
@@ -11730,6 +11735,11 @@ ws@^7.0.0:
   version "7.4.6"
   resolved "https://registry.yarnpkg.com/ws/-/ws-7.4.6.tgz#5654ca8ecdeee47c33a9a4bf6d28e2be2980377c"
   integrity sha512-YmhHDO4MzaDLB+M9ym/mDA5z0naX8j7SIlT8f8z+I0VtzsRbekxEutHSme7NPS2qE8StCYQNUnfWdXta/Yu85A==
+
+xe-utils@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.nlark.com/xe-utils/download/xe-utils-3.3.1.tgz?cache=0&sync_timestamp=1626688512578&other_urls=https%3A%2F%2Fregistry.nlark.com%2Fxe-utils%2Fdownload%2Fxe-utils-3.3.1.tgz#77af254b12d5ae2d4d3f32c3df7e3a5ccde1fad8"
+  integrity sha1-d68lSxLVri1NPzLD3346XM3h+tg=
 
 xml-name-validator@^3.0.0:
   version "3.0.0"

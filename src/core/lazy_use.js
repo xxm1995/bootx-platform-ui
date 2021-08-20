@@ -57,6 +57,9 @@ import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -101,6 +104,7 @@ Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(Space)
+Vue.use(VXETable)
 
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message

@@ -56,7 +56,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getUserPermission().then(response => {
           const result = response.data
-          const permissionList = result.map(value => {
+          const permissionList = result .map(value => {
             return value.action
           })
           const menus = result.menus

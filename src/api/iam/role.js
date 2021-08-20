@@ -15,8 +15,7 @@ export function list () {
  */
 export function page (params) {
   return axios({
-    url: '/iam/role/page',
-    // url: 'http://127.0.0.1:9005/role/page',
+    url: '/role/page',
     method: 'GET',
     params: params
   })
@@ -27,7 +26,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: `/iam/role/findById`,
+    url: `/role/findById`,
     // url: `http://127.0.0.1:9005/role/findById`,
     method: 'GET',
     params: { id }
@@ -39,7 +38,7 @@ export function get (id) {
  */
 export function add (obj) {
   return axios({
-    url: '/iam/role/add',
+    url: '/role/add',
     method: 'POST',
     data: obj
   })
@@ -50,7 +49,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/iam/role/update',
+    url: '/role/update',
     method: 'POST',
     data: obj
   })
@@ -61,7 +60,7 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: `/iam/role/delete`,
+    url: `/role/delete`,
     method: 'DELETE',
     params: { id }
   })

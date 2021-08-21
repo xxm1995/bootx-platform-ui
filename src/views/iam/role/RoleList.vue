@@ -20,7 +20,7 @@
         </a-row>
       </a-form>
     </div>
-    <div class='table-operator'>
+    <div >
         <vxe-toolbar
           custom
           zoom

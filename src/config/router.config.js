@@ -85,7 +85,7 @@ export const asyncRouterMap = [
           {
             path: '/system/5',
             name: '5',
-            component: () => import('@/views/exception/Dev'),
+            component: () => import('@/views/iam/menu/MenuList'),
             meta: { title: '菜单权限管理(对接中)' }
           },
           {

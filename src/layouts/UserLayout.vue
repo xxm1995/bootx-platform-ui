@@ -14,7 +14,7 @@
             </a>
           </div>
           <div class="desc">
-            Bootx Admin 是 Bootx Cloud 整体的管理程序
+            Bootx Admin 是 Bootx Platform 整体的管理程序
           </div>
         </div>
 

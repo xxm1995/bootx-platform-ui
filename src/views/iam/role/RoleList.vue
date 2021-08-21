@@ -21,38 +21,57 @@
       </a-form>
     </div>
     <div class='table-operator'>
-      <a-button type='primary' icon='plus' @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
+        <vxe-toolbar
+          custom
+          zoom
+          :refresh="{query: init}"
+        >
+          <template v-slot:buttons>
+            <a-button type='primary' icon='plus' @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
+          </template>
+        </vxe-toolbar>
     </div>
 
     <vxe-table
       border
+      stripe
       show-overflow
       row-id='id'
       size='medium'
       :loading='loading'
       :data='tableData'>
-      <vxe-table-column type='checkbox' width='60' />
+      <!--      <vxe-table-column type='checkbox' width='60' />-->
       <vxe-table-column type='seq' title='序号' width='60' />
       <vxe-table-column field='code' title='角色代码' />
       <vxe-table-column field='name' title='角色名称' />
       <vxe-table-column field='description' title='角色描述' />
       <vxe-table-column field='createTime' title='创建时间' />
-      <vxe-table-column field='createTime' title='操作'>
+      <vxe-table-column field='createTime' fixed="right" width='150' :showOverflow='false' title='操作'>
         <template slot-scope='{row}'>
           <span>
-          <a href='javascript:' @click='show(row)'>查看</a>
-            </span>
-          <a-divider type='vertical' />
-          <span>
-             <a href='javascript:' @click='edit(row)'>编辑</a>
+            <a href='#' @click='show(row)'>查看</a>
           </span>
-          <a-divider/>
-          <span>
-            <a-popconfirm title="是否删除角色" @confirm="this.delete(row)" okText="是" cancelText="否" >
-              <a-icon slot="icon" type="question-circle-o" style="color: red" />
-              <a href="javascript:;" style="color: red">删除</a>
-            </a-popconfirm>
-          </span>
+          <a-divider type='vertical'/>
+          <a-dropdown>
+            <a class="ant-dropdown-link"
+               @click="e => e.preventDefault()">
+              更多操作 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a href='#' @click='edit(row)'>编辑</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a-popconfirm
+                  title='是否删除角色'
+                  @confirm="remove(row)"
+                  okText='是'
+                  cancelText='否'>
+                  <a href="#" style='color: red'>删除</a>
+                </a-popconfirm>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -90,71 +109,6 @@ export default {
   data() {
     return {
       loading: false,
-      columns: [
-        {
-          title: '序号',
-          width: '80px',
-          customRender: (text, record, index) => {
-            return (
-              <div>
-                {index + 1}
-              </div>
-            )
-          }
-        },
-        {
-          title: '角色代码',
-          dataIndex: 'code'
-        },
-        {
-          title: '角色名称',
-          dataIndex: 'name'
-        },
-        {
-          title: '角色描述',
-          dataIndex: 'description'
-        },
-        {
-          title: '创建时间',
-          dataIndex: 'createTime',
-          align: 'center'
-        },
-        {
-          title: '操作',
-          width: '170px',
-          fixed: 'right',
-          align: 'center',
-          customRender: (text, record, index) => {
-            return (
-              <div>
-                <a href='javascript:'
-                   onClick={(e) => this.show(record)}
-                >查看</a>
-                <a-divider type='vertical' />
-                <a-dropdown>
-                  <a className='ant-dropdown-link'>
-                    更多操作 <a-icon type='down' />
-                  </a>
-                  <a-menu slot='overlay'>
-                    <a-menu-item>
-                      <a onClick={(e) => this.edit(record)}>修改</a>
-                    </a-menu-item>
-                    <a-menu-item>
-                      <a href='javascript:' onClick={(e) => this.perms(record)}>权限分配</a>
-                    </a-menu-item>
-                    <a-menu-item>
-                      <a-popconfirm title='是否删除角色' onConfirm={(e) => this.delete(record)} okText='是' cancelText='否'>
-                        <a-icon slot='icon' type='question-circle-o' style='color: red' />
-                        <a href='javascript:' style='color: red'>删除</a>
-                      </a-popconfirm>
-                    </a-menu-item>
-                  </a-menu>
-                </a-dropdown>
-              </div>
-            )
-          }
-        }
-      ],
       tableData: [],
       pagination: {
         pageSize: 10,
@@ -194,6 +148,14 @@ export default {
         this.loading = false
       })
     },
+    confirm(e) {
+      console.log(e);
+      this.$message.success('Click on Yes');
+    },
+    cancel(e) {
+      console.log(e);
+      this.$message.error('Click on No');
+    },
     // 重置当前页数
     resetPage() {
       this.pages = {
@@ -212,7 +174,7 @@ export default {
       console.log(666)
       this.$refs.roleAddOrUpdate.edit(record.id, 'edit')
     },
-    delete(record) {
+    remove(record) {
       del(record.id).then(res => {
         this.$message.info('删除成功')
         this.init()

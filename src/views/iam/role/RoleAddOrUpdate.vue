@@ -85,11 +85,7 @@
           ],
           code: [
             { required: true, message: '请输入角色代码' }
-          ],
-          description: [
-            { required: true, message: '请输入角色描述' }
           ]
-
         },
         type: 'add',
         editable: false,

@@ -5,8 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/iam/user/page',
-    // url: `http://127.0.0.1:9005/user/page`,
+    url: '/user/page',
     method: 'GET',
     params: params
   })
@@ -17,8 +16,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: `/iam/permission/path/findById`,
-    // url: `http://127.0.0.1:9005/permission/path/findById`,
+    url: `/user/findById`,
     method: 'GET',
     params: { id }
   })
@@ -29,8 +27,7 @@ export function get (id) {
  */
 export function getRoleIds (id) {
   return axios({
-    url: `/iam/role/findRoleIdsByUser`,
-    // url: `http://127.0.0.1:9005/role/findRoleIdsByUser`,
+    url: `/role/findRoleIdsByUser`,
     method: 'GET',
     params: { id }
   })
@@ -41,8 +38,7 @@ export function getRoleIds (id) {
  */
 export function addUserRole (data) {
   return axios({
-    url: `/iam/role/addUserRole`,
-    // url: `http://127.0.0.1:9005/role/addUserRole`,
+    url: `/role/saveAndUpdate`,
     method: 'POST',
     data: data
   })

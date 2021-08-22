@@ -20,19 +20,17 @@
         </a-row>
       </a-form>
     </div>
-    <div >
-        <vxe-toolbar
-          custom
-          zoom
-          :refresh="{query: init}"
-        >
-          <template v-slot:buttons>
-            <a-button type='primary' icon='plus' @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
-          </template>
-        </vxe-toolbar>
-    </div>
-
+    <vxe-toolbar
+      custom
+      zoom
+      :refresh="{query: init}"
+    >
+      <template v-slot:buttons>
+        <a-button type='primary' icon='plus' @click="$refs.roleEdit.edit('','add')">新建</a-button>
+      </template>
+    </vxe-toolbar>
     <vxe-table
+      resizable
       border
       stripe
       show-overflow
@@ -46,7 +44,7 @@
       <vxe-table-column field='name' title='角色名称' />
       <vxe-table-column field='description' title='角色描述' />
       <vxe-table-column field='createTime' title='创建时间' />
-      <vxe-table-column field='createTime' fixed="right" width='150' :showOverflow='false' title='操作'>
+      <vxe-table-column fixed="right" width='150' :showOverflow='false' title='操作'>
         <template slot-scope='{row}'>
           <span>
             <a href='#' @click='show(row)'>查看</a>
@@ -67,7 +65,7 @@
                   @confirm="remove(row)"
                   okText='是'
                   cancelText='否'>
-                  <a href="#" style='color: red'>删除</a>
+                  <a href="javascript:" style='color: red'>删除</a>
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
@@ -75,20 +73,19 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-
     <vxe-pager
       border
       size='medium'
       :loading='loading'
-      :current-page='pagination.pageSize'
-      :page-size='pagination.size'
+      :current-page='pagination.current'
+      :page-size='pagination.pageSize'
       :total='pagination.total'
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-      @page-change='handlePageChange'>
+      @page-change='handleTableChange'>
     </vxe-pager>
 
-    <role-add-or-update
-      ref='roleAddOrUpdate'
+    <role-edit
+      ref='roleEdit'
       @ok='handleOk'
     />
     <!--    <role-perm-modal-->
@@ -98,13 +95,13 @@
 </template>
 
 <script>
-import RoleAddOrUpdate from './RoleAddOrUpdate'
+import RoleEdit from './RoleEdit'
 import { del, page } from '@/api/iam/role'
 
 export default {
   name: 'RoleList',
   components: {
-    RoleAddOrUpdate
+    RoleEdit
   },
   data() {
     return {
@@ -124,9 +121,7 @@ export default {
         code: '',
         name: ''
       },
-      loading3: false,
-      tableData3: [],
-      tablePage3: {
+      tablePage: {
         currentPage: 1,
         pageSize: 10,
         totalResult: 0
@@ -135,7 +130,6 @@ export default {
   },
   methods: {
     init() {
-      this.findList3()
       this.loading = true
       page({
         ...this.queryParam,
@@ -143,8 +137,8 @@ export default {
       }).then(res => {
         this.tableData = res.data.records
         this.pagination.total = +res.data.total
-        // 当前页取决于后端
-        this.pagination.current = Number(res.data.current)
+        this.pagination.current = +res.data.current
+        this.pagination.pageSize = +res.data.size
         this.loading = false
       })
     },
@@ -164,15 +158,13 @@ export default {
         pages: 0
       }
     },
-    handleTableChange(pagination, filters, sorter) {
-      this.pagination = pagination
-      this.pages.size = pagination.pageSize
-      this.pages.current = pagination.current
+    handleTableChange({ currentPage, pageSize }) {
+      this.pages.current = currentPage
+      this.pages.size = pageSize
       this.init()
     },
     edit(record) {
-      console.log(666)
-      this.$refs.roleAddOrUpdate.edit(record.id, 'edit')
+      this.$refs.roleEdit.edit(record.id, 'edit')
     },
     remove(record) {
       del(record.id).then(res => {
@@ -181,7 +173,7 @@ export default {
       })
     },
     show(record) {
-      this.$refs.roleAddOrUpdate.edit(record.id, 'show')
+      this.$refs.roleEdit.edit(record.id, 'show')
     },
     handleOk() {
       this.init()
@@ -189,38 +181,6 @@ export default {
     perms(record) {
       this.$refs.rolePermModal.init(record)
     },
-
-    findList3() {
-      this.loading3 = true
-      setTimeout(() => {
-        const list = [
-          { id: 10001, name: 'Test1', nickname: 'T1', role: 'Develop', sex: '1', age: 28, address: 'Shenzhen' },
-          { id: 10002, name: 'Test2', nickname: 'T2', role: 'Test', sex: '0', age: 22, address: 'Guangzhou' },
-          { id: 10003, name: 'Test3', nickname: 'T3', role: 'PM', sex: '1', age: 32, address: 'Shanghai' },
-          { id: 10004, name: 'Test4', nickname: 'T4', role: 'Designer', sex: '0', age: 23, address: 'Shenzhen' },
-          { id: 10005, name: 'Test5', nickname: 'T5', role: 'Develop', sex: '0', age: 30, address: 'Shanghai' },
-          { id: 10006, name: 'Test6', nickname: 'T6', role: 'Develop', sex: '0', age: 27, address: 'Shanghai' },
-          { id: 10007, name: 'Test7', nickname: 'T1', role: 'Develop', sex: '1', age: 28, address: 'Shenzhen' },
-          { id: 10008, name: 'Test8', nickname: 'T2', role: 'Test', sex: '0', age: 22, address: 'Guangzhou' },
-          { id: 10009, name: 'Test9', nickname: 'T3', role: 'PM', sex: '1', age: 32, address: 'Shanghai' },
-          { id: 100010, name: 'Test10', nickname: 'T4', role: 'Designer', sex: '0', age: 23, address: 'Shenzhen' },
-          { id: 100011, name: 'Test11', nickname: 'T5', role: 'PM', sex: '0', age: 35, address: 'Shenzhen' },
-          { id: 100012, name: 'Test12', nickname: 'T6', role: 'Designer', sex: '1', age: 25, address: 'Shanghai' },
-          { id: 100013, name: 'Test13', nickname: 'T9', role: 'Develop', sex: '1', age: 33, address: 'Shenzhen' },
-          { id: 100014, name: 'Test14', nickname: 'T6', role: 'Develop', sex: '0', age: 21, address: 'Shanghai' },
-          { id: 100015, name: 'Test15', nickname: 'T6', role: 'Develop', sex: '0', age: 19, address: 'Shanghai' },
-          { id: 100016, name: 'Test16', nickname: 'T8', role: 'Develop', sex: '1', age: 29, address: 'Shenzhen' }
-        ]
-        this.loading3 = false
-        this.tablePage3.totalResult = list.length
-        this.tableData3 = list.slice((this.tablePage3.currentPage - 1) * this.tablePage3.pageSize, this.tablePage3.currentPage * this.tablePage3.pageSize)
-      }, 300)
-    },
-    handlePageChange({ currentPage, pageSize }) {
-      this.tablePage3.currentPage = currentPage
-      this.tablePage3.pageSize = pageSize
-      this.init()
-    }
   },
   created() {
     this.init()

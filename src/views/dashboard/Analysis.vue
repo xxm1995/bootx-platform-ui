@@ -104,7 +104,7 @@
         <a-col :xl="12" :lg="24" :md="24" :sm="24" :xs="24">
           <a-card :loading="loading" :bordered="false" :title="$t('dashboard.analysis.online-top-search')" :style="{ height: '100%' }">
             <a-dropdown :trigger="['click']" placement="bottomLeft" slot="extra">
-              <a class="ant-dropdown-link" href="#">
+              <a class="ant-dropdown-link" href="javascript:">
                 <a-icon type="ellipsis" />
               </a>
               <a-menu slot="overlay">

@@ -5,7 +5,7 @@
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
             <a-form-item label="账号">
-              <a-input v-model="queryParam.account" placeholder=""/>
+              <a-input v-model="queryParam.username" placeholder=""/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -23,17 +23,54 @@
     <div class="table-operator">
       <!--      <a-button type="primary" icon="plus" @click="$refs.pathAddOrUpdate.edit('','add')">新建</a-button>-->
     </div>
-    <a-table
-      bordered
-      :columns="columns"
-      :dataSource="tableData"
-      :loading="loading"
-      :pagination="pagination"
-      :rowKey="record => record.id"
-      :scroll="{ x: 1500 }"
-      @change="handleTableChange"
+    <vxe-toolbar
+      custom
+      zoom
+      :refresh="{query: init}"
     >
-    </a-table>
+      <template v-slot:buttons>
+        <a-button type='primary' icon='plus' @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
+      </template>
+    </vxe-toolbar>
+    <vxe-table
+      resizable
+      border
+      stripe
+      show-overflow
+      row-id='id'
+      size='medium'
+      :loading='loading'
+      :data='tableData'>
+      <!--      <vxe-table-column type='checkbox' width='60' />-->
+      <vxe-table-column type='seq' title='序号' width='60' />
+      <vxe-table-column field='name' title='姓名' />
+      <vxe-table-column field='username' title='账号' />
+      <vxe-table-column field='phone' title='手机号' />
+      <vxe-table-column field='email' title='邮箱' />
+      <vxe-table-column admin='admin' title='是否管理员'>
+        <template slot-scope='{row}'>
+          {{row.admin?'是':'否'}}
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field='registerTime' title='注册时间' />
+      <vxe-table-column fixed="right" width='150' :showOverflow='false' title='操作'>
+        <template slot-scope='{row}'>
+          <span>
+             <a @click=editRoles(row)>角色分配</a>
+          </span>
+        </template>
+      </vxe-table-column>
+    </vxe-table>
+    <vxe-pager
+      border
+      size='medium'
+      :loading='loading'
+      :current-page='pagination.current'
+      :page-size='pagination.pageSize'
+      :total='pagination.total'
+      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+      @page-change='handleTableChange'>
+    </vxe-pager>
     <!-- 角色配置 -->
     <user-role-edit
       ref="userRoleEdit"
@@ -53,76 +90,6 @@ export default {
   data () {
     return {
       loading: false,
-      columns: [
-        {
-          title: '序号',
-          width: '80px',
-          customRender: (text, record, index) => {
-            return (
-              <div>
-                {index + 1}
-              </div>
-            )
-          }
-        },
-        {
-          title: '姓名',
-          dataIndex: 'name'
-        },
-        {
-          title: '账号',
-          dataIndex: 'account'
-        },
-        {
-          title: '手机号',
-          dataIndex: 'phone'
-        },
-        {
-          title: '邮箱',
-          dataIndex: 'email'
-        },
-        {
-          title: '是否管理员',
-          dataIndex: 'admin',
-          align: 'center',
-          customRender: text => {
-            return text ? '是' : '否'
-            // return (
-            //   <a-switch checked={text} />
-            // )
-          }
-        },
-        {
-          title: '注册时间',
-          dataIndex: 'registerTime',
-          align: 'center'
-        },
-        {
-          title: '操作',
-          width: '20%',
-          align: 'center',
-          customRender: (text, record, index) => {
-            return (
-              <div>
-                <a onClick={(e) => this.editRoles(record)}>角色分配</a>
-              </div>
-              // <div>
-              //   <a onClick={(e) => this.edit(record)}
-              //   >修改</a>
-              //   <a-divider type='vertical' />
-              //   <a href='javascript:'
-              //      onClick={(e) => this.show(record)}
-              //   >查看</a>
-              //   <a-divider type='vertical' />
-              //   <a-popconfirm title='是否删除权限' onConfirm={(e) => this.delete(record)} okText='是' cancelText='否'>
-              //     <a-icon slot='icon' type='question-circle-o' style='color: red' />
-              //     <a href='javascript:' style='color: red'>删除</a>
-              //   </a-popconfirm>
-              // </div>
-            )
-          }
-        }
-      ],
       tableData: [],
       pagination: {
         pageSize: 10,
@@ -163,12 +130,12 @@ export default {
         pages: 0
       }
     },
-    handleTableChange (pagination, filters, sorter) {
-      this.pagination = pagination
-      this.pages.size = pagination.pageSize
-      this.pages.current = pagination.current
+    handleTableChange({ currentPage, pageSize }) {
+      this.pages.current = currentPage
+      this.pages.size = pageSize
       this.init()
     },
+
     // 角色配置
     editRoles (record) {
       this.$refs.userRoleEdit.edit(record, 'edit')
@@ -176,7 +143,7 @@ export default {
     edit (record) {
       this.$refs.pathAddOrUpdate.edit(record.id, 'edit')
     },
-    delete (record) {
+    remove (record) {
       del(record.id).then(res => {
         this.$message.info('删除成功')
         this.init()

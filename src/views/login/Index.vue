@@ -6,10 +6,10 @@
       <phone-login v-if="activeName === 'phone'"></phone-login>
       <a
         @click.stop="activeName='user'"
-        href="#">账号密码</a>
+        href="javascript:">账号密码</a>
       <a
         @click.stop="activeName='phone'"
-        href="#">手机号登录</a>
+        href="javascript:">手机号登录</a>
     </div>
   </div>
 </template>

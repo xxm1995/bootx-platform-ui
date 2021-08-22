@@ -17,7 +17,7 @@
 
         <a-form-model-item has-feedback label="账号" prop="account">
           <a-descriptions>
-            <a-descriptions-item>{{ userinfo.account }}</a-descriptions-item>
+            <a-descriptions-item>{{ userinfo.username }}</a-descriptions-item>
           </a-descriptions>
         </a-form-model-item>
         <a-form-model-item has-feedback label="用户" prop="name">
@@ -103,6 +103,7 @@ export default {
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
+          this.confirmLoading = true
           await addUserRole(this.form)
           setTimeout(() => {
             this.confirmLoading = false

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="权限管理"
+    title="角色管理"
     :width="640"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -16,70 +16,51 @@
         :wrapper-col="wrapperCol"
       >
         <a-form-model-item
-          label="上级名称"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-          v-show="permsType"
-        >
-          <a-input :disabled="true" v-model="form.parentName"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="类型"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-        >
-          <a-select
-            v-model="form.menuType"
-          >
-            <a-select-option :value="0" :disabled="permsType">
-              一级菜单
-            </a-select-option>
-            <a-select-option :value="1">
-              子菜单
-            </a-select-option>
-            <a-select-option :value="2">
-              按钮
-            </a-select-option>
-          </a-select>
-        </a-form-model-item>
-        <a-form-model-item
+          label="角色名称"
           prop="name"
-          label="名称"
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
         >
           <a-input
-            :disabled="showable"
+            :disabled="showTable"
             v-model="form.name"
           />
         </a-form-model-item>
         <a-form-model-item
-          label="权限代码"
-          prop="perms"
+          label="角色代码"
+          prop="code"
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
         >
           <a-input
-            :disabled="showable"
-            v-model="form.perms"
+            :disabled="showTable"
+            v-model="form.code"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="描述"
+          prop="description"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+        >
+          <a-input
+            :disabled="showTable"
+            v-model="form.description"
           />
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-
-    <template slot="footer">
-      <div v-show="!showable">
-        <a-button key="cancel" @click="handleCancel">取消</a-button>
-        <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-      </div>
+    <template v-slot:footer>
+      <a-button key="cancel" @click="handleCancel">取消</a-button>
+      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
   </a-modal>
 </template>
 
 <script>
-  import { add, update, get } from '@/api/iam/menu'
+  import { get, add, update } from '@/api/iam/role'
   export default {
-    name: 'MenuAddOrUpdate',
+    name: 'RoleEdit',
     data () {
       return {
         labelCol: {
@@ -95,61 +76,65 @@
         form: {
           id: '',
           name: '',
-          perms: '',
-          parentId: '',
-          parentName: '',
-          menuType: 0
+          code: '',
+          description: ''
         },
         rules: {
-          name: [ { required: true, message: '请输入名称' } ],
-          perms: [ { required: true, message: '请输入权限代码' } ]
+          name: [
+            { required: true, message: '请输入角色名称', trigger: 'blur' }
+          ],
+          code: [
+            { required: true, message: '请输入角色代码' }
+          ]
         },
         type: 'add',
         editable: false,
         addable: false,
-        showable: false,
-        permsType: false,
+        showTable: false,
+        dsType: '2',
         treeData: []
       }
     },
     methods: {
-      edit (tmpRecord, type, permsType) {
-        this.permsType = permsType
+      // 获取角色信息
+      edit (id, type) {
         this.visible = true
-        this.addable = true
-        this.type = type
-        this.$nextTick(() => {
-          this.$set(this.form, 'parentId', tmpRecord.id)
-          this.$set(this.form, 'parentName', tmpRecord.name)
+        if (type && type === 'add') {
+          this.addable = true
+          this.type = type
           this.resetForm()
-        })
+        }
         if (type === 'edit') {
           this.editable = true
           this.type = type
         }
         if (type === 'show') {
-          this.showable = true
+          this.showTable = true
           this.type = type
         }
-
         if (['edit', 'show'].includes(type)) {
           this.confirmLoading = true
-          get(tmpRecord.id).then(res => {
-            this.form = res.data
+          get(id).then(res => {
+            const record = res.data
+            this.dsType = record.dsType
             this.confirmLoading = false
-          }).catch(err => {
-            this.$message.error(err.msg)
+            this.form = record
           })
+        } else {
+          this.dsType = '2'
         }
+      },
+      selectChange (e) {
+        this.dsType = e
       },
       handleOk () {
         this.$refs.form.validate(async valid => {
           if (valid) {
             this.confirmLoading = true
             if (this.type === 'add') {
-              await add(this.form).catch(err => this.$message.error(err.msg))
+              await add(this.form)
             } else if (this.type === 'edit') {
-              await update(this.form).catch(err => this.$message.error(err.msg))
+              await update(this.form)
             }
             setTimeout(() => {
               this.confirmLoading = false
@@ -166,7 +151,7 @@
         this.resetForm()
         setTimeout(() => {
           this.addable = false
-          this.showable = false
+          this.showTable = false
           this.editable = false
         }, 200)
       },

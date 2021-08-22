@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function list () {
   return axios({
-    url: '/iam/role/findAll',
+    url: '/role/findAll',
     method: 'GET'
   })
 }

@@ -66,9 +66,9 @@
                   <a-avatar slot="avatar" :src="item.user.avatar"/>
                   <div slot="title">
                     <span>{{ item.user.nickname }}</span>&nbsp;
-                    在&nbsp;<a href="#">{{ item.project.name }}</a>&nbsp;
+                    在&nbsp;<a href="javascript:">{{ item.project.name }}</a>&nbsp;
                     <span>{{ item.project.action }}</span>&nbsp;
-                    <a href="#">{{ item.project.event }}</a>
+                    <a href="javascript:">{{ item.project.event }}</a>
                   </div>
                   <div slot="description">{{ item.time }}</div>
                 </a-list-item-meta>

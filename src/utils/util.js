@@ -93,3 +93,19 @@ export function scorePassword (pass) {
 
   return parseInt(score)
 }
+
+export function treeDataTranslate (data, value = 'value', title = 'title', children = 'children') {
+  const temp = []
+  for (let i = 0; i < data.length; i++) {
+    const p = {
+      key: data[i][value],
+      title: data[i][title],
+      value: String(data[i][value])
+    }
+    if (data[i][children] && data[i][children].length > 0) {
+      p.children = treeDataTranslate(data[i][children], value, title, children)
+    }
+    temp.push(p)
+  }
+  return temp
+}

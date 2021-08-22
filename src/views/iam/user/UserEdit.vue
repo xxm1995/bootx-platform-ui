@@ -4,7 +4,7 @@
 
 <script>
 export default {
-  name: 'UserAddOrUpdate'
+  name: 'UserEdit'
 }
 </script>
 

@@ -88,9 +88,24 @@
 
         </a-form-model>
 
-        <!-- 选择图标 -->
-        <icon-selector v-model='currentSelectedIcon' @change="handleIconChange"/>
+        <a-modal
+          :width="850"
+          :visible="visibleIcon"
+          @cancel="handleCancelIcon"
+          footer=""
+          :mask="false"
+          :closable="false"
+          :destroyOnClose="true"
+        >
+          <icon-selector v-model="model.icon" @change="handleIconChange"/>
+        </a-modal>
       </a-spin>
+      <a-row :style="{textAlign:'right'}">
+        <a-button :style="{marginRight: '8px'}" @click="handleCancel">
+          关闭
+        </a-button>
+        <a-button :disabled="disableSubmit" @click="handleOk" type="primary">确定</a-button>
+      </a-row>
     </div>
   </a-drawer>
 </template>
@@ -123,6 +138,7 @@ export default {
         perms: '',
         parentId: '',
         parentName: '',
+        icon: '',
         menuType: 0
       },
       rules: {
@@ -134,6 +150,8 @@ export default {
       editable: false,
       addable: false,
       permsType: false,
+      visibleIcon: false,
+
       title: '',
       currentSelectedIcon: 'pause-circle',
       iconChooseVisible: false,
@@ -191,15 +209,18 @@ export default {
         this.$refs.form.validateField(['url','component']);
       });
     },
-    selectIcons(){
-      this.iconChooseVisible = true
+    // 选择图标弹出
+    selectIcons () {
+      this.visibleIcon = true
     },
-    // 选择图表
-    handleIconChange (icon) {
-      console.log('icon',icon)
-      this.form.resetFields(`icon`,icon);
-      this.form.getFieldDecorator('icon', { initialValue: icon })
+    // 取消选择图标
+    handleCancelIcon () {
       this.visibleIcon = false
+    },
+    // 选择图标
+    handleIconChange (icon) {
+      this.visibleIcon = false
+      this.model.icon = icon
     },
     handleCancel () {
       this.close()

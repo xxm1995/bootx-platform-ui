@@ -18,7 +18,7 @@
       resizable
       border="inner"
       ref="xTree"
-      :loading='loading'
+      :loading="loading"
       :tree-config="{children: 'children'}"
       :data="tableData"
     >
@@ -43,7 +43,7 @@
           <a-divider type="vertical" />
           <a-popconfirm
             title="是否删除菜单或权限"
-            @confirm="deleteItem(row)"
+            @confirm="remove(row)"
             okText="是"
             cancelText="否">
             <a href="javascript:" style="color: red">删除</a>
@@ -88,12 +88,10 @@ export default {
       this.$refs.menuEdit.edit(id, 'edit')
       this.$refs.menuEdit.title = '编辑'
     },
-    deleteItem (record) {
+    remove (record) {
       delObj(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
-      }).catch(err => {
-        this.$message.error(err.msg)
       })
     },
     handleOk () {

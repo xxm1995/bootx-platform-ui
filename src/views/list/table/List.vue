@@ -199,7 +199,7 @@ export default {
     tableOption () {
       if (!this.optionAlertShow) {
         this.options = {
-          alert: { show: true, clear: () => { this.selectedRowKeys = [] } },
+          alert: { edit: true, clear: () => { this.selectedRowKeys = [] } },
           rowSelection: {
             selectedRowKeys: this.selectedRowKeys,
             onChange: this.onSelectChange

@@ -33,8 +33,8 @@ export function update (obj) {
 
 export function delObj (id) {
   return axios({
-    url: '/sys/permission/delete',
-    params: {id},
+    url: '/permission/delete',
+    params: { id },
     method: 'DELETE'
   })
 }

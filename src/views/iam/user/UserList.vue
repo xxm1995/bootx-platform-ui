@@ -29,7 +29,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type='primary' icon='plus' @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
+        <a-button type="primary" icon="plus" @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -37,39 +37,39 @@
       border
       stripe
       show-overflow
-      row-id='id'
-      size='medium'
-      :loading='loading'
-      :data='tableData'>
+      row-id="id"
+      size="medium"
+      :loading="loading"
+      :data="tableData">
       <!--      <vxe-table-column type='checkbox' width='60' />-->
-      <vxe-table-column type='seq' title='序号' width='60' />
-      <vxe-table-column field='name' title='姓名' />
-      <vxe-table-column field='username' title='账号' />
-      <vxe-table-column field='phone' title='手机号' />
-      <vxe-table-column field='email' title='邮箱' />
-      <vxe-table-column admin='admin' title='是否管理员'>
-        <template slot-scope='{row}'>
-          {{row.admin?'是':'否'}}
+      <vxe-table-column type="seq" title="序号" width="60" />
+      <vxe-table-column field="name" title="姓名" />
+      <vxe-table-column field="username" title="账号" />
+      <vxe-table-column field="phone" title="手机号" />
+      <vxe-table-column field="email" title="邮箱" />
+      <vxe-table-column admin="admin" title="是否管理员">
+        <template slot-scope="{row}">
+          {{ row.admin?'是':'否' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field='registerTime' title='注册时间' />
-      <vxe-table-column fixed="right" width='150' :showOverflow='false' title='操作'>
-        <template slot-scope='{row}'>
+      <vxe-table-column field="registerTime" title="注册时间" />
+      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+        <template slot-scope="{row}">
           <span>
-             <a @click=editRoles(row)>角色分配</a>
+            <a @click="editRoles(row)">角色分配</a>
           </span>
         </template>
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
       border
-      size='medium'
-      :loading='loading'
-      :current-page='pagination.current'
-      :page-size='pagination.pageSize'
-      :total='pagination.total'
+      size="medium"
+      :loading="loading"
+      :current-page="pagination.current"
+      :page-size="pagination.size"
+      :total="pagination.total"
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-      @page-change='handleTableChange'>
+      @page-change="handleTableChange">
     </vxe-pager>
     <!-- 角色配置 -->
     <user-role-edit
@@ -92,7 +92,7 @@ export default {
       loading: false,
       tableData: [],
       pagination: {
-        pageSize: 10,
+        size: 10,
         current: 1,
         total: 0,
         showSizeChanger: true
@@ -116,9 +116,8 @@ export default {
       }).then(res => {
         this.tableData = res.data.records
         this.pagination.total = +res.data.total
-
-        // 当前页取决于后端
-        this.pagination.current = Number(res.data.current)
+        this.pagination.current = +res.data.current
+        this.pagination.size = +res.data.size
         this.loading = false
       })
     },
@@ -130,7 +129,7 @@ export default {
         pages: 0
       }
     },
-    handleTableChange({ currentPage, pageSize }) {
+    handleTableChange ({ currentPage, pageSize }) {
       this.pages.current = currentPage
       this.pages.size = pageSize
       this.init()

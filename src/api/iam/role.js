@@ -65,18 +65,3 @@ export function del (id) {
     params: { id }
   })
 }
-
-export function roleMenuIds (roleId) {
-  return axios({
-    url: `/sys/role/info/menu/${roleId}`,
-    method: 'GET'
-  })
-}
-
-export function saveRoleMenu (menuList, roleId) {
-  return axios({
-    url: `/sys/role/info/menu/${roleId}`,
-    method: 'POST',
-    data: menuList
-  })
-}

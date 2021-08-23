@@ -11,6 +11,7 @@ import {
   Radio,
   Checkbox,
   Select,
+  Tree,
   TreeSelect,
   Card,
   Form,
@@ -71,6 +72,7 @@ Vue.use(Switch)
 Vue.use(Radio)
 Vue.use(Checkbox)
 Vue.use(Select)
+Vue.use(Tree)
 Vue.use(TreeSelect)
 Vue.use(Card)
 Vue.use(FormModel)

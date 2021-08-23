@@ -10,7 +10,7 @@ export function tree () {
 export function get (id) {
   return axios({
     url: '/permission/findById',
-    params: {id},
+    params: { id },
     method: 'GET'
   })
 }

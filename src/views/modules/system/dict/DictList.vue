@@ -44,7 +44,7 @@
       <vxe-table-column field="code" title="编码" />
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column title="操作" fixed="right" width="220" :showOverflow="false">
+      <vxe-table-column title="操作" fixed="right" width="220">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>

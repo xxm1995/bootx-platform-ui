@@ -26,7 +26,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="$refs.roleEdit.edit('','add')">新建</a-button>
+        <a-button type="primary" icon="plus" @click="$refs.roleEdit.init('','add')">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -47,7 +47,7 @@
       <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template slot-scope="{row}">
           <span>
-            <a href="javascript:" @click="roleInfoShow(row)">查看</a>
+            <a href="javascript:" @click="show(row)">查看</a>
           </span>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">编辑</a>
@@ -145,21 +145,21 @@ export default {
       this.pages.size = pageSize
       this.init()
     },
-    edit (record) {
-      this.$refs.roleEdit.edit(record.id, 'edit')
-    },
     remove (record) {
       del(record.id).then(res => {
         this.$message.info('删除成功')
         this.init()
       })
     },
+    edit (record) {
+      this.$refs.roleEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.roleEdit.init(record.id, 'show')
+    },
     // 授权处理
     handlePermission (record) {
-      this.$refs.rolePermModal.edit(record.id)
-    },
-    roleInfoShow (record) {
-      this.$refs.roleEdit.edit(record.id, 'show')
+      this.$refs.rolePermModal.init(record.id)
     },
     handleOk () {
       this.init()

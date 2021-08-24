@@ -62,7 +62,7 @@ export default {
     }
   },
   methods: {
-    edit: async function (roleId) {
+    init: async function (roleId) {
       this.visible = true
       this.loading = true
       this.roleId = roleId

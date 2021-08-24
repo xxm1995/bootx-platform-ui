@@ -20,9 +20,6 @@
         </a-row>
       </a-form>
     </div>
-    <div class="table-operator">
-      <!--      <a-button type="primary" icon="plus" @click="$refs.pathAddOrUpdate.edit('','add')">新建</a-button>-->
-    </div>
     <vxe-toolbar
       custom
       zoom
@@ -131,7 +128,6 @@ export default {
       this.pages.size = pageSize
       this.init()
     },
-
     // 角色配置
     editRoles (record) {
       this.$refs.userRoleEdit.edit(record, 'edit')

@@ -41,6 +41,8 @@
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row.id)">编辑</a>
           <a-divider type="vertical" />
+          <a href="javascript:" @click="show(row.id)">查看</a>
+          <a-divider type="vertical" />
           <a-popconfirm
             title="是否删除菜单或权限"
             @confirm="remove(row)"
@@ -81,12 +83,13 @@ export default {
       })
     },
     add () {
-      this.$refs.menuEdit.edit('', 'add')
-      this.$refs.menuEdit.title = '新增'
+      this.$refs.menuEdit.init('', 'add')
     },
     edit (id) {
-      this.$refs.menuEdit.edit(id, 'edit')
-      this.$refs.menuEdit.title = '编辑'
+      this.$refs.menuEdit.init(id, 'edit')
+    },
+    show (id) {
+      this.$refs.menuEdit.init(id, 'show')
     },
     remove (record) {
       delObj(record.id).then(_ => {

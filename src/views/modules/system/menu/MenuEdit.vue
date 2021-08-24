@@ -9,7 +9,7 @@
       <a-spin :spinning="confirmLoading">
         <a-form-model
           ref="form"
-          :model="model"
+          :model="form"
           :rules="rules">
           <a-form-model-item
             label="菜单类型"
@@ -17,7 +17,8 @@
             :wrapperCol="wrapperCol" >
             <a-radio-group
               @change="onChangeMenuType"
-              v-model="model.menuType"
+              :disabled="showable"
+              v-model="form.menuType"
             >
               <a-radio :value="0">一级菜单</a-radio>
               <a-radio :value="1">子菜单</a-radio>
@@ -31,11 +32,12 @@
             prop="name">
             <a-input
               placeholder="请输入菜单名称"
-              v-model="model.name"
+              v-model="form.name"
+              :disabled="showable"
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="model.menuType!==0"
+            v-show="form.menuType!==0"
             label="上级菜单"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
@@ -47,9 +49,9 @@
               style="width:100%"
               :dropdown-style="{ maxHeight: '200px', overflow: 'auto' }"
               :tree-data="treeData"
-              v-model="model.parentId"
+              v-model="form.parentId"
               placeholder="请选择父级菜单"
-              :disabled="disableSubmit"
+              :disabled="disableSubmit || showable"
               @change="handleParentIdChange">
             </a-tree-select>
           </a-form-model-item>
@@ -62,7 +64,8 @@
           >
             <a-input
               placeholder="请输入菜单路径"
-              v-model="model.url"
+              :disabled="showable"
+              v-model="form.url"
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
@@ -72,15 +75,24 @@
             label="前端组件"
             prop="component"
           >
-            <a-input placeholder="前端组件" v-model="model.component" :readOnly="disableSubmit"/>
+            <a-input
+              :disabled="showable"
+              placeholder="前端组件"
+              v-model="form.component"
+              :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
             :labelCol="labelCol"
+            :disabled="showable"
             :wrapperCol="wrapperCol"
             prop="redirect"
             label="默认跳转地址">
-            <a-input placeholder="请输入路由参数 redirect" v-model="model.redirect" :readOnly="disableSubmit"/>
+            <a-input
+              :disabled="showable"
+              placeholder="请输入路由参数 redirect"
+              v-model="form.redirect"
+              :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
             v-show="!show"
@@ -88,7 +100,11 @@
             :wrapperCol="wrapperCol"
             prop="perms"
             label="授权标识">
-            <a-input placeholder="请输入授权标识, 如: user:list" v-model="model.perms" :readOnly="disableSubmit"/>
+            <a-input
+              :disabled="showable"
+              placeholder="请输入授权标识, 如: user:list"
+              v-model="form.perms"
+              :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
@@ -96,8 +112,16 @@
             :wrapperCol="wrapperCol"
             prop="icon"
             label="菜单图标">
-            <a-input placeholder="点击选择图标" v-model="model.icon" :readOnly="true">
-              <a-icon slot="addonAfter" type="setting" @click="selectIcons" />
+            <a-input
+              :disabled="true"
+              placeholder="点击选择图标"
+              v-model="form.icon"
+              :readOnly="true">
+              <a-icon
+                :disabled="showable"
+                slot="addonAfter"
+                type="setting"
+                @click="selectIcons" />
             </a-input>
           </a-form-model-item>
           <a-form-model-item
@@ -108,7 +132,8 @@
             label="排序">
             <a-input-number
               placeholder="请输入菜单排序"
-              v-model="model.sortNo"
+              :disabled="showable"
+              v-model="form.sortNo"
               style="width: 200px"
               :readOnly="disableSubmit"/>
           </a-form-model-item>
@@ -117,21 +142,33 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
             label="隐藏路由">
-            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="model.hidden"/>
+            <a-switch
+              :disabled="showable"
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-model="form.hidden"/>
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
             label="是否缓存路由">
-            <a-switch checkedChildren="是" unCheckedChildren="否" v-model="model.keepAlive"/>
+            <a-switch
+              :disabled="showable"
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-model="form.keepAlive"/>
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
             label="打开方式">
-            <a-switch checkedChildren="外部" unCheckedChildren="内部" v-model="model.internalOrExternal"/>
+            <a-switch
+              :disabled="showable"
+              checkedChildren="外部"
+              unCheckedChildren="内部"
+              v-model="form.internalOrExternal"/>
           </a-form-model-item>
 
         </a-form-model>
@@ -145,14 +182,14 @@
           :closable="false"
           :destroyOnClose="true"
         >
-          <icon-selector v-model="model.icon" @change="handleIconChange"/>
+          <icon-selector v-model="form.icon" @change="handleIconChange"/>
         </a-modal>
       </a-spin>
       <a-row :style="{textAlign:'right'}">
         <a-button :style="{marginRight: '8px'}" @click="handleCancel">
           关闭
         </a-button>
-        <a-button :disabled="disableSubmit" @click="handleOk" type="primary">确定</a-button>
+        <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
       </a-row>
     </div>
   </a-drawer>
@@ -161,10 +198,12 @@
 <script>
 import { add, update, get, tree } from '@/api/system/menu'
 import { treeDataTranslate } from '@/utils/util'
+import { FormMixin } from '@/mixins/FormMixin'
 import IconSelector from '@/components/IconSelector'
 export default {
   name: 'MenuEdit',
   components: { IconSelector },
+  mixins: [FormMixin],
   data () {
     return {
       labelCol: {
@@ -175,12 +214,11 @@ export default {
         xs: { span: 24 },
         sm: { span: 13 }
       },
-      visible: false,
       disableSubmit: false,
       confirmLoading: false,
       show: true, // 根据菜单类型，动态显示隐藏表单元素
       menuLabel: '菜单名称',
-      model: {
+      form: {
         id: '',
         name: '',
         url: '',
@@ -203,49 +241,34 @@ export default {
         url: [{ required: this.show, message: '请输入菜单路径!' }]
       },
       treeData: [],
-      type: 'add',
-      editable: false,
-      addable: false,
       visibleIcon: false,
-
-      title: '',
       currentSelectedIcon: 'pause-circle',
       iconChooseVisible: false,
       validateStatus: ''
     }
   },
   methods: {
-    init () {
-      this.loadTree()
-    },
     loadTree () {
       tree().then((res) => {
         this.treeData = treeDataTranslate(res.data, 'id', 'name')
       })
     },
     edit (id, type) {
-      this.visible = true
-      this.type = type
-
-      if (type && type === 'add') {
-        this.model.menuType = 0
-        this.addable = true
-        this.resetForm()
-      }
+      this.loadTree()
       if (type === 'edit' || type === 'show') {
         this.editable = true
         get(id).then(res => {
-          this.model = res.data
+          this.form = res.data
         })
+      } else {
+        this.resetForm()
       }
-      this.init()
     },
-
     handleOk () {
       const that = this
       this.$refs.form.validate(async valid => {
         if (valid) {
-          if ((this.model.menuType === 1 || this.model.menuType === 2) && !this.model.parentId) {
+          if ((this.form.menuType === 1 || this.form.menuType === 2) && !this.form.parentId) {
             that.validateStatus = 'error'
             that.$message.error('请检查你填的类型以及信息是否正确！')
             return
@@ -253,11 +276,10 @@ export default {
             that.validateStatus = 'success'
           }
           that.confirmLoading = true
-          console.log(this.model)
           if (this.type === 'add') {
-            await add(this.model)
+            await add(this.form)
           } else {
-            await update(this.model)
+            await update(this.form)
           }
           setTimeout(() => {
             this.confirmLoading = false
@@ -276,7 +298,7 @@ export default {
       }
     },
     onChangeMenuType (e) {
-      if (this.model.menuType === 2) {
+      if (this.form.menuType === 2) {
         this.show = false
         this.menuLabel = '按钮/权限'
       } else {
@@ -298,16 +320,7 @@ export default {
     // 选择图标
     handleIconChange (icon) {
       this.visibleIcon = false
-      this.model.icon = icon
-    },
-    handleCancel () {
-      this.close()
-    },
-    close () {
-      this.$emit('close')
-      this.disableSubmit = false
-      this.visible = false
-      this.$refs.form.resetFields()
+      this.form.icon = icon
     },
     resetForm () {
       this.$nextTick(() => {

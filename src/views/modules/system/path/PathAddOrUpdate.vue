@@ -123,7 +123,7 @@
 </template>
 
 <script>
-import { get, add, update } from '@/api/iam/path'
+import { get, add, update } from '@/api/system/path'
 
 export default {
   name: 'PathAddOrUpdate',

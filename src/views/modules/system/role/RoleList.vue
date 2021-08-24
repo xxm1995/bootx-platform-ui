@@ -44,36 +44,23 @@
       <vxe-table-column field="name" title="角色名称" />
       <vxe-table-column field="description" title="角色描述" />
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template slot-scope="{row}">
           <span>
             <a href="javascript:" @click="roleInfoShow(row)">查看</a>
           </span>
           <a-divider type="vertical"/>
-          <a-dropdown>
-            <a
-              class="ant-dropdown-link"
-              @click="e => e.preventDefault()">
-              更多操作 <a-icon type="down" />
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a href="javascript:" @click="edit(row)">编辑</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:" @click="handlePermission(row)">授权</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除角色"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" style="color: red">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a-divider type="vertical"/>
+          <a href="javascript:" @click="handlePermission(row)">授权</a>
+          <a-divider type="vertical"/>
+          <a-popconfirm
+            title="是否删除角色"
+            @confirm="remove(row)"
+            okText="是"
+            cancelText="否">
+            <a href="javascript:" style="color: red">删除</a>
+          </a-popconfirm>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -101,7 +88,7 @@
 <script>
 import RoleEdit from './RoleEdit'
 import RolePermModal from './RolePermModal'
-import { del, page } from '@/api/iam/role'
+import { del, page } from '@/api/system/role'
 
 export default {
   name: 'RoleList',
@@ -142,9 +129,7 @@ export default {
         ...this.pages
       }).then(res => {
         this.tableData = res.data.records
-        this.pagination.total = +res.data.total
-        this.pagination.current = +res.data.current
-        this.pagination.size = +res.data.size
+        this.pagination.current = Number(res.data.current)
         this.loading = false
       })
     },
@@ -152,8 +137,7 @@ export default {
     resetPage () {
       this.pages = {
         size: 10,
-        current: 1,
-        pages: 0
+        current: 1
       }
     },
     handleTableChange ({ currentPage, pageSize }) {

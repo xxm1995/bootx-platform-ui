@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import { add, update, get, tree } from '@/api/iam/menu'
+import { add, update, get, tree } from '@/api/system/menu'
 import { treeDataTranslate } from '@/utils/util'
 import IconSelector from '@/components/IconSelector'
 export default {

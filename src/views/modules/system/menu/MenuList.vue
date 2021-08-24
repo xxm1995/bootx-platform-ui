@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { tree, delObj } from '@/api/iam/menu'
+import { tree, delObj } from '@/api/system/menu'
 import MenuEdit from './MenuEdit'
 export default {
   name: 'MenuList',

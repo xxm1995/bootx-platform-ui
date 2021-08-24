@@ -14,15 +14,14 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-
-        <a-form-model-item has-feedback label="账号" prop="account">
+        <a-form-model-item has-feedback label="权限编码" prop="code">
           <a-descriptions>
-            <a-descriptions-item>{{ userinfo.username }}</a-descriptions-item>
+            <a-descriptions-item>{{ userinfo.code }}</a-descriptions-item>
           </a-descriptions>
         </a-form-model-item>
-        <a-form-model-item has-feedback label="用户" prop="name">
+        <a-form-model-item has-feedback label="描述" prop="description">
           <a-descriptions>
-            <a-descriptions-item >{{ userinfo.name }}</a-descriptions-item>
+            <a-descriptions-item >{{ userinfo.description }}</a-descriptions-item>
           </a-descriptions>
         </a-form-model-item>
         <a-form-model-item
@@ -54,11 +53,11 @@
 </template>
 
 <script>
-import { getRoleIds, addUserRole } from '@/api/iam/user'
-import { list as roleList } from '@/api/iam/role'
+import { list as roleList } from '@/api/system/role'
+import { addPathRole, getRoleIds } from '@/api/system/path'
 
 export default {
-  name: 'UserRoleEdit',
+  name: 'PathRoleEdit',
   data () {
     return {
       labelCol: {
@@ -72,27 +71,27 @@ export default {
       visible: false,
       confirmLoading: false,
       roleList: [],
-      userinfo: {
-        account: '',
+      pathInfo: {
+        code: '',
         name: ''
       },
       form: {
-        userId: '',
+        pathId: '',
         roleIds: []
       }
     }
   },
   methods: {
-    edit (userInfo, type) {
-      this.userinfo = { ...userInfo }
-      this.form.userId = userInfo.id
+    edit (pathInfo, type) {
+      this.userinfo = { ...pathInfo }
+      this.form.permissionId = pathInfo.id
       this.visible = true
       // 获取角色列表
       roleList().then(value => {
         this.roleList = value.data
       })
       // 获取角色信息
-      getRoleIds(userInfo.id).then(({ data }) => {
+      getRoleIds(pathInfo.id).then(({ data }) => {
         this.form.roleIds = data
       })
     },
@@ -103,8 +102,7 @@ export default {
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
-          this.confirmLoading = true
-          await addUserRole(this.form)
+          await addPathRole(this.form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')

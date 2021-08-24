@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import { get, add, update } from '@/api/iam/role'
+  import { get, add, update } from '@/api/system/role'
   export default {
     name: 'RoleEdit',
     data () {
@@ -84,7 +84,7 @@
             { required: true, message: '请输入角色名称', trigger: 'blur' }
           ],
           code: [
-            { required: true, message: '请输入角色代码' }
+            { required: true, message: '请输入角色代码', trigger: 'blur' }
           ]
         },
         type: 'add',
@@ -99,18 +99,16 @@
       // 获取角色信息
       edit (id, type) {
         this.visible = true
+        this.type = type
         if (type && type === 'add') {
           this.addable = true
-          this.type = type
           this.resetForm()
         }
         if (type === 'edit') {
           this.editable = true
-          this.type = type
         }
         if (type === 'show') {
           this.showTable = true
-          this.type = type
         }
         if (['edit', 'show'].includes(type)) {
           this.confirmLoading = true

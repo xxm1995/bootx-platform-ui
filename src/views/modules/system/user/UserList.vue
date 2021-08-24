@@ -79,7 +79,7 @@
 </template>
 
 <script>
-import { del, page } from '@/api/iam/user'
+import { del, page } from '@/api/system/user'
 import UserRoleEdit from './UserRoleEdit'
 
 export default {
@@ -94,8 +94,7 @@ export default {
       pagination: {
         size: 10,
         current: 1,
-        total: 0,
-        showSizeChanger: true
+        total: 0
       },
       pages: {
         size: 10,
@@ -115,9 +114,7 @@ export default {
         ...this.pages
       }).then(res => {
         this.tableData = res.data.records
-        this.pagination.total = +res.data.total
-        this.pagination.current = +res.data.current
-        this.pagination.size = +res.data.size
+        this.pagination.current = Number(res.data.current)
         this.loading = false
       })
     },

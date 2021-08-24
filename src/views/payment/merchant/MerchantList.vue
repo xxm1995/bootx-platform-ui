@@ -158,7 +158,7 @@ export default {
         ...this.pages
       }).then(res => {
         this.tableData = res.data.records
-        this.pagination.total = +res.data.total
+        this.pagination.total = res.data.total
         // 当前页取决于后端
         this.pagination.current = Number(res.data.current)
         this.loading = false

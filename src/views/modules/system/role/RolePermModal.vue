@@ -8,17 +8,19 @@
     @close="handleCancel"
     :visible="visible"
   >
-    <a-tree
-      :checkable="true"
-      v-model="checkedKeys"
-      :expanded-keys="expandedKeys"
-      :auto-expand-parent="autoExpandParent"
-      :selected-keys="selectedKeys"
-      :tree-data="treeData"
-      @check="onCheck"
-      @expand="onExpand"
-      @select="onSelect"
-    />
+    <a-spin :spinning="loading">
+      <a-tree
+        :checkable="true"
+        v-model="checkedKeys"
+        :expanded-keys="expandedKeys"
+        :auto-expand-parent="autoExpandParent"
+        :selected-keys="selectedKeys"
+        :tree-data="treeData"
+        @check="onCheck"
+        @expand="onExpand"
+        @select="onSelect"
+      />
+    </a-spin>
     <div class="drawer-bootom-button">
       <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
         <a-menu slot="overlay">
@@ -40,8 +42,8 @@
 </template>
 
 <script>
-import { tree } from '@/api/iam/menu'
-import { findIdsByRole, save } from '@/api/iam/roleMenu'
+import { tree } from '@/api/system/menu'
+import { findIdsByRole, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 
 export default {

@@ -45,7 +45,7 @@ export const asyncRouterMap = [
           }
         ]
       },
-      // 系统管理(IAM)
+      // 系统管理
       {
         path: '/system',
         redirect: '/system/user',
@@ -53,15 +53,21 @@ export const asyncRouterMap = [
         meta: { title: '系统管理', icon: 'form' },
         children: [
           {
+            path: '/system/dict',
+            name: 'system2',
+            component: () => import('@/views/modules/system/dict/DictList'),
+            meta: { title: '字典管理' }
+          },
+          {
             path: '/system/user',
             name: 'user',
-            component: () => import('@/views/iam/user/UserList'),
+            component: () => import('@/views/modules/system/user/UserList'),
             meta: { title: '用户管理', keepAlive: true }
           },
           {
             path: '/system/role',
             name: 'role',
-            component: () => import('@/views/iam/role/RoleList'),
+            component: () => import('@/views/modules/system/role/RoleList'),
             meta: { title: '角色管理' }
           },
           {
@@ -69,12 +75,6 @@ export const asyncRouterMap = [
             name: '2',
             component: () => import('@/views/exception/Dev'),
             meta: { title: '部门管理(对接中)' }
-          },
-          {
-            path: '/system/22',
-            name: 'system2',
-            component: () => import('@/views/exception/Dev'),
-            meta: { title: '字典管理(对接中)' }
           },
           {
             path: '/system/3',
@@ -85,7 +85,7 @@ export const asyncRouterMap = [
           {
             path: '/system/menu',
             name: 'Menu',
-            component: () => import('@/views/iam/menu/MenuList'),
+            component: () => import('@/views/modules/system/menu/MenuList'),
             meta: { title: '菜单权限管理' }
           }
         ]
@@ -106,7 +106,7 @@ export const asyncRouterMap = [
           {
             path: '/gateway/PathList',
             name: 'PathList',
-            component: () => import('@/views/iam/path/PathList'),
+            component: () => import('@/views/modules/system/path/PathList'),
             meta: { title: '请求权限管理' }
           }
         ]
@@ -345,7 +345,7 @@ export const asyncRouterMap = [
                 meta: { title: '优惠券(对接中)' }
               }
             ]
-          },
+          }
         ]
       },
       // forms

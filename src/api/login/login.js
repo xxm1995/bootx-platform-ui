@@ -16,11 +16,8 @@ export function login (parameter) {
  */
 export function getUserPermission () {
   return request({
-    url: `/role/permission/findButtonPermission`,
-    method: 'get',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    url: `/role/menu/findButtonPermission`,
+    method: 'GET'
   })
 }
 

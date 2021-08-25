@@ -18,8 +18,6 @@
         <a-form-model-item
           label="角色名称"
           prop="name"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -29,8 +27,6 @@
         <a-form-model-item
           label="角色代码"
           prop="code"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -40,8 +36,6 @@
         <a-form-model-item
           label="描述"
           prop="description"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -65,15 +59,6 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
-      confirmLoading: false,
       form: {
         id: '',
         name: '',

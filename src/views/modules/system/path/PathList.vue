@@ -199,6 +199,7 @@ export default {
         this.pagination.total = res.data.total
         // 当前页取决于后端
         this.pagination.current = Number(res.data.current)
+        this.pagination.total = res.data.total
         this.loading = false
       })
     },

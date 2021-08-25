@@ -15,11 +15,12 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
         <a-form-model-item
           label="字典编码"
           prop="code"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -29,8 +30,6 @@
         <a-form-model-item
           label="名称"
           prop="name"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -40,8 +39,6 @@
         <a-form-model-item
           label="描述"
           prop="remark"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-input
             :disabled="showable"
@@ -65,15 +62,6 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
-      confirmLoading: false,
       form: {
         code: '',
         name: '',
@@ -123,7 +111,6 @@ export default {
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-        this.form = {}
       })
     }
   }

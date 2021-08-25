@@ -35,3 +35,21 @@ export function del (id) {
     params: { id }
   })
 }
+
+export function update (obj) {
+  return axios({
+    url: `/payment/alipay/update`,
+    // url: `http://127.0.0.1:9005/alipay/delete`,
+    method: 'POST',
+    data: obj
+  })
+}
+
+export function add (obj) {
+  return axios({
+    url: `/payment/alipay/update`,
+    // url: `http://127.0.0.1:9005/alipay/delete`,
+    method: 'POST',
+    data: obj
+  })
+}

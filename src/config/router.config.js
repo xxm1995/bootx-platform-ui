@@ -27,7 +27,7 @@ export const asyncRouterMap = [
             path: '/dashboard/analysis/welcome',
             name: 'Welcome',
             component: () => import('@/views/Welcome'),
-            meta: { title: '欢迎页', keepAlive: false}
+            meta: { title: '欢迎页', keepAlive: false }
           },
           // 外部链接
           {
@@ -80,32 +80,23 @@ export const asyncRouterMap = [
             path: '/system/3',
             name: '3',
             component: () => import('@/views/exception/Dev'),
-            meta: { title: '登录管理(对接中)' }
+            meta: { title: '在线管理(对接中)' }
+          },
+          {
+            path: '/system/client',
+            name: 'Client',
+            component: () => import('@/views/modules/system/client/ClientList'),
+            meta: { title: '终端管理' }
           },
           {
             path: '/system/menu',
             name: 'Menu',
             component: () => import('@/views/modules/system/menu/MenuList'),
             meta: { title: '菜单权限管理' }
-          }
-        ]
-      },
-      // 网关管理(gateway)
-      {
-        path: '/gateway',
-        redirect: '/system/1',
-        component: RouteView,
-        meta: { title: '网关管理', icon: 'form' },
-        children: [
-          {
-            path: '/gateway/RouterList',
-            name: 'RouterList',
-            component: () => import('@/views/exception/Dev'),
-            meta: { title: '动态路由管理(对接中)' }
           },
           {
-            path: '/gateway/PathList',
-            name: 'PathList',
+            path: '/gateway/path',
+            name: 'Path',
             component: () => import('@/views/modules/system/path/PathList'),
             meta: { title: '请求权限管理' }
           }

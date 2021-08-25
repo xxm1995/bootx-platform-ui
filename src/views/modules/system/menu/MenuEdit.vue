@@ -10,11 +10,16 @@
         <a-form-model
           ref="form"
           :model="form"
-          :rules="rules">
+          :rules="rules"
+          :labelCol="labelCol"
+          :wrapperCol="wrapperCol"
+        >
+          <a-form-model-item label="主键" prop="id" hidden="true" >
+            <a-input v-model="form.id" :disabled="showable"/>
+          </a-form-model-item>
           <a-form-model-item
             label="菜单类型"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol" >
+          >
             <a-radio-group
               @change="onChangeMenuType"
               :disabled="showable"
@@ -26,8 +31,6 @@
             </a-radio-group>
           </a-form-model-item>
           <a-form-model-item
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             :label="menuLabel"
             prop="name">
             <a-input
@@ -39,8 +42,6 @@
           <a-form-model-item
             v-show="form.menuType!==0"
             label="上级菜单"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             :validate-status="validateStatus"
             :hasFeedback="true"
             :required="true">
@@ -57,8 +58,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             label="菜单路径"
             prop="url"
           >
@@ -70,8 +69,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             label="前端组件"
             prop="component"
           >
@@ -83,9 +80,7 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
             :disabled="showable"
-            :wrapperCol="wrapperCol"
             prop="redirect"
             label="默认跳转地址">
             <a-input
@@ -96,8 +91,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="!show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             prop="perms"
             label="授权标识">
             <a-input
@@ -108,8 +101,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             prop="icon"
             label="菜单图标">
             <a-input
@@ -126,8 +117,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             prop="sortNo"
             label="排序">
             <a-input-number
@@ -139,8 +128,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             label="隐藏路由">
             <a-switch
               :disabled="showable"
@@ -150,8 +137,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             label="是否缓存路由">
             <a-switch
               :disabled="showable"
@@ -161,8 +146,6 @@
           </a-form-model-item>
           <a-form-model-item
             v-show="show"
-            :labelCol="labelCol"
-            :wrapperCol="wrapperCol"
             label="打开方式">
             <a-switch
               :disabled="showable"
@@ -206,16 +189,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
       disableSubmit: false,
-      confirmLoading: false,
       show: true, // 根据菜单类型，动态显示隐藏表单元素
       menuLabel: '菜单名称',
       form: {
@@ -325,7 +299,6 @@ export default {
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-        this.form = {}
       })
     }
   }

@@ -59,26 +59,17 @@
 <script>
 import { itemDel, itemPage } from '@/api/system/dict'
 import DictItemEdit from './DictItemEdit'
+import {TableMixin} from "@/mixins/TableMixin";
 export default {
   name: 'DictItemList',
   components: {
     DictItemEdit
   },
+  mixins: [TableMixin],
   data () {
     return {
-      loading: false,
       visible: false,
-      dict: '',
-      pagination: {
-        size: 10,
-        current: 1,
-        total: 0
-      },
-      pages: {
-        size: 10,
-        current: 1
-      },
-      tableData: []
+      dict: ''
     }
   },
   methods: {
@@ -95,6 +86,7 @@ export default {
       }).then(res => {
         this.tableData = res.data.records
         this.pagination.current = Number(res.data.current)
+        this.pagination.total = res.data.total
         this.loading = false
       })
     },
@@ -112,9 +104,6 @@ export default {
         this.$message.info('删除成功')
         this.init()
       })
-    },
-    handleOk () {
-      this.init()
     },
     handleCancel () {
       this.visible = false

@@ -1,7 +1,14 @@
 export const FormMixin = {
   data () {
     return {
+      labelCol: {
+        sm: { span: 7 }
+      },
+      wrapperCol: {
+        sm: { span: 13 }
+      },
       title: '新增',
+      confirmLoading: false,
       visible: false,
       editable: false,
       addable: false,

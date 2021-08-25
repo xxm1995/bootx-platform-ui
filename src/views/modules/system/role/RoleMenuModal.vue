@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="true"
-    :width="500"
+    :width="800"
     placement="right"
     :closable="true"
     @close="handleCancel"
@@ -47,7 +47,7 @@ import { findIdsByRole, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 
 export default {
-  name: 'RolePermModal',
+  name: 'RoleMenuModal',
   data () {
     return {
       title: '角色权限配置',

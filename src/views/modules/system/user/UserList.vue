@@ -14,7 +14,7 @@
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="() => {this.resetPage();this.init()}">查询</a-button>
+            <a-button type="primary" @click="query">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
           </a-col>
         </a-row>
@@ -26,7 +26,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="$refs.roleAddOrUpdate.edit('','add')">新建</a-button>
+<!--        <a-button type="primary" icon="plus" @click="add">新建</a-button>-->
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -38,7 +38,6 @@
       size="medium"
       :loading="loading"
       :data="tableData">
-      <!--      <vxe-table-column type='checkbox' width='60' />-->
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="姓名" />
       <vxe-table-column field="username" title="账号" />
@@ -46,14 +45,15 @@
       <vxe-table-column field="email" title="邮箱" />
       <vxe-table-column admin="admin" title="是否管理员">
         <template slot-scope="{row}">
-          {{ row.admin?'是':'否' }}
+          <a-tag v-if="row.admin" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column field="registerTime" title="注册时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template slot-scope="{row}">
           <span>
-            <a @click="editRoles(row)">角色分配</a>
+            <a @click="assignRoles(row)">角色分配</a>
           </span>
         </template>
       </vxe-table-column>
@@ -69,34 +69,25 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <!-- 角色配置 -->
-    <user-role-edit
-      ref="userRoleEdit"
+    <user-role-assign
+      ref="userRoleAssign"
     />
   </a-card>
 </template>
 
 <script>
 import { del, page } from '@/api/system/user'
-import UserRoleEdit from './UserRoleEdit'
+import UserRoleAssign from './UserRoleAssign'
+import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
   name: 'UserList',
   components: {
-    UserRoleEdit
+    UserRoleAssign
   },
+  mixins: [TableMixin],
   data () {
     return {
-      loading: false,
-      tableData: [],
-      pagination: {
-        size: 10,
-        current: 1,
-        total: 0
-      },
-      pages: {
-        size: 10,
-        current: 1
-      },
       queryParam: {
         account: '',
         name: ''
@@ -112,41 +103,35 @@ export default {
       }).then(res => {
         this.tableData = res.data.records
         this.pagination.current = Number(res.data.current)
+        this.pagination.total = res.data.total
         this.loading = false
       })
-    },
-    // 重置当前页数
-    resetPage () {
-      this.pages = {
-        size: 10,
-        current: 1,
-        pages: 0
-      }
     },
     handleTableChange ({ currentPage, pageSize }) {
       this.pages.current = currentPage
       this.pages.size = pageSize
       this.init()
     },
-    // 角色配置
-    editRoles (record) {
-      this.$refs.userRoleEdit.edit(record, 'edit')
+    // 分配角色
+    assignRoles (record) {
+      this.$refs.userRoleAssign.edit(record, 'edit')
+    },
+    add () {
+      this.$refs.userEdit.init('', 'show')
+    },
+    show (record) {
+      this.$refs.userEdit.init(record.id, 'show')
     },
     edit (record) {
-      this.$refs.pathAddOrUpdate.edit(record.id, 'edit')
+      this.$refs.userEdit.init(record.id, 'edit')
     },
     remove (record) {
       del(record.id).then(res => {
         this.$message.info('删除成功')
         this.init()
       })
-    },
-    show (record) {
-      this.$refs.pathAddOrUpdate.edit(record.id, 'show')
-    },
-    handleOk () {
-      this.init()
     }
+
   },
   created () {
     this.init()

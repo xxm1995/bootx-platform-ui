@@ -58,7 +58,7 @@ import { getRoleIds, addUserRole } from '@/api/system/user'
 import { list as roleList } from '@/api/system/role'
 
 export default {
-  name: 'UserRoleEdit',
+  name: 'UserRoleAssign',
   data () {
     return {
       labelCol: {

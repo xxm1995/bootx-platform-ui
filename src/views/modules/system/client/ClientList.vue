@@ -4,12 +4,12 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="字典编码">
+            <a-form-item label="终端代码">
               <a-input v-model="queryParam.code" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="字典名称">
+            <a-form-item label="终端名称">
               <a-input v-model="queryParam.name" placeholder="" />
             </a-form-item>
           </a-col>
@@ -20,14 +20,13 @@
         </a-row>
       </a-form>
     </div>
-
     <vxe-toolbar
       custom
       zoom
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="$refs.dictEdit.init('','add')">新建</a-button>
+        <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -40,22 +39,30 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="code" title="编码" />
+      <vxe-table-column type="seq" title="序号" width="60" />
+      <vxe-table-column field="code" title="代码" />
       <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column title="操作" fixed="right" width="220">
+      <vxe-table-column field="enable" title="启用状态" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.enable" color="green">启用</a-tag>
+          <a-tag v-else color="red">停用</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="timeout" title="超时时间(分钟)" />
+      <vxe-table-column field="description" title="描述" />
+      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="edit(row)">编辑</a>
-          <a-divider type="vertical"/>
-          <a href="javascript:" @click="itemList(row)">字典配置</a>
+          <span>
+            <a href="javascript:" @click="edit(row)">编辑</a>
+          </span>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除字典"
+            title="是否删除终端"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
@@ -73,27 +80,22 @@
       :total="pagination.total"
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
+      />
     </vxe-pager>
-    <dict-edit
-      ref="dictEdit"
-      @ok="handleOk"
-    />
-    <dict-item-list
-      ref="dictItemList"
-    />
+    <client-edit
+      ref="clientEdit"
+      @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-import { page, del } from '@/api/system/dict'
-import DictEdit from './DictEdit'
-import DictItemList from './DictItemList'
+import { page, del } from '@/api/system/client'
+import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {
-  name: 'DictList',
+  name: 'ClientList',
   components: {
-    DictEdit,
-    DictItemList
+    ClientEdit
   },
   mixins: [TableMixin],
   data () {
@@ -117,17 +119,18 @@ export default {
         this.loading = false
       })
     },
+    add () {
+      console.log(this.$refs)
+      this.$refs.clientEdit.init('', 'add')
+    },
     edit (record) {
-      this.$refs.dictEdit.init(record.id, 'edit')
+      this.$refs.clientEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.dictEdit.init(record.id, 'show')
-    },
-    itemList (record) {
-      this.$refs.dictItemList.init(record)
+      this.$refs.clientEdit.init(record.id, 'show')
     },
     remove (record) {
-      del(record.id).then(() => {
+      del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
       })

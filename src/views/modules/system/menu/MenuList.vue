@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import { tree, delObj } from '@/api/system/menu'
+import { tree, del } from '@/api/system/menu'
 import MenuEdit from './MenuEdit'
 export default {
   name: 'MenuList',
@@ -92,13 +92,10 @@ export default {
       this.$refs.menuEdit.init(id, 'show')
     },
     remove (record) {
-      delObj(record.id).then(_ => {
+      del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
       })
-    },
-    handleOk () {
-      this.init()
     }
   },
   created () {

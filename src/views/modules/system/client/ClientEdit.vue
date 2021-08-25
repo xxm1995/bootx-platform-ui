@@ -18,50 +18,43 @@
         <a-input v-model="form.id" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="字典编码"
-        prop="dictCode"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
-      >
-        <a-input
-          :disabled="true"
-          v-model="form.dictCode"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        label="字典项编码"
+        label="编码"
         prop="code"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
-        <a-input
-          :disabled="showable"
-          v-model="form.code"
-        />
+        <a-input v-model="form.code" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="字典项名称"
+        label="名称"
         prop="name"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
-        <a-input
+        <a-input v-model="form.name" :disabled="showable"/>
+      </a-form-model-item>
+      <a-form-model-item
+        label="启用状态"
+        prop="enable"
+      >
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable" />
+      </a-form-model-item>
+      <a-form-model-item
+        label="超时时间(分钟)"
+        prop="timeout"
+      >
+        <a-input-number
+          v-model="form.timeout"
           :disabled="showable"
-          v-model="form.name"
+          :min="5"
+          size="550px"
+          :step="5"
         />
       </a-form-model-item>
       <a-form-model-item
         label="描述"
-        prop="remark"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
+        prop="description"
       >
-        <a-input
-          :disabled="showable"
-          v-model="form.remark"
-        />
+        <a-input v-model="form.description" :disabled="showable"/>
       </a-form-model-item>
     </a-form-model>
+
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
@@ -71,43 +64,46 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { itemGet, itemAdd, itemUpdate } from '@/api/system/dict'
+import { get, add, update } from '@/api/system/client'
 export default {
-  name: 'DictItemEdit',
+  name: 'ClientEdit',
   mixins: [FormMixin],
   data () {
     return {
+      confirmLoading: false,
       form: {
-        dictId: '',
-        dictCode: '',
         code: '',
         name: '',
-        remark: ''
+        enable: true,
+        timeout: '5',
+        description: ''
       },
       rules: {
         code: [
-          { required: true, message: '请输入字典项编码', trigger: 'blur' }
+          { required: true, message: '请输入终端编码', trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入字典项名称', trigger: 'blur' }
+          { required: true, message: '请输入终端名称', trigger: 'blur' }
+        ],
+        enable: [
+          { required: true, message: '请选择启用状态', trigger: 'blur' }
+        ],
+        timeout: [
+          { required: true, message: '请填写超时时间', trigger: 'blur' }
         ]
       }
     }
   },
   methods: {
-    edit (record, type) {
+    edit (id, type) {
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
-        itemGet(record.id).then(res => {
+        get(id).then(res => {
           this.form = res.data
           this.confirmLoading = false
         })
       } else {
         this.resetForm()
-        this.$nextTick(() => {
-          this.form.dictId = record.id
-          this.form.dictCode = record.code
-        })
       }
     },
     handleOk () {
@@ -115,9 +111,9 @@ export default {
         if (valid) {
           this.confirmLoading = true
           if (this.type === 'add') {
-            await itemAdd(this.form)
+            await add(this.form)
           } else if (this.type === 'edit') {
-            await itemUpdate(this.form)
+            await update(this.form)
           }
           setTimeout(() => {
             this.confirmLoading = false

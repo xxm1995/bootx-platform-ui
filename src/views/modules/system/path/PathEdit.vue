@@ -117,28 +117,20 @@
     </a-spin>
     <template slot="footer" v-if="editable">
       <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      <a-button key="forward" v-if='!showable' :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
   </a-modal>
 </template>
 
 <script>
 import { get, add, update } from '@/api/system/path'
+import { FormMixin } from '@/mixins/FormMixin'
 
 export default {
-  name: 'PathAddOrUpdate',
+  name: 'PathEdit',
+  mixins: [FormMixin],
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
-      visible: false,
-      confirmLoading: false,
       form: {
         id: '',
         code: '',
@@ -158,13 +150,7 @@ export default {
         publicAccess: [{ required: true, message: '必填' }],
         loginAccess: [{ required: true, message: '必填' }],
         within: [{ required: true, message: '必填' }]
-      },
-      type: 'add',
-      editable: false,
-      addable: false,
-      showTable: false,
-      dsType: '2',
-      treeData: []
+      }
     }
   },
   methods: {

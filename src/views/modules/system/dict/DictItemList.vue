@@ -86,7 +86,7 @@ export default {
       }).then(res => {
         this.tableData = res.data.records
         this.pagination.current = Number(res.data.current)
-        this.pagination.total = res.data.total
+        this.pagination.total = Number(res.data.total)
         this.loading = false
       })
     },

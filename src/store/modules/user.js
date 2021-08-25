@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getUserPermission, logout } from '@/api/login/login'
+import { login, getMenuAndButtonPermission, logout } from '@/api/login/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
 
@@ -54,11 +54,9 @@ const user = {
     // 获取用户权限信息
     GetUserPermission ({ commit }) {
       return new Promise((resolve, reject) => {
-        getUserPermission().then(response => {
+        getMenuAndButtonPermission().then(response => {
           const result = response.data
-          const permissionList = result .map(value => {
-            return value.action
-          })
+          const permissionList = result.buttonPermissions
           const menus = result.menus
           // 保存权限, 默认拥有访客权限,防止无权限情况下无限刷新
           permissionList.push('_GHOST')

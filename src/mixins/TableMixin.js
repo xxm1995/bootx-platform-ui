@@ -24,7 +24,7 @@ export const TableMixin = {
     // 重置当前页数
     resetPage () {
       this.pages = {
-        size: 10,
+        size: this.pagination.size,
         current: 1
       }
     },
@@ -32,8 +32,10 @@ export const TableMixin = {
     handleTableChange ({ currentPage, pageSize }) {
       this.pages.current = currentPage
       this.pages.size = pageSize
+      this.pagination.size = pageSize
       this.init()
     },
+
     // ok按钮
     handleOk () {
       this.init()

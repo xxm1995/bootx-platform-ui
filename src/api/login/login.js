@@ -14,20 +14,20 @@ export function login (parameter) {
 /**
  * 获取用户按钮权限
  */
-export function getUserPermission () {
+export function getMenuAndButtonPermission () {
   return request({
-    url: `/role/menu/findButtonPermission`,
+    url: `/role/menu/findMenuAndButtonPermission`,
     method: 'GET'
   })
 }
 
+/**
+ * 登出
+ */
 export function logout () {
   return request({
     url: `/token/logout`,
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json;charset=UTF-8'
-    }
+    method: 'post'
   })
 }
 export function sendSmsCode (parameter) {

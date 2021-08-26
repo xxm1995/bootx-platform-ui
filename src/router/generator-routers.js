@@ -2,7 +2,7 @@
 import * as loginService from '@/api/login/login'
 // eslint-disable-next-line
 import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
-
+import { asyncRouterMap, baseRouterMap, constantRouterMap } from '@/config/router.config'
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
@@ -46,11 +46,12 @@ const constantRouterComponents = {
   // account
   'AccountCenter': () => import('@/views/account/center'),
   'AccountSettings': () => import('@/views/account/settings/Index'),
-  'BaseSettings': () => import('@/views/account/settings/BaseSetting'),
+  'BaseSettings': () => import('@/views/account/settings/BasicSetting'),
   'SecuritySettings': () => import('@/views/account/settings/Security'),
   'CustomSettings': () => import('@/views/account/settings/Custom'),
   'BindingSettings': () => import('@/views/account/settings/Binding'),
-  'NotificationSettings': () => import('@/views/account/settings/Notification')
+  'NotificationSettings': () => import('@/views/account/settings/Notification'),
+  'Welcome': () => import(/* webpackChunkName: "fail" */ '@/views/exception/403')
 
   // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
 }
@@ -75,28 +76,23 @@ const rootRouter = {
 
 /**
  * 动态生成菜单
- * @param token
+ * @param menus
  * @returns {Promise<Router>}
  */
-export const generatorDynamicRouter = (token) => {
+export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
-    loginService.getCurrentUserNav(token).then(res => {
-      console.log('res', res)
-      const { result } = res
+    try {
       const menuNav = []
-      const childrenNav = []
-      //      后端数据, 根级树数组,  根级 PID
-      listToTree(result, childrenNav, 0)
-      rootRouter.children = childrenNav
+      // rootRouter.children = baseRouterMap
+      rootRouter.children = baseRouterMap
       menuNav.push(rootRouter)
-      console.log('menuNav', menuNav)
       const routers = generator(menuNav)
       routers.push(notFoundRouter)
-      console.log('routers', routers)
+      // console.log('routers', routers)
       resolve(routers)
-    }).catch(err => {
+    } catch (err) {
       reject(err)
-    })
+    }
   })
 }
 
@@ -109,6 +105,7 @@ export const generatorDynamicRouter = (token) => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
+    console.log(item.component)
     const { title, show, hideChildren, hiddenHeaderContent, target, icon } = item.meta || {}
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace

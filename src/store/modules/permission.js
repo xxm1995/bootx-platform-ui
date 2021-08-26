@@ -1,4 +1,9 @@
-import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
+/**
+ * 向后端请求用户的菜单，动态生成路由
+ */
+
+import {asyncRouterMap, constantRouterMap} from '@/config/router.config'
+import { generatorDynamicRouter } from '@/router/generator-routers'
 
 /**
  * 过滤账户是否拥有某一个权限，并将菜单从加载列表移除
@@ -63,10 +68,11 @@ const permission = {
   actions: {
     GenerateRoutes ({ commit }, data) {
       return new Promise(resolve => {
-        const { permissionList } = data
-        const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList)
-        commit('SET_ROUTERS', accessedRouters)
-        resolve()
+        const { menus } = data
+        generatorDynamicRouter(menus).then(routers => {
+          commit('SET_ROUTERS', routers)
+          resolve()
+        })
       })
     }
   }

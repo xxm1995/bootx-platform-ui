@@ -13,18 +13,18 @@ export const asyncRouterMap = [
     name: 'index',
     component: BasicLayout,
     meta: { title: '主页' },
-    redirect: '/dashboard/analysis',
+    redirect: '/dashboard',
     children: [
       // dashboard
       {
-        path: '/dashboard/analysis',
+        path: '/dashboard',
         name: 'dashboard',
-        redirect: '/dashboard/analysis/welcome',
+        redirect: '/dashboard/welcome',
         component: RouteView,
         meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse },
         children: [
           {
-            path: '/dashboard/analysis/welcome',
+            path: '/dashboard/welcome',
             name: 'Welcome',
             component: () => import('@/views/Welcome'),
             meta: { title: '欢迎页', keepAlive: false }
@@ -55,7 +55,7 @@ export const asyncRouterMap = [
           {
             path: '/system/dict',
             name: 'Dict',
-            component: () => import('@/views/modules/system/dict/DictList'),
+            component: '/views/modules/system/dict/DictList',
             meta: { title: '字典管理' }
           },
           {
@@ -583,6 +583,28 @@ export const asyncRouterMap = [
 
 /**
  * 基础路由
+ * @type {*[]}
+ */
+export const baseRouterMap = [
+  {
+    path: '/dashboard',
+    name: 'dashboard',
+    redirect: '/dashboard/welcome',
+    component: RouteView,
+    meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse },
+    children: [
+      {
+        path: '/dashboard/welcome',
+        name: 'Welcome',
+        component: 'Welcome',
+        meta: { title: '欢迎页', keepAlive: false }
+      }
+    ]
+  }
+]
+
+/**
+ * 基础路由
  * @type { *[] }
  */
 export const constantRouterMap = [
@@ -614,7 +636,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
   {
     path: '/demo',
     name: 'demo',

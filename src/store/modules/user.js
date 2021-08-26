@@ -51,7 +51,7 @@ const user = {
       })
     },
 
-    // 获取用户权限信息
+    // 获取用户菜单和按钮权限
     GetUserPermission ({ commit }) {
       return new Promise((resolve, reject) => {
         getMenuAndButtonPermission().then(response => {

@@ -12,7 +12,7 @@ export function login (parameter) {
 }
 
 /**
- * 获取用户按钮权限
+ * 获取用户菜单和按钮权限
  */
 export function getMenuAndButtonPermission () {
   return request({

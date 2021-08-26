@@ -23,18 +23,19 @@ router.beforeEach((to, from, next) => {
       next({ path: defaultRoutePath })
       NProgress.done()
     } else {
-      // check login user.roles is null
+      // 检查登录 user.roles 是否为空
       if (store.getters.permissions.length === 0) {
-        // request login userInfo
+        // 请求登录用户信息
         store
           .dispatch('GetUserPermission')
           .then(({ permissionList, menus }) => {
             // 生成路由(后期改为动态路由)
-            store.dispatch('GenerateRoutes', { permissionList }).then(() => {
+            store.dispatch('GenerateRoutes', { permissionList, menus }).then(() => {
               // 动态添加可访问路由表
               router.addRoutes(store.getters.addRouters)
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
+              // console.log(to)
               if (to.path === redirect) {
                 // 设置 replace: true 这样导航就不会留下历史记录
                 next({ ...to, replace: true })

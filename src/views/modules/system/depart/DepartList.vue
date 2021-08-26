@@ -22,19 +22,18 @@
       :tree-config="{children: 'children'}"
       :data="tableData"
     >
-      <vxe-table-column field="name" title="菜单名称" tree-node></vxe-table-column>
-      <vxe-table-column field="menuType" title="菜单类型">
+      <vxe-table-column field="departName" title="机构/部门名称" tree-node/>
+      <vxe-table-column field="departNameAbbr" title="缩写"/>
+      <vxe-table-column field="orgCategory" title="机构类别">
         <template v-slot="{row}">
-          <span v-show="String(row.menuType) === '0'">一级菜单</span>
-          <span v-show="String(row.menuType) === '1'">子菜单</span>
-          <span v-show="String(row.menuType) === '2'">按钮/权限</span>
+          <span v-show="String(row.orgCategory) === '1'">组织机构</span>
+          <span v-show="String(row.orgCategory) === '2'">岗位</span>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="icon" title="图标">
+      <vxe-table-column field="status" title="状态">
         <template v-slot="{row}">
-          <div v-if="row.icon !== ''">
-            <a-icon :type="row.icon"/>
-          </div>
+          <a-tag v-if="row.status" color="green">启用</a-tag>
+          <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column title="操作">
@@ -53,25 +52,26 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-    <menu-edit
-      ref="menuEdit"
-      @ok="handleOk"/>
+    <depart-edit
+      ref="departEdit"
+      @ok="handleOk"
+    />
   </a-card>
 </template>
 
 <script>
-import { tree, del } from '@/api/system/menu'
-import MenuEdit from './MenuEdit'
+import { tree, del } from '@/api/system/depart.js'
+import DepartEdit from './DepartEdit'
 import { TableMixin } from '@/mixins/TableMixin'
-
 export default {
-  name: 'MenuList',
+  name: 'DepartList',
   components: {
-    MenuEdit
+    DepartEdit
   },
   mixins: [TableMixin],
   data () {
     return {
+
     }
   },
   methods: {
@@ -83,13 +83,13 @@ export default {
       })
     },
     add () {
-      this.$refs.menuEdit.init('', 'add')
+      this.$refs.departEdit.init('', 'add')
     },
     edit (id) {
-      this.$refs.menuEdit.init(id, 'edit')
+      this.$refs.departEdit.init(id, 'edit')
     },
     show (id) {
-      this.$refs.menuEdit.init(id, 'show')
+      this.$refs.departEdit.init(id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {

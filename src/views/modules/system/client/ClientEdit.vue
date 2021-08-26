@@ -70,7 +70,6 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      confirmLoading: false,
       form: {
         code: '',
         name: '',

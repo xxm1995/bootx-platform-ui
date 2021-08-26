@@ -54,27 +54,27 @@ export const asyncRouterMap = [
         children: [
           {
             path: '/system/dict',
-            name: 'system2',
+            name: 'Dict',
             component: () => import('@/views/modules/system/dict/DictList'),
             meta: { title: '字典管理' }
           },
           {
             path: '/system/user',
-            name: 'user',
+            name: 'User',
             component: () => import('@/views/modules/system/user/UserList'),
             meta: { title: '用户管理', keepAlive: true }
           },
           {
             path: '/system/role',
-            name: 'role',
+            name: 'Role',
             component: () => import('@/views/modules/system/role/RoleList'),
             meta: { title: '角色管理' }
           },
           {
-            path: '/system/2',
-            name: '2',
-            component: () => import('@/views/exception/Dev'),
-            meta: { title: '部门管理(对接中)' }
+            path: '/system/depart',
+            name: 'Depart',
+            component: () => import('@/views/modules/system/depart/DepartList'),
+            meta: { title: '部门管理' }
           },
           {
             path: '/system/3',
@@ -95,7 +95,7 @@ export const asyncRouterMap = [
             meta: { title: '菜单权限管理' }
           },
           {
-            path: '/gateway/path',
+            path: '/system/path',
             name: 'Path',
             component: () => import('@/views/modules/system/path/PathList'),
             meta: { title: '请求权限管理' }

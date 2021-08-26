@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :title="title"
-    :maskClosable="true"
+    :maskClosable="false"
     :width="800"
     placement="right"
     :closable="true"

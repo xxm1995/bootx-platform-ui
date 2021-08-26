@@ -9,11 +9,19 @@ if (IS_PROD && !IS_PREVIEW) {
 
 // lazy load ant-design-vue
 // if your use import on Demand, Use this code
-plugins.push(['import', {
-  'libraryName': 'ant-design-vue',
-  'libraryDirectory': 'es',
-  'style': true // `style: true` 会加载 less 文件
-}])
+plugins.push(
+  ['import',
+    {
+      'libraryName': 'ant-design-vue',
+      'libraryDirectory': 'es',
+      'style': true // `style: true` 会加载 less 文件
+    },
+    {
+      'libraryName': 'vxe-table',
+      'style': true // 样式是否也按需加载
+    }
+  ]
+)
 
 module.exports = {
   presets: [

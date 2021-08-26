@@ -1,4 +1,4 @@
-<template>
+<template xmlns="">
   <a-modal
     title="用户角色分配"
     :width="640"
@@ -14,16 +14,11 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-
-        <a-form-model-item has-feedback label="账号" prop="account">
-          <a-descriptions>
-            <a-descriptions-item>{{ userinfo.username }}</a-descriptions-item>
-          </a-descriptions>
+        <a-form-model-item label="账号" prop="account">
+          <a-input :disabled="true" v-model="userinfo.username"/>
         </a-form-model-item>
-        <a-form-model-item has-feedback label="用户" prop="name">
-          <a-descriptions>
-            <a-descriptions-item >{{ userinfo.name }}</a-descriptions-item>
-          </a-descriptions>
+        <a-form-model-item label="用户" prop="name">
+          <a-input :disabled="true" v-model="userinfo.name"/>
         </a-form-model-item>
         <a-form-model-item
           label="角色"

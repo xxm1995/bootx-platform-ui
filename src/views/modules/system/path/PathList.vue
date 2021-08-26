@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
+        <a-row :gutter="24">
           <a-col :md="8" :sm="24">
             <a-form-item label="权限标识">
               <a-input v-model="queryParam.code" placeholder=""/>
@@ -20,15 +20,13 @@
         </a-row>
       </a-form>
     </div>
-    <div class="table-operator">
-    </div>
     <vxe-toolbar
       custom
       zoom
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="$refs.pathEdit.edit('','add')">新建</a-button>
+        <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -52,6 +50,19 @@
       <vxe-table-column field="description" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
+        <template v-slot="{row}">
+          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a-divider type="vertical" />
+          <a href="javascript:" @click="show(row)">查看</a>
+          <a-divider type="vertical" />
+          <a-popconfirm
+            title="是否删除菜单或权限"
+            @confirm="remove(row)"
+            okText="是"
+            cancelText="否">
+            <a href="javascript:" style="color: red">删除</a>
+          </a-popconfirm>
+        </template>
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
@@ -102,18 +113,21 @@ export default {
         this.loading = false
       })
     },
+    add () {
+      this.$refs.pathEdit.init('', 'add')
+    },
     edit (record) {
-      this.$refs.pathEdit.edit(record.id, 'edit')
+      this.$refs.pathEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.pathEdit.init(record.id, 'show')
     },
     delete (record) {
-      del(record.id).then(res => {
+      del(record.id).then(() => {
         this.$message.info('删除成功')
         this.init()
       })
-    },
-    show (record) {
-      this.$refs.pathEdit.edit(record.id, 'show')
-    },
+    }
   },
   created () {
     this.init()

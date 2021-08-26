@@ -2,6 +2,7 @@
   <a-drawer
     :title="title"
     :width="700"
+    :mask-closable="false"
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
@@ -31,15 +32,6 @@
             </a-radio-group>
           </a-form-model-item>
           <a-form-model-item
-            :label="menuLabel"
-            prop="name">
-            <a-input
-              placeholder="请输入菜单名称"
-              v-model="form.name"
-              :disabled="showable"
-              :readOnly="disableSubmit"/>
-          </a-form-model-item>
-          <a-form-model-item
             v-show="form.menuType!==0"
             label="上级菜单"
             :validate-status="validateStatus"
@@ -57,18 +49,54 @@
             </a-tree-select>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            :label="menuLabel"
+            prop="title">
+            <a-input
+              placeholder="请输入菜单名称"
+              v-model="form.title"
+              :disabled="showable"
+              :readOnly="disableSubmit"/>
+          </a-form-model-item>
+          <a-form-model-item
+            label="路由名称"
+            v-show="menuEditShow"
+            prop="name">
+            <a-input
+              placeholder="请输入路由名称"
+              v-model="form.name"
+              :disabled="showable"
+              :readOnly="disableSubmit">
+              <template v-slot:suffix>
+                <a-tooltip
+                  title="尽量保证路由名称的唯一"
+                >
+                  <a-icon type="info-circle"/>
+                </a-tooltip>
+              </template>
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item
+            v-show="menuEditShow"
             label="菜单路径"
             prop="url"
           >
             <a-input
               placeholder="请输入菜单路径"
               :disabled="showable"
-              v-model="form.url"
-              :readOnly="disableSubmit"/>
+              v-model="form.path"
+              :readOnly="disableSubmit"
+            >
+              <template v-slot:suffix>
+                <a-tooltip
+                  title="输入组件名称或者组件路径地址，路径地址情况，请不要带有'@/'前缀"
+                >
+                  <a-icon type="info-circle"/>
+                </a-tooltip>
+              </template>
+            </a-input>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
             label="前端组件"
             prop="component"
           >
@@ -79,7 +107,7 @@
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
             :disabled="showable"
             prop="redirect"
             label="默认跳转地址">
@@ -90,7 +118,7 @@
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="!show"
+            v-show="!menuEditShow"
             prop="perms"
             label="授权标识">
             <a-input
@@ -100,7 +128,7 @@
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
             prop="icon"
             label="菜单图标">
             <a-input
@@ -109,14 +137,13 @@
               v-model="form.icon"
               :readOnly="true">
               <a-icon
-                :disabled="showable"
                 slot="addonAfter"
                 type="setting"
                 @click="selectIcons" />
             </a-input>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
             prop="sortNo"
             label="排序">
             <a-input-number
@@ -127,8 +154,9 @@
               :readOnly="disableSubmit"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
-            label="隐藏路由">
+            v-show="menuEditShow"
+            prop="hidden"
+            label="隐藏菜单">
             <a-switch
               :disabled="showable"
               checkedChildren="是"
@@ -136,7 +164,28 @@
               v-model="form.hidden"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
+            prop="hideChildrenInMenu"
+            label="隐藏子菜单">
+            <a-switch
+              :disabled="showable"
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-model="form.hideChildrenInMenu"/>
+          </a-form-model-item>
+          <a-form-model-item
+            v-show="menuEditShow"
+            prop="hiddenHeaderContent"
+            label="隐藏的标题内容">
+            <a-switch
+              :disabled="showable"
+              checkedChildren="是"
+              unCheckedChildren="否"
+              v-model="form.hiddenHeaderContent"/>
+          </a-form-model-item>
+          <a-form-model-item
+            v-show="menuEditShow"
+            prop="keepAlive"
             label="是否缓存路由">
             <a-switch
               :disabled="showable"
@@ -145,17 +194,17 @@
               v-model="form.keepAlive"/>
           </a-form-model-item>
           <a-form-model-item
-            v-show="show"
+            v-show="menuEditShow"
+            prop="targetOutside"
             label="打开方式">
             <a-switch
               :disabled="showable"
               checkedChildren="外部"
               unCheckedChildren="内部"
-              v-model="form.internalOrExternal"/>
+              v-model="form.targetOutside"/>
           </a-form-model-item>
 
         </a-form-model>
-
         <a-modal
           :width="850"
           :visible="visibleIcon"
@@ -190,29 +239,31 @@ export default {
   data () {
     return {
       disableSubmit: false,
-      show: true, // 根据菜单类型，动态显示隐藏表单元素
+      menuEditShow: true, // 根据菜单类型，菜单类型编辑时显示标示
       menuLabel: '菜单名称',
       form: {
         id: '',
-        name: '',
-        url: '',
-        perms: '',
         parentId: '',
-        parentName: '',
+        title: '',
+        name: '',
+        path: '',
+        perms: '',
         component: '',
         redirect: '',
         sortNo: 0,
         icon: '',
-        keepAlive: true,
         hidden: false,
-        internalOrExternal: false,
+        hideChildrenInMenu: false,
+        keepAlive: true,
+        hiddenHeaderContent: false,
+        targetOutside: false,
         menuType: 0
       },
       rules: {
         name: [ { required: true, message: '请输入名称' } ],
-        perms: [ { required: this.show, message: '请输入权限代码' } ],
-        component: [{ required: this.show, message: '请输入前端组件!' }],
-        url: [{ required: this.show, message: '请输入菜单路径!' }]
+        perms: [ { required: this.menuEditShow, message: '请输入权限代码' } ],
+        component: [{ required: this.menuEditShow, message: '请输入前端组件!' }],
+        url: [{ required: this.menuEditShow, message: '请输入菜单路径!' }]
       },
       treeData: [],
       visibleIcon: false,
@@ -224,7 +275,7 @@ export default {
   methods: {
     loadTree () {
       tree().then((res) => {
-        this.treeData = treeDataTranslate(res.data, 'id', 'name')
+        this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
     edit (id, type) {
@@ -273,10 +324,10 @@ export default {
     },
     onChangeMenuType (e) {
       if (this.form.menuType === 2) {
-        this.show = false
+        this.menuEditShow = false
         this.menuLabel = '按钮/权限'
       } else {
-        this.show = true
+        this.menuEditShow = true
         this.menuLabel = '菜单名称'
       }
       this.$nextTick(() => {
@@ -285,7 +336,9 @@ export default {
     },
     // 选择图标弹出
     selectIcons () {
-      this.visibleIcon = true
+      if (!this.showable) {
+        this.visibleIcon = true
+      }
     },
     // 取消选择图标
     handleCancelIcon () {

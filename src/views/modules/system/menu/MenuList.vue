@@ -22,7 +22,8 @@
       :tree-config="{children: 'children'}"
       :data="tableData"
     >
-      <vxe-table-column field="name" title="菜单名称" tree-node></vxe-table-column>
+      <vxe-table-column field="title" title="菜单名称" tree-node />
+      <vxe-table-column field="name" title="路由名称" />
       <vxe-table-column field="menuType" title="菜单类型">
         <template v-slot="{row}">
           <span v-show="String(row.menuType) === '0'">一级菜单</span>
@@ -39,7 +40,7 @@
       </vxe-table-column>
       <vxe-table-column title="操作">
         <template v-slot="{row}">
-          <a href="javascript:" @click="edit(row.id)">编辑</a>
+          <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
           <a-divider type="vertical" />
           <a href="javascript:" @click="show(row.id)">查看</a>
           <a-divider type="vertical" />
@@ -48,7 +49,7 @@
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
+            <a href="javascript:" :disabled="row.admin" style="color: red">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>

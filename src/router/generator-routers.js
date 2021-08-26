@@ -2,7 +2,7 @@
 import * as loginService from '@/api/login/login'
 // eslint-disable-next-line
 import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
-import { asyncRouterMap, baseRouterMap, constantRouterMap } from '@/config/router.config'
+import { baseRouterMap } from '@/config/router.config'
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
@@ -51,9 +51,7 @@ const constantRouterComponents = {
   'CustomSettings': () => import('@/views/account/settings/Custom'),
   'BindingSettings': () => import('@/views/account/settings/Binding'),
   'NotificationSettings': () => import('@/views/account/settings/Notification'),
-  'Welcome': () => import(/* webpackChunkName: "fail" */ '@/views/exception/403')
 
-  // 'TestWork': () => import(/* webpackChunkName: "TestWork" */ '@/views/dashboard/TestWork')
 }
 
 // 前端未找到页面路由（固定不用改）
@@ -66,7 +64,7 @@ const rootRouter = {
   key: '',
   name: 'index',
   path: '',
-  component: 'BasicLayout',
+  component: BasicLayout,
   redirect: '/dashboard',
   meta: {
     title: '首页'
@@ -83,12 +81,11 @@ export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
     try {
       const menuNav = []
-      // rootRouter.children = baseRouterMap
-      rootRouter.children = baseRouterMap
+      rootRouter.children = baseRouterMap.concat(menus)
       menuNav.push(rootRouter)
       const routers = generator(menuNav)
       routers.push(notFoundRouter)
-      // console.log('routers', routers)
+      console.log(routers)
       resolve(routers)
     } catch (err) {
       reject(err)
@@ -105,34 +102,39 @@ export const generatorDynamicRouter = (menus) => {
  */
 export const generator = (routerMap, parent) => {
   return routerMap.map(item => {
-    console.log(item.component)
-    const { title, show, hideChildren, hiddenHeaderContent, target, icon } = item.meta || {}
+    const { title, hideChildren, hiddenHeaderContent, target, icon } = item.meta || {}
+    // 该路由对应页面的 组件 :如果是组件对象或函数，直接赋值不做处理，如果是字符串，进行动态查找
+    let component
+    if (['object', 'function'].includes(typeof item.component)) {
+      component = item.component
+    } else {
+      // 先查询是否在 常量路由器组件 中定义，未定义根据传入路径进行引入
+      component = (constantRouterComponents[item.component || item.key]) ||
+        (() => import(`@/${item.component}`))
+    }
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: item.path || `${parent && parent.path || ''}/${item.key}`,
       // 路由名称，建议唯一
       name: item.name || item.key || '',
-      // 该路由对应页面的 组件 :方案1
-      // component: constantRouterComponents[item.component || item.key],
-      // 该路由对应页面的 组件 :方案2 (动态加载)
-      component: (constantRouterComponents[item.component || item.key]) || (() => import(`@/views/${item.component}`)),
-
+      // 该路由对应页面的 组件
+      component: component,
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
-        title: title,
-        icon: icon || undefined,
-        hiddenHeaderContent: hiddenHeaderContent,
-        target: target,
+        title: title || item.title,
+        icon: icon || item.icon || null,
+        hiddenHeaderContent: hiddenHeaderContent || item.hiddenHeaderContent,
+        target: target || item.targetOutside ? '_blank' : null,
         permission: item.name
       }
     }
     // 是否设置了隐藏菜单
-    if (show === false) {
-      currentRouter.hidden = true
+    if (hideChildren || item.hideChildrenInMenu) {
+      currentRouter.hidden = item.hidden
     }
-    // 是否设置了隐藏子菜单
-    if (hideChildren) {
-      currentRouter.hideChildrenInMenu = true
+    if (hideChildren || item.hideChildrenInMenu) {
+      // 是否设置了隐藏子菜单
+      currentRouter.hideChildrenInMenu = hideChildren || item.hideChildrenInMenu
     }
     // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
     if (!currentRouter.path.startsWith('http')) {
@@ -146,32 +148,5 @@ export const generator = (routerMap, parent) => {
       currentRouter.children = generator(item.children, currentRouter)
     }
     return currentRouter
-  })
-}
-
-/**
- * 数组转树形结构
- * @param list 源数组
- * @param tree 树
- * @param parentId 父ID
- */
-const listToTree = (list, tree, parentId) => {
-  list.forEach(item => {
-    // 判断是否为父级菜单
-    if (item.parentId === parentId) {
-      const child = {
-        ...item,
-        key: item.key || item.name,
-        children: []
-      }
-      // 迭代 list， 找到当前菜单相符合的所有子菜单
-      listToTree(list, child.children, item.id)
-      // 删掉不存在 children 值的属性
-      if (child.children.length <= 0) {
-        delete child.children
-      }
-      // 加入到树中
-      tree.push(child)
-    }
   })
 }

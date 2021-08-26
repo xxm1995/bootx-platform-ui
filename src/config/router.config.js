@@ -582,29 +582,78 @@ export const asyncRouterMap = [
 ]
 
 /**
- * 基础路由
+ * 登陆后基础路由, 与后端返回路由进行合并
  * @type {*[]}
  */
 export const baseRouterMap = [
+  // 首页
   {
     path: '/dashboard',
-    name: 'dashboard',
-    redirect: '/dashboard/welcome',
+    name: 'Welcome',
+    component: () => import('@/views/Welcome'),
+    meta: { title: '首页', keepAlive: false, icon: bxAnaalyse }
+  },
+  // 系统管理
+  {
+    path: '/system',
+    redirect: '/system/user',
     component: RouteView,
-    meta: { title: '仪表盘', keepAlive: true, icon: bxAnaalyse },
+    meta: { title: '系统管理', icon: 'form' },
     children: [
+      // {
+      //   path: '/system/dict',
+      //   name: 'Dict',
+      //   component: 'views/modules/system/dict/DictList',
+      //   meta: { title: '字典管理' }
+      // },
       {
-        path: '/dashboard/welcome',
-        name: 'Welcome',
-        component: 'Welcome',
-        meta: { title: '欢迎页', keepAlive: false }
+        path: '/system/user',
+        name: 'User',
+        component: () => import('@/views/modules/system/user/UserList'),
+        meta: { title: '用户管理', keepAlive: true }
+      },
+      {
+        path: '/system/role',
+        name: 'Role',
+        component: () => import('@/views/modules/system/role/RoleList'),
+        meta: { title: '角色管理' }
+      },
+      {
+        path: '/system/depart',
+        name: 'Depart',
+        component: () => import('@/views/modules/system/depart/DepartList'),
+        meta: { title: '部门管理' }
+      },
+      {
+        path: '/system/3',
+        name: '3',
+        component: () => import('@/views/exception/Dev'),
+        meta: { title: '在线管理(对接中)' }
+      },
+      {
+        path: '/system/client',
+        name: 'Client',
+        component: () => import('@/views/modules/system/client/ClientList'),
+        meta: { title: '终端管理' }
+      },
+      {
+        path: '/system/menu',
+        name: 'Menu',
+        component: () => import('@/views/modules/system/menu/MenuList'),
+        meta: { title: '菜单权限管理' }
+      },
+      {
+        path: '/system/path',
+        name: 'Path',
+        component: () => import('@/views/modules/system/path/PathList'),
+        meta: { title: '请求权限管理' }
       }
     ]
   }
 ]
 
 /**
- * 基础路由
+ * 未登录基础路由
  * @type { *[] }
  */
 export const constantRouterMap = [

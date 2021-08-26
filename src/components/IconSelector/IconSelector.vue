@@ -3,7 +3,7 @@
     <a-tabs v-model="currentTab" @change="handleTabChange">
       <a-tab-pane v-for="v in icons" :tab="v.title" :key="v.key">
         <ul>
-          <li v-for="(icon, key) in v.icons" :key="`${v.key}-${key}`" :class="{ 'active': selectedIcon==icon }" @click="handleSelectedIcon(icon)" >
+          <li v-for="(icon, key) in v.icons" :key="`${v.key}-${key}`" :class="{ 'active': selectedIcon===icon }" @click="handleSelectedIcon(icon)" >
             <a-icon :type="icon" :style="{ fontSize: '24px' }" />
           </li>
         </ul>

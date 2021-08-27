@@ -13,6 +13,7 @@ const constantRouterComponents = {
   '403': () => import(/* webpackChunkName: "error" */ '@/views/exception/403'),
   '404': () => import(/* webpackChunkName: "error" */ '@/views/exception/404'),
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
+  'Dev': () => import(/* webpackChunkName: "error" */ '@/views/exception/Dev'),
 
   // 你需要动态引入的页面组件
   'Workplace': () => import('@/views/dashboard/Workplace'),
@@ -132,7 +133,7 @@ export const generator = (routerMap, parent) => {
       }
     }
     // 是否设置了隐藏菜单
-    if (hideChildren || item.hideChildrenInMenu) {
+    if (hideChildren || item.hidden) {
       currentRouter.hidden = item.hidden
     }
     if (hideChildren || item.hideChildrenInMenu) {

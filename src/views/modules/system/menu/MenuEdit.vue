@@ -281,7 +281,6 @@ export default {
         name: [ { required: this.menuEditShow, message: '请输入路由名称' } ],
         path: [ { required: this.menuEditShow, message: '请输入菜单路径' } ],
         perms: [ { required: !this.menuEditShow, message: '请输入权限代码' } ],
-        component: [{ required: this.menuEditShow, message: '请输入前端组件' }],
         url: [{ required: this.menuEditShow, message: '请输入菜单路径' }]
       }
     }

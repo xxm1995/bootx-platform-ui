@@ -111,7 +111,9 @@ export const generator = (routerMap, parent) => {
     } else {
       // 先查询是否在 常量路由器组件 中定义，未定义根据传入路径进行引入
       component = (constantRouterComponents[item.component || item.key]) ||
-        (() => import(`@/${item.component}`))
+        // 注意,  import 导入的菜单组件需要是在 /views/modules/ 目录下，原因是如果不对 import 导入路径限制，打包时会将所有可能会被用的的
+        // 组件进行编译, 造成打包制品异常庞大
+        (() => import(`@/views/modules/${item.component}`))
     }
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace

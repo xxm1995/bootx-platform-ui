@@ -87,7 +87,7 @@
             const loginParams = { ...this.form }
             loginParams.client = 'pc'
             Login(loginParams)
-              .then((res) => this.loginSuccess(res))
+              .then((res) => this.$emit('loginSuccess'))
               .finally(() => {
                 state.loginBtn = false
               })
@@ -97,17 +97,6 @@
             }, 600)
           }
         })
-      },
-      /* 登录成功 */
-      loginSuccess (res) {
-        this.$router.push({ name: 'dashboard' })
-        // 延迟 1 秒显示欢迎信息
-        setTimeout(() => {
-          this.$notification.success({
-            message: '欢迎',
-            description: `${timeFix()}，欢迎回来`
-          })
-        }, 1000)
       },
       /* 登录失败 */
       requestFailed (err) {

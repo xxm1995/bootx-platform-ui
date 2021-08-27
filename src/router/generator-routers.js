@@ -2,7 +2,7 @@
 import * as loginService from '@/api/login/login'
 // eslint-disable-next-line
 import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
-import { baseRouterMap } from '@/config/router.config'
+import { loginBaseRouterMap } from '@/config/router.config'
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
@@ -81,11 +81,12 @@ export const generatorDynamicRouter = (menus) => {
   return new Promise((resolve, reject) => {
     try {
       const menuNav = []
-      rootRouter.children = baseRouterMap.concat(menus)
+      // 登录后基础路由和后端返回路由进行拼装
+      rootRouter.children = loginBaseRouterMap.concat(menus)
       menuNav.push(rootRouter)
       const routers = generator(menuNav)
       routers.push(notFoundRouter)
-      console.log(routers)
+      // console.log(r-outers)
       resolve(routers)
     } catch (err) {
       reject(err)

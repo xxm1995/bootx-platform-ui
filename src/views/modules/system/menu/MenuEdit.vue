@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :width="700"
-    :mask-closable="false"
+    :mask-closable="showable"
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
@@ -78,17 +78,17 @@
           <a-form-model-item
             v-show="menuEditShow"
             label="菜单路径"
-            prop="url"
+            prop="path"
           >
             <a-input
-              placeholder="请输入菜单路径"
-              :disabled="showable"
               v-model="form.path"
+              :disabled="showable"
               :readOnly="disableSubmit"
+              placeholder="请输入菜单路径"
             >
               <template v-slot:suffix>
                 <a-tooltip
-                  title="输入组件名称或者组件路径地址，路径地址情况，请不要带有'@/'前缀"
+                  title="路由访问路径"
                 >
                   <a-icon type="info-circle"/>
                 </a-tooltip>
@@ -102,9 +102,17 @@
           >
             <a-input
               :disabled="showable"
-              placeholder="前端组件"
+              placeholder="请输入前端组件"
               v-model="form.component"
-              :readOnly="disableSubmit"/>
+              :readOnly="disableSubmit">
+              <template v-slot:suffix>
+                <a-tooltip
+                  title="输入组件名称或者组件路径地址，路径地址情况，请不要带有'@/'前缀"
+                >
+                  <a-icon type="info-circle"/>
+                </a-tooltip>
+              </template>
+            </a-input>
           </a-form-model-item>
           <a-form-model-item
             v-show="menuEditShow"
@@ -132,10 +140,10 @@
             prop="icon"
             label="菜单图标">
             <a-input
-              :disabled="true"
+              :disabled="showable"
               placeholder="点击选择图标"
               v-model="form.icon"
-              :readOnly="true">
+              :readOnly="disableSubmit">
               <a-icon
                 slot="addonAfter"
                 type="setting"
@@ -259,17 +267,23 @@ export default {
         targetOutside: false,
         menuType: 0
       },
-      rules: {
-        name: [ { required: true, message: '请输入名称' } ],
-        perms: [ { required: this.menuEditShow, message: '请输入权限代码' } ],
-        component: [{ required: this.menuEditShow, message: '请输入前端组件!' }],
-        url: [{ required: this.menuEditShow, message: '请输入菜单路径!' }]
-      },
       treeData: [],
       visibleIcon: false,
       currentSelectedIcon: 'pause-circle',
       iconChooseVisible: false,
       validateStatus: ''
+    }
+  },
+  computed: {
+    rules: function () {
+      return {
+        title: [ { required: true, message: '请输入菜单或权限名称' } ],
+        name: [ { required: this.menuEditShow, message: '请输入路由名称' } ],
+        path: [ { required: this.menuEditShow, message: '请输入菜单路径' } ],
+        perms: [ { required: !this.menuEditShow, message: '请输入权限代码' } ],
+        component: [{ required: this.menuEditShow, message: '请输入前端组件' }],
+        url: [{ required: this.menuEditShow, message: '请输入菜单路径' }]
+      }
     }
   },
   methods: {

@@ -122,7 +122,7 @@ export default {
       validateFields((err, values) => {
         if (!err) {
           loginByPhone(values)
-            .then((res) => this.loginSuccess(res))
+            .then(() => this.$emit('loginSuccess'))
             .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
@@ -133,16 +133,6 @@ export default {
           }, 600)
         }
       })
-    },
-    loginSuccess (res) {
-      this.$router.push({ name: 'dashboard' })
-      // 延迟 1 秒显示欢迎信息
-      setTimeout(() => {
-        this.$notification.success({
-          message: '欢迎',
-          description: `${timeFix()}，欢迎回来`
-        })
-      }, 1000)
     },
     requestFailed (err) {
       this.$notification['error']({

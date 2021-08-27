@@ -49,7 +49,8 @@
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" :disabled="row.admin" style="color: red">删除</a>
+            <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
+            <a href="javascript:" v-else :disabled="true">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>

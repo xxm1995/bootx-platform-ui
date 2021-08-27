@@ -2,7 +2,7 @@
  * 向后端请求用户的菜单，动态生成路由
  */
 
-import {asyncRouterMap, constantRouterMap} from '@/config/router.config'
+import { asyncRouterMap, constantRouterMap } from '@/config/router.config'
 import { generatorDynamicRouter } from '@/router/generator-routers'
 
 /**
@@ -74,6 +74,12 @@ const permission = {
           resolve()
         })
       })
+      // return new Promise(resolve => {
+      //   const { permissionList } = data
+      //   const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList)
+      //   commit('SET_ROUTERS', accessedRouters)
+      //   resolve()
+      // })
     }
   }
 }

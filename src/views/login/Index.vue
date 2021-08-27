@@ -2,8 +2,12 @@
 <template>
   <div class="main">
     <div class="login-menu">
-      <user-login v-if="activeName === 'user'"></user-login>
-      <phone-login v-if="activeName === 'phone'"></phone-login>
+      <user-login
+        @loginSuccess="loginSuccess"
+        v-if="activeName === 'user'"/>
+      <phone-login
+        @loginSuccess="loginSuccess"
+        v-if="activeName === 'phone'"/>
       <a
         @click.stop="activeName='user'"
         href="javascript:">账号密码</a>
@@ -31,27 +35,18 @@ export default {
       activeName: 'user'
     }
   },
-  watch: {
-    $route: {
-      handler () {
-        const params = this.$route.query
-        if (validatenull(params.state) && validatenull(params.code)) return
-        this.socialForm.state = params.state
-        this.socialForm.code = params.code
-        this.$store.dispatch('LoginBySocial', this.socialForm).then(() => {
-          this.$router.push({ name: 'dashboard' })
-          // 延迟 1 秒显示欢迎信息
-          setTimeout(() => {
-            this.$notification.success({
-              message: '欢迎',
-              description: `${timeFix()}，欢迎回来`
-            })
-          }, 1000)
+  methods: {
+    loginSuccess () {
+      this.$router.push({ name: 'index' })
+      // 延迟 1 秒显示欢迎信息
+      setTimeout(() => {
+        this.$notification.success({
+          message: '欢迎',
+          description: `${timeFix()}，欢迎回来`
         })
-      },
-      immediate: true
+      }, 1000)
     }
-  }
+  },
 }
 </script>
 

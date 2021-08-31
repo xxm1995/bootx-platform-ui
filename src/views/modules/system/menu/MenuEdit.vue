@@ -1,12 +1,12 @@
 <template>
   <a-drawer
     :title="title"
-    :width="700"
+    :width="650"
     :mask-closable="showable"
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
-    <div :style="{width: '100%',border: '1px solid #e9e9e9',padding: '10px 16px',background: '#fff',}">
+    <div>
       <a-spin :spinning="confirmLoading">
         <a-form-model
           ref="form"
@@ -225,12 +225,12 @@
           <icon-selector v-model="form.icon" @change="handleIconChange"/>
         </a-modal>
       </a-spin>
-      <a-row :style="{textAlign:'right'}">
-        <a-button :style="{marginRight: '8px'}" @click="handleCancel">
-          关闭
-        </a-button>
-        <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-      </a-row>
+      <div class="drawer-bootom-button">
+        <a-row :style="{textAlign:'right'}">
+          <a-button :style="{marginRight: '8px'}" @click="handleCancel">关闭</a-button>
+          <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+        </a-row>
+      </div>
     </div>
   </a-drawer>
 </template>
@@ -371,6 +371,15 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style lang="less" scoped>
+.drawer-bootom-button {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 16px;
+  text-align: right;
+  left: 0;
+  background: #fff;
+  border-radius: 0 0 2px 2px;
+}

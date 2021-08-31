@@ -67,7 +67,7 @@ export default {
       this.loading = true
       this.roleId = roleId
       await tree().then(res => {
-        this.treeData = treeDataTranslate(res.data, 'id', 'name')
+        this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
       await findIdsByRole(roleId).then(res => {
         this.checkedKeys = res.data

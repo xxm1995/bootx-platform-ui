@@ -74,12 +74,6 @@ const permission = {
           resolve()
         })
       })
-      // return new Promise(resolve => {
-      //   const { permissionList } = data
-      //   const accessedRouters = filterAsyncRouter(asyncRouterMap, permissionList)
-      //   commit('SET_ROUTERS', accessedRouters)
-      //   resolve()
-      // })
     }
   }
 }

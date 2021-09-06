@@ -1,19 +1,20 @@
 <template>
   <div :class="wrpCls">
     <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <select-lang :class="prefixCls" />
+    <!--    <select-lang :class="prefixCls" />-->
   </div>
 </template>
 
 <script>
 import AvatarDropdown from './AvatarDropdown'
-import SelectLang from '@/components/SelectLang'
+import { getUserInfo } from '@/api/login/login'
+// import SelectLang from '@/components/SelectLang'
 
 export default {
   name: 'RightContent',
   components: {
-    AvatarDropdown,
-    SelectLang
+    // SelectLang,
+    AvatarDropdown
   },
   props: {
     prefixCls: {
@@ -39,6 +40,13 @@ export default {
       currentUser: {}
     }
   },
+  methods: {
+    getCurrentUser () {
+      getUserInfo().then(res => {
+        this.currentUser = res.data
+      })
+    }
+  },
   computed: {
     wrpCls () {
       return {
@@ -48,11 +56,7 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => {
-      this.currentUser = {
-        name: 'Serati Ma'
-      }
-    }, 1500)
+    this.getCurrentUser()
   }
 }
 </script>

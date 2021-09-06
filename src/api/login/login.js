@@ -30,6 +30,19 @@ export function logout () {
     method: 'post'
   })
 }
+
+/**
+ * 获取用户信息
+ */
+export function getUserInfo () {
+  return request({
+    url: `/user/getUserInfo`,
+    method: 'get'
+  })
+}
+/**
+ * 发送短信验证码
+ */
 export function sendSmsCode (parameter) {
   return request({
     url: `/token/account/sms`,

@@ -6,8 +6,7 @@
     class="user-layout-login"
     ref="formLogin"
   >
-    <a-form-model-item
-      prop="account">
+    <a-form-model-item prop="account">
       <a-input
         size="large"
         type="text"
@@ -17,7 +16,6 @@
         <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
       </a-input>
     </a-form-model-item>
-
     <a-form-model-item
       prop="password">
       <a-input-password
@@ -45,7 +43,6 @@
 </template>
 
 <script>
-  import { timeFix } from '@/utils/util'
   import { mapActions } from 'vuex'
   export default {
     name: 'UseLogin',

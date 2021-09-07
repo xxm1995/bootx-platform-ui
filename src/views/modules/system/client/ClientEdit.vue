@@ -30,6 +30,12 @@
         <a-input v-model="form.name" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
+        label="启用验证码"
+        prop="captcha"
+      >
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.captcha" :disabled="showable" />
+      </a-form-model-item>
+      <a-form-model-item
         label="启用状态"
         prop="enable"
       >
@@ -73,6 +79,7 @@ export default {
       form: {
         code: '',
         name: '',
+        captcha: true,
         enable: true,
         timeout: '5',
         description: ''
@@ -83,6 +90,9 @@ export default {
         ],
         name: [
           { required: true, message: '请输入终端名称', trigger: 'blur' }
+        ],
+        captcha: [
+          { required: true, message: '请验证码启用状态', trigger: 'blur' }
         ],
         enable: [
           { required: true, message: '请选择启用状态', trigger: 'blur' }

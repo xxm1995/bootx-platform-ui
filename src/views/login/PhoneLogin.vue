@@ -29,12 +29,13 @@
         </a-col>
         <a-col :span="8">
           <a-button
+            style="margin-left: 10px"
             size="large"
             class="getCaptcha"
             tabindex="-1"
             :disabled="state.smsSendBtn"
             @click.stop.prevent="getCaptcha"
-            v-text="!state.smsSendBtn && '获取验证码' || (state.time+' s')"
+            v-text="!state.smsSendBtn && '获取验证码' || '请等待 ' +(state.time+' s')"
           ></a-button>
         </a-col>
       </a-row>
@@ -67,7 +68,10 @@ export default {
         smsCaptcha: ''
       },
       rules: {
-        phone: [{ required: true, message: '请输入手机号', trigger: ['change', 'blur'] }],
+        phone: [
+          { required: true, message: '请输入手机号', trigger: ['change', 'blur'] },
+          { validator: this.validateMobile }
+        ],
         smsCaptcha: [{ required: true, message: '请输入验证码', trigger: ['change', 'blur'] }]
       },
       state: {
@@ -108,6 +112,16 @@ export default {
           return false
         }
       })
+    },
+
+    // 校验手机号
+    validateMobile (rule, value, callback) {
+      if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
+        callback()
+      } else {
+        // eslint-disable-next-line standard/no-callback-literal
+        callback('您的手机号码格式不正确!')
+      }
     },
 
     handleSubmit (e) {

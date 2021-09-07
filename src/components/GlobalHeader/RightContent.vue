@@ -1,19 +1,16 @@
 <template>
   <div :class="wrpCls">
     <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
-    <!--    <select-lang :class="prefixCls" />-->
   </div>
 </template>
 
 <script>
 import AvatarDropdown from './AvatarDropdown'
-import { getUserInfo } from '@/api/login/login'
-// import SelectLang from '@/components/SelectLang'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'RightContent',
   components: {
-    // SelectLang,
     AvatarDropdown
   },
   props: {
@@ -41,9 +38,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['GetUserInfo']),
     getCurrentUser () {
-      getUserInfo().then(res => {
-        this.currentUser = res.data
+      const {
+        GetUserInfo
+      } = this
+      GetUserInfo().then(res => {
+        this.currentUser = res
       })
     }
   },

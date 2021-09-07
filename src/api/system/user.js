@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/user/page',
+    url: '/user/admin/page',
     method: 'GET',
     params: params
   })
@@ -16,7 +16,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: `/user/findById`,
+    url: `/user/admin/findById`,
     method: 'GET',
     params: { id }
   })
@@ -50,7 +50,6 @@ export function addUserRole (data) {
 export function add (obj) {
   return axios({
     url: '/iam/permission/path/add',
-    // url: `http://127.0.0.1:9005/permission/path/add`,
     method: 'POST',
     data: obj
   })
@@ -62,7 +61,6 @@ export function add (obj) {
 export function update (obj) {
   return axios({
     url: '/iam/permission/path/update',
-    // url: `http://127.0.0.1:9005/permission/path/update`,
     method: 'POST',
     data: obj
   })
@@ -74,7 +72,6 @@ export function update (obj) {
 export function del (id) {
   return axios({
     url: `/iam/permission/path/delete`,
-    // url: `http://127.0.0.1:9005/permission/path/delete`,
     method: 'DELETE',
     params: { id }
   })

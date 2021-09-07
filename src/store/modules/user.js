@@ -1,7 +1,6 @@
 import storage from 'store'
-import { login, getMenuAndButtonPermission, logout } from '@/api/login/login'
+import { login, getMenuAndButtonPermission, getUserInfo, logout } from '@/api/login/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
-import { welcome } from '@/utils/util'
 
 const user = {
   state: {
@@ -18,13 +17,6 @@ const user = {
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_NAME: (state, { name, welcome }) => {
-      state.name = name
-      state.welcome = welcome
-    },
-    // SET_AVATAR: (state, avatar) => {
-    //   state.avatar = avatar
-    // },
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
@@ -50,7 +42,18 @@ const user = {
         })
       })
     },
-
+    // 获取用户信息
+    GetUserInfo ({ commit }) {
+      return new Promise((resolve, reject) => {
+        getUserInfo().then(response => {
+          const result = response.data
+          commit('SET_INFO', result)
+          resolve(result)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 获取用户菜单和按钮权限
     GetUserPermission ({ commit }) {
       return new Promise((resolve, reject) => {

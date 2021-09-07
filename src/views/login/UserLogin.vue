@@ -1,7 +1,7 @@
 <template>
   <a-form-model
     :model="form"
-    :rules="validatorRules"
+    :rules="rules"
     id="formLogin"
     class="user-layout-login"
     ref="formLogin"
@@ -16,8 +16,7 @@
         <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
       </a-input>
     </a-form-model-item>
-    <a-form-model-item
-      prop="password">
+    <a-form-model-item prop="password">
       <a-input-password
         size="large"
         type="password"
@@ -28,7 +27,29 @@
         <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
       </a-input-password>
     </a-form-model-item>
-    <a-form-item style="margin-top:24px">
+
+    <a-row :span="24" v-if="client.captcha" style='bo'>
+      <a-col :span="16">
+        <a-form-model-item prop="captcha">
+          <a-input
+            size="large"
+            type="text"
+            placeholder="验证码"
+            v-model="form.captcha"
+          >
+            <a-icon slot="prefix" type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          </a-input>
+        </a-form-model-item>
+      </a-col>
+      <a-col :span="8" style="text-align: right">
+        <img
+          style="margin-top: 2px;"
+          :src="captchaData"
+          @click="getCaptcha"
+          alt="验证码"/>
+      </a-col>
+    </a-row>
+    <a-form-item>
       <a-button
         size="large"
         type="primary"
@@ -43,71 +64,96 @@
 </template>
 
 <script>
-  import { mapActions } from 'vuex'
-  export default {
-    name: 'UseLogin',
-    data () {
-      return {
-        form: {
-          account: 'xxm1995',
-          password: '123456'
-        },
-        state: {
-          loginBtn: false
-        },
-        code: {
-          type: 'image',
-          value: '',
-          len: 4
-        },
-        randCodeImage: '',
-        requestCodeSuccess: false,
-        uuid: '',
-        loginForm: {},
-        validatorRules: {
-          account: [{ required: true, message: '请输入账号!' }],
-          password: [{ required: true, message: '请输入密码!' }]
-        }
-      }
-    },
-    methods: {
-      ...mapActions(['Login', 'Logout']),
-      /* 登录 */
-      handleSubmit (e) {
-        e.preventDefault()
-        const {
-          state,
-          Login
-        } = this
-        this.$refs.formLogin.validate(err => {
-          if (err) {
-            const loginParams = { ...this.form }
-            loginParams.client = 'pc'
-            Login(loginParams)
-              .then((res) => this.$emit('loginSuccess'))
-              .finally(() => {
-                state.loginBtn = false
-              })
-          } else {
-            setTimeout(() => {
-              state.loginBtn = false
-            }, 600)
-          }
-        })
+import { mapActions } from 'vuex'
+import { findByCode } from '@/api/system/client'
+import { imgCaptcha } from '@/api/system/captcha'
+export default {
+  name: 'UseLogin',
+  data () {
+    return {
+      form: {
+        client: 'pc',
+        account: 'xxm1995',
+        password: '123456',
+        captchaKey: '',
+        captcha: ''
       },
-      /* 登录失败 */
-      requestFailed (err) {
-        this.$notification['error']({
-          message: '错误',
-          description: err.msg || '请求出现错误，请稍后再试',
-          duration: 4
-        })
+      captchaData: '',
+      state: {
+        loginBtn: false
+      },
+      code: {
+        type: 'image',
+        value: '',
+        len: 4
+      },
+      client: {
+        captcha: false,
+        enable: true
+      },
+      rules: {
+        account: [{ required: true, message: '请输入账号!' }],
+        password: [{ required: true, message: '请输入密码!' }],
+        captcha: [{ required: true, message: '请输入验证码!' }]
       }
-    },
-    created () {
-      this.form.account = process.env.VUE_APP_USER_ACCOUNT
     }
+  },
+  methods: {
+    ...mapActions(['Login', 'Logout']),
+    init () {
+      findByCode(this.form.client).then(res => {
+        this.client = res.data || {}
+        if (this.client && this.client.captcha && this.client.enable) {
+          this.getCaptcha()
+        }
+      })
+    },
+    /* 获取验证码 */
+    getCaptcha () {
+      imgCaptcha().then(result => {
+        const res = result.data
+        this.captchaData = res.captchaData
+        this.form.captchaKey = res.captchaKey
+      })
+    },
+    /* 登录 */
+    handleSubmit (e) {
+      e.preventDefault()
+      const {
+        state,
+        Login
+      } = this
+      this.$refs.formLogin.validate(err => {
+        if (err) {
+          Login(this.form)
+            .then(() => this.$emit('loginSuccess'))
+            .catch(() => {
+              this.getCaptcha()
+            })
+            .finally(() => {
+              state.loginBtn = false
+            })
+        } else {
+          setTimeout(() => {
+            state.loginBtn = false
+          }, 600)
+        }
+      })
+    },
+    /* 登录失败 */
+    requestFailed (err) {
+      this.$notification['error']({
+        message: '错误',
+        description: err.msg || '请求出现错误，请稍后再试',
+        duration: 4
+      })
+    }
+  },
+  created () {
+    this.form.account = process.env.VUE_APP_USER_ACCOUNT
+    this.init()
   }
+}
 </script>
 
 <style scoped lang="less">

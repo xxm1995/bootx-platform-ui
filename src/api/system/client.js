@@ -31,6 +31,17 @@ export function get (id) {
     params: { id }
   })
 }
+
+/**
+ * 根据code获取终端信息
+ */
+export function findByCode (code) {
+  return axios({
+    url: '/client/findByCode',
+    method: 'GET',
+    params: { code }
+  })
+}
 export function del (id) {
   return axios({
     url: '/client/delete',

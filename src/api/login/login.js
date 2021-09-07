@@ -12,6 +12,17 @@ export function login (parameter) {
 }
 
 /**
+ * 登录
+ */
+export function loginOpenId (parameter) {
+  return request({
+    url: `/token/loginOpenId`,
+    method: 'post',
+    params: parameter
+  })
+}
+
+/**
  * 获取用户菜单和按钮权限
  */
 export function getMenuAndButtonPermission () {
@@ -43,10 +54,10 @@ export function getUserInfo () {
 /**
  * 发送短信验证码
  */
-export function sendSmsCode (parameter) {
+export function sendSmsCode (phone) {
   return request({
-    url: `/token/account/sms`,
+    url: `/captcha/sendSmsCaptcha`,
     method: 'post',
-    data: parameter
+    params: { phone }
   })
 }

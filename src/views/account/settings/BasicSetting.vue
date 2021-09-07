@@ -5,25 +5,25 @@
 
         <a-form layout="vertical">
           <a-form-item
-            :label="$t('account.settings.basic.nickname')"
+            label="昵称"
           >
-            <a-input :placeholder="$t('account.settings.basic.nickname-message')" />
+            <a-input placeholder="请输入您的昵称!" />
           </a-form-item>
           <a-form-item
-            :label="$t('account.settings.basic.profile')"
+            label="个人简介"
           >
-            <a-textarea rows="4" :placeholder="$t('account.settings.basic.profile-message')"/>
+            <a-textarea rows="4" placeholder="请输入个人简介!'"/>
           </a-form-item>
 
           <a-form-item
-            :label="$t('account.settings.basic.email')"
+            label="邮箱"
             :required="false"
           >
             <a-input placeholder="example@ant.design"/>
           </a-form-item>
 
           <a-form-item>
-            <a-button type="primary">{{ $t('account.settings.basic.update') }}</a-button>
+            <a-button type="primary">更新基本信息</a-button>
           </a-form-item>
         </a-form>
 

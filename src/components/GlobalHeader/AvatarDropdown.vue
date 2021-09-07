@@ -45,7 +45,7 @@ export default {
       default: true
     }
   },
-  data(){
+  data () {
     return {
       defaultAvatar: '/avatar2.jpg'
     }

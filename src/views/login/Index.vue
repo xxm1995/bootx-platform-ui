@@ -21,7 +21,6 @@
 <script>
 import userLogin from './UserLogin'
 import phoneLogin from './PhoneLogin'
-import { validatenull } from '@/utils/validate'
 import { timeFix } from '@/utils/util'
 export default {
   name: 'Index',

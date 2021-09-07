@@ -23,6 +23,39 @@ export function get (id) {
 }
 
 /**
+ * 添加
+ */
+export function add (obj) {
+  return axios({
+    url: '/iam/permission/path/add',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 更新
+ */
+export function update (obj) {
+  return axios({
+    url: '/user/admin/update',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 删除
+ */
+export function del (id) {
+  return axios({
+    url: `/user/admin/delete`,
+    method: 'DELETE',
+    params: { id }
+  })
+}
+
+/**
  * 获取用户拥有角色
  */
 export function getRoleIds (id) {
@@ -44,35 +77,3 @@ export function addUserRole (data) {
   })
 }
 
-/**
- * 添加
- */
-export function add (obj) {
-  return axios({
-    url: '/iam/permission/path/add',
-    method: 'POST',
-    data: obj
-  })
-}
-
-/**
- * 更新
- */
-export function update (obj) {
-  return axios({
-    url: '/iam/permission/path/update',
-    method: 'POST',
-    data: obj
-  })
-}
-
-/**
- * 删除
- */
-export function del (id) {
-  return axios({
-    url: `/iam/permission/path/delete`,
-    method: 'DELETE',
-    params: { id }
-  })
-}

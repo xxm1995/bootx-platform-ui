@@ -2,9 +2,7 @@
 
   <div id="userLayout" :class="['user-layout-wrapper', isMobile && 'mobile']">
     <div class="container">
-      <div class="user-layout-lang">
-        <select-lang class="select-lang-trigger" />
-      </div>
+      <div class="user-layout-lang"/>
       <div class="user-layout-content">
         <div class="top">
           <div class="header">
@@ -37,13 +35,9 @@
 
 <script>
 import { deviceMixin } from '@/store/device-mixin'
-import SelectLang from '@/components/SelectLang'
 
 export default {
   name: 'UserLayout',
-  components: {
-    SelectLang
-  },
   mixins: [deviceMixin],
   mounted () {
     document.body.classList.add('userLayout')

@@ -27,7 +27,6 @@ export function page (params) {
 export function get (id) {
   return axios({
     url: `/role/findById`,
-    // url: `http://127.0.0.1:9005/role/findById`,
     method: 'GET',
     params: { id }
   })

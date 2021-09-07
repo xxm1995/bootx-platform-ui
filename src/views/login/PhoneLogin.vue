@@ -1,25 +1,20 @@
 <template>
-  <a-form
-    id="formLogin"
-    class="user-layout-login"
-    ref="formLogin"
-    :form="form"
-    @submit="handleSubmit"
+  <a-form-model
+    ref="form"
+    :model="form"
+    :rules="rules"
   >
-    <a-form-item>
+    <a-form-model-item prop="phone">
       <a-input
         size="large"
         type="text"
-        placeholder="手机号 / 13000001111"
-        v-decorator="[
-          'mobile',
-          {rules: [{ required: true, message: '请输入手机号' }], validateTrigger: 'change'}
-        ]"
+        placeholder="请输入手机号"
+        v-model="form.phone"
       >
         <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
       </a-input>
-    </a-form-item>
-    <a-form-item>
+    </a-form-model-item>
+    <a-form-model-item prop="smsCaptcha">
       <a-row :span="24">
         <a-col :span="16">
           <a-input
@@ -27,16 +22,14 @@
             type="text"
             placeholder="验证码"
             autocomplete="false"
-            v-decorator="[
-              'code',
-              {rules: [{ required: true, message: '请输入验证码' }]}
-            ]"
+            v-model="form.smsCaptcha"
           >
             <a-icon slot="prefix" type="safety-certificate" :style="{ color: 'rgba(0,0,0,.25)' }"/>
           </a-input>
         </a-col>
         <a-col :span="8">
           <a-button
+            size="large"
             class="getCaptcha"
             tabindex="-1"
             :disabled="state.smsSendBtn"
@@ -45,29 +38,38 @@
           ></a-button>
         </a-col>
       </a-row>
-    </a-form-item>
-    <a-form-item style="margin-top:24px">
+    </a-form-model-item>
+    <a-form-model-item style="margin-top:24px">
       <a-button
         size="large"
         type="primary"
         htmlType="submit"
         class="login-button"
+        @click="handleSubmit"
         :loading="state.loginBtn"
         :disabled="state.loginBtn"
       >确定</a-button>
-    </a-form-item>
-  </a-form>
+    </a-form-model-item>
+  </a-form-model>
 </template>
 
 <script>
-import { timeFix } from '@/utils/util'
 import { sendSmsCode } from '@/api/login/login'
 import { mapActions } from 'vuex'
 export default {
   name: 'PhoneLogin',
   data () {
     return {
-      form: this.$form.createForm(this),
+      form: {
+        openIdType: 'phone',
+        client: 'phone',
+        phone: '',
+        smsCaptcha: ''
+      },
+      rules: {
+        phone: [{ required: true, message: '请输入手机号', trigger: ['change', 'blur'] }],
+        smsCaptcha: [{ required: true, message: '请输入验证码', trigger: ['change', 'blur'] }]
+      },
       state: {
         loginBtn: false,
         smsSendBtn: false,
@@ -76,14 +78,14 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loginByPhone', 'Logout']),
+    ...mapActions(['loginOpenId', 'Logout']),
     getCaptcha (e) {
       e.preventDefault()
-      const { form: { validateFields }, state } = this
-
-      validateFields(['mobile'], { force: true }, (err, values) => {
-        if (!err) {
+      this.$refs.form.validateField('phone', async valid => {
+        if (!valid) {
+          const state = this.state
           state.smsSendBtn = true
+          console.log(state)
           const interval = window.setInterval(() => {
             if (state.time-- <= 0) {
               state.time = 60
@@ -91,22 +93,19 @@ export default {
               window.clearInterval(interval)
             }
           }, 1000)
-
-          const hide = this.$message.loading('验证码发送中..', 0)
-          sendSmsCode(values.mobile).then(res => {
-            setTimeout(hide, 2500)
+          sendSmsCode(this.form.phone).then(res => {
             this.$notification['success']({
               message: '提示',
-              description: '验证码获取成功，您的验证码为：' + res.data,
+              description: '验证码获取成功，请查看短信',
               duration: 8
             })
-          }).catch(err => {
-            setTimeout(hide, 1)
+          }).catch(() => {
             clearInterval(interval)
             state.time = 60
             state.smsSendBtn = false
-            this.requestFailed(err)
           })
+        } else {
+          return false
         }
       })
     },
@@ -114,16 +113,13 @@ export default {
     handleSubmit (e) {
       e.preventDefault()
       const {
-        form: { validateFields },
-        state,
-        loginByPhone
+        loginOpenId
       } = this
-
-      validateFields((err, values) => {
-        if (!err) {
-          loginByPhone(values)
+      this.$refs.form.validate(async valid => {
+        const state = this.state
+        if (valid) {
+          loginOpenId(this.form)
             .then(() => this.$emit('loginSuccess'))
-            .catch(err => this.requestFailed(err))
             .finally(() => {
               state.loginBtn = false
             })
@@ -133,37 +129,30 @@ export default {
           }, 600)
         }
       })
-    },
-    requestFailed (err) {
-      this.$notification['error']({
-        message: '错误',
-        description: ((err.response || {}).data || {}).msg || '请求出现错误，请稍后再试',
-        duration: 4
-      })
     }
   }
 }
 </script>
 
 <style scoped lang="less">
-  button.login-button {
-    padding: 0 15px;
-    font-size: 16px;
-    height: 40px;
-    width: 100%;
-  }
-  .login-code-img {
-    /*margin-top: 2px;*/
-    width: 100px;
-    height: 38px;
-    background-color: #fdfdfd;
-    border: 1px solid #f0f0f0;
-    color: #333;
-    font-size: 14px;
-    font-weight: bold;
-    letter-spacing: 5px;
-    line-height: 38px;
-    text-indent: 5px;
-    text-align: center;
-  }
+button.login-button {
+  padding: 0 15px;
+  font-size: 16px;
+  height: 40px;
+  width: 100%;
+}
+.login-code-img {
+  /*margin-top: 2px;*/
+  width: 100px;
+  height: 38px;
+  background-color: #fdfdfd;
+  border: 1px solid #f0f0f0;
+  color: #333;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  line-height: 38px;
+  text-indent: 5px;
+  text-align: center;
+}
 </style>

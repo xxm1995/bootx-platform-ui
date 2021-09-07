@@ -1,5 +1,5 @@
 import storage from 'store'
-import { login, getMenuAndButtonPermission, getUserInfo, logout } from '@/api/login/login'
+import {login, getMenuAndButtonPermission, getUserInfo, logout, loginOpenId} from '@/api/login/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 const user = {
@@ -33,6 +33,19 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          const token = response.data
+          storage.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
+          commit('SET_TOKEN', token)
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    // 三方登录
+    loginOpenId ({ commit }, loginParam) {
+      return new Promise((resolve, reject) => {
+        loginOpenId(loginParam).then(response => {
           const token = response.data
           storage.set(ACCESS_TOKEN, token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', token)

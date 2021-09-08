@@ -7,3 +7,11 @@ export function loginPage (params) {
     params: params
   })
 }
+
+export function operatePage (params) {
+  return axios({
+    url: '/log/operate/page',
+    method: 'GET',
+    params: params
+  })
+}

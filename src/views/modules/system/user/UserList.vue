@@ -26,7 +26,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-<!--        <a-button type="primary" icon="plus" @click="add">新建</a-button>-->
+        <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -72,18 +72,23 @@
     <user-role-assign
       ref="userRoleAssign"
     />
+    <user-add
+      ref="userAdd"
+    />
   </a-card>
 </template>
 
 <script>
 import { del, page } from '@/api/system/user'
 import UserRoleAssign from './UserRoleAssign'
+import UserAdd from './UserAdd'
 import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
   name: 'UserList',
   components: {
-    UserRoleAssign
+    UserRoleAssign,
+    UserAdd
   },
   mixins: [TableMixin],
   data () {

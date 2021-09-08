@@ -107,7 +107,7 @@
               :readOnly="disableSubmit">
               <template v-slot:suffix>
                 <a-tooltip
-                  title="输入组件名称或者组件路径地址，路径地址情况，请不要带有'@/'前缀"
+                  title="输入组件名称或者组件路径地址，路径地址情况，默认已经带有'@/views/modules/'前缀"
                 >
                   <a-icon type="info-circle"/>
                 </a-tooltip>

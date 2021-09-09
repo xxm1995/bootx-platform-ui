@@ -54,12 +54,11 @@ request.interceptors.request.use(config => {
 // response interceptor
 request.interceptors.response.use((response) => {
   if (response.data.code) {
-    if (response.data.code) {
-      notification.error({
-        message: '错误',
-        description: response.data.msg
-      })
-    }
+    notification.error({
+      message: '错误',
+      description: response.data.msg
+    })
+    console.error('TraceId:', response.data.traceId)
     return Promise.reject(response)
   }
   return response.data

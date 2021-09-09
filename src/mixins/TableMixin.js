@@ -43,7 +43,6 @@ export const TableMixin = {
     },
     // 字典翻译
     dictConvert (dictCode, code) {
-      console.log(c(dictCode, code))
       return c(dictCode, code)
     }
   }

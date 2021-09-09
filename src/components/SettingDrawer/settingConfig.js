@@ -1,4 +1,3 @@
-import message from 'ant-design-vue/es/message'
 // import defaultSettings from '../defaultSettings';
 import themeColor from './themeColor.js'
 
@@ -31,12 +30,7 @@ const colorList = [
 ]
 
 const updateTheme = newPrimaryColor => {
-  const hideMessage = message.loading('正在切换主题！', 0)
-  themeColor.changeColor(newPrimaryColor).finally(() => {
-    setTimeout(() => {
-      hideMessage()
-    }, 10)
-  })
+  themeColor.changeColor(newPrimaryColor)
 }
 
 const updateColorWeak = colorWeak => {

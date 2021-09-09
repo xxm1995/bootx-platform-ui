@@ -86,7 +86,7 @@ export default {
       },
       rules: {
         code: [
-          { required: true, message: '请输入终端编码', trigger: 'blur' }
+          { required: true, message: '请输入终端编码' }
         ],
         name: [
           { required: true, message: '请输入终端名称', trigger: 'blur' }

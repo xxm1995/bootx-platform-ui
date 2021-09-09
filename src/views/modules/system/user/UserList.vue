@@ -51,15 +51,32 @@
       </vxe-table-column>
       <vxe-table-column field="status" title="用户状态">
         <template slot-scope="{row}">
-          {{ dictConvert(userStatusCode,row.status) }}
+          <a-tag>{{ dictConvert(userStatusCode,row.status) }}</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column field="registerTime" title="注册时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
         <template slot-scope="{row}">
-          <span>
-            <a @click="assignRoles(row)">角色分配</a>
-          </span>
+          <a href="javascript:" @click="show(row)">查看</a>
+          <a-divider type="vertical"/>
+          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a-divider type="vertical"/>
+          <a-dropdown>
+            <a class="ant-dropdown-link">
+              更多 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a @click="assignRoles(row)">角色分配</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a href="javascript:">重置密码</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a href="javascript:">锁定账号</a>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -77,8 +94,19 @@
     <user-role-assign
       ref="userRoleAssign"
     />
+    <!--  添加用户  -->
     <user-add
+      @ok="init"
       ref="userAdd"
+    />
+    <!--  编辑用户  -->
+    <user-edit
+      @ok="init"
+      ref="userEdit"
+    />
+    <!--  查看用户  -->
+    <user-show
+      ref="userShow"
     />
   </a-card>
 </template>
@@ -87,14 +115,17 @@
 import { del, page } from '@/api/system/user'
 import UserRoleAssign from './UserRoleAssign'
 import UserAdd from './UserAdd'
-import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
+import UserEdit from './UserEdit'
+import UserShow from './UserShow'
 import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
   name: 'UserList',
   components: {
     UserRoleAssign,
-    UserAdd
+    UserAdd,
+    UserEdit,
+    UserShow
   },
   mixins: [TableMixin],
   data () {
@@ -124,10 +155,10 @@ export default {
       this.$refs.userRoleAssign.edit(record, 'edit')
     },
     add () {
-      this.$refs.userEdit.init('', 'show')
+      this.$refs.userAdd.init('', 'add')
     },
     show (record) {
-      this.$refs.userEdit.init(record.id, 'show')
+      this.$refs.userShow.init(record.id, 'show')
     },
     edit (record) {
       this.$refs.userEdit.init(record.id, 'edit')

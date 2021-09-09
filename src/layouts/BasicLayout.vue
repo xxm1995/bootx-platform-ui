@@ -24,7 +24,7 @@
     <template v-slot:headerContentRender>
       <div>
         <a-tooltip title="刷新缓存">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="initDictList" />
+          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="RefreshDictList" />
         </a-tooltip>
       </div>
     </template>
@@ -170,8 +170,15 @@ export default {
           break
       }
     },
-    // 刷新字典
+    // 初始化字典
     initDictList () {
+      const {
+        InitDictList
+      } = this
+      InitDictList()
+    },
+    // 刷新字典
+    RefreshDictList () {
       this.$message.info('刷新中')
       const {
         InitDictList

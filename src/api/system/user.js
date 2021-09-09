@@ -27,7 +27,7 @@ export function get (id) {
  */
 export function add (obj) {
   return axios({
-    url: '/iam/permission/path/add',
+    url: '/user/admin/add',
     method: 'POST',
     data: obj
   })
@@ -77,3 +77,27 @@ export function addUserRole (data) {
   })
 }
 
+/* 账号是否被使用 */
+export function existsUsername (username) {
+  return axios({
+    url: `/user/existsUsername`,
+    method: 'get',
+    params: { username }
+  })
+}
+/* 手机号是否被使用 */
+export function existsPhone (phone) {
+  return axios({
+    url: `/user/existsPhone`,
+    method: 'get',
+    params: { phone }
+  })
+}
+/* 邮箱是否被使用 */
+export function existsEmail (email) {
+  return axios({
+    url: `/user/existsEmail`,
+    method: 'get',
+    params: { email }
+  })
+}

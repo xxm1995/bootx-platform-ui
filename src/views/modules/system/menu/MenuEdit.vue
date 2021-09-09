@@ -6,231 +6,229 @@
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
-    <div>
-      <a-spin :spinning="confirmLoading">
-        <a-form-model
-          ref="form"
-          :model="form"
-          :rules="rules"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
+    <a-spin :spinning="confirmLoading" style="margin-bottom: 80px">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+      >
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="菜单类型"
         >
-          <a-form-model-item label="主键" prop="id" hidden="true" >
-            <a-input v-model="form.id" :disabled="showable"/>
-          </a-form-model-item>
-          <a-form-model-item
-            label="菜单类型"
-          >
-            <a-radio-group
-              @change="onChangeMenuType"
-              :disabled="showable"
-              v-model="form.menuType"
-            >
-              <a-radio :value="0">一级菜单</a-radio>
-              <a-radio :value="1">子菜单</a-radio>
-              <a-radio :value="2">按钮/权限</a-radio>
-            </a-radio-group>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="form.menuType!==0"
-            label="上级菜单"
-            :validate-status="validateStatus"
-            :hasFeedback="true"
-            :required="true">
-            <span slot="help">{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
-            <a-tree-select
-              style="width:100%"
-              :dropdown-style="{ maxHeight: '200px', overflow: 'auto' }"
-              :tree-data="treeData"
-              v-model="form.parentId"
-              placeholder="请选择父级菜单"
-              :disabled="disableSubmit || showable"
-              @change="handleParentIdChange">
-            </a-tree-select>
-          </a-form-model-item>
-          <a-form-model-item
-            :label="menuLabel"
-            prop="title">
-            <a-input
-              placeholder="请输入菜单名称"
-              v-model="form.title"
-              :disabled="showable"
-              :readOnly="disableSubmit"/>
-          </a-form-model-item>
-          <a-form-model-item
-            label="路由名称"
-            v-show="menuEditShow"
-            prop="name">
-            <a-input
-              placeholder="请输入路由名称"
-              v-model="form.name"
-              :disabled="showable"
-              :readOnly="disableSubmit">
-              <template v-slot:suffix>
-                <a-tooltip
-                  title="尽量保证路由名称的唯一"
-                >
-                  <a-icon type="info-circle"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            label="菜单路径"
-            prop="path"
-          >
-            <a-input
-              v-model="form.path"
-              :disabled="showable"
-              :readOnly="disableSubmit"
-              placeholder="请输入菜单路径"
-            >
-              <template v-slot:suffix>
-                <a-tooltip
-                  title="路由访问路径"
-                >
-                  <a-icon type="info-circle"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            label="前端组件"
-            prop="component"
-          >
-            <a-input
-              :disabled="showable"
-              placeholder="请输入前端组件"
-              v-model="form.component"
-              :readOnly="disableSubmit">
-              <template v-slot:suffix>
-                <a-tooltip
-                  title="输入组件名称或者组件路径地址，路径地址情况，默认已经带有'@/views/modules/'前缀"
-                >
-                  <a-icon type="info-circle"/>
-                </a-tooltip>
-              </template>
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
+          <a-radio-group
+            @change="onChangeMenuType"
             :disabled="showable"
-            prop="redirect"
-            label="默认跳转地址">
-            <a-input
-              :disabled="showable"
-              placeholder="请输入路由参数 redirect"
-              v-model="form.redirect"
-              :readOnly="disableSubmit"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="!menuEditShow"
-            prop="perms"
-            label="授权标识">
-            <a-input
-              :disabled="showable"
-              placeholder="请输入授权标识, 如: user:list"
-              v-model="form.perms"
-              :readOnly="disableSubmit"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="icon"
-            label="菜单图标">
-            <a-input
-              :disabled="showable"
-              placeholder="点击选择图标"
-              v-model="form.icon"
-              :readOnly="disableSubmit">
-              <a-icon
-                slot="addonAfter"
-                type="setting"
-                @click="selectIcons" />
-            </a-input>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="sortNo"
-            label="排序">
-            <a-input-number
-              placeholder="请输入菜单排序"
-              :disabled="showable"
-              v-model="form.sortNo"
-              style="width: 200px"
-              :readOnly="disableSubmit"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="hidden"
-            label="隐藏菜单">
-            <a-switch
-              :disabled="showable"
-              checkedChildren="是"
-              unCheckedChildren="否"
-              v-model="form.hidden"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="hideChildrenInMenu"
-            label="隐藏子菜单">
-            <a-switch
-              :disabled="showable"
-              checkedChildren="是"
-              unCheckedChildren="否"
-              v-model="form.hideChildrenInMenu"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="hiddenHeaderContent"
-            label="隐藏的标题内容">
-            <a-switch
-              :disabled="showable"
-              checkedChildren="是"
-              unCheckedChildren="否"
-              v-model="form.hiddenHeaderContent"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="keepAlive"
-            label="是否缓存路由">
-            <a-switch
-              :disabled="showable"
-              checkedChildren="是"
-              unCheckedChildren="否"
-              v-model="form.keepAlive"/>
-          </a-form-model-item>
-          <a-form-model-item
-            v-show="menuEditShow"
-            prop="targetOutside"
-            label="打开方式">
-            <a-switch
-              :disabled="showable"
-              checkedChildren="外部"
-              unCheckedChildren="内部"
-              v-model="form.targetOutside"/>
-          </a-form-model-item>
-
-        </a-form-model>
-        <a-modal
-          :width="850"
-          :visible="visibleIcon"
-          @cancel="handleCancelIcon"
-          footer=""
-          :mask="false"
-          :closable="false"
-          :destroyOnClose="true"
+            v-model="form.menuType"
+          >
+            <a-radio :value="0">一级菜单</a-radio>
+            <a-radio :value="1">子菜单</a-radio>
+            <a-radio :value="2">按钮/权限</a-radio>
+          </a-radio-group>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="form.menuType!==0"
+          label="上级菜单"
+          :validate-status="validateStatus"
+          :hasFeedback="true"
+          :required="true">
+          <span slot="help">{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
+          <a-tree-select
+            style="width:100%"
+            :dropdown-style="{ maxHeight: '200px', overflow: 'auto' }"
+            :tree-data="treeData"
+            v-model="form.parentId"
+            placeholder="请选择父级菜单"
+            :disabled="disableSubmit || showable"
+            @change="handleParentIdChange">
+          </a-tree-select>
+        </a-form-model-item>
+        <a-form-model-item
+          :label="menuLabel"
+          prop="title">
+          <a-input
+            placeholder="请输入菜单名称"
+            v-model="form.title"
+            :disabled="showable"
+            :readOnly="disableSubmit"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="路由名称"
+          v-show="menuEditShow"
+          prop="name">
+          <a-input
+            placeholder="请输入路由名称"
+            v-model="form.name"
+            :disabled="showable"
+            :readOnly="disableSubmit">
+            <template v-slot:suffix>
+              <a-tooltip
+                title="尽量保证路由名称的唯一"
+              >
+                <a-icon type="info-circle"/>
+              </a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          label="菜单路径"
+          prop="path"
         >
-          <icon-selector v-model="form.icon" @change="handleIconChange"/>
-        </a-modal>
-      </a-spin>
-      <div class="drawer-bootom-button">
-        <a-row :style="{textAlign:'right'}">
-          <a-button :style="{marginRight: '8px'}" @click="handleCancel">关闭</a-button>
-          <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-        </a-row>
-      </div>
+          <a-input
+            v-model="form.path"
+            :disabled="showable"
+            :readOnly="disableSubmit"
+            placeholder="请输入菜单路径"
+          >
+            <template v-slot:suffix>
+              <a-tooltip
+                title="路由访问路径"
+              >
+                <a-icon type="info-circle"/>
+              </a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          label="前端组件"
+          prop="component"
+        >
+          <a-input
+            :disabled="showable"
+            placeholder="请输入前端组件"
+            v-model="form.component"
+            :readOnly="disableSubmit">
+            <template v-slot:suffix>
+              <a-tooltip
+                title="输入组件名称或者组件路径地址，路径地址情况，默认已经带有'@/views/modules/'前缀"
+              >
+                <a-icon type="info-circle"/>
+              </a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          :disabled="showable"
+          prop="redirect"
+          label="默认跳转地址">
+          <a-input
+            :disabled="showable"
+            placeholder="请输入路由参数 redirect"
+            v-model="form.redirect"
+            :readOnly="disableSubmit"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="!menuEditShow"
+          prop="perms"
+          label="授权标识">
+          <a-input
+            :disabled="showable"
+            placeholder="请输入授权标识, 如: user:list"
+            v-model="form.perms"
+            :readOnly="disableSubmit"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="icon"
+          label="菜单图标">
+          <a-input
+            :disabled="showable"
+            placeholder="点击选择图标"
+            v-model="form.icon"
+            :readOnly="disableSubmit">
+            <a-icon
+              slot="addonAfter"
+              type="setting"
+              @click="selectIcons" />
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="sortNo"
+          label="排序">
+          <a-input-number
+            placeholder="请输入菜单排序"
+            :disabled="showable"
+            v-model="form.sortNo"
+            style="width: 200px"
+            :readOnly="disableSubmit"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="hidden"
+          label="隐藏菜单">
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.hidden"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="hideChildrenInMenu"
+          label="隐藏子菜单">
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.hideChildrenInMenu"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="hiddenHeaderContent"
+          label="隐藏的标题内容">
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.hiddenHeaderContent"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="keepAlive"
+          label="是否缓存路由">
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.keepAlive"/>
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="menuEditShow"
+          prop="targetOutside"
+          label="打开方式">
+          <a-switch
+            :disabled="showable"
+            checkedChildren="外部"
+            unCheckedChildren="内部"
+            v-model="form.targetOutside"/>
+        </a-form-model-item>
+
+      </a-form-model>
+      <a-modal
+        :width="850"
+        :visible="visibleIcon"
+        @cancel="handleCancelIcon"
+        footer=""
+        :mask="false"
+        :closable="false"
+        :destroyOnClose="true"
+      >
+        <icon-selector v-model="form.icon" @change="handleIconChange"/>
+      </a-modal>
+    </a-spin>
+    <div class="drawer-button" >
+      <a-row :style="{textAlign:'right'}">
+        <a-button :style="{marginRight: '8px'}" @click="handleCancel">关闭</a-button>
+        <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      </a-row>
     </div>
   </a-drawer>
 </template>
@@ -371,15 +369,6 @@ export default {
 }
 </script>
 
-<style lang="less" scoped>
-.drawer-bootom-button {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  left: 0;
-  background: #fff;
-  border-radius: 0 0 2px 2px;
-}
+<style scoped>
+
+</style>

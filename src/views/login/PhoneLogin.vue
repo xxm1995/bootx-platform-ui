@@ -69,10 +69,10 @@ export default {
       },
       rules: {
         phone: [
-          { required: true, message: '请输入手机号', trigger: ['change', 'blur'] },
+          { required: true, message: '请输入手机号' },
           { validator: this.validateMobile }
         ],
-        smsCaptcha: [{ required: true, message: '请输入验证码', trigger: ['change', 'blur'] }]
+        smsCaptcha: [{ required: true, message: '请输入验证码' }]
       },
       state: {
         loginBtn: false,
@@ -119,7 +119,6 @@ export default {
       if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
         callback()
       } else {
-        // eslint-disable-next-line standard/no-callback-literal
         callback('您的手机号码格式不正确!')
       }
     },

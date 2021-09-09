@@ -56,7 +56,7 @@ export function getUserInfo () {
  */
 export function sendSmsCode (phone) {
   return request({
-    url: `/captcha/sendSmsCaptcha`,
+    url: `/auth/sendSmsCaptcha`,
     method: 'post',
     params: { phone }
   })

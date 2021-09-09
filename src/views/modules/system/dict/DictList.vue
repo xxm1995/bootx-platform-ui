@@ -46,9 +46,7 @@
       <vxe-table-column field="remark" title="描述" />
       <vxe-table-column title="操作" fixed="right" width="220">
         <template v-slot="{row}">
-          <span>
-            <a href="javascript:" @click="show(row)">查看</a>
-          </span>
+          <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>

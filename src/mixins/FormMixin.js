@@ -1,3 +1,5 @@
+import { dictConvert as c } from '@/components/Bootx/Dict/DictUtils'
+
 export const FormMixin = {
   data () {
     return {
@@ -45,6 +47,10 @@ export const FormMixin = {
         this.editable = false
         this.showable = false
       }, 200)
+    },
+    // 字典翻译
+    dictConvert (dictCode, code) {
+      return c(dictCode, code)
     }
   }
 }

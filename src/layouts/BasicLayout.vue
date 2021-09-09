@@ -23,8 +23,8 @@
     -->
     <template v-slot:headerContentRender>
       <div>
-        <a-tooltip title="刷新页面">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="() => { $message.info('刷新中') }" />
+        <a-tooltip title="刷新缓存">
+          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="initDictList" />
         </a-tooltip>
       </div>
     </template>
@@ -48,7 +48,7 @@
 <script>
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { i18nRender } from '@/locales'
-import { mapState } from 'vuex'
+import {mapActions, mapState} from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
 import defaultSettings from '@/config/defaultSettings'
@@ -106,6 +106,7 @@ export default {
     })
   },
   created () {
+    this.initDictList()
     const routes = this.mainMenu.find(item => item.path === '/')
     this.menus = (routes && routes.children) || []
     // 处理侧栏收起状态
@@ -134,6 +135,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['InitDictList']),
     i18nRender,
     handleMediaQuery (val) {
       this.query = val
@@ -167,6 +169,20 @@ export default {
           }
           break
       }
+    },
+    // 刷新字典
+    initDictList () {
+      this.$message.info('刷新中')
+      const {
+        InitDictList
+      } = this
+      InitDictList().then(() => {
+        this.$message.destroy()
+        this.$message.success('刷新缓存成功')
+      }).catch(() => {
+        this.$message.destroy()
+        this.$message.error('刷新缓存失败')
+      })
     }
   }
 }

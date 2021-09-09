@@ -1,5 +1,12 @@
 import { axios } from '@/utils/request'
 
+export function findAllItem () {
+  return axios({
+    url: '/dict/item/findAll',
+    method: 'GET'
+  })
+}
+
 export function page (params) {
   return axios({
     url: '/dict/page',

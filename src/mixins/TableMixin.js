@@ -1,3 +1,4 @@
+import { dictConvert as c } from '@/components/Bootx/Dict/DictUtils'
 
 export const TableMixin = {
   data () {
@@ -39,6 +40,11 @@ export const TableMixin = {
     // ok按钮
     handleOk () {
       this.init()
+    },
+    // 字典翻译
+    dictConvert (dictCode, code) {
+      console.log(c(dictCode, code))
+      return c(dictCode, code)
     }
   }
 }

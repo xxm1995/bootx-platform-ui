@@ -39,11 +39,15 @@
       <vxe-table-column field="operateId" title="操作人员ID" />
       <vxe-table-column field="username" title="操作人员" />
       <vxe-table-column field="title" title="操作模块" />
-      <vxe-table-column field="businessType" title="业务类型" />
       <vxe-table-column field="success" title="状态">
         <template v-slot="{row}">
           <a-tag v-if="row.success" color="green">成功</a-tag>
           <a-tag v-else color="red">失败</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="businessType" title="业务类型">
+        <template v-slot="{row}">
+          {{ dictConvert(logBusinessType,row.businessType) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="operateIp" title="IP" />
@@ -79,6 +83,7 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      logBusinessType: 'LogBusinessType',
       queryParam: {
         title: '',
         username: ''

@@ -43,10 +43,15 @@
       <vxe-table-column field="username" title="账号" />
       <vxe-table-column field="phone" title="手机号" />
       <vxe-table-column field="email" title="邮箱" />
-      <vxe-table-column admin="admin" title="是否管理员">
+      <vxe-table-column field="admin" title="是否管理员">
         <template slot-scope="{row}">
           <a-tag v-if="row.admin" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="status" title="用户状态">
+        <template slot-scope="{row}">
+          {{ dictConvert(userStatusCode,row.status) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="registerTime" title="注册时间" />
@@ -82,6 +87,7 @@
 import { del, page } from '@/api/system/user'
 import UserRoleAssign from './UserRoleAssign'
 import UserAdd from './UserAdd'
+import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
 import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
@@ -93,6 +99,7 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      userStatusCode: 'UserStatusCode',
       queryParam: {
         account: '',
         name: ''
@@ -131,7 +138,6 @@ export default {
         this.init()
       })
     }
-
   },
   created () {
     this.init()

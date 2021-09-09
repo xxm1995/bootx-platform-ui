@@ -14,7 +14,7 @@
         :wrapperCol="wrapperCol"
         :rules="rules">
         <a-form-model-item label="用户账号" prop="username">
-          <a-input placeholder="请输入用户账号" v-model="form.username" disabled/>
+          <a-input placeholder="请输入用户账号" v-model="form.username"/>
         </a-form-model-item>
         <a-form-model-item label="用户名称" prop="name">
           <a-input placeholder="请输入用户名称" v-model="form.name"/>
@@ -36,7 +36,14 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, update } from '@/api/system/user'
+import {
+  add,
+  get,
+  update,
+  existsUsernameNotId,
+  existsPhoneNotId,
+  existsEmailNotId
+} from '@/api/system/user'
 
 export default {
   name: 'UserEdit',
@@ -108,6 +115,49 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    validateUsername (rule, value, callback) {
+      existsUsernameNotId(value, this.form.id).then((res) => {
+        if (!res.data) {
+          callback()
+        } else {
+          callback('该账户已存在!')
+        }
+      })
+    },
+    validatePhone (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else {
+        if (new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
+          existsPhoneNotId(value, this.form.id).then((res) => {
+            if (!res.data) {
+              callback()
+            } else {
+              callback('手机号已存在!')
+            }
+          })
+        } else {
+          callback('请输入正确格式的手机号码!')
+        }
+      }
+    },
+    validateEmail (rule, value, callback) {
+      if (!value) {
+        callback()
+      } else {
+        if (new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(value)) {
+          existsEmailNotId(value, this.form.id).then((res) => {
+            if (!res.data) {
+              callback()
+            } else {
+              callback('邮箱已存在!')
+            }
+          })
+        } else {
+          callback('请输入正确格式的邮箱!')
+        }
+      }
     }
   }
 }

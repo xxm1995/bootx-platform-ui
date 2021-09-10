@@ -96,6 +96,7 @@ const user = {
       })
       resolve.then(() => {
         commit('SET_TOKEN', '')
+        commit('SET_PERMISSION', [])
         commit('SET_ROLES', [])
         storage.remove(ACCESS_TOKEN)
       })

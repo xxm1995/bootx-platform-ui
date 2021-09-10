@@ -37,7 +37,6 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import {
-  add,
   get,
   update,
   existsUsernameNotId,
@@ -50,7 +49,6 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      confirmDirty: false,
       form: {
         id: '',
         name: '',
@@ -80,27 +78,19 @@ export default {
     }
   },
   methods: {
-    edit (id, type) {
-      if (['edit', 'show'].includes(type)) {
-        this.confirmLoading = true
-        get(id).then(res => {
-          this.form = res.data
-          this.confirmLoading = false
-        })
-      } else {
-        this.resetForm()
-      }
+    edit (id) {
+      this.confirmLoading = true
+      get(id).then(res => {
+        this.form = res.data
+        this.confirmLoading = false
+      })
     },
     handleOk () {
       console.log(this.type)
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          if (this.type === 'add') {
-            await add(this.form)
-          } else if (this.type === 'edit') {
-            await update(this.form)
-          }
+          await update(this.form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')
@@ -109,11 +99,6 @@ export default {
         } else {
           return false
         }
-      })
-    },
-    resetForm () {
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
       })
     },
     validateUsername (rule, value, callback) {

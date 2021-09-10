@@ -43,6 +43,16 @@ export function update (obj) {
     data: obj
   })
 }
+/**
+ * 重置密码
+ */
+export function restartPassword (userId, newPassword) {
+  return axios({
+    url: '/user/admin/restartPassword',
+    method: 'POST',
+    params: { userId, newPassword }
+  })
+}
 
 /**
  * 删除

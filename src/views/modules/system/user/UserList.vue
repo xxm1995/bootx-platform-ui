@@ -70,7 +70,7 @@
                 <a @click="assignRoles(row)">角色分配</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:">重置密码</a>
+                <a @click="resetPwd(row)">重置密码</a>
               </a-menu-item>
               <a-menu-item>
                 <a href="javascript:">锁定账号</a>
@@ -106,7 +106,12 @@
     />
     <!--  查看用户  -->
     <user-show
+      @ok="init"
       ref="userShow"
+    />
+    <!--  重置密码  -->
+    <user-reset-password
+      ref="resetPassword"
     />
   </a-card>
 </template>
@@ -117,6 +122,7 @@ import UserRoleAssign from './UserRoleAssign'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 import UserShow from './UserShow'
+import UserResetPassword from './UserResetPassword'
 import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
@@ -125,7 +131,8 @@ export default {
     UserRoleAssign,
     UserAdd,
     UserEdit,
-    UserShow
+    UserShow,
+    UserResetPassword
   },
   mixins: [TableMixin],
   data () {
@@ -162,6 +169,9 @@ export default {
     },
     edit (record) {
       this.$refs.userEdit.init(record.id, 'edit')
+    },
+    resetPwd (record) {
+      this.$refs.resetPassword.init(record.id, 'edit')
     },
     remove (record) {
       del(record.id).then(res => {

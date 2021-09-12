@@ -154,7 +154,7 @@
           prop="sortNo"
           label="排序">
           <a-input-number
-            placeholder="请输入菜单排序"
+            placeholder="请输入菜单排序，可以是小数"
             :disabled="showable"
             v-model="form.sortNo"
             style="width: 200px"

@@ -24,8 +24,6 @@
     <div class="drawer-bootom-button">
       <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
         <a-menu slot="overlay">
-          <a-menu-item key="1" @click="switchCheckStrictly(1)">父子关联</a-menu-item>
-          <a-menu-item key="2" @click="switchCheckStrictly(2)">取消关联</a-menu-item>
           <a-menu-item key="3" @click="checkALL">全部勾选</a-menu-item>
           <a-menu-item key="4" @click="cancelCheckALL">取消全选</a-menu-item>
           <a-menu-item key="5" @click="expandAll">展开所有</a-menu-item>
@@ -81,7 +79,7 @@ export default {
     onCheck (checkedKeys) {
       this.checkedKeys = checkedKeys
     },
-    onSelect (selectedKeys, info) {
+    onSelect (selectedKeys) {
       this.selectedKeys = selectedKeys
     },
 

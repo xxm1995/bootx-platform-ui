@@ -41,7 +41,7 @@
 
 <script>
 import { tree } from '@/api/system/menu'
-import { findIdsByRole, save } from '@/api/system/roleMenu'
+import { findIdsByRole, findMenuIds, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 
 export default {
@@ -50,11 +50,12 @@ export default {
     return {
       title: '角色权限配置',
       roleId: '',
+      allTreeKeys: [],
       expandedKeys: [],
-      autoExpandParent: true,
       selectedKeys: [],
-      visible: false,
       checkedKeys: [],
+      autoExpandParent: true,
+      visible: false,
       loading: false,
       treeData: []
     }
@@ -64,6 +65,9 @@ export default {
       this.visible = true
       this.loading = true
       this.roleId = roleId
+      findMenuIds().then(res => {
+        this.allTreeKeys = res.data
+      })
       await tree().then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
@@ -72,25 +76,27 @@ export default {
       })
       this.loading = false
     },
+    // 展开/收起节点时触发
     onExpand (expandedKeys) {
       this.expandedKeys = expandedKeys
       this.autoExpandParent = false
     },
+    // 点击复选框触发
     onCheck (checkedKeys) {
       this.checkedKeys = checkedKeys
     },
+    // 点击树节点触发
     onSelect (selectedKeys) {
       this.selectedKeys = selectedKeys
     },
-
     handleCancel () {
       this.visible = false
     },
     expandAll () {
-      this.expandedKeysss = this.allTreeKeys
+      this.expandedKeys = this.allTreeKeys
     },
     closeAll () {
-      this.expandedKeysss = []
+      this.expandedKeys = []
     },
     checkALL () {
       this.checkedKeys = this.allTreeKeys

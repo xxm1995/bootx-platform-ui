@@ -8,25 +8,28 @@
     @close="handleCancel"
     :visible="visible"
   >
-
     <vxe-table
       resizable
       border
       stripe
       show-overflow
+      :showHeader="false"
       row-id="id"
       size="medium"
+      :checkbox-config="{trigger: 'row', highlight: true, range: true}"
       :loading="loading"
       :data="tableData"
-    ></vxe-table>
+    >
+      <vxe-column type="checkbox" width="60"/>
+      <vxe-table-column field="code" title="权限代码" />
+      <vxe-table-column field="name" title="权限名称" />
+    </vxe-table>
 
   </a-drawer>
 </template>
 
 <script>
-import { tree } from '@/api/system/menu'
-import { treeDataTranslate } from '@/utils/util'
-import { findIdsByRole } from '@/api/system/roleMenu'
+import { findAll } from '@/api/system/path'
 
 export default {
   name: 'RolePathModal',
@@ -45,12 +48,12 @@ export default {
       this.visible = true
       this.loading = true
       this.roleId = roleId
-      await tree().then(res => {
-        this.treeData = treeDataTranslate(res.data, 'id', 'title')
+      await findAll().then(res => {
+        this.tableData = res.data
       })
-      await findIdsByRole(roleId).then(res => {
-        this.checkedKeys = res.data
-      })
+      // await findIdsByRole(roleId).then(res => {
+      //   this.checkedKeys = res.data
+      // })
       this.loading = false
     },
     handleCancel () {

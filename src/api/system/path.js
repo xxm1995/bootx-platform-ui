@@ -23,13 +23,12 @@ export function get (id) {
 }
 
 /**
- * 获取请求权限应用的角色
+ * 获取全部
  */
-export function getRoleIds (pathId) {
+export function findAll () {
   return axios({
-    url: `/role/path/findRoleIdsByPath`,
-    method: 'GET',
-    params: { pathId }
+    url: `/permission/path/findAll`,
+    method: 'GET'
   })
 }
 

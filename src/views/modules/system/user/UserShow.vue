@@ -6,7 +6,7 @@
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
-    <a-spin :spinning="confirmLoading" style="margin-bottom: 80px">
+    <a-spin :spinning="confirmLoading" style="margin-bottom: 3rem">
       <a-form-model
         ref="form"
         :labelCol="labelCol"

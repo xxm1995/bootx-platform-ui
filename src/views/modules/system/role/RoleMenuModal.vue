@@ -8,7 +8,7 @@
     @close="handleCancel"
     :visible="visible"
   >
-    <a-spin :spinning="loading">
+    <a-spin :spinning="loading" style="margin-bottom: 2rem">
       <a-tree
         :checkable="true"
         v-model="checkedKeys"
@@ -21,7 +21,7 @@
         @select="onSelect"
       />
     </a-spin>
-    <div class="drawer-bootom-button">
+    <div class="drawer-button">
       <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
         <a-menu slot="overlay">
           <a-menu-item key="3" @click="checkALL">全部勾选</a-menu-item>
@@ -89,18 +89,19 @@ export default {
     onSelect (selectedKeys) {
       this.selectedKeys = selectedKeys
     },
-    handleCancel () {
-      this.visible = false
-    },
+    // 展开全部
     expandAll () {
       this.expandedKeys = this.allTreeKeys
     },
+    // 合并全部
     closeAll () {
       this.expandedKeys = []
     },
+    // 全选
     checkALL () {
       this.checkedKeys = this.allTreeKeys
     },
+    // 全不选
     cancelCheckALL () {
       this.checkedKeys = []
     },
@@ -119,22 +120,13 @@ export default {
       }).then(() => {
         this.handleCancel()
       })
+    },
+    handleCancel () {
+      this.visible = false
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.drawer-bootom-button {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  left: 0;
-  background: #fff;
-  border-radius: 0 0 2px 2px;
-}
-
 </style>

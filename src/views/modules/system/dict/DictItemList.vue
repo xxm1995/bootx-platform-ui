@@ -59,7 +59,7 @@
 <script>
 import { itemDel, itemPage } from '@/api/system/dict'
 import DictItemEdit from './DictItemEdit'
-import {TableMixin} from "@/mixins/TableMixin";
+import { TableMixin } from '@/mixins/TableMixin'
 export default {
   name: 'DictItemList',
   components: {

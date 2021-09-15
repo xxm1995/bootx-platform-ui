@@ -254,7 +254,7 @@ export default {
         name: '',
         path: '',
         perms: '',
-        component: '',
+        component: 'RouteView',
         redirect: '',
         sortNo: 0,
         icon: '',
@@ -297,6 +297,7 @@ export default {
           this.form = res.data
         })
       } else {
+        this.confirmLoading = false
         this.resetForm()
       }
     },

@@ -77,7 +77,7 @@ export const vaildatePc = function () {
 }
 
 /**
- * validate email
+ * validate mail
  * @param email
  * @returns {boolean}
  */

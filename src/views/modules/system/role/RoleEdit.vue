@@ -86,6 +86,7 @@ export default {
           this.form = record
         })
       } else {
+        this.confirmLoading = false
         this.resetForm()
       }
     },

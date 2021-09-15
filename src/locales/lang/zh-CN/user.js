@@ -21,7 +21,7 @@ export default {
   'user.register.confirm-password.placeholder': '确认密码',
   'user.register.get-verification-code': '获取验证码',
   'user.register.sign-in': '使用已有账户登录',
-  'user.register-result.msg': '你的账户：{email} 注册成功',
+  'user.register-result.msg': '你的账户：{mail} 注册成功',
   'user.register-result.activation-email':
     '激活邮件已发送到你的邮箱中，邮件有效期为24小时。请及时登录邮箱，点击邮件中的链接激活帐户。',
   'user.register-result.back-home': '返回首页',

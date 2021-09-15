@@ -141,7 +141,6 @@ export default {
   methods: {
     // 获取角色信息
     edit (id, type) {
-      console.log(id)
       this.visible = true
       if (type && type === 'add') {
         this.addable = true

@@ -7,7 +7,7 @@ export default {
   'account.settings.basic.avatar': 'Avatar',
   'account.settings.basic.change-avatar': 'Change avatar',
   'account.settings.basic.email': 'Email',
-  'account.settings.basic.email-message': 'Please input your email!',
+  'account.settings.basic.email-message': 'Please input your mail!',
   'account.settings.basic.nickname': 'Nickname',
   'account.settings.basic.nickname-message': 'Please input your Nickname!',
   'account.settings.basic.profile': 'Personal profile',

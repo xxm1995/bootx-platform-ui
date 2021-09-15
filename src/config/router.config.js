@@ -148,7 +148,7 @@ export const asyncRouterMap = [
             meta: { title: '站内信配置(对接中)' }
           },
           {
-            path: '/notice/email',
+            path: '/notice/mail',
             name: 'email',
             component: () => import('@/views/exception/Dev'),
             meta: { title: '邮件通知配置(对接中)' }
@@ -523,50 +523,50 @@ export const loginBaseRouterMap = [
     component: () => import('@/views/Welcome'),
     meta: { title: '首页', keepAlive: false, icon: bxAnaalyse }
   },
-  {
-    path: '/notice',
-    redirect: '//notice/1',
-    component: RouteView,
-    meta: { title: '通知中心', icon: 'form' },
-    children: [
-      {
-        path: '/notice/1',
-        name: '1',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '站内信配置(对接中)' }
-      },
-      {
-        path: '/notice/email',
-        name: 'email',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '邮件通知配置(对接中)' }
-      },
-      {
-        path: '/notice/sms',
-        name: 'sms',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '短信通知配置(对接中)' }
-      },
-      {
-        path: '/notice/wechat',
-        name: 'wechat',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '微信通知配置(对接中)' }
-      },
-      {
-        path: '/notice/wechat2',
-        name: 'wechat2',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '企业微信通知配置(对接中)' }
-      },
-      {
-        path: '/notice/dingtalk',
-        name: 'dingtalk',
-        component: () => import('@/views/exception/Dev'),
-        meta: { title: '钉钉通知配置(对接中)' }
-      }
-    ]
-  },
+  // {
+  //   path: '/notice',
+  //   redirect: '//notice/1',
+  //   component: RouteView,
+  //   meta: { title: '通知中心', icon: 'form' },
+  //   children: [
+  //     {
+  //       path: '/notice/1',
+  //       name: '1',
+  //       component: () => import('@/views/exception/Dev'),
+  //       meta: { title: '站内信配置(对接中)' }
+  //     },
+  //     {
+  //       path: '/notice/mail',
+  //       name: 'email',
+  //       component: () => import('@/views/modules/notice/mail/MailConfigList'),
+  //       meta: { title: '邮件通知配置' }
+  //     },
+  //     {
+  //       path: '/notice/sms',
+  //       name: 'sms',
+  //       component: () => import('@/views/exception/Dev'),
+  //       meta: { title: '短信通知配置(对接中)' }
+  //     },
+  //     {
+  //       path: '/notice/wechat',
+  //       name: 'wechat',
+  //       component: () => import('@/views/exception/Dev'),
+  //       meta: { title: '微信通知配置(对接中)' }
+  //     },
+  //     {
+  //       path: '/notice/wechat2',
+  //       name: 'wechat2',
+  //       component: () => import('@/views/exception/Dev'),
+  //       meta: { title: '企业微信通知配置(对接中)' }
+  //     },
+  //     {
+  //       path: '/notice/dingtalk',
+  //       name: 'dingtalk',
+  //       component: () => import('@/views/exception/Dev'),
+  //       meta: { title: '钉钉通知配置(对接中)' }
+  //     }
+  //   ]
+  // },
   // account
   {
     path: '/account',

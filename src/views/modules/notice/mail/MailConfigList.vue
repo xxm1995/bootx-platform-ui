@@ -4,12 +4,12 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="终端代码">
+            <a-form-item label="编号">
               <a-input v-model="queryParam.code" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="终端名称">
+            <a-form-item label="名称">
               <a-input v-model="queryParam.name" placeholder="" />
             </a-form-item>
           </a-col>
@@ -40,22 +40,24 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="代码" />
+      <vxe-table-column field="code" title="编号" />
       <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="captcha" title="启用验证码" >
-        <template v-slot="{row}">
-          <a-tag v-if="row.captcha" color="green">开启</a-tag>
-          <a-tag v-else color="red">关闭</a-tag>
-        </template>
-      </vxe-table-column>
+      <vxe-table-column field="host" title="地址" />
+      <vxe-table-column field="port" title="端口" />
+      <vxe-table-column field="username" title="账号" />
+      <vxe-table-column field="sender" title="发送人" />
+      <vxe-table-column field="from" title="from" />
       <vxe-table-column field="enable" title="启用状态" >
         <template v-slot="{row}">
-          <a-tag v-if="row.enable" color="green">启用</a-tag>
-          <a-tag v-else color="red">停用</a-tag>
+          <a-tag v-if="row.activity" color="green">启用</a-tag>
+          <a-tag v-else color="red">未启用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="timeout" title="超时时间(分钟)" />
-      <vxe-table-column field="description" title="描述" />
+      <vxe-table-column field="securityType" title="安全方式" >
+        <template v-slot="{row}">
+          {{ dictConvert(mailSecurityCode,row.securityType) }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
@@ -76,7 +78,7 @@
           </a-popconfirm>
         </template>
       </vxe-table-column>
-    </vxe-table>
+      </vxe-table-column></vxe-table>
     <vxe-pager
       border
       size="medium"
@@ -88,24 +90,25 @@
       @page-change="handleTableChange">
       />
     </vxe-pager>
-    <client-edit
-      ref="clientEdit"
+    <mail-config-edit
+      ref="mailConfigEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-import { page, del } from '@/api/system/client'
-import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import { del, page } from '@/api/notice/mailConfig'
+import MailConfigEdit from './MailConfigEdit'
 export default {
-  name: 'ClientList',
-  components: {
-    ClientEdit
-  },
+  name: 'EmailConfigList',
   mixins: [TableMixin],
+  components: {
+    MailConfigEdit
+  },
   data () {
     return {
+      mailSecurityCode: 'MailSecurityCode',
       queryParam: {
         code: '',
         name: ''
@@ -126,13 +129,13 @@ export default {
       })
     },
     add () {
-      this.$refs.clientEdit.init('', 'add')
+      this.$refs.mailConfigEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.clientEdit.init(record.id, 'edit')
+      this.$refs.mailConfigEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.clientEdit.init(record.id, 'show')
+      this.$refs.mailConfigEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {

@@ -88,6 +88,7 @@ export default {
   },
   methods: {
     edit () {
+      this.confirmLoading = false
       this.resetForm()
     },
     handleOk () {

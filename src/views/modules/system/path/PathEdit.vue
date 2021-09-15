@@ -90,6 +90,7 @@ export default {
           this.confirmLoading = false
         })
       } else {
+        this.confirmLoading = false
         this.resetForm()
       }
     },

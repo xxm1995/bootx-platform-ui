@@ -103,6 +103,7 @@ export default {
           this.confirmLoading = false
         })
       } else {
+        this.confirmLoading = false
         this.resetForm()
         this.$nextTick(() => {
           this.form.dictId = record.id

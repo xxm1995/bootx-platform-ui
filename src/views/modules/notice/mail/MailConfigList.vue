@@ -55,7 +55,7 @@
       </vxe-table-column>
       <vxe-table-column field="securityType" title="安全方式" >
         <template v-slot="{row}">
-          {{ dictConvert(mailSecurityCode,row.securityType) }}
+          {{ dictConvert(mailSecurityCode,String(row.securityType)) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />
@@ -78,7 +78,7 @@
           </a-popconfirm>
         </template>
       </vxe-table-column>
-      </vxe-table-column></vxe-table>
+    </vxe-table>
     <vxe-pager
       border
       size="medium"

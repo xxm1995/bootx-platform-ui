@@ -49,7 +49,6 @@
           v-model="form.timeout"
           :disabled="showable"
           :min="5"
-          size="550px"
           :step="5"
         />
       </a-form-model-item>

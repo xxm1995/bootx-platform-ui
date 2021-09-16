@@ -11,7 +11,7 @@ const dict = {
   },
 
   actions: {
-    // 登录
+    // 获取字典列表
     InitDictList ({ commit }) {
       return new Promise((resolve, reject) => {
         findAllItem().then(response => {

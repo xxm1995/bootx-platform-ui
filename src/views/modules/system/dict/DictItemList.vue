@@ -30,6 +30,7 @@
       <vxe-table-column type="seq" title="序号" width="60"/>
       <vxe-table-column field="code" title="字典项编码" />
       <vxe-table-column field="name" title="字典项名称" />
+      <vxe-table-column field="sortNo" title="字典项排序" />
       <vxe-table-column field="remark" title="描述" />
       <vxe-table-column title="操作" fixed="right" width="220" :showOverflow="false">
         <template v-slot="{row}">

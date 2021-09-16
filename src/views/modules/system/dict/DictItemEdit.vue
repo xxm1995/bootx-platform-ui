@@ -20,8 +20,6 @@
       <a-form-model-item
         label="字典编码"
         prop="dictCode"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
         <a-input
           :disabled="true"
@@ -31,8 +29,6 @@
       <a-form-model-item
         label="字典项编码"
         prop="code"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
         <a-input
           :disabled="showable"
@@ -42,8 +38,6 @@
       <a-form-model-item
         label="字典项名称"
         prop="name"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
         <a-input
           :disabled="showable"
@@ -51,10 +45,19 @@
         />
       </a-form-model-item>
       <a-form-model-item
+        v-show="wrapperCol"
+        prop="sortNo"
+        label="排序">
+        <a-input-number
+          placeholder="请输入字典项排序，可以是小数"
+          :disabled="showable"
+          v-model="form.sortNo"
+          style="width: 200px"
+        />
+      </a-form-model-item>
+      <a-form-model-item
         label="描述"
         prop="remark"
-        :labelCol="labelCol"
-        :wrapperCol="wrapperCol"
       >
         <a-input
           :disabled="showable"
@@ -82,6 +85,7 @@ export default {
         dictCode: '',
         code: '',
         name: '',
+        sortNo: 0,
         remark: ''
       },
       rules: {

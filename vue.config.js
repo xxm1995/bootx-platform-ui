@@ -32,7 +32,7 @@ const assetsCDN = {
   js: [
     '//cdn.jsdelivr.net/npm/vue@2.6.13/dist/vue.min.js',
     '//cdn.jsdelivr.net/npm/vue-router@3.5.2/dist/vue-router.min.js',
-    '//cdn.jsdelivr.net/npm/vuex@4.5.13/dist/vuex.min.js',
+    '//cdn.jsdelivr.net/npm/vuex@3.6.2/dist/vuex.min.js',
     '//cdn.jsdelivr.net/npm/axios@0.21.4/dist/axios.min.js'
   ]
 }

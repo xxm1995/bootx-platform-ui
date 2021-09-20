@@ -254,7 +254,7 @@ export default {
         name: '',
         path: '',
         perms: '',
-        component: 'RouteView',
+        component: '',
         redirect: '',
         sortNo: 0,
         icon: '',

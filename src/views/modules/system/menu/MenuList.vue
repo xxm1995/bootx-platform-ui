@@ -31,6 +31,7 @@
           <span v-show="String(row.menuType) === '2'">按钮/权限</span>
         </template>
       </vxe-table-column>
+      <vxe-table-column field="component" title="组件" />
       <vxe-table-column field="icon" title="图标">
         <template v-slot="{row}">
           <div v-if="row.icon !== ''">

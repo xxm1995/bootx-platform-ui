@@ -21,6 +21,7 @@ export const FormMixin = {
   methods: {
     // 初始化
     init (record, type, ...vars) {
+      this.resetForm()
       this.type = type
       this.visible = true
       if (type && type === 'add') {
@@ -42,7 +43,6 @@ export const FormMixin = {
     // 关闭
     handleCancel () {
       this.visible = false
-      this.resetForm()
       setTimeout(() => {
         this.addable = false
         this.editable = false

@@ -2,7 +2,7 @@ import { axios } from '@/utils/request'
 
 export function add (obj) {
   return axios({
-    url: '/mail/config/add',
+    url: '/message/template/add',
     method: 'POST',
     data: obj
   })
@@ -10,26 +10,15 @@ export function add (obj) {
 
 export function update (obj) {
   return axios({
-    url: '/mail/config/update',
+    url: '/message/template/update',
     method: 'POST',
     data: obj
   })
 }
 
-/**
- * 设置启用的邮箱配置
- */
-export function setUpActivity (id) {
-  return axios({
-    url: '/mail/config/setUpActivity',
-    method: 'POST',
-    data: { id }
-  })
-}
-
 export function page (params) {
   return axios({
-    url: '/mail/config/page',
+    url: '/message/template/page',
     method: 'GET',
     params: params
   })
@@ -37,7 +26,7 @@ export function page (params) {
 
 export function get (id) {
   return axios({
-    url: '/mail/config/findById',
+    url: '/message/template/findById',
     method: 'GET',
     params: { id }
   })
@@ -48,14 +37,14 @@ export function get (id) {
  */
 export function existsByCode (code) {
   return axios({
-    url: '/mail/config/existsByCode',
+    url: '/message/template/existsByCode',
     method: 'GET',
     params: { code }
   })
 }
 export function existsByCodeNotId (code, id) {
   return axios({
-    url: '/mail/config/existsByCodeNotId',
+    url: '/message/template/existsByCodeNotId',
     method: 'GET',
     params: { code, id }
   })
@@ -63,7 +52,7 @@ export function existsByCodeNotId (code, id) {
 
 export function del (id) {
   return axios({
-    url: '/mail/config/delete',
+    url: '/message/template/delete',
     params: { id },
     method: 'DELETE'
   })

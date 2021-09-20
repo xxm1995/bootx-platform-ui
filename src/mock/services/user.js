@@ -380,7 +380,7 @@ const userNav = (options) => {
       'meta': {
         'icon': 'dashboard',
         'title': '仪表盘',
-        'show': true
+        'show': true``
       },
       'component': 'RouteView',
       'redirect': '/dashboard/analysis'

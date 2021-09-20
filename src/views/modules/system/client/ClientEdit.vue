@@ -69,7 +69,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/system/client'
+import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/client'
 export default {
   name: 'ClientEdit',
   mixins: [FormMixin],
@@ -85,19 +85,21 @@ export default {
       },
       rules: {
         code: [
-          { required: true, message: '请输入终端编码' }
+          { required: true, message: '请输入终端编码' },
+          { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入终端名称', trigger: 'blur' }
+          { required: true, message: '请输入终端名称' }
         ],
         captcha: [
-          { required: true, message: '请验证码启用状态', trigger: 'blur' }
+          { required: true, message: '请验证码启用状态' }
         ],
         enable: [
-          { required: true, message: '请选择启用状态', trigger: 'blur' }
+          { required: true, message: '请选择启用状态' }
         ],
         timeout: [
-          { required: true, message: '请填写超时时间', trigger: 'blur' }
+          { required: true, message: '请填写超时时间' },
+          { min: 1, message: '超时时间需要大于等于1' }
         ]
       }
     }
@@ -112,7 +114,6 @@ export default {
         })
       } else {
         this.confirmLoading = false
-        this.resetForm()
       }
     },
     handleOk () {
@@ -138,6 +139,20 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
     }
   }
 }

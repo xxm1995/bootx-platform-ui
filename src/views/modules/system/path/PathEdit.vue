@@ -91,7 +91,6 @@ export default {
         })
       } else {
         this.confirmLoading = false
-        this.resetForm()
       }
     },
     handleOk () {

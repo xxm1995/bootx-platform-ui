@@ -289,7 +289,7 @@ export default {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    edit (id, type) {
+    edit (id, type, parentId) {
       this.loadTree()
       if (type === 'edit' || type === 'show') {
         this.editable = true
@@ -298,7 +298,8 @@ export default {
         })
       } else {
         this.confirmLoading = false
-        this.resetForm()
+        this.form.parentId = parentId
+        this.form.menuType = 1
       }
     },
     handleOk () {

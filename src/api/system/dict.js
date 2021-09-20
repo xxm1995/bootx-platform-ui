@@ -23,6 +23,21 @@ export function get (id) {
   })
 }
 
+export function existsByCode (code) {
+  return axios({
+    url: '/dict/existsByCode',
+    method: 'GET',
+    params: { code }
+  })
+}
+export function existsByCodeNotId (code, id) {
+  return axios({
+    url: '/dict/existsByCodeNotId',
+    method: 'GET',
+    params: { code, id }
+  })
+}
+
 export function add (obj) {
   return axios({
     url: '/dict/add',
@@ -60,6 +75,21 @@ export function itemGet (id) {
     url: '/dict/item/findById',
     method: 'GET',
     params: { id }
+  })
+}
+
+export function itemExistsByCode (code, dictId) {
+  return axios({
+    url: '/dict/item/existsByCode',
+    method: 'GET',
+    params: { code, dictId }
+  })
+}
+export function itemExistsByCodeNotId (code, dictId, id) {
+  return axios({
+    url: '/dict/item/existsByCodeNotId',
+    method: 'GET',
+    params: { code, dictId, id }
   })
 }
 

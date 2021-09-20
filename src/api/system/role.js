@@ -33,6 +33,42 @@ export function get (id) {
 }
 
 /**
+ * 编码是否被使用
+ */
+export function existsByCode (code) {
+  return axios({
+    url: '/role/existsByCode',
+    method: 'GET',
+    params: { code }
+  })
+}
+export function existsByCodeNotId (code, id) {
+  return axios({
+    url: '/role/existsByCodeNotId',
+    method: 'GET',
+    params: { code, id }
+  })
+}
+
+/**
+ * 名称是否被使用
+ */
+export function existsByName (name) {
+  return axios({
+    url: '/role/existsByName',
+    method: 'GET',
+    params: { name }
+  })
+}
+export function existsByNameNotId (name, id) {
+  return axios({
+    url: '/role/existsByNameNotId',
+    method: 'GET',
+    params: { name, id }
+  })
+}
+
+/**
  * 添加
  */
 export function add (obj) {

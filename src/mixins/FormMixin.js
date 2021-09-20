@@ -42,6 +42,7 @@ export const FormMixin = {
     // 关闭
     handleCancel () {
       this.visible = false
+      this.resetForm()
       setTimeout(() => {
         this.addable = false
         this.editable = false

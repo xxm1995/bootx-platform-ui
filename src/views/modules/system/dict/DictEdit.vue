@@ -56,7 +56,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/system/dict'
+import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/dict'
 export default {
   name: 'DictEdit',
   mixins: [FormMixin],
@@ -69,10 +69,11 @@ export default {
       },
       rules: {
         code: [
-          { required: true, message: '请输入字典编码', trigger: 'blur' }
+          { required: true, message: '请输入字典编码' },
+          { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入字典名称', trigger: 'blur' }
+          { required: true, message: '请输入字典名称' }
         ]
       }
     }
@@ -87,7 +88,6 @@ export default {
         })
       } else {
         this.confirmLoading = false
-        this.resetForm()
       }
     },
     handleOk () {
@@ -113,6 +113,21 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    // 验证字典编码
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
     }
   }
 }

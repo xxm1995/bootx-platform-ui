@@ -33,6 +33,24 @@ export function get (id) {
 }
 
 /**
+ * 终端编码是否存在
+ */
+export function existsByCode (code) {
+  return axios({
+    url: '/client/existsByCode',
+    method: 'GET',
+    params: { code }
+  })
+}
+export function existsByCodeNotId (code, id) {
+  return axios({
+    url: '/client/existsByCodeNotId',
+    method: 'GET',
+    params: { code, id }
+  })
+}
+
+/**
  * 根据code获取终端信息
  */
 export function findByCode (code) {

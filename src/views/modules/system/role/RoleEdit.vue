@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { get, add, update } from '@/api/system/role'
+import { get, add, update, existsByCode, existsByCodeNotId, existsByName, existsByNameNotId } from '@/api/system/role'
 import { FormMixin } from '@/mixins/FormMixin'
 export default {
   name: 'RoleEdit',
@@ -67,10 +67,12 @@ export default {
       },
       rules: {
         name: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' }
+          { required: true, message: '请输入角色名称' },
+          { validator: this.validateName, trigger: 'blur' }
         ],
         code: [
-          { required: true, message: '请输入角色代码', trigger: 'blur' }
+          { required: true, message: '请输入角色代码' },
+          { validator: this.validateCode, trigger: 'blur' }
         ]
       },
       treeData: []
@@ -87,7 +89,6 @@ export default {
         })
       } else {
         this.confirmLoading = false
-        this.resetForm()
       }
     },
     handleOk () {
@@ -113,6 +114,34 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
+    },
+    async validateName (rule, value, callback) {
+      const { name, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByNameNotId(name, id)
+      } else {
+        res = await existsByName(name)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该名称已存在!')
+      }
     }
   }
 }

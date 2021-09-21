@@ -21,7 +21,6 @@ export const FormMixin = {
   methods: {
     // 初始化
     init (record, type, ...vars) {
-      this.resetForm()
       this.type = type
       this.visible = true
       if (type && type === 'add') {
@@ -36,6 +35,8 @@ export const FormMixin = {
         this.showable = true
         this.title = '查看'
       }
+      // 初始化表单和去除校验
+      this.resetForm()
       this.edit(record, type, ...vars)
     },
     // 编辑
@@ -48,6 +49,9 @@ export const FormMixin = {
         this.editable = false
         this.showable = false
       }, 200)
+    },
+    // 默认空方法
+    resetForm () {
     },
     // 字典翻译
     dictConvert (dictCode, code) {

@@ -101,7 +101,7 @@ export default {
       this.$refs.menuEdit.init('', 'add')
     },
     addChildren (row) {
-      this.$refs.menuEdit.init('', 'add', row.id)
+      this.$refs.menuEdit.init('', 'add', row)
     },
     edit (id) {
       this.$refs.menuEdit.init(id, 'edit')

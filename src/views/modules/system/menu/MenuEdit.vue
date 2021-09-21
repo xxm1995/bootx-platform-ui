@@ -289,7 +289,7 @@ export default {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    edit (id, type, parentId) {
+    edit (id, type, row) {
       this.loadTree()
       if (type === 'edit' || type === 'show') {
         this.editable = true
@@ -297,9 +297,16 @@ export default {
           this.form = res.data
         })
       } else {
+        // 新增
         this.confirmLoading = false
-        this.form.parentId = parentId
-        this.form.menuType = 1
+        // 添加下级
+        if (row) {
+          this.form.menuType = 1
+          this.$nextTick(() => {
+            this.form.parentId = row.id
+            this.form.path = row.path
+          })
+        }
       }
     },
     handleOk () {

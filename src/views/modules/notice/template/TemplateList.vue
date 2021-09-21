@@ -42,7 +42,7 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="code" title="编码" />
       <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="date" title="内容" />
+      <vxe-table-column field="data" title="内容" />
       <vxe-table-column field="type" title="模板类型">
         <template v-slot="{row}">
           {{ dictConvert(MessageTemplateCode, String(row.type)) }}

@@ -66,7 +66,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, update } from '@/api/notice/messageTemplate'
+import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/messageTemplate'
 import { getDictItems } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
@@ -85,7 +85,8 @@ export default {
       },
       rules: {
         code: [
-          { required: true, message: '请输入模板编码' }
+          { required: true, message: '请输入模板编码' },
+          { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入模板名称' }
@@ -135,6 +136,21 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    // 验证字典编码
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
     },
     initMessageTemplateCodeList () {
       this.messageTemplateCodeList = getDictItems(this.MessageTemplateCode).map(o => {

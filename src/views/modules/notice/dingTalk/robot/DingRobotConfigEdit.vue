@@ -18,72 +18,43 @@
         <a-input v-model="form.id" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="编号"
+        label="钉钉机器人编号"
         prop="code"
       >
         <a-input v-model="form.code" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="名称"
+        label="钉钉机器人名称"
         prop="name"
       >
         <a-input v-model="form.name" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮件服务器地址"
-        prop="host"
+        label="AccessToken"
+        prop="accessToken"
       >
-        <a-input v-model="form.host" :disabled="showable"/>
+        <a-input v-model="form.accessToken" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮件服务器端口"
-        prop="port"
+        label="开启验签"
       >
-        <a-input-number
-          v-model="form.port"
+        <a-switch
           :disabled="showable"
-          :min="0"
-          :max="65535"
-          :step="1"
-        />
+          checkedChildren="是"
+          unCheckedChildren="否"
+          v-model="form.enableSignatureCheck"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器账号"
-        prop="username"
+        label="验签秘钥"
+        prop="signSecret"
       >
-        <a-input v-model="form.username" :disabled="showable"/>
+        <a-input v-model="form.signSecret" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器密码"
-        prop="password"
+        label="备注"
+        prop="remark"
       >
-        <a-input v-model="form.password" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="邮箱服务器发送人"
-        prop="sender"
-      >
-        <a-input v-model="form.sender" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="邮箱服务器from"
-        prop="from"
-      >
-        <a-input v-model="form.from" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="安全方式"
-        prop="securityType"
-      >
-        <a-select
-          :disabled="showable"
-          allowClear
-          v-model="form.securityType"
-          style="width: 100%"
-          placeholder="选择安全方式"
-        >
-          <a-select-option v-for="item in securityTypeList" :key="item.code">{{ item.name }}</a-select-option>
-        </a-select>
+        <a-input v-model="form.remark" :disabled="showable"/>
       </a-form-model-item>
     </a-form-model>
 
@@ -96,11 +67,10 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/mailConfig'
-import { getDictItems } from '@/components/Bootx/Dict/DictUtils'
+import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/dingRobotConfig'
 
 export default {
-  name: 'MailConfigEdit',
+  name: 'DingRobotConfigEdit',
   mixins: [FormMixin],
   data () {
     return {
@@ -109,21 +79,21 @@ export default {
       form: {
         code: '',
         name: '',
-        host: '',
-        port: 465,
-        username: '',
-        password: '',
-        sender: '',
-        from: '',
-        securityType: 1
+        accessToken: '',
+        enableSignatureCheck: true,
+        signSecret: '',
+        remark: ''
       },
       rules: {
         code: [
-          { required: true, message: '请输入配置编码' },
+          { required: true, message: '请输入钉钉机器人编码' },
           { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入配置名称' }
+          { required: true, message: '请输入钉钉机器人名称' }
+        ],
+        accessToken: [
+          { required: true, message: '请输入AccessToken' }
         ]
       }
     }
@@ -139,7 +109,6 @@ export default {
       } else {
         this.confirmLoading = false
       }
-      this.initSecurityTypeList()
     },
     handleOk () {
       this.$refs.form.validate(async valid => {
@@ -178,12 +147,6 @@ export default {
       } else {
         callback('该编码已存在!')
       }
-    },
-    initSecurityTypeList () {
-      this.securityTypeList = getDictItems(this.mailSecurityCode).map(o => {
-        o.code = Number(o.code)
-        return o
-      })
     }
   }
 }

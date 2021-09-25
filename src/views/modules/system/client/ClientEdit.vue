@@ -92,7 +92,7 @@ export default {
           { required: true, message: '请输入终端名称' }
         ],
         captcha: [
-          { required: true, message: '请验证码启用状态' }
+          { required: true, message: '请选择验证码启用状态' }
         ],
         enable: [
           { required: true, message: '请选择启用状态' }

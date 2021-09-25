@@ -16,6 +16,7 @@
     </vxe-toolbar>
     <vxe-table
       resizable
+      show-overflow
       border="inner"
       ref="xTree"
       :loading="loading"

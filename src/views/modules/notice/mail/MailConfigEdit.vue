@@ -30,13 +30,13 @@
         <a-input v-model="form.name" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮件服务器地址"
+        label="服务器地址"
         prop="host"
       >
         <a-input v-model="form.host" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮件服务器端口"
+        label="端口"
         prop="port"
       >
         <a-input-number
@@ -48,25 +48,28 @@
         />
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器账号"
+        label="发送人账号"
         prop="username"
       >
         <a-input v-model="form.username" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器密码"
+        label="发送人密码"
         prop="password"
       >
-        <a-input v-model="form.password" :disabled="showable"/>
+        <a-input-password
+          v-model="form.password"
+          :placeholder="addable?'请输入密码':'为空不修改密码'"
+          :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器发送人"
+        label="发送人sender"
         prop="sender"
       >
         <a-input v-model="form.sender" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="邮箱服务器from"
+        label="邮箱from"
         prop="from"
       >
         <a-input v-model="form.from" :disabled="showable"/>
@@ -116,14 +119,39 @@ export default {
         sender: '',
         from: '',
         securityType: 1
-      },
-      rules: {
+      }
+    }
+  },
+  computed: {
+    rules () {
+      return {
         code: [
           { required: true, message: '请输入配置编码' },
           { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
           { required: true, message: '请输入配置名称' }
+        ],
+        host: [
+          { required: true, message: '请输入邮件服务器地址' }
+        ],
+        port: [
+          { required: true, message: '请输入邮件服务器端口' }
+        ],
+        username: [
+          { required: true, message: '请输入邮件发送人账号' }
+        ],
+        password: [
+          { required: this.addable, message: '请输入邮件发送人密码' }
+        ],
+        sender: [
+          { required: true, message: '请输入邮件发送人Sender' }
+        ],
+        from: [
+          { required: true, message: '请输入邮件From信息' }
+        ],
+        securityType: [
+          { required: true, message: '请选择安全方式' }
         ]
       }
     }

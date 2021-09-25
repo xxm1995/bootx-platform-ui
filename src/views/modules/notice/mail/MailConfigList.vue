@@ -59,23 +59,37 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <span>
-            <a href="javascript:" @click="show(row)">查看</a>
-          </span>
+          <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <span>
-            <a href="javascript:" @click="edit(row)">编辑</a>
-          </span>
+          <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
-          <a-popconfirm
-            title="是否删除终端"
-            @confirm="remove(row)"
-            okText="是"
-            cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
-          </a-popconfirm>
+          <a-dropdown>
+            <a class="ant-dropdown-link">
+              更多 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a-popconfirm
+                  title="是否设为默认配置"
+                  @confirm="setUpActivity(row)"
+                  okText="是"
+                  cancelText="否">
+                  <a href="javascript:">设为默认</a>
+                </a-popconfirm>
+              </a-menu-item>
+              <a-menu-item>
+                <a-popconfirm
+                  title="是否删除配置"
+                  @confirm="remove(row)"
+                  okText="是"
+                  cancelText="否">
+                  <a href="javascript:" style="color: red">删除</a>
+                </a-popconfirm>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -98,7 +112,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page } from '@/api/notice/mailConfig'
+import { del, page, setUpActivity } from '@/api/notice/mailConfig'
 import MailConfigEdit from './MailConfigEdit'
 export default {
   name: 'EmailConfigList',
@@ -126,6 +140,13 @@ export default {
         this.pagination.current = Number(res.data.current)
         this.pagination.total = Number(res.data.total)
         this.loading = false
+      })
+    },
+    // 设置默认配置
+    setUpActivity (record) {
+      setUpActivity(record.id).then(_ => {
+        this.$message.info('设置成功')
+        this.init()
       })
     },
     add () {

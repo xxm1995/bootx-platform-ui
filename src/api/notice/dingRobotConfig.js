@@ -16,17 +16,6 @@ export function update (obj) {
   })
 }
 
-/**
- * 设置启用的邮箱配置
- */
-export function setUpActivity (id) {
-  return axios({
-    url: '/ding/robot/config/setUpActivity',
-    method: 'POST',
-    data: { id }
-  })
-}
-
 export function page (params) {
   return axios({
     url: '/ding/robot/config/page',

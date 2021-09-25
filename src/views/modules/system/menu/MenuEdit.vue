@@ -273,7 +273,7 @@ export default {
     }
   },
   computed: {
-    rules: function () {
+    rules () {
       return {
         title: [ { required: true, message: '请输入菜单或权限名称' } ],
         name: [ { required: this.menuEditShow, message: '请输入路由名称' } ],

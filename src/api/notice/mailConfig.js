@@ -23,7 +23,7 @@ export function setUpActivity (id) {
   return axios({
     url: '/mail/config/setUpActivity',
     method: 'POST',
-    data: { id }
+    params: { id }
   })
 }
 

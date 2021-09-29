@@ -1,6 +1,6 @@
-<template xmlns="">
+<template>
   <a-modal
-    title="用户角色分配"
+    title="用户部门分配"
     :width="640"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -21,24 +21,23 @@
           <a-input :disabled="true" v-model="userinfo.name"/>
         </a-form-model-item>
         <a-form-model-item
-          label="角色"
+          label="部门"
           prop="roleIds"
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
         >
-          <a-select
+          <a-tree-select
             allowClear
+            multiple
+            tree-default-expand-all
             mode="multiple"
-            v-model="form.roleIds"
+            v-model="form.deptIds"
             :default-value="form.roleIds"
+            :tree-data="deptTree"
             style="width: 100%"
-            @change="searchRole"
-            placeholder="选择角色"
+            placeholder="选择部门"
           >
-            <a-select-option v-for="o in roleList" :key="o.id">
-              {{ o.name }}
-            </a-select-option>
-          </a-select>
+          </a-tree-select>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -50,11 +49,11 @@
 </template>
 
 <script>
-import { getRoleIds, addUserRole } from '@/api/system/user'
-import { list as roleList } from '@/api/system/role'
-
+import { tree } from '@/api/system/dept'
+import { addUserDept, getDeptIds } from '@/api/system/user'
+import { treeDataTranslate } from '@/utils/util'
 export default {
-  name: 'UserRoleAssign',
+  name: 'UserDeptAssign',
   data () {
     return {
       labelCol: {
@@ -67,14 +66,14 @@ export default {
       },
       visible: false,
       confirmLoading: false,
-      roleList: [],
+      deptTree: [],
       userinfo: {
         account: '',
         name: ''
       },
       form: {
         userId: '',
-        roleIds: []
+        deptIds: []
       }
     }
   },
@@ -83,13 +82,13 @@ export default {
       this.userinfo = { ...userInfo }
       this.form.userId = userInfo.id
       this.visible = true
-      // 获取角色列表
-      roleList().then(value => {
-        this.roleList = value.data
+      // 获取部门树
+      tree().then(({ data }) => {
+        this.deptTree = treeDataTranslate(data, 'id', 'deptName')
       })
-      // 获取角色信息
-      getRoleIds(userInfo.id).then(({ data }) => {
-        this.form.roleIds = data
+      // 获取用户部门信息
+      getDeptIds(userInfo.id).then(({ data }) => {
+        this.form.deptIds = data
       })
     },
     handleCancel () {
@@ -100,7 +99,7 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await addUserRole(this.form)
+          await addUserDept(this.form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')
@@ -116,9 +115,6 @@ export default {
         this.$refs.form.resetFields()
         this.form = {}
       })
-    },
-    searchRole (){
-
     }
   }
 }

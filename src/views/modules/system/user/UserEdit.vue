@@ -55,9 +55,7 @@ export default {
         username: '',
         phone: '',
         email: '',
-        avatar: '',
-        password: '',
-        confirmPassword: ''
+        avatar: ''
       },
       rules: {
         name: [{ required: true, message: '请输入名称' }
@@ -65,12 +63,6 @@ export default {
         username: [
           { required: true, message: '请输入账号' },
           { validator: this.validateUsername, trigger: 'blur' }
-        ],
-        password: [{ required: true, message: '请输入登录密码!' },
-          { validator: this.validateToNextPassword, trigger: 'change' }
-        ],
-        confirmPassword: [{ required: true, message: '请重新输入登录密码!' },
-          { validator: this.compareToFirstPassword }
         ],
         phone: [{ validator: this.validatePhone, trigger: 'blur' }],
         email: [{ validator: this.validateEmail, trigger: 'blur' }]

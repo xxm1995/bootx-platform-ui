@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import { get, add, update } from '@/api/system/depart'
+import { get, add, update } from '@/api/system/dept'
 import { FormMixin } from '@/mixins/FormMixin'
 export default {
-  name: 'DepartEdit',
+  name: 'DeptEdit',
   mixins: [FormMixin],
   data () {
     return {

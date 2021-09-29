@@ -71,9 +71,9 @@ export const asyncRouterMap = [
             meta: { title: '角色管理' }
           },
           {
-            path: '/system/depart',
+            path: '/system/dept',
             name: 'Depart',
-            component: () => import('@/views/modules/system/depart/DepartList'),
+            component: () => import('@/views/modules/system/dept/DeptList'),
             meta: { title: '部门管理' }
           },
           {

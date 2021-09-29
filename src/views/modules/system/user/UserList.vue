@@ -51,7 +51,7 @@
       </vxe-table-column>
       <vxe-table-column field="status" title="用户状态">
         <template slot-scope="{row}">
-          <a-tag>{{ dictConvert(userStatusCode,row.status) }}</a-tag>
+          {{ dictConvert(userStatusCode,row.status) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="registerTime" title="注册时间" />
@@ -70,10 +70,14 @@
                 <a @click="assignRoles(row)">角色分配</a>
               </a-menu-item>
               <a-menu-item>
+                <a @click="assignDept(row)">部门分配</a>
+              </a-menu-item>
+              <a-menu-item>
                 <a @click="resetPwd(row)">重置密码</a>
               </a-menu-item>
               <a-menu-item>
-                <a href="javascript:">锁定账号</a>
+                <a v-if="row.status === 1 " @click="lockUserConfirm(row.id,true)">锁定账号</a>
+                <a v-if="row.status === 3 " @click="lockUserConfirm(row.id,false)">解锁账号</a>
               </a-menu-item>
             </a-menu>
           </a-dropdown>
@@ -90,9 +94,13 @@
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
-    <!-- 角色配置 -->
+    <!-- 角色分配 -->
     <user-role-assign
       ref="userRoleAssign"
+    />
+    <!-- 部门分配 -->
+    <user-dept-assign
+      ref="userDeptAssign"
     />
     <!--  添加用户  -->
     <user-add
@@ -117,8 +125,9 @@
 </template>
 
 <script>
-import { del, page } from '@/api/system/user'
+import { del, lockUser, page, unlockUser } from '@/api/system/user'
 import UserRoleAssign from './UserRoleAssign'
+import UserDeptAssign from './UserDeptAssign'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 import UserShow from './UserShow'
@@ -129,6 +138,7 @@ export default {
   name: 'UserList',
   components: {
     UserRoleAssign,
+    UserDeptAssign,
     UserAdd,
     UserEdit,
     UserShow,
@@ -138,6 +148,7 @@ export default {
   data () {
     return {
       userStatusCode: 'UserStatusCode',
+      confirmLoading: false,
       queryParam: {
         account: '',
         name: ''
@@ -161,6 +172,10 @@ export default {
     assignRoles (record) {
       this.$refs.userRoleAssign.edit(record, 'edit')
     },
+    // 分配角色
+    assignDept (record) {
+      this.$refs.userDeptAssign.edit(record, 'edit')
+    },
     add () {
       this.$refs.userAdd.init('', 'add')
     },
@@ -172,6 +187,25 @@ export default {
     },
     resetPwd (record) {
       this.$refs.resetPassword.init(record.id, 'edit')
+    },
+    /**
+     * 锁定用户
+     * @param userId 用户id
+     * @param type true 锁定, false 解锁
+     */
+    lockUserConfirm (userId, type) {
+      const that = this
+      this.$confirm({
+        title: type ? '是否锁定该用户' : '是否解锁该用户',
+        onOk: async function () {
+          if (type) {
+            await lockUser(userId)
+          } else {
+            await unlockUser(userId)
+          }
+          that.init()
+        }
+      })
     },
     remove (record) {
       del(record.id).then(res => {

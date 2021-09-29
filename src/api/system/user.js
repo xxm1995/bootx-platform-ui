@@ -66,11 +66,22 @@ export function del (id) {
 }
 
 /**
- * 获取用户拥有角色
+ * 获取用户拥有角色id集合
  */
 export function getRoleIds (id) {
   return axios({
-    url: `/role/findRoleIdsByUser`,
+    url: `/user/role/findRoleIdsByUser`,
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 获取用户拥有角色集合
+ */
+export function getRoles (id) {
+  return axios({
+    url: `/user/role/findRolesByUser`,
     method: 'GET',
     params: { id }
   })
@@ -81,9 +92,64 @@ export function getRoleIds (id) {
  */
 export function addUserRole (data) {
   return axios({
-    url: `/role/saveAndUpdate`,
+    url: `/user/role/saveAndUpdate`,
     method: 'POST',
     data: data
+  })
+}
+
+/**
+ * 获取用户拥有部门id集合
+ */
+export function getDeptIds (id) {
+  return axios({
+    url: `/user/dept/findDeptIdsByUser`,
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 获取用户拥有部门集合
+ */
+export function getDeptList (id) {
+  return axios({
+    url: `/user/dept/findDeptListByUser`,
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 添加用户部门关联关系
+ */
+export function addUserDept (data) {
+  return axios({
+    url: `/user/dept/saveAndUpdate`,
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
+ * 锁定用户
+ */
+export function lockUser (userId) {
+  return axios({
+    url: '/user/admin/lock',
+    method: 'POST',
+    params: { userId }
+  })
+}
+
+/**
+ * 解锁用户
+ */
+export function unlockUser (userId) {
+  return axios({
+    url: '/user/admin/unlock',
+    method: 'POST',
+    params: { userId }
   })
 }
 

@@ -64,7 +64,10 @@ export default {
           { required: true, message: '请输入账号' },
           { validator: this.validateUsername, trigger: 'blur' }
         ],
-        phone: [{ validator: this.validatePhone, trigger: 'blur' }],
+        phone: [
+          { required: true, message: '请输入手机号' },
+          { validator: this.validatePhone, trigger: 'blur' }
+        ],
         email: [{ validator: this.validateEmail, trigger: 'blur' }]
       }
     }

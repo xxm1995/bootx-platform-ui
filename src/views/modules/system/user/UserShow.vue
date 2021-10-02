@@ -21,14 +21,20 @@
         <a-form-model-item label="手机号" prop="phone">
           <a-input disabled v-model="form.phone"/>
         </a-form-model-item>
-        <a-form-model-item label="邮箱" prop="email">
+        <a-form-model-item label="邮箱">
           <a-input disabled v-model="form.email"/>
         </a-form-model-item>
-        <a-form-model-item label="管理员" prop="email">
+        <a-form-model-item label="管理员">
           <a-switch checked-children="是" un-checked-children="否" v-model="form.admin" disabled/>
         </a-form-model-item>
-        <a-form-model-item label="用户状态" prop="email">
+        <a-form-model-item label="用户状态">
           <a-tag>{{ dictConvert(userStatusCode,form.status) }}</a-tag>
+        </a-form-model-item>
+        <a-form-model-item label="角色列表">
+          <a-tag color="green" v-for="o in roles">{{ o.name }}</a-tag>
+        </a-form-model-item>
+        <a-form-model-item label="部门列表">
+          <a-tag color="green" v-for="o in deptList">{{ o.deptName }}</a-tag>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -37,7 +43,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get } from '@/api/system/user'
+import { get, getRoles, getDeptList } from '@/api/system/user'
 
 export default {
   name: 'UserShow',
@@ -46,15 +52,23 @@ export default {
     return {
       userStatusCode: 'UserStatusCode',
       form: {
-      }
+      },
+      roles: [],
+      deptList: []
     }
   },
   methods: {
-    edit (id) {
-      get(id).then(res => {
+    async edit (id) {
+      await get(id).then(res => {
         this.form = res.data
-        this.confirmLoading = false
       })
+      await getRoles(id).then(res => {
+        this.roles = res.data
+      })
+      await getDeptList(id).then(res => {
+        this.deptList = res.data
+      })
+      this.confirmLoading = false
     }
   }
 }

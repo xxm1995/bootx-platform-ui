@@ -5,7 +5,26 @@
     @close="handleCancel"
     :visible="visible"
     :confirmLoading="confirmLoading">
-
+    <a-spin :spinning="confirmLoading" style="margin-bottom: 3rem">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :labelCol="labelCol"
+        :wrapperCol="wrapperCol"
+      >
+        <a-form-model-item
+          label="名称"
+          prop="component"
+        >
+          <a-input
+            :disabled="showable"
+            placeholder="请输入路由参数 redirect"
+            v-model="form.deptName"
+          />
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
   </a-drawer>
 </template>
 
@@ -18,19 +37,31 @@ export default {
   data () {
     return {
       form: {
-        code: '',
-        name: '',
-        enable: true,
-        timeout: '5',
-        description: ''
-      },
-      rules: {
-
+        parentId: '',
+        deptName: '',
+        sortNo: 0,
+        orgCategory: '',
+        orgCode: '',
+        mobile: '',
+        fax: '',
+        address: '',
+        remark: ''
+      }
+    }
+  },
+  computed: {
+    rules () {
+      return {
+        title: [ { required: true, message: '请输入菜单或权限名称' } ],
+        name: [ { required: this.menuEditShow, message: '请输入路由名称' } ],
+        path: [ { required: this.menuEditShow, message: '请输入菜单路径' } ],
+        perms: [ { required: !this.menuEditShow, message: '请输入权限代码' } ],
+        url: [{ required: this.menuEditShow, message: '请输入菜单路径' }]
       }
     }
   },
   methods: {
-    edit (id, type) {
+    edit (id, type, row) {
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -38,6 +69,13 @@ export default {
           this.confirmLoading = false
         })
       } else {
+        // 添加下级
+        if (row) {
+          this.form.menuType = 1
+          this.$nextTick(() => {
+            this.form.parentId = row.id
+          })
+        }
         this.confirmLoading = false
       }
     },

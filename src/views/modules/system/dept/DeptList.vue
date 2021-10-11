@@ -36,13 +36,25 @@
           <a-divider type="vertical" />
           <a href="javascript:" @click="show(row.id)">查看</a>
           <a-divider type="vertical" />
-          <a-popconfirm
-            title="是否删除菜单或权限"
-            @confirm="remove(row)"
-            okText="是"
-            cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
-          </a-popconfirm>
+          <a-dropdown>
+            <a class="ant-dropdown-link">
+              更多 <a-icon type="down" />
+            </a>
+            <a-menu slot="overlay">
+              <a-menu-item>
+                <a @click="addChildren(row)">添加下级</a>
+              </a-menu-item>
+              <a-menu-item>
+                <a-popconfirm
+                  title="是否删除该部门组织"
+                  @confirm="remove(row)"
+                  okText="是"
+                  cancelText="否">
+                  <a href="javascript:">删除</a>
+                </a-popconfirm>
+              </a-menu-item>
+            </a-menu>
+          </a-dropdown>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -83,6 +95,9 @@ export default {
     },
     show (id) {
       this.$refs.deptEdit.init(id, 'show')
+    },
+    addChildren (row) {
+      this.$refs.deptEdit.init('', 'show', row)
     },
     remove (record) {
       del(record.id).then(_ => {

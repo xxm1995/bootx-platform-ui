@@ -43,6 +43,7 @@ import {
   existsPhoneNotId,
   existsEmailNotId
 } from '@/api/system/user'
+import { validateMobile, validateEmail } from '@/utils/validate'
 
 export default {
   name: 'UserEdit',
@@ -109,7 +110,8 @@ export default {
       if (!value) {
         callback()
       } else {
-        if (new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
+        const { msg, result } = validateMobile(value)
+        if (result) {
           existsPhoneNotId(value, this.form.id).then((res) => {
             if (!res.data) {
               callback()
@@ -118,7 +120,7 @@ export default {
             }
           })
         } else {
-          callback('请输入正确格式的手机号码!')
+          callback(msg)
         }
       }
     },
@@ -126,7 +128,7 @@ export default {
       if (!value) {
         callback()
       } else {
-        if (new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).test(value)) {
+        if (validateEmail(value)) {
           existsEmailNotId(value, this.form.id).then((res) => {
             if (!res.data) {
               callback()

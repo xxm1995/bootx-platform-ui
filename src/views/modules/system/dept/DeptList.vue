@@ -97,7 +97,7 @@ export default {
       this.$refs.deptEdit.init(id, 'show')
     },
     addChildren (row) {
-      this.$refs.deptEdit.init('', 'show', row)
+      this.$refs.deptEdit.init('', 'add', row)
     },
     remove (record) {
       del(record.id).then(_ => {

@@ -289,8 +289,8 @@ export default {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    edit (id, type, row) {
-      this.loadTree()
+    async edit (id, type, row) {
+      await this.loadTree()
       if (type === 'edit' || type === 'show') {
         this.editable = true
         get(id).then(res => {

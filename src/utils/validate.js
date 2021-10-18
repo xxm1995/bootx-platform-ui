@@ -77,7 +77,7 @@ export const vaildatePc = function () {
 }
 
 /**
- * validate mail
+ * validate 邮件
  * @param email
  * @returns {boolean}
  */
@@ -90,10 +90,9 @@ export function validateEmail (email) {
  * 判断身份证号码
  */
 export function cardid (code) {
-  let list = []
   let result = true
   let msg = ''
-  var city = {
+  const city = {
     11: '北京',
     12: '天津',
     13: '河北',
@@ -131,7 +130,7 @@ export function cardid (code) {
     91: '国外 '
   }
   if (!validatenull(code)) {
-    if (code.length == 18) {
+    if (code.length === 18) {
       if (!code || !/(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(code)) {
         msg = '证件号码格式错误'
       } else if (!city[code.substr(0, 2)]) {
@@ -141,18 +140,18 @@ export function cardid (code) {
         code = code.split('')
         // ∑(ai×Wi)(mod 11)
         // 加权因子
-        var factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
+        const factor = [7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2]
         // 校验位
-        var parity = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2, 'x']
-        var sum = 0
-        var ai = 0
-        var wi = 0
-        for (var i = 0; i < 17; i++) {
+        const parity = [1, 0, 'X', 9, 8, 7, 6, 5, 4, 3, 2, 'x']
+        let sum = 0
+        let ai = 0
+        let wi = 0
+        for (let i = 0; i < 17; i++) {
           ai = code[i]
           wi = factor[i]
           sum += ai * wi
         }
-        if (parity[sum % 11] != code[17]) {
+        if (parity[sum % 11] !== code[17]) {
           msg = '证件号码校验位错误'
         } else {
           result = false
@@ -164,26 +163,23 @@ export function cardid (code) {
   } else {
     msg = '证件号码不能为空'
   }
-  list.push(result)
-  list.push(msg)
-  return list
+  return { result, msg }
 }
 
 /**
  * 判断手机号码是否正确
  */
-export function isvalidatemobile (phone) {
-  let list = []
-  let result = true
+export function validateMobile (phone) {
+  let result = false
   let msg = ''
-  var isPhone = /^0\d{2,3}-?\d{7,8}$/
+  const isPhone = /^0\d{2,3}-?\d{7,8}$/
   // 增加134 减少|1349[0-9]{7}，增加181,增加145，增加17[678]
   if (!validatenull(phone)) {
-    if (phone.length == 11) {
+    if (phone.length === 11) {
       if (isPhone.test(phone)) {
         msg = '手机号码格式不正确'
       } else {
-        result = false
+        result = true
       }
     } else {
       msg = '手机号码长度不为11位'
@@ -191,18 +187,15 @@ export function isvalidatemobile (phone) {
   } else {
     msg = '手机号码不能为空'
   }
-  list.push(result)
-  list.push(msg)
-  return list
+  return { result, msg }
 }
 
 /**
  * 判断姓名是否正确
  */
 export function validatename (name) {
-  var regName = /^[\u4e00-\u9fa5]{2,4}$/
-  if (!regName.test(name)) return false
-  return true
+  const regName = /^[\u4e00-\u9fa5]{2,4}$/
+  return regName.test(name)
 }
 
 /**
@@ -210,9 +203,9 @@ export function validatename (name) {
  */
 export function validatenum (num, type) {
   let regName = /[^\d.]/g
-  if (type == 1) {
+  if (type === 1) {
     if (!regName.test(num)) return false
-  } else if (type == 2) {
+  } else if (type === 2) {
     regName = /[^\d]/g
     if (!regName.test(num)) return false
   }
@@ -224,9 +217,9 @@ export function validatenum (num, type) {
  */
 export function validatenumord (num, type) {
   let regName = /[^\d.]/g
-  if (type == 1) {
+  if (type === 1) {
     if (!regName.test(num)) return false
-  } else if (type == 2) {
+  } else if (type === 2) {
     regName = /[^\d.]/g
     if (!regName.test(num)) return false
   }
@@ -244,12 +237,11 @@ export function validatenull (val) {
     return false
   }
   if (val instanceof Array) {
-    if (val.length == 0) return true
+    if (val.length === 0) return true
   } else if (val instanceof Object) {
     if (JSON.stringify(val) === '{}') return true
   } else {
-    if (val == 'null' || val == null || val == 'undefined' || val == undefined || val == '') return true
-    return false
+    return val === 'null' || val == null || val === 'undefined' || val === undefined || val === ''
   }
   return false
 }

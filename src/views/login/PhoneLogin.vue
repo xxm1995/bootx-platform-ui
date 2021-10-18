@@ -57,6 +57,7 @@
 <script>
 import { sendSmsCode } from '@/api/login/login'
 import { mapActions } from 'vuex'
+import { validateMobile } from '@/utils/validate'
 export default {
   name: 'PhoneLogin',
   data () {
@@ -70,7 +71,7 @@ export default {
       rules: {
         phone: [
           { required: true, message: '请输入手机号' },
-          { validator: this.validateMobile }
+          { validator: this.validatePhone }
         ],
         smsCaptcha: [{ required: true, message: '请输入验证码' }]
       },
@@ -115,12 +116,9 @@ export default {
     },
 
     // 校验手机号
-    validateMobile (rule, value, callback) {
-      if (!value || new RegExp(/^1([38][0-9]|4[579]|5[0-3,5-9]|6[6]|7[0135678]|9[89])\d{8}$/).test(value)) {
-        callback()
-      } else {
-        callback('您的手机号码格式不正确!')
-      }
+    validatePhone (rule, value, callback) {
+      const { msg, result } = validateMobile(value)
+      result ? callback() : callback(msg)
     },
 
     handleSubmit (e) {

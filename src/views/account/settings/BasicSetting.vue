@@ -2,8 +2,7 @@
   <div class="account-settings-info-view">
     <a-row :gutter="16" type="flex" justify="center">
       <a-col :order="isMobile ? 2 : 1" :md="24" :lg="16">
-
-        <a-form layout="vertical">
+        <a-form-model layout="vertical">
           <a-form-item
             label="昵称"
           >
@@ -25,7 +24,7 @@
           <a-form-item>
             <a-button type="primary">更新基本信息</a-button>
           </a-form-item>
-        </a-form>
+        </a-form-model>
 
       </a-col>
       <a-col :order="1" :md="24" :lg="8" :style="{ minHeight: '180px' }">

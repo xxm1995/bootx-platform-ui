@@ -148,7 +148,6 @@ export default {
   data () {
     return {
       userStatusCode: 'UserStatusCode',
-      confirmLoading: false,
       queryParam: {
         account: '',
         name: ''

@@ -15,3 +15,11 @@ export function operatePage (params) {
     params: params
   })
 }
+
+export function operateInfo (id) {
+  return axios({
+    url: '/log/operate/findById',
+    method: 'GET',
+    params: { id }
+  })
+}

@@ -71,16 +71,23 @@
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
+    <operate-log-info
+      ref="operateLogInfo"
+    />
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { operatePage } from '@/api/system/log'
+import OperateLogInfo from './OperateLogInfo'
 
 export default {
   name: 'OperateLogList',
   mixins: [TableMixin],
+  components: {
+    OperateLogInfo
+  },
   data () {
     return {
       logBusinessType: 'LogBusinessType',
@@ -102,8 +109,10 @@ export default {
         this.pagination.total = Number(res.data.total)
         this.loading = false
       })
+    },
+    show (record) {
+      this.$refs.operateLogInfo.init(record.id, 'show')
     }
-
   },
   created () {
     this.init()

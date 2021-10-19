@@ -8,6 +8,14 @@ export function loginPage (params) {
   })
 }
 
+export function loginInfo (id) {
+  return axios({
+    url: '/log/login/findById',
+    method: 'GET',
+    params: { id }
+  })
+}
+
 export function operatePage (params) {
   return axios({
     url: '/log/operate/page',

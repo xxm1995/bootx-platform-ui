@@ -68,16 +68,23 @@
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
+    <login-log-info
+      ref="loginLogInfo"
+    />
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { loginPage } from '@/api/system/log'
+import LoginLogInfo from './LoginLogInfo'
 
 export default {
   name: 'LoginLogList',
   mixins: [TableMixin],
+  components: {
+    LoginLogInfo
+  },
   data () {
     return {
       queryParam: {
@@ -98,8 +105,10 @@ export default {
         this.pagination.total = Number(res.data.total)
         this.loading = false
       })
+    },
+    show (record) {
+      this.$refs.loginLogInfo.init(record.id, 'show')
     }
-
   },
   created () {
     this.init()

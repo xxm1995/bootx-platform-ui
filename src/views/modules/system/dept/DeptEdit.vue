@@ -181,7 +181,7 @@ export default {
     },
     validatePhone (rule, value, callback) {
       const { msg, result } = validateMobile(value)
-      result ? callback() : callback(msg)
+      result || !value ? callback() : callback(msg)
     },
     resetForm () {
       this.$nextTick(() => {

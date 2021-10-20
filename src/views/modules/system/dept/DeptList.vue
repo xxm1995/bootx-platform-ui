@@ -30,6 +30,7 @@
           <span v-show="String(row.orgCategory) === '3'">岗位</span>
         </template>
       </vxe-table-column>
+      <vxe-table-column field="orgCode" title="机构编码"/>
       <vxe-table-column title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row.id)">编辑</a>

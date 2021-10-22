@@ -129,6 +129,7 @@ export default {
       this.$refs.form.validate(async valid => {
         const state = this.state
         if (valid) {
+          this.confirmLoading = true
           loginOpenId(this.form)
             .then(() => this.$emit('loginSuccess'))
             .finally(() => {

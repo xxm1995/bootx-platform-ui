@@ -50,67 +50,6 @@
 
     </a-descriptions>
 
-<!--    <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="操作人员账号"-->
-<!--          >-->
-<!--            <span>{{ form.username || '未知' }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="操作模块"-->
-<!--          >-->
-<!--            <span>{{ form.title }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="业务类型"-->
-<!--          >-->
-<!--            <span>{{ dictConvert(logBusinessType,form.businessType) }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="请求方式"-->
-<!--          >-->
-<!--            <span>{{ form.requestMethod }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="请求url"-->
-<!--          >-->
-<!--            <span>{{ form.operateUrl }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="操作ip"-->
-<!--          >-->
-<!--            <span>{{ form.operateIp }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="操作状态"-->
-<!--          >-->
-<!--            <a-switch-->
-<!--              disabled-->
-<!--              checked-children="成功"-->
-<!--              un-checked-children="失败"-->
-<!--              v-model="form.success" />-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--        <a-col :span="12">-->
-<!--          <a-form-model-item-->
-<!--            label="操作时间"-->
-<!--          >-->
-<!--            <span>{{ form.operateTime }}</span>-->
-<!--          </a-form-model-item>-->
-<!--        </a-col>-->
-<!--      </a-row>-->
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
     </template>

@@ -79,7 +79,7 @@ export default {
     }
   },
   methods: {
-    edit (userInfo, type) {
+    edit (userInfo) {
       this.userinfo = { ...userInfo }
       this.form.userId = userInfo.id
       this.visible = true

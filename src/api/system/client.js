@@ -1,21 +1,5 @@
 import { axios } from '@/utils/request'
 
-export function add (obj) {
-  return axios({
-    url: '/client/add',
-    method: 'POST',
-    data: obj
-  })
-}
-
-export function update (obj) {
-  return axios({
-    url: '/client/update',
-    method: 'POST',
-    data: obj
-  })
-}
-
 export function page (params) {
   return axios({
     url: '/client/page',
@@ -60,6 +44,23 @@ export function findByCode (code) {
     params: { code }
   })
 }
+
+export function add (obj) {
+  return axios({
+    url: '/client/add',
+    method: 'POST',
+    data: obj
+  })
+}
+
+export function update (obj) {
+  return axios({
+    url: '/client/update',
+    method: 'POST',
+    data: obj
+  })
+}
+
 export function del (id) {
   return axios({
     url: '/client/delete',

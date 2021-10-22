@@ -120,7 +120,7 @@ export default {
       })
     }
   },
-  created() {
+  created () {
     this.init()
   }
 }

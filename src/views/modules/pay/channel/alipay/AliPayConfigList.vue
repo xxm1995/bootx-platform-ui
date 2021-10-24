@@ -164,7 +164,7 @@ export default {
       clearActivity(record.id).then(() => {
         this.init()
       })
-    },
+    }
   },
   created () {
     this.init()

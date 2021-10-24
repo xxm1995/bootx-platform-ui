@@ -150,7 +150,7 @@ export default {
     }
   },
   computed: {
-    rules() {
+    rules () {
       return {
         name: [ { required: true, message: '请输入配置名称' } ],
         appId: [ { required: true, message: '请输入AppId' } ],

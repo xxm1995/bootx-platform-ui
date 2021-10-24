@@ -66,7 +66,7 @@
         <template slot-scope="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="edit(row)">操作</a>
+          <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -79,12 +79,11 @@
               </a-menu-item>
               <a-menu-item>
                 <a-popconfirm
-                  title="是否删除菜单或权限"
+                  title="是否删除该配置"
                   @confirm="remove(row)"
                   okText="是"
                   cancelText="否">
-                  <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
-                  <a href="javascript:" v-else :disabled="true">删除</a>
+                  <a href="javascript:" style="color: red">删除</a>
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>

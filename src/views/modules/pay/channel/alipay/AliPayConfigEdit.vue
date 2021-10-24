@@ -44,6 +44,7 @@
           <a-select
             allowClear
             mode="multiple"
+            :disabled="showable"
             v-model="form.payTypeList"
             :default-value="form.payTypeList"
             style="width: 100%"
@@ -63,6 +64,7 @@
         <a-form-model-item label="认证方式" prop="authType" >
           <a-select
             allowClear
+            :disabled="showable"
             v-model="form.authType"
             :default-value="form.authType"
             style="width: 100%"
@@ -75,6 +77,7 @@
         <a-form-model-item label="签名类型" prop="signType" >
           <a-select
             allowClear
+            :disabled="showable"
             v-model="form.signType"
             :default-value="form.signType"
             style="width: 100%"
@@ -86,16 +89,16 @@
         <a-form-model-item v-show="form.authType === 1" label="公钥" prop="alipayPublicKey" >
           <a-textarea :disabled="showable" v-model="form.alipayPublicKey"/>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="应用公钥证书" prop="appCertPath" >
-          <a-textarea :disabled="showable" v-model="form.appCertPath">
+        <a-form-model-item v-show="form.authType === 2 " label="应用公钥证书" prop="appCert" >
+          <a-textarea :disabled="showable" v-model="form.appCert">
           </a-textarea>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="支付宝公钥证书" prop="alipayCertPath" >
-          <a-textarea :disabled="showable" v-model="form.alipayCertPath">
+        <a-form-model-item v-show="form.authType === 2 " label="支付宝公钥证书" prop="alipayCert" >
+          <a-textarea :disabled="showable" v-model="form.alipayCert">
           </a-textarea>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="CA根证书文件" prop="alipayRootCertPath" >
-          <a-textarea :disabled="showable" v-model="form.alipayRootCertPath">
+        <a-form-model-item v-show="form.authType === 2 " label="CA根证书文件" prop="alipayRootCert" >
+          <a-textarea :disabled="showable" v-model="form.alipayRootCert">
           </a-textarea>
         </a-form-model-item>
         <a-form-model-item label="私钥" prop="privateKey" >
@@ -131,11 +134,11 @@ export default {
         returnUrl: '',
         serverUrl: '',
         authType: 1,
-        signType: '',
+        signType: 'RSA2',
         alipayPublicKey: '',
-        appCertPath: '',
-        alipayCertPath: '',
-        alipayRootCertPath: '',
+        appCert: '',
+        alipayCert: '',
+        alipayRootCert: '',
         privateKey: '',
         expireTime: '',
         payTypeList: [],
@@ -157,9 +160,9 @@ export default {
         authType: [ { required: true, message: '请选择认证方式' } ],
         signType: [ { required: true, message: '请选择加密类型' } ],
         alipayPublicKey: [ { required: this.form.authType === 1, message: '请输入支付宝公钥' } ],
-        appCertPath: [ { required: this.form.authType === 2, message: '请输入应用证书' } ],
-        alipayCertPath: [ { required: this.form.authType === 2, message: '请输入支付宝证书' } ],
-        alipayRootCertPath: [ { required: this.form.authType === 2, message: '请输入支付宝CA根证书' } ],
+        appCert: [ { required: this.form.authType === 2, message: '请输入应用证书' } ],
+        alipayCert: [ { required: this.form.authType === 2, message: '请输入支付宝证书' } ],
+        alipayRootCert: [ { required: this.form.authType === 2, message: '请输入支付宝CA根证书' } ],
         privateKey: [ { required: true, message: '请输入支付私钥' } ],
         sandbox: [ { required: true, message: '请选择是否为沙箱环境' } ],
         expireTime: [ { required: true, message: '请输入默认超时配置' } ],

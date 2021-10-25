@@ -2,6 +2,8 @@
   <a-card :bordered="false">
     <vxe-toolbar
       custom
+      export
+      print
       zoom
       :refresh="{query: init}"
     >
@@ -12,6 +14,8 @@
           @click="add()">
           新建
         </a-button>
+        <a-button style="margin-left: 8px" @click="$refs.xTree.setAllTreeExpand(true)">展开所有</a-button>
+        <a-button style="margin-left: 8px" @click="$refs.xTree.clearTreeExpand()">关闭所有</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -32,6 +36,7 @@
           <span v-show="String(row.menuType) === '2'">按钮/权限</span>
         </template>
       </vxe-table-column>
+      <vxe-table-column field="path" title="请求路径"/>
       <vxe-table-column field="sortNo" title="排序" :visible="false"/>
       <vxe-table-column field="component" title="组件" />
       <vxe-table-column field="icon" title="图标">

@@ -10,7 +10,7 @@
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-model-item label="参数键名">
-              <a-input v-model="queryParam.key" placeholder=""/>
+              <a-input v-model="queryParam.paramKey" placeholder=""/>
             </a-form-model-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -44,12 +44,17 @@
     >
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="参数名称" />
-      <vxe-table-column field="key" title="参数键名" />
+      <vxe-table-column field="paramKey" title="参数键名" />
       <vxe-table-column field="value" title="参数值" />
-      <vxe-table-column field="system" title="系统参数" >
+      <vxe-table-column field="type" title="参数类型" >
         <template v-slot="{row}">
-          <a-tag v-if="row.system" color="green">系统参数</a-tag>
-          <a-tag v-else color="red">用户参数</a-tag>
+          <span>{{ dictConvert(paramType,row.type) }}</span>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column align="" field="system" title="内置参数" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.system" color="red">是</a-tag>
+          <a-tag v-else color="green">否</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column field="mark" title="备注" />
@@ -100,8 +105,9 @@ export default {
   },
   data () {
     return {
+      paramType: 'ParamType',
       queryParam: {
-        key: '',
+        paramKey: '',
         name: ''
       }
     }

@@ -100,7 +100,6 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/mailConfig'
-import { getDictItems } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'MailConfigEdit',
@@ -158,6 +157,7 @@ export default {
   },
   methods: {
     edit (id, type) {
+      this.securityTypeList = this.getDictItemsByNumber(this.mailSecurityCode)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -167,7 +167,6 @@ export default {
       } else {
         this.confirmLoading = false
       }
-      this.initSecurityTypeList()
     },
     handleOk () {
       this.$refs.form.validate(async valid => {
@@ -206,12 +205,6 @@ export default {
       } else {
         callback('该编码已存在!')
       }
-    },
-    initSecurityTypeList () {
-      this.securityTypeList = getDictItems(this.mailSecurityCode).map(o => {
-        o.code = Number(o.code)
-        return o
-      })
     }
   }
 }

@@ -67,7 +67,6 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/messageTemplate'
-import { getDictItems } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'TemplateEdit',
@@ -102,6 +101,7 @@ export default {
   },
   methods: {
     edit (id, type) {
+      this.messageTemplateCodeList = this.getDictItemsByNumber(this.MessageTemplateCode)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -111,7 +111,6 @@ export default {
       } else {
         this.confirmLoading = false
       }
-      this.initMessageTemplateCodeList()
     },
     handleOk () {
       this.$refs.form.validate(async valid => {
@@ -151,12 +150,6 @@ export default {
       } else {
         callback('该编码已存在!')
       }
-    },
-    initMessageTemplateCodeList () {
-      this.messageTemplateCodeList = getDictItems(this.MessageTemplateCode).map(o => {
-        o.code = Number(o.code)
-        return o
-      })
     }
   }
 }

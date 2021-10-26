@@ -56,8 +56,8 @@ export function update (obj) {
 
 export function del (id) {
   return axios({
-    url: '/dict/deleteById',
-    method: 'GET',
+    url: '/dict/delete',
+    method: 'DELETE',
     params: { id }
   })
 }
@@ -111,8 +111,8 @@ export function itemUpdate (obj) {
 
 export function itemDel (id) {
   return axios({
-    url: '/dict/deleteById',
-    method: 'GET',
+    url: '/dict/delete',
+    method: 'DELETE',
     params: { id }
   })
 }

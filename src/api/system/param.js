@@ -65,17 +65,17 @@ export function del (id) {
   })
 }
 
-export function existsByCode (code) {
+export function existsByKey (key) {
   return axios({
-    url: '/system/param/existsByCode',
+    url: '/system/param/existsByKey',
     method: 'GET',
-    params: { code }
+    params: { key }
   })
 }
-export function existsByCodeNotId (code, id) {
+export function existsByKeyNotId (key, id) {
   return axios({
-    url: '/system/param/existsByCodeNotId',
+    url: '/system/param/existsByKeyNotId',
     method: 'GET',
-    params: { code, id }
+    params: { key, id }
   })
 }

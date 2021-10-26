@@ -45,7 +45,7 @@
       <vxe-table-column field="data" title="内容" />
       <vxe-table-column field="type" title="模板类型">
         <template v-slot="{row}">
-          {{ dictConvert(MessageTemplateCode, String(row.type)) }}
+          {{ dictConvert(MessageTemplateCode, row.type) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />

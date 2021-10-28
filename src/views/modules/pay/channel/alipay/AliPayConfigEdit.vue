@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :title="title"
-    :width="650"
+    :width="modalWidth"
     :mask-closable="showable"
     @close="handleCancel"
     :visible="visible"
@@ -14,6 +14,7 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
+        <a-form-model-item prop="id" hidden="true" />
         <a-form-model-item label="名称" prop="name" >
           <a-input :disabled="showable" v-model="form.name"/>
         </a-form-model-item>
@@ -146,7 +147,8 @@ export default {
         activity: null,
         state: '',
         remark: ''
-      }
+      },
+      rawForm: {}
     }
   },
   computed: {
@@ -168,6 +170,16 @@ export default {
         expireTime: [ { required: true, message: '请输入默认超时配置' } ],
         payTypeList: [ { required: true, message: '请选择支持的支付类型' } ]
       }
+    },
+    diff () {
+      return {
+        appId: this.diffForm(this.form.appId, this.rawForm.appId),
+        alipayPublicKey: this.diffForm(this.form.alipayPublicKey, this.rawForm.alipayPublicKey),
+        appCert: this.diffForm(this.form.appCert, this.rawForm.appCert),
+        alipayCert: this.diffForm(this.form.alipayCert, this.rawForm.alipayCert),
+        alipayRootCert: this.diffForm(this.form.alipayRootCert, this.rawForm.alipayRootCert),
+        privateKey: this.diffForm(this.form.privateKey, this.rawForm.privateKey)
+      }
     }
   },
   methods: {
@@ -179,6 +191,7 @@ export default {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          this.rawForm = { ...res.data }
           this.confirmLoading = false
         })
       } else {
@@ -192,7 +205,11 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update(this.form)
+            const form = {
+              ...this.form,
+              ...this.diff
+            }
+            await update(form)
           }
           setTimeout(() => {
             this.confirmLoading = false

@@ -4,8 +4,9 @@
     :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
-    :maskClosable="false"
+    @ok="handleOk"
     @cancel="handleCancel"
+    cancelText="关闭"
   >
     <a-form-model
       ref="form"
@@ -14,75 +15,53 @@
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <a-form-model-item label="用户账号" prop="username">
-        <a-input disabled="" v-model="form.username"/>
+      <a-form-model-item label="旧密码" prop="oldPassword">
+        <a-input v-model="form.oldPassword"/>
       </a-form-model-item>
-      <a-form-model-item label="用户名称" prop="name">
-        <a-input disabled="" v-model="form.name"/>
+      <a-form-model-item label="新密码" prop="newPassword">
+        <a-input v-model="form.newPassword"/>
       </a-form-model-item>
-      <a-form-model-item label="登录密码" prop="password" >
-        <a-input-password
-          type="password"
-          placeholder="请输入登录密码"
-          v-model="form.password" />
-      </a-form-model-item>
-      <a-form-model-item label="确认密码" prop="confirmPassword" >
-        <a-input-password
-          type="password"
-          @blur="handleConfirmBlur"
-          placeholder="请重新输入登录密码"
-          v-model="form.confirmPassword"/>
+      <a-form-model-item label="重复密码" prop="confirmPassword">
+        <a-input v-model="form.confirmPassword"/>
       </a-form-model-item>
     </a-form-model>
-    <template v-slot:footer>
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-    </template>
   </a-modal>
 </template>
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, restartPassword } from '@/api/system/user'
+import { add } from '@/api/system/user'
 
 export default {
-  name: 'UserResetPassword',
+  name: 'PasswordEdit',
   mixins: [FormMixin],
   data () {
     return {
-      confirmDirty: false,
       form: {
-        id: '',
-        username: '',
-        phone: '',
-        password: '',
+        oldPassword: '',
+        newPassword: '',
         confirmPassword: ''
       },
       rules: {
-        password: [{ required: true, message: '请输入登录密码!' },
+        newPassword: [{ required: true, message: '请输入新密码!' },
           { validator: this.validateToNextPassword, trigger: 'change' }
         ],
-        confirmPassword: [{ required: true, message: '请重新输入登录密码!' },
+        confirmPassword: [{ required: true, message: '请重新输入新密码!' },
           { validator: this.compareToFirstPassword }
         ]
       }
     }
   },
   methods: {
-    edit (id) {
-      this.title = '重置密码'
-      this.confirmLoading = true
-      get(id).then(res => {
-        this.form = res.data
-        this.form.password = ''
-        this.confirmLoading = false
-      })
+    edit () {
+      this.confirmLoading = false
+      this.resetForm()
     },
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await restartPassword(this.form.id, this.form.password)
+          await add(this.form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')
@@ -93,9 +72,10 @@ export default {
         }
       })
     },
-    handleConfirmBlur (e) {
-      const value = e.target.value
-      this.confirmDirty = this.confirmDirty || !!value
+    resetForm () {
+      this.$nextTick(() => {
+        this.$refs.form.resetFields()
+      })
     },
     validateToNextPassword (rule, value, callback) {
       const confirmPassword = this.form.confirmPassword

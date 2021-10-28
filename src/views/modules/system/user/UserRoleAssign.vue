@@ -1,7 +1,7 @@
 <template xmlns="">
   <a-modal
     title="用户角色分配"
-    :width="640"
+    :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"

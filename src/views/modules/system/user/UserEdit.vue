@@ -58,6 +58,7 @@ export default {
         email: '',
         avatar: ''
       },
+      rawForm: {},
       rules: {
         name: [{ required: true, message: '请输入名称' }
         ],
@@ -73,20 +74,32 @@ export default {
       }
     }
   },
+  computed: {
+    diff () {
+      return {
+        phone: this.diffForm(this.form.name, this.rawForm.phone),
+        email: this.diffForm(this.form.email, this.rawForm.email)
+      }
+    }
+  },
   methods: {
     edit (id) {
       this.confirmLoading = true
       get(id).then(res => {
         this.form = res.data
+        this.rawForm = { ...res.data }
         this.confirmLoading = false
       })
     },
     handleOk () {
-      console.log(this.type)
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await update(this.form)
+          const form = {
+            ...this.form,
+            ...this.rawForm
+          }
+          await update(form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')

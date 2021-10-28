@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="角色管理"
-    :width="640"
+    :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"

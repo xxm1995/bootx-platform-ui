@@ -10,6 +10,7 @@ export const FormMixin = {
         sm: { span: 13 }
       },
       title: '新增',
+      modalWidth: 640,
       confirmLoading: false,
       visible: false,
       editable: false,
@@ -64,6 +65,10 @@ export const FormMixin = {
     // 获取字典项列表(code值为数字)
     getDictItemsByNumber (dictCode) {
       return getDictItemsByNumber(dictCode)
+    },
+    // 判断脱敏参数是否被修改的参数, 未修改返回空值
+    diffForm (o1, o2) {
+      return o1 === o2 ? null : o1
     }
   }
 }

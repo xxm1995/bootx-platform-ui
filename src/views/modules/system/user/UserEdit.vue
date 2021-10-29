@@ -58,7 +58,6 @@ export default {
         email: '',
         avatar: ''
       },
-      rawForm: {},
       rules: {
         name: [{ required: true, message: '请输入名称' }
         ],

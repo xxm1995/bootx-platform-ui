@@ -147,8 +147,7 @@ export default {
         activity: null,
         state: '',
         remark: ''
-      },
-      rawForm: {}
+      }
     }
   },
   computed: {

@@ -76,7 +76,6 @@ export default {
     return {
       mailSecurityCode: 'MailSecurityCode',
       securityTypeList: [],
-      rawForm: {},
       form: {
         code: '',
         name: '',

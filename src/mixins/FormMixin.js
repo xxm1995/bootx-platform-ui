@@ -10,6 +10,7 @@ export const FormMixin = {
         sm: { span: 13 }
       },
       title: '新增',
+      rawForm: {},
       modalWidth: 640,
       confirmLoading: false,
       visible: false,

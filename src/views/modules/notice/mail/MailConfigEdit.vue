@@ -118,12 +118,8 @@ export default {
         sender: '',
         from: '',
         securityType: 1
-      }
-    }
-  },
-  computed: {
-    rules () {
-      return {
+      },
+      rules: {
         code: [
           { required: true, message: '请输入配置编码' },
           { validator: this.validateCode, trigger: 'blur' }
@@ -141,7 +137,7 @@ export default {
           { required: true, message: '请输入邮件发送人账号' }
         ],
         password: [
-          { required: this.addable, message: '请输入邮件发送人密码' }
+          { required: true, message: '请输入邮件发送人密码' }
         ],
         sender: [
           { required: true, message: '请输入邮件发送人Sender' }
@@ -155,6 +151,13 @@ export default {
       }
     }
   },
+  computed: {
+    diff () {
+      return {
+        password: this.diffForm(this.form.password, this.rawForm.password)
+      }
+    }
+  },
   methods: {
     edit (id, type) {
       this.securityTypeList = this.getDictItemsByNumber(this.mailSecurityCode)
@@ -162,6 +165,7 @@ export default {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          this.rawForm = { ...res.data }
           this.confirmLoading = false
         })
       } else {
@@ -175,7 +179,10 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update(this.form)
+            await update({
+              ...this.form,
+              ...this.rawForm
+            })
           }
           setTimeout(() => {
             this.confirmLoading = false

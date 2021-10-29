@@ -95,11 +95,10 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          const form = {
+          await update({
             ...this.form,
             ...this.rawForm
-          }
-          await update(form)
+          })
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')

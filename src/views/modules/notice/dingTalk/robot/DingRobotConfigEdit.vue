@@ -76,6 +76,7 @@ export default {
     return {
       mailSecurityCode: 'MailSecurityCode',
       securityTypeList: [],
+      rawForm: {},
       form: {
         code: '',
         name: '',
@@ -98,12 +99,20 @@ export default {
       }
     }
   },
+  computed: {
+    diff () {
+      return {
+        accessToken: this.diffForm(this.form.accessToken, this.rawForm.accessToken)
+      }
+    }
+  },
   methods: {
     edit (id, type) {
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          this.rawForm = { ...res.data }
           this.confirmLoading = false
         })
       } else {
@@ -117,7 +126,10 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update(this.form)
+            await update({
+              ...this.form,
+              ...this.diff
+            })
           }
           setTimeout(() => {
             this.confirmLoading = false

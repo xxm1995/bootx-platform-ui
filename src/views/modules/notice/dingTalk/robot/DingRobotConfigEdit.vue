@@ -101,7 +101,8 @@ export default {
   computed: {
     diff () {
       return {
-        accessToken: this.diffForm(this.form.accessToken, this.rawForm.accessToken)
+        accessToken: this.diffForm(this.form.accessToken, this.rawForm.accessToken),
+        signSecret: this.diffForm(this.form.signSecret, this.rawForm.signSecret)
       }
     }
   },

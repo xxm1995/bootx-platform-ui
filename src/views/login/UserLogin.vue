@@ -28,7 +28,7 @@
       </a-input-password>
     </a-form-model-item>
 
-    <a-row :span="24" v-if="client.captcha" style='bo'>
+    <a-row :span="24" v-if="client.captcha" style="bo">
       <a-col :span="16">
         <a-form-model-item prop="captcha">
           <a-input
@@ -128,7 +128,9 @@ export default {
           Login(this.form)
             .then(() => this.$emit('loginSuccess'))
             .catch(() => {
-              this.getCaptcha()
+              if (this.client.captcha) {
+                this.getCaptcha()
+              }
             })
             .finally(() => {
               state.loginBtn = false

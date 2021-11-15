@@ -8,7 +8,7 @@
               <a-input v-model="queryParam.code" placeholder="" />
             </a-form-item>
           </a-col>
-          <a-col v-action:_GHOST :md="8" :sm="24">
+          <a-col :md="8" :sm="24">
             <a-form-item label="终端名称">
               <a-input v-model="queryParam.name" placeholder="" />
             </a-form-item>
@@ -40,7 +40,7 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column v-if="$auth('123')" field="code" title="代码" />
+      <vxe-table-column field="code" title="代码" />
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="captcha" title="启用验证码" >
         <template v-slot="{row}">

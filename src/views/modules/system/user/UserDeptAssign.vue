@@ -1,7 +1,7 @@
 <template>
   <a-modal
     title="用户部门分配"
-    :width="modalWidth"
+    :width="640"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"

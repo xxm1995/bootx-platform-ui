@@ -12,7 +12,7 @@
     <a-spin :spinning="confirmLoading">
       <a-form-model>
         <div>
-          <a-row type="flex" style="margin-bottom:10px" :gutter="16" v-for="(item, index) in queryParamsModel" :key="index">
+          <a-row type="flex" style="margin-bottom:10px" :gutter="16" v-for="(item, index) in queryParams" :key="index">
             <a-col :span="6">
               <a-select
                 placeholder="选择查询字段"
@@ -35,7 +35,7 @@
             </a-col>
             <a-col :span="6">
               <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
-              <a-button v-show="queryParamsModel.length > 1" @click="handleDel( index )" icon="minus"></a-button>
+              <a-button v-show="queryParams.length > 1" @click="handleDel( index )" icon="minus"></a-button>
             </a-col>
           </a-row>
         </div>
@@ -49,7 +49,7 @@ export default {
   data () {
     return {
       visible: false,
-      queryParamsModel: [{}],
+      queryParams: [{}],
       fieldList: [],
       confirmLoading: false,
       ruleList: [
@@ -76,7 +76,7 @@ export default {
   methods: {
     show () {
       this.visible = true
-      this.queryParamsModel = [{}]
+      this.queryParams = [{}]
       this.fieldList = this.fields
     },
     close () {
@@ -84,19 +84,16 @@ export default {
       this.visible = false
     },
     handleOk () {
-      console.log(this.queryParamsModel)
-      // 子组件中触发父组件方法并传值
-      this.$emit('ok', this.queryParamsModel)
+      this.$emit('ok', this.queryParams)
     },
     handleCancel () {
       this.close()
     },
     handleAdd () {
-      this.queryParamsModel.push({})
+      this.queryParams.push({})
     },
     handleDel (index) {
-      console.log(index)
-      this.queryParamsModel.splice(index, 1)
+      this.queryParams.splice(index, 1)
     },
     // 处理选择的查询字段
     handleSelected (node, item) {

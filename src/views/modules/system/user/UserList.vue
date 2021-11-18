@@ -123,7 +123,7 @@
       ref="resetPassword"
     />
     <super-query-modal
-      @ok="query()"
+      @ok="supperQuery"
       :fields="fields"
       ref="superQueryModal"
     />
@@ -194,6 +194,9 @@ export default {
     },
     edit (record) {
       this.$refs.userEdit.init(record.id, 'edit')
+    },
+    supperQuery (queryParams) {
+      console.log('高级查询器回调', queryParams)
     },
     supperQueryShow () {
       this.$refs.superQueryModal.show()

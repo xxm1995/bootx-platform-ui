@@ -1,24 +1,37 @@
 import { dictConvert as c, getDictItems, getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
+import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQuery'
 
 export const TableMixin = {
+  components: {
+    SuperQueryModal
+  },
   data () {
     return {
+      // 加载状态
       loading: false,
+      // 高级查询条件生效状态
+      superQueryFlag: false,
+      // 分页返回数据
       pagination: {
         size: 10,
         current: 1,
         total: 0
       },
+      // 分页参数
       pages: {
         size: 10,
         current: 1
       },
+      // 列表数据
       tableData: []
     }
   },
   methods: {
-    // 查询
+    // 普通查询
     query () {
+      // 清除高级查询
+      this.superQueryShow = false
+      this.supperQueryRest()
       this.resetPage()
       this.init()
     },
@@ -41,6 +54,8 @@ export const TableMixin = {
     handleOk () {
       this.init()
     },
+    // 重置高级查询状态
+    supperQueryRest () {},
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, String(code))

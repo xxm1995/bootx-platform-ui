@@ -27,6 +27,18 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-tooltip v-if="superQueryShow" :mouseLeaveDelay="0.2">
+          <template slot="title">
+            <span>高级查询条件生效</span>
+            <a-divider type="vertical"/>
+            <a href="javascript:" @click="supperQueryRest">清空</a>
+          </template>
+          <a-button style="margin-left: 8px" @click="supperQueryShow">
+            <a-icon type="appstore" theme="twoTone" spin/>
+            <span>高级查询</span>
+          </a-button>
+        </a-tooltip>
+        <a-button v-else style="margin-left: 8px" @click="supperQueryShow">高级查询</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -91,11 +103,16 @@
     <client-edit
       ref="clientEdit"
       @ok="handleOk"/>
+    <super-query-modal
+      ref="superQueryModal"
+      :fields="fields"
+      @ok="supperQuery"
+    />
   </a-card>
 </template>
 
 <script>
-import { page, del } from '@/api/system/client'
+import { page, del, supperPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {
@@ -106,10 +123,15 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      superQueryShow: false,
       queryParam: {
         code: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'code', name: '代码' },
+        { field: 'name', name: '名称' }
+      ]
     }
   },
   methods: {
@@ -139,6 +161,29 @@ export default {
         this.$message.info('删除成功')
         this.init()
       })
+    },
+    supperQuery (queryParams) {
+      this.superQueryShow = true
+      supperPage(
+        {
+          ...this.queryParam,
+          ...this.pages
+        }, {
+          queryParams
+        }
+      ).then(res => {
+        this.tableData = res.data.records
+        this.pagination.current = Number(res.data.current)
+        this.pagination.total = Number(res.data.total)
+        this.loading = false
+      })
+    },
+    supperQueryShow () {
+      this.$refs.superQueryModal.show()
+    },
+    supperQueryRest () {
+      this.$refs.superQueryModal.handleReset()
+      this.init()
     }
   },
   created () {

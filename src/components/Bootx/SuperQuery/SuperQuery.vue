@@ -12,30 +12,42 @@
     <a-spin :spinning="confirmLoading">
       <a-form-model>
         <div>
+          <a-row type="flex" style="margin-bottom:15px" :gutter="16">
+            <a-col :span="6">
+              <a-button @click="handleAdd" type="primary">添加条件</a-button>&nbsp;
+            </a-col>
+          </a-row>
           <a-row type="flex" style="margin-bottom:10px" :gutter="16" v-for="(item, index) in queryParams" :key="index">
+            <a-col :span="3">
+              <a-select
+                v-model="item.or"
+              >
+                <a-select-option key="false">且</a-select-option>
+                <a-select-option key="true">或</a-select-option>
+              </a-select>
+            </a-col>
             <a-col :span="6">
               <a-select
                 placeholder="选择查询字段"
-                v-model="item.field"
+                v-model="item.paramName"
                 @select="(val,option)=>handleSelected(option,item)"
               >
                 <a-select-option v-for="e in fieldList" :key="e.field" :value="e.field"> {{ e.name }}</a-select-option>
               </a-select>
             </a-col>
-            <a-col :span="6">
-              <a-select placeholder="选择匹配规则" v-model="item.rule">
-                <a-select-option v-for="o in ruleList" :key="o.type" :value="o.type"> {{ o.name }}</a-select-option>
+            <a-col :span="4">
+              <a-select placeholder="选择匹配规则" v-model="item.compareType">
+                <a-select-option v-for="o in compareTypeList" :key="o.type" :value="o.type"> {{ o.name }}</a-select-option>
               </a-select>
             </a-col>
-            <a-col :span="6">
+            <a-col :span="8">
               <!-- 文本输入 -->
-              <a-input placeholder="请输入值" v-model="item.val"/>
+              <a-input placeholder="请输入值" v-model="item.paramValue"/>
               <!-- 文本输入 -->
-
             </a-col>
-            <a-col :span="6">
-              <a-button @click="handleAdd" icon="plus"></a-button>&nbsp;
-              <a-button v-show="queryParams.length > 1" @click="handleDel( index )" icon="minus"></a-button>
+            <a-col :span="3">
+<!--              <a-button @click="handleAdd" icon="plus"/>&nbsp;-->
+              <a-button @click="handleDel( index )" icon="minus"/>
             </a-col>
           </a-row>
         </div>
@@ -49,10 +61,12 @@ export default {
   data () {
     return {
       visible: false,
-      queryParams: [{}],
+      // 查询条件
+      queryParams: [],
+      // 查询字段属性
       fieldList: [],
       confirmLoading: false,
-      ruleList: [
+      compareTypeList: [
         { type: 'eq', name: '等于' },
         { type: 'ne', name: '不等于' },
         { type: 'like', name: '包含' },
@@ -66,6 +80,7 @@ export default {
     }
   },
   props: {
+    // 查询字段属性
     fields: {
       type: Array,
       default: () => {
@@ -74,24 +89,38 @@ export default {
     }
   },
   methods: {
+    // 显示
     show () {
       this.visible = true
-      this.queryParams = [{}]
-      this.fieldList = this.fields
     },
+    // 关闭
     close () {
       this.$emit('close')
       this.visible = false
     },
-    handleOk () {
-      this.$emit('ok', this.queryParams)
-    },
     handleCancel () {
       this.close()
     },
-    handleAdd () {
-      this.queryParams.push({})
+    // 确定
+    handleOk () {
+      this.$emit('ok', this.queryParams)
     },
+    // 添加条件
+    handleAdd () {
+      this.queryParams.push({
+        compareType: 'eq',
+        or: 'false'
+      })
+    },
+    // 添加嵌套条件
+    handleAddNested () {
+
+    },
+    // 清空条件
+    handleReset () {
+      this.queryParams = []
+    },
+    // 删除
     handleDel (index) {
       this.queryParams.splice(index, 1)
     },
@@ -99,6 +128,10 @@ export default {
     handleSelected (node, item) {
 
     }
+  },
+  created () {
+    this.queryParams = []
+    this.fieldList = this.fields
   }
 }
 </script>

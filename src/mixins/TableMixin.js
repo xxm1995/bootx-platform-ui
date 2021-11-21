@@ -1,5 +1,5 @@
 import { dictConvert as c, getDictItems, getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
-import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQuery'
+import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQueryModel'
 
 export const TableMixin = {
   components: {
@@ -31,7 +31,6 @@ export const TableMixin = {
     query () {
       // 清除高级查询
       this.superQueryShow = false
-      this.supperQueryRest()
       this.resetPage()
       this.init()
     },
@@ -49,13 +48,23 @@ export const TableMixin = {
       this.pagination.size = pageSize
       this.init()
     },
-
+    // 分页查询返回结果处理
+    pageQueryResHandel (res, that) {
+      that.tableData = res.data.records
+      that.pagination.current = Number(res.data.current)
+      that.pagination.total = Number(res.data.total)
+      that.loading = false
+    },
+    // 重置查询
+    restQuery () {
+      this.superQueryFlag = false
+      this.queryParam = {}
+      this.init()
+    },
     // ok按钮
     handleOk () {
       this.init()
     },
-    // 重置高级查询状态
-    supperQueryRest () {},
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, String(code))

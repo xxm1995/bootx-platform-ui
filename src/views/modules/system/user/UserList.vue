@@ -139,7 +139,7 @@ import UserEdit from './UserEdit'
 import UserShow from './UserShow'
 import UserResetPassword from './UserResetPassword'
 import { TableMixin } from '@/mixins/TableMixin'
-import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQuery'
+import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQueryModel'
 
 export default {
   name: 'UserList',

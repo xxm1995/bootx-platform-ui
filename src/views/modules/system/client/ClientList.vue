@@ -14,8 +14,10 @@
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+            <a-space>
+              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
+              <a-button @click="restQuery">重置</a-button>
+            </a-space>
           </a-col>
         </a-row>
       </a-form>
@@ -27,18 +29,12 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
-        <a-tooltip v-if="superQueryShow" :mouseLeaveDelay="0.2">
-          <template slot="title">
-            <span>高级查询条件生效</span>
-            <a-divider type="vertical"/>
-            <a href="javascript:" @click="supperQueryRest">清空</a>
-          </template>
-          <a-button style="margin-left: 8px" @click="supperQueryShow">
-            <a-icon type="appstore" theme="twoTone" spin/>
-            <span>高级查询</span>
-          </a-button>
-        </a-tooltip>
-        <a-button v-else style="margin-left: 8px" @click="supperQueryShow">高级查询</a-button>
+        <b-super-query
+          :queryState="superQueryFlag"
+          :fields="fields"
+          @query="supperQuery"
+          @rest="restQuery"
+        />
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -103,11 +99,6 @@
     <client-edit
       ref="clientEdit"
       @ok="handleOk"/>
-    <super-query-modal
-      ref="superQueryModal"
-      :fields="fields"
-      @ok="supperQuery"
-    />
   </a-card>
 </template>
 
@@ -115,15 +106,16 @@
 import { page, del, supperPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 export default {
   name: 'ClientList',
   components: {
-    ClientEdit
+    ClientEdit,
+    BSuperQuery
   },
   mixins: [TableMixin],
   data () {
     return {
-      superQueryShow: false,
       queryParam: {
         code: '',
         name: ''
@@ -141,10 +133,7 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     add () {
@@ -163,27 +152,12 @@ export default {
       })
     },
     supperQuery (queryParams) {
-      this.superQueryShow = true
+      this.superQueryFlag = true
       supperPage(
-        {
-          ...this.queryParam,
-          ...this.pages
-        }, {
-          queryParams
-        }
+        this.pages, { queryParams }
       ).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
-    },
-    supperQueryShow () {
-      this.$refs.superQueryModal.show()
-    },
-    supperQueryRest () {
-      this.$refs.superQueryModal.handleReset()
-      this.init()
     }
   },
   created () {

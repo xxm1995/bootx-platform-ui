@@ -11,9 +11,9 @@ export function page (params) {
 /**
  * 超级分页
  */
-export function supperPage (params, queryParams) {
+export function superPage (params, queryParams) {
   return axios({
-    url: '/client/supperPage',
+    url: '/client/superPage',
     method: 'POST',
     params: params,
     data: queryParams

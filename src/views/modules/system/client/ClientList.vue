@@ -32,7 +32,7 @@
         <b-super-query
           :queryState="superQueryFlag"
           :fields="fields"
-          @query="supperQuery"
+          @query="superQuery"
           @rest="restQuery"
         />
       </template>
@@ -103,7 +103,7 @@
 </template>
 
 <script>
-import { page, del, supperPage } from '@/api/system/client'
+import { page, del, superPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
@@ -151,9 +151,9 @@ export default {
         this.init()
       })
     },
-    supperQuery (queryParams) {
+    superQuery (queryParams) {
       this.superQueryFlag = true
-      supperPage(
+      superPage(
         this.pages, { queryParams }
       ).then(res => {
         this.pageQueryResHandel(res, this)

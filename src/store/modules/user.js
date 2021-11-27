@@ -1,6 +1,7 @@
 import storage from 'store'
 import {login, getMenuAndButtonPermission, getUserInfo, logout, loginOpenId} from '@/api/login/login'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
+import Vue from 'vue'
 
 const user = {
   state: {
@@ -78,6 +79,8 @@ const user = {
           permissionList.push('_GHOST')
           commit('SET_PERMISSION', permissionList)
           resolve({ permissionList, menus })
+          // 清除多标签缓存
+          Vue.ls.remove(CACHE_MULTI_TAB_COMPONENTS)
         }).catch(error => {
           console.log(error)
           reject(error)

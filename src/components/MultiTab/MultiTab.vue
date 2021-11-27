@@ -1,5 +1,7 @@
 <script>
 import events from './events'
+import Vue from 'vue'
+import { CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 
 export default {
   name: 'MultiTab',
@@ -42,12 +44,27 @@ export default {
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
-    remove (targetKey) {
-      this.pages = this.pages.filter(page => page.fullPath !== targetKey)
-      this.fullPathList = this.fullPathList.filter(path => path !== targetKey)
+    remove (key) {
+      const removeRoute = this.pages.filter(item => item.fullPath === key)
+      this.pages = this.pages.filter(page => page.fullPath !== key)
+      this.fullPathList = this.fullPathList.filter(path => path !== key)
       // 判断当前标签是否关闭，若关闭则跳转到最后一个还存在的标签页
       if (!this.fullPathList.includes(this.activeKey)) {
         this.selectedLastPath()
+      }
+      let index = this.fullPathList.indexOf(key)
+      this.fullPathList = this.fullPathList.filter(item => item !== key)
+      index = index >= this.fullPathList.length ? this.fullPathList.length - 1 : index
+      this.activePage = this.fullPathList[index]
+
+      // 关闭页面则从缓存中删除路由，下次点击菜单会重新加载页面
+      const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+      if (removeRoute && removeRoute[0]) {
+        const componentName = removeRoute[0].meta.componentName
+        if (cacheComponents.includes(componentName)) {
+          cacheComponents.splice(cacheComponents.findIndex(item => item === componentName), 1)
+          Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+        }
       }
     },
     selectedLastPath () {

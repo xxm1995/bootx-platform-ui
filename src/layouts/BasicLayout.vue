@@ -14,7 +14,7 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <logo-svg />
+<!--        <logo-svg />-->
         <h1>{{ title }}</h1>
       </div>
     </template>
@@ -41,16 +41,18 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-    <router-view />
+    <multi-tab v-if="multiTab"/>
+      <router-view/>
   </pro-layout>
 </template>
 
 <script>
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { i18nRender } from '@/locales'
-import {mapActions, mapState} from 'vuex'
+import { mapActions, mapState } from 'vuex'
 import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
 
+import MultiTab from '@/components/MultiTab'
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
@@ -61,6 +63,7 @@ export default {
   components: {
     SettingDrawer,
     RightContent,
+    MultiTab,
     GlobalFooter,
     LogoSvg
   },
@@ -94,6 +97,8 @@ export default {
       },
       // 媒体查询
       query: {},
+      // 多标签
+      multiTab: defaultSettings.multiTab,
 
       // 是否手机模式
       isMobile: false
@@ -190,6 +195,9 @@ export default {
         this.$message.destroy()
         this.$message.error('刷新缓存失败')
       })
+    },
+    keepAlive () {
+      return this.$route.meta.keepAlive
     }
   }
 }

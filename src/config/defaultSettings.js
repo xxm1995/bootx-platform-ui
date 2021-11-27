@@ -20,6 +20,13 @@ export default {
   fixedHeader: false, // sticky header
   fixSiderbar: false, // sticky siderbar
   colorWeak: false,
+  multiTab: true,
+  // vue-ls options
+  storageOptions: {
+    namespace: 'pro__', // key prefix
+    name: 'ls', // name variable Vue.[ls] or this.[$ls],
+    storage: 'local' // storage name session, local, memory
+  },
   menu: {
     locale: true
   },

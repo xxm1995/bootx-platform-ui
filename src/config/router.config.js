@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import { UserLayout, BasicLayout, BlankLayout } from '@/layouts'
 import { bxAnaalyse } from '@/core/icons'
+import Welcome from '@/views/Welcome'
 
 const RouteView = {
   name: 'RouteView',
@@ -520,8 +521,8 @@ export const loginBaseRouterMap = [
   {
     path: '/dashboard',
     name: 'Welcome',
-    component: () => import('@/views/Welcome'),
-    meta: { title: '首页', keepAlive: false, icon: bxAnaalyse }
+    component: Welcome,
+    meta: { title: '首页', keepAlive: true, icon: bxAnaalyse }
   },
   {
     path: '/account',
@@ -529,19 +530,19 @@ export const loginBaseRouterMap = [
     hidden: true,
     redirect: '/account/center',
     name: 'account',
-    meta: { title: 'menu.account', icon: 'user', keepAlive: true },
+    meta: { title: '个人页', icon: 'user', keepAlive: true },
     children: [
       {
         path: '/account/center',
         name: 'center',
         component: () => import('@/views/account/center'),
-        meta: { title: 'menu.account.center', keepAlive: true }
+        meta: { title: '个人中心', keepAlive: true }
       },
       {
         path: '/account/settings',
         name: 'settings',
         component: () => import('@/views/account/settings/Index'),
-        meta: { title: 'menu.account.settings', hideHeader: true },
+        meta: { title: '个人设置', hideHeader: true },
         hidden: true,
         redirect: '/account/settings/basic',
         hideChildrenInMenu: true,
@@ -550,14 +551,14 @@ export const loginBaseRouterMap = [
             path: '/account/settings/basic',
             name: 'BasicSettings',
             component: () => import('@/views/account/settings/BasicSetting'),
-            meta: { title: 'account.settings.menuMap.basic', hidden: true }
+            meta: { title: '基本设置', hidden: true }
           },
           {
             path: '/account/settings/security',
             name: 'SecuritySettings',
             component: () => import('@/views/account/settings/Security'),
             meta: {
-              title: 'account.settings.menuMap.security',
+              title: '安全设置',
               hidden: true,
               keepAlive: true,
               permission: ['user']
@@ -567,20 +568,20 @@ export const loginBaseRouterMap = [
             path: '/account/settings/custom',
             name: 'CustomSettings',
             component: () => import('@/views/account/settings/Custom'),
-            meta: { title: 'account.settings.menuMap.custom', hidden: true, keepAlive: true }
+            meta: { title: '个性化', hidden: true, keepAlive: true }
           },
           {
             path: '/account/settings/binding',
             name: 'BindingSettings',
             component: () => import('@/views/account/settings/Binding'),
-            meta: { title: 'account.settings.menuMap.binding', hidden: true, keepAlive: true }
+            meta: { title: '账号绑定', hidden: true, keepAlive: true }
           },
           {
             path: '/account/settings/notification',
             name: 'NotificationSettings',
             component: () => import('@/views/account/settings/Notification'),
             meta: {
-              title: 'account.settings.menuMap.notification',
+              title: '新消息通知',
               hidden: true,
               keepAlive: true,
               permission: ['user']

@@ -12,6 +12,8 @@ export const TOGGLE_COLOR = 'color'
 export const TOGGLE_WEAK = 'weak'
 export const TOGGLE_MULTI_TAB = 'multi_tab'
 export const APP_LANGUAGE = 'app_language'
+// 多页签下的组件缓存处理, 关闭后重新打开
+export const CACHE_MULTI_TAB_COMPONENTS = 'cache_multi_tab_components'
 
 export const CONTENT_WIDTH_TYPE = {
   Fluid: 'Fluid',

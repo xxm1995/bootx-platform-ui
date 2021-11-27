@@ -8,6 +8,18 @@ export function page (params) {
   })
 }
 
+/**
+ * 超级分页
+ */
+export function superPage (params, queryParams) {
+  return axios({
+    url: '/client/superPage',
+    method: 'POST',
+    params: params,
+    data: queryParams
+  })
+}
+
 export function get (id) {
   return axios({
     url: '/client/findById',

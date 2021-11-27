@@ -14,8 +14,10 @@
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+            <a-space>
+              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
+              <a-button @click="restQuery">重置</a-button>
+            </a-space>
           </a-col>
         </a-row>
       </a-form>
@@ -27,6 +29,12 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <b-super-query
+          :queryState="superQueryFlag"
+          :fields="fields"
+          @query="superQuery"
+          @rest="restQuery"
+        />
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -95,13 +103,15 @@
 </template>
 
 <script>
-import { page, del } from '@/api/system/client'
+import { page, del, superPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 export default {
   name: 'ClientList',
   components: {
-    ClientEdit
+    ClientEdit,
+    BSuperQuery
   },
   mixins: [TableMixin],
   data () {
@@ -109,7 +119,11 @@ export default {
       queryParam: {
         code: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'code', name: '代码' },
+        { field: 'name', name: '名称' }
+      ]
     }
   },
   methods: {
@@ -119,10 +133,7 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     add () {
@@ -138,6 +149,14 @@ export default {
       del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
+      })
+    },
+    superQuery (queryParams) {
+      this.superQueryFlag = true
+      superPage(
+        this.pages, { queryParams }
+      ).then(res => {
+        this.pageQueryResHandel(res, this)
       })
     }
   },

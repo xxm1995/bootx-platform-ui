@@ -1,32 +1,35 @@
+<template>
+  <div class="main">
+    <keep-alive :include="includedComponents">
+      <router-view v-if="keepAlive" />
+    </keep-alive>
+    <router-view v-if="!keepAlive" />
+  </div>
+</template>
+
 <script>
+import Vue from 'vue'
+import { CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
+
 export default {
   name: 'RouteView',
-  props: {
-    keepAlive: {
-      type: Boolean,
-      default: true
+  computed: {
+    includedComponents () {
+      const includedComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS)
+      // 如果是缓存路由，则加入到缓存
+      if (this.$route.meta.keepAlive && this.$route.meta.componentName) {
+        const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+        if (!cacheComponents.includes(this.$route.meta.componentName)) {
+          cacheComponents.push(this.$route.meta.componentName)
+          Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+          return cacheComponents
+        }
+      }
+      return includedComponents
+    },
+    keepAlive () {
+      return this.$route.meta.keepAlive
     }
-  },
-  data () {
-    return {}
-  },
-  render () {
-    const { $route: { meta }, $store: { getters } } = this
-    const inKeep = (
-      <keep-alive>
-        <router-view />
-      </keep-alive>
-    )
-    const notKeep = (
-      <router-view />
-    )
-    // 这里增加了 multiTab 的判断，当开启了 multiTab 时
-    // 应当全部组件皆缓存，否则会导致切换页面后页面还原成原始状态
-    // 若确实不需要，可改为 return meta.keepAlive ? inKeep : notKeep
-    if (!getters.multiTab && !meta.keepAlive) {
-      return notKeep
-    }
-    return this.keepAlive || getters.multiTab || meta.keepAlive ? inKeep : notKeep
   }
 }
 </script>

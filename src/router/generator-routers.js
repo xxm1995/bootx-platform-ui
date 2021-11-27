@@ -63,7 +63,7 @@ const notFoundRouter = {
 // 根级菜单
 const rootRouter = {
   key: '',
-  name: 'index',
+  name: 'BasicLayout',
   path: '',
   component: BasicLayout,
   redirect: '/dashboard',
@@ -107,15 +107,25 @@ export const generator = (routerMap, parent) => {
     const { title, hideChildren, hiddenHeaderContent, target, icon } = item.meta || {}
     // 该路由对应页面的 组件 :如果是组件对象或函数，直接赋值不做处理，如果是字符串，进行动态查找
     let component
-    if (['object', 'function'].includes(typeof item.component)) {
+    let componentName
+    if (typeof item.component === 'object') {
+      // 如果传入的就是组件, 跳过下面操作
       component = item.component
-    } else {
+      componentName = component.name
+    } else if (typeof item.component === 'function') {
+      component = item.component
+    } else if (constantRouterComponents[item.component || item.key]) {
       // 先查询是否在 常量路由器组件 中定义，未定义根据传入路径进行引入
-      component = (constantRouterComponents[item.component || item.key]) ||
-        // 注意,  import 导入的菜单组件需要是在 /views/modules/ 目录下，原因是如果不对 import 导入路径限制，打包时会将所有可能会被用的的
-        // 组件进行编译, 造成打包制品异常庞大
-        (() => import(`@/views/modules/${item.component}`))
+      component = (constantRouterComponents[item.component || item.key])
+    } else {
+      // 注意,  import 导入的菜单组件需要是在 /views/modules/ 目录下，原因是如果不对 import 导入路径限制，打包时会将所有可能会被用的的
+      // 组件进行编译, 造成打包制品异常庞大
+      component = () => import(`@/views/modules/${item.component}`)
+      // 组件名称
+      const name = item.component
+      componentName = name.substring(name.lastIndexOf('/') + 1)
     }
+    console.log(title || item.title)
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: item.path || `${parent && parent.path || ''}/${item.key}`,
@@ -126,6 +136,8 @@ export const generator = (routerMap, parent) => {
       // meta: 页面标题, 菜单图标, 页面权限(供指令权限用，可去掉)
       meta: {
         title: title || item.title,
+        componentName: componentName,
+        keepAlive: item.keepAlive,
         icon: icon || item.icon || null,
         hiddenHeaderContent: hiddenHeaderContent || item.hiddenHeaderContent,
         target: target || item.targetOutside ? '_blank' : null,

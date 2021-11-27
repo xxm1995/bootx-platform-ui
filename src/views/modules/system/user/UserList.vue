@@ -123,7 +123,7 @@
       ref="resetPassword"
     />
     <super-query-modal
-      @ok="query()"
+      @ok="supperQuery"
       :fields="fields"
       ref="superQueryModal"
     />
@@ -139,7 +139,7 @@ import UserEdit from './UserEdit'
 import UserShow from './UserShow'
 import UserResetPassword from './UserResetPassword'
 import { TableMixin } from '@/mixins/TableMixin'
-import SuperQueryModal from '@/components/Bootx/SupperQuery/SuperQuery'
+import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQueryModel'
 
 export default {
   name: 'UserList',
@@ -194,6 +194,9 @@ export default {
     },
     edit (record) {
       this.$refs.userEdit.init(record.id, 'edit')
+    },
+    supperQuery (queryParams) {
+      console.log('高级查询器回调', queryParams)
     },
     supperQueryShow () {
       this.$refs.superQueryModal.show()

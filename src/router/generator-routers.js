@@ -125,7 +125,6 @@ export const generator = (routerMap, parent) => {
       const name = item.component
       componentName = name.substring(name.lastIndexOf('/') + 1)
     }
-    console.log(title || item.title)
     const currentRouter = {
       // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
       path: item.path || `${parent && parent.path || ''}/${item.key}`,

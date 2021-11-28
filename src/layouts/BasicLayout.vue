@@ -14,7 +14,7 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-<!--        <logo-svg />-->
+        <!--        <logo-svg />-->
         <h1>{{ title }}</h1>
       </div>
     </template>
@@ -42,7 +42,7 @@
       <global-footer />
     </template>
     <multi-tab v-if="multiTab"/>
-      <router-view/>
+    <router-view/>
   </pro-layout>
 </template>
 
@@ -50,13 +50,19 @@
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
 import { i18nRender } from '@/locales'
 import { mapActions, mapState } from 'vuex'
-import { CONTENT_WIDTH_TYPE, SIDEBAR_TYPE, TOGGLE_MOBILE_TYPE } from '@/store/mutation-types'
+import {
+  CACHE_MULTI_TAB_COMPONENTS,
+  CONTENT_WIDTH_TYPE,
+  SIDEBAR_TYPE,
+  TOGGLE_MOBILE_TYPE
+} from '@/store/mutation-types'
 
 import MultiTab from '@/components/MultiTab'
 import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import LogoSvg from '../assets/logo.svg?inline'
+import Vue from 'vue'
 
 export default {
   name: 'BasicLayout',
@@ -108,7 +114,20 @@ export default {
     ...mapState({
       // 动态主路由
       mainMenu: state => state.permission.addRouters
-    })
+    }),
+    includedComponents () {
+      const includedComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS)
+      // 如果是缓存路由，则加入到缓存
+      if (this.$route.meta.keepAlive && this.$route.meta.componentName) {
+        const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+        if (!cacheComponents.includes(this.$route.meta.componentName)) {
+          cacheComponents.push(this.$route.meta.componentName)
+          Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+          return cacheComponents
+        }
+      }
+      return includedComponents
+    }
   },
   created () {
     this.initDictList()
@@ -195,9 +214,6 @@ export default {
         this.$message.destroy()
         this.$message.error('刷新缓存失败')
       })
-    },
-    keepAlive () {
-      return this.$route.meta.keepAlive
     }
   }
 }

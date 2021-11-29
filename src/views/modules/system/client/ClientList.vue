@@ -31,7 +31,7 @@
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
         <b-super-query
           :queryState="superQueryFlag"
-          :fields="fields"
+          :fields="queryFields"
           @query="superQuery"
           @rest="restQuery"
         />
@@ -107,6 +107,7 @@ import { page, del, superPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
+import { BOOLEAN, DATE, DATE_TIME, LIST, NUMBER, STRING, TIME } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'ClientList',
   components: {
@@ -114,16 +115,34 @@ export default {
     BSuperQuery
   },
   mixins: [TableMixin],
+  computed: {
+    // 超级查询字段
+    queryFields () {
+      return [
+        { field: 'num', name: '数字', type: NUMBER },
+        { field: 'string', name: '字符', type: STRING },
+        { field: 'bool', name: '布尔', type: BOOLEAN },
+        { field: 'date', name: '日期', type: DATE },
+        { field: 'time', name: '时间', type: TIME },
+        { field: 'date_time', name: '日期时间', type: DATE_TIME },
+        { field: 'list',
+          name: '列表',
+          type: LIST,
+          list:
+            [
+              { name: '测试1', value: 'cs1' },
+              { name: '测试2', value: 'cs2' },
+              { name: '测试3', value: 'cs3' }
+            ] }
+      ]
+    }
+  },
   data () {
     return {
       queryParam: {
         code: '',
         name: ''
-      },
-      fields: [
-        { field: 'code', name: '代码' },
-        { field: 'name', name: '名称' }
-      ]
+      }
     }
   },
   methods: {

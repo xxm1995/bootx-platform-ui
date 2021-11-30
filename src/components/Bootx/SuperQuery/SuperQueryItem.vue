@@ -53,21 +53,21 @@
         <a-date-picker
           v-else-if="paramTypeJudge(index,'date')"
           placeholder="请选择日期"
-          format="yyyy-MM-DD"
-          @panelChange="(date)=>dateChange(date,queryParam)"/>
+          valueFormat="yyyy-MM-DD"
+          v-model="queryParam.paramValue"/>
         <!-- 时间 -->
         <a-time-picker
           v-else-if="paramTypeJudge(index,'time')"
           placeholder="请选择时间"
-          format="HH:mm:ss"
+          valueFormat="HH:mm:ss"
           v-model="queryParam.paramValue"/>
         <!-- 日期时间 -->
         <a-date-picker
           showTime
           v-else-if="paramTypeJudge(index,'date_time')"
           placeholder="请选择日期时间"
-          format="yyyy-MM-DD HH:mm:ss"
-          @panelChange="dateTimeChange"/>
+          valueFormat="yyyy-MM-DD HH:mm:ss"
+          v-model="queryParam.paramValue"/>
         <!-- 默认文本输入 -->
         <a-input v-else placeholder="请输入查询值" v-model="queryParam.paramValue"/>
       </a-col>

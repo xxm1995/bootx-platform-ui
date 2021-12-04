@@ -32,7 +32,8 @@ router.beforeEach((to, from, next) => {
             // 生成路由(后期改为动态路由)
             store.dispatch('GenerateRoutes', { permissionList, menus }).then(() => {
               // 动态添加可访问路由表
-              router.addRoutes(store.getters.addRouters)
+              const routers = store.getters.addRouters
+              routers.forEach(r => router.addRoute(r))
               // 请求带有 redirect 重定向时，登录自动重定向到该地址
               const redirect = decodeURIComponent(from.query.redirect || to.path)
               if (to.path === redirect) {

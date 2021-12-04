@@ -38,7 +38,6 @@ export default {
   },
   methods: {
     loginSuccess () {
-      this.$router.push({ name: 'index' })
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
@@ -46,6 +45,7 @@ export default {
           description: `${timeFix()}，欢迎回来`
         })
       }, 1000)
+      return this.$router.push({ name: 'Welcome' })
     }
   }
 }

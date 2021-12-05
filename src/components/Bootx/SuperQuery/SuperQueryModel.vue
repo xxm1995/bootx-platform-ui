@@ -1,7 +1,7 @@
 <template>
   <a-modal
-    title="高级查询器"
-    :width="860"
+    title="超级查询器"
+    :width="width"
     :visible="visible"
     :confirmLoading="confirmLoading"
     @ok="handleOk"
@@ -59,6 +59,16 @@ export default {
       default: () => {
         return []
       }
+    },
+    // 弹框标题
+    modelTitle: {
+      type: String,
+      default: '超级查询器'
+    },
+    // 宽度
+    width: {
+      type: Number,
+      default: 860
     }
   },
   methods: {

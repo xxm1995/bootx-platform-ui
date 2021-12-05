@@ -27,7 +27,6 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
-        <a-button style="margin-left: 8px" @click="supperQueryShow">高级查询</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -122,11 +121,6 @@
     <user-reset-password
       ref="resetPassword"
     />
-    <super-query-modal
-      @ok="supperQuery"
-      :fields="fields"
-      ref="superQueryModal"
-    />
   </a-card>
 </template>
 
@@ -139,7 +133,6 @@ import UserEdit from './UserEdit'
 import UserShow from './UserShow'
 import UserResetPassword from './UserResetPassword'
 import { TableMixin } from '@/mixins/TableMixin'
-import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQueryModel'
 
 export default {
   name: 'UserList',
@@ -149,7 +142,6 @@ export default {
     UserAdd,
     UserEdit,
     UserShow,
-    SuperQueryModal,
     UserResetPassword
   },
   mixins: [TableMixin],
@@ -194,12 +186,6 @@ export default {
     },
     edit (record) {
       this.$refs.userEdit.init(record.id, 'edit')
-    },
-    supperQuery (queryParams) {
-      console.log('高级查询器回调', queryParams)
-    },
-    supperQueryShow () {
-      this.$refs.superQueryModal.show()
     },
     resetPwd (record) {
       this.$refs.resetPassword.init(record.id, 'edit')

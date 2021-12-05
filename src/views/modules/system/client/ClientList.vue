@@ -32,6 +32,9 @@
         <b-super-query
           :queryState="superQueryFlag"
           :fields="queryFields"
+          :width="880"
+          button-title="超级查询"
+          model-title="超级查询器"
           @query="superQuery"
           @rest="restQuery"
         />

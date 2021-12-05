@@ -2,7 +2,7 @@
   <span>
     <a-tooltip v-if="queryState">
       <template slot="title">
-        <span>高级查询条件生效</span>
+        <span>查询条件生效</span>
         <a-divider type="vertical"/>
         <a href="javascript:" @click="supperQueryRest">清空</a>
       </template>
@@ -11,10 +11,12 @@
         <span>查询中...</span>
       </a-button>
     </a-tooltip>
-    <a-button v-else style="margin-left: 8px" @click="supperQueryShow">高级查询</a-button>
+    <a-button v-else style="margin-left: 8px" @click="supperQueryShow">{{ buttonTitle }}</a-button>
     <super-query-modal
       ref="superQueryModal"
       :fields="fields"
+      :width="width"
+      :modelTitle="modelTitle"
       @ok="handleOk"
     />
   </span>
@@ -39,6 +41,21 @@ export default {
       default: () => {
         return []
       }
+    },
+    // 按钮标题
+    buttonTitle: {
+      type: String,
+      default: '超级查询'
+    },
+    // 弹框标题
+    modelTitle: {
+      type: String,
+      default: '超级查询器'
+    },
+    // 宽度
+    width: {
+      type: Number,
+      default: 860
     }
   },
   methods: {

@@ -96,7 +96,7 @@ export default {
           this.confirmLoading = true
           await update({
             ...this.form,
-            ...this.rawForm
+            ...this.diff
           })
           setTimeout(() => {
             this.confirmLoading = false

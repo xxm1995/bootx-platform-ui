@@ -181,7 +181,7 @@ export default {
           } else if (this.type === 'edit') {
             await update({
               ...this.form,
-              ...this.rawForm
+              ...this.diff
             })
           }
           setTimeout(() => {

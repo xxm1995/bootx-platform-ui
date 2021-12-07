@@ -31,10 +31,10 @@
           <a-tag>{{ dictConvert(userStatusCode,form.status) }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="角色列表">
-          <a-tag color="green" v-for="o in roles">{{ o.name }}</a-tag>
+          <a-tag color="green" v-for="o in roles" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="部门列表">
-          <a-tag color="green" v-for="o in deptList">{{ o.deptName }}</a-tag>
+          <a-tag color="green" v-for="o in deptList" :key="o.id">{{ o.deptName }}</a-tag>
         </a-form-model-item>
       </a-form-model>
     </a-spin>

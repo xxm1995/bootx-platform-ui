@@ -18,7 +18,7 @@
         {{ form.title }}
       </a-descriptions-item>
       <a-descriptions-item label="业务类型">
-        {{ form.businessType }}
+        {{ dictConvert(logBusinessType,form.businessType) }}
       </a-descriptions-item>
       <a-descriptions-item label="请求方式">
         {{ form.requestMethod }}

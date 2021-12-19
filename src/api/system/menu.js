@@ -2,14 +2,14 @@ import { axios } from '@/utils/request'
 
 export function tree () {
   return axios({
-    url: '/permission/menu/tree',
+    url: '/perm/menu/tree',
     method: 'GET'
   })
 }
 
 export function get (id) {
   return axios({
-    url: '/permission/menu/findById',
+    url: '/perm/menu/findById',
     params: { id },
     method: 'GET'
   })
@@ -17,7 +17,7 @@ export function get (id) {
 
 export function add (obj) {
   return axios({
-    url: '/permission/menu/add',
+    url: '/perm/menu/add',
     method: 'POST',
     data: obj
   })
@@ -25,7 +25,7 @@ export function add (obj) {
 
 export function update (obj) {
   return axios({
-    url: '/permission/menu/update',
+    url: '/perm/menu/update',
     method: 'POST',
     data: obj
   })
@@ -33,7 +33,7 @@ export function update (obj) {
 
 export function del (id) {
   return axios({
-    url: '/permission/menu/delete',
+    url: '/perm/menu/delete',
     params: { id },
     method: 'DELETE'
   })

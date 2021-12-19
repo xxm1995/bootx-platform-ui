@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/permission/path/page',
+    url: '/perm/path/page',
     method: 'GET',
     params: params
   })
@@ -16,7 +16,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: `/permission/path/findById`,
+    url: `/perm/path/findById`,
     method: 'GET',
     params: { id }
   })
@@ -27,7 +27,7 @@ export function get (id) {
  */
 export function findAll () {
   return axios({
-    url: `/permission/path/findAll`,
+    url: `/perm/path/findAll`,
     method: 'GET'
   })
 }
@@ -37,7 +37,7 @@ export function findAll () {
  */
 export function add (obj) {
   return axios({
-    url: '/permission/path/add',
+    url: '/perm/path/add',
     method: 'POST',
     data: obj
   })
@@ -48,7 +48,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/permission/path/update',
+    url: '/perm/path/update',
     method: 'POST',
     data: obj
   })
@@ -59,7 +59,7 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: `/permission/path/delete`,
+    url: `/perm/path/delete`,
     method: 'DELETE',
     params: { id }
   })

@@ -41,13 +41,20 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="code" title="权限代码" />
       <vxe-table-column field="name" title="权限名称" />
+      <vxe-table-column field="path" title="请求路径" />
       <vxe-table-column field="enable" title="启用状态" >
         <template v-slot="{row}">
           <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="description" title="描述" />
+      <vxe-table-column field="system" title="系统内置" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.system" color="red">是</a-tag>
+          <a-tag v-else color="green">否</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="remark" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
         <template v-slot="{row}">

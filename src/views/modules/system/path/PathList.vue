@@ -27,6 +27,13 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-popconfirm
+          title="是否同步系统请求资源"
+          @confirm="syncSystem()"
+          okText="是"
+          cancelText="否">
+          <a-button style="margin-left: 8px" icon="cloud-sync">同步</a-button>
+        </a-popconfirm>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -39,16 +46,17 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="权限代码" />
-      <vxe-table-column field="name" title="权限名称" />
       <vxe-table-column field="path" title="请求路径" />
+      <vxe-table-column field="name" title="权限名称" />
+      <vxe-table-column field="code" title="权限标识" />
+      <vxe-table-column field="groupName" title="请求分组" />
       <vxe-table-column field="enable" title="启用状态" >
         <template v-slot="{row}">
           <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="system" title="系统内置" >
+      <vxe-table-column field="system" title="系统生成" >
         <template v-slot="{row}">
           <a-tag v-if="row.system" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>
@@ -90,7 +98,7 @@
 </template>
 
 <script>
-import { del, page } from '@/api/system/path'
+import { del, page, syncSystem } from '@/api/system/path'
 import PathEdit from './PathEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {
@@ -129,9 +137,17 @@ export default {
     show (record) {
       this.$refs.pathEdit.init(record.id, 'show')
     },
-    delete (record) {
+    remove (record) {
+      this.loading = true
       del(record.id).then(() => {
         this.$message.info('删除成功')
+        this.init()
+      })
+    },
+    // 同步
+    syncSystem () {
+      syncSystem().then(() => {
+        this.$message.info('同步成功')
         this.init()
       })
     }

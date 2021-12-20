@@ -64,3 +64,13 @@ export function del (id) {
     params: { id }
   })
 }
+
+/**
+ * 同步
+ */
+export function syncSystem () {
+  return axios({
+    url: `/perm/path/syncSystem`,
+    method: 'POST'
+  })
+}

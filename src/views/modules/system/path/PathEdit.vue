@@ -15,14 +15,35 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
+        <a-form-model-item hidden prop="id">
+          <a-input hidden v-model="form.id"/>
+        </a-form-model-item>
+        <a-form-model-item hidden prop="system">
+          <a-input hidden v-model="form.system"/>
+        </a-form-model-item>
         <a-form-model-item
-          label="权限标识"
-          prop="code"
+          label="请求路径"
+          prop="path"
         >
           <a-input
-            :disabled="showable"
-            v-model="form.code"
+            :disabled="showable||form.system"
+            v-model="form.path"
           />
+        </a-form-model-item>
+        <a-form-model-item
+          label="请求类型"
+          prop="requestType"
+        >
+          <a-select
+            v-model="form.requestType"
+            :disabled="showable||form.system"
+          >
+            <a-select-option value="GET">GET</a-select-option>
+            <a-select-option value="POST">POST</a-select-option>
+            <a-select-option value="DELETE">DELETE</a-select-option>
+            <a-select-option value="PUT">PUT</a-select-option>
+          </a-select>
+
         </a-form-model-item>
         <a-form-model-item
           label="权限名称"
@@ -34,20 +55,36 @@
           />
         </a-form-model-item>
         <a-form-model-item
+          label="权限标识"
+          prop="code"
+        >
+          <a-input
+            :disabled="showable"
+            v-model="form.code"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="分组名称"
+          prop="groupName"
+        >
+          <a-input
+            :disabled="showable"
+            v-model="form.groupName"
+          />
+        </a-form-model-item>
+        <a-form-model-item
           label="启用状态"
           prop="enable"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
           label="描述"
-          prop="description"
+          prop="remark"
         >
-          <a-input
+          <a-textarea
             :disabled="showable"
-            v-model="form.description"
+            v-model="form.remark"
           />
         </a-form-model-item>
       </a-form-model>
@@ -68,16 +105,22 @@ export default {
   data () {
     return {
       form: {
-        id: '',
+        id: null,
         code: '',
         name: '',
+        groupName: '',
+        path: '',
+        requestType: 'GET',
         enable: true,
-        description: ''
+        system: false,
+        remark: ''
       },
       rules: {
         code: [{ required: true, message: '请求权限编码必填' }],
         name: [{ required: true, message: '请求权限名称必填' }],
-        enable: [{ required: true, message: '描述必填' }]
+        requestType: [{ required: true, message: '请求类型必填' }],
+        path: [{ required: true, message: '请求路径必填' }],
+        enable: [{ required: true, message: '必选是否启用' }]
       }
     }
   },
@@ -96,6 +139,7 @@ export default {
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
+          this.confirmLoading = true
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {

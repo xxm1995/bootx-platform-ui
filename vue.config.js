@@ -19,6 +19,7 @@ function getGitHash () {
 
 const isProd = process.env.NODE_ENV === 'production'
 
+// cdn配置
 const assetsCDN = {
   // webpack build externals
   externals: {
@@ -49,9 +50,9 @@ const vueConfig = {
         GIT_HASH: JSON.stringify(getGitHash()),
         BUILD_DATE: buildDate
       })
-    ],
-    // if prod, add externals
-    externals: isProd ? assetsCDN.externals : {}
+    ]
+    // 如果打算使用CDN, 从这放开
+    // externals: isProd ? assetsCDN.externals : {}
   },
 
   chainWebpack: (config) => {

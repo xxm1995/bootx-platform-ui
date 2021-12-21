@@ -41,7 +41,7 @@ export default {
   name: 'RolePathModal',
   data () {
     return {
-      title: '角色权限配置',
+      title: '角色请求配置',
       roleId: '',
       checkedKeys: [],
       visible: false,

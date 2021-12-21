@@ -48,7 +48,7 @@ export default {
   name: 'RoleMenuModal',
   data () {
     return {
-      title: '角色权限配置',
+      title: '角色菜单配置',
       roleId: '',
       allTreeKeys: [],
       expandedKeys: [],

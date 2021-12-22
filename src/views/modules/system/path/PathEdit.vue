@@ -18,15 +18,15 @@
         <a-form-model-item hidden prop="id">
           <a-input hidden v-model="form.id"/>
         </a-form-model-item>
-        <a-form-model-item hidden prop="system">
-          <a-input hidden v-model="form.system"/>
+        <a-form-model-item hidden prop="generate">
+          <a-input hidden v-model="form.generate"/>
         </a-form-model-item>
         <a-form-model-item
           label="请求路径"
           prop="path"
         >
           <a-input
-            :disabled="showable||form.system"
+            :disabled="showable||form.generate"
             v-model="form.path"
           />
         </a-form-model-item>
@@ -36,7 +36,7 @@
         >
           <a-select
             v-model="form.requestType"
-            :disabled="showable||form.system"
+            :disabled="showable||form.generate"
           >
             <a-select-option value="GET">GET</a-select-option>
             <a-select-option value="POST">POST</a-select-option>
@@ -112,7 +112,7 @@ export default {
         path: '',
         requestType: 'GET',
         enable: true,
-        system: false,
+        generate: false,
         remark: ''
       },
       rules: {

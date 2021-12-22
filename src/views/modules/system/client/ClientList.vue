@@ -3,7 +3,7 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col v-action:add :md="8" :sm="24">
+          <a-col :md="8" :sm="24">
             <a-form-item label="终端代码">
               <a-input v-model="queryParam.code" placeholder="" />
             </a-form-item>

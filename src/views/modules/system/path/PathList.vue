@@ -56,7 +56,7 @@
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="system" title="系统生成" >
+      <vxe-table-column field="generate" title="系统生成" >
         <template v-slot="{row}">
           <a-tag v-if="row.system" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>

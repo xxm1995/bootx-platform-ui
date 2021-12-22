@@ -59,9 +59,9 @@
         <a-form-model-item
           v-show="!addable"
           label="系统内置"
-          prop="system"
+          prop="internal"
         >
-          <a-switch checked-children="是" un-checked-children="否" v-model="form.system" disabled/>
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.internal" disabled/>
         </a-form-model-item>
         <a-form-model-item
           label="备注"
@@ -98,7 +98,7 @@ export default {
         paramKey: '',
         value: '',
         type: 2,
-        system: null,
+        internal: false,
         remark: ''
       },
       rules: {

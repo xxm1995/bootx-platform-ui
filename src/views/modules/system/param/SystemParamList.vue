@@ -51,7 +51,7 @@
           <span>{{ dictConvert(paramType,row.type) }}</span>
         </template>
       </vxe-table-column>
-      <vxe-table-column align="" field="system" title="内置参数" >
+      <vxe-table-column align="" field="internal" title="内置参数" >
         <template v-slot="{row}">
           <a-tag v-if="row.system" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>

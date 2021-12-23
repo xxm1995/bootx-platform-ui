@@ -167,14 +167,6 @@ export default {
     // 获取下拉选择的数据
     getSelectData (index) {
       return this.fieldTemps[index].list || []
-    },
-    // 日期变动
-    dateChange (date, queryParam) {
-      console.log(111,date)
-    },
-    // 时间变动
-    dateTimeChange (dateTime, queryParam) {
-      console.log(dateTime)
     }
   }
 }

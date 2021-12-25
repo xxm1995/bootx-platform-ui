@@ -290,12 +290,12 @@ export default {
       })
     },
     async edit (id, type, row) {
+      this.confirmLoading = true
       await this.loadTree()
       if (type === 'edit' || type === 'show') {
         this.editable = true
-        get(id).then(res => {
-          this.form = res.data
-        })
+        const res = await get(id)
+        this.form = res.data
       } else {
         // 新增
         this.confirmLoading = false
@@ -308,6 +308,7 @@ export default {
           })
         }
       }
+      this.confirmLoading = false
     },
     handleOk () {
       const that = this
@@ -334,7 +335,9 @@ export default {
         }
       })
     },
-
+    /**
+     * 选择父级验证情况
+     */
     handleParentIdChange (value) {
       if (!value) {
         this.validateStatus = 'error'
@@ -342,7 +345,10 @@ export default {
         this.validateStatus = 'success'
       }
     },
-    onChangeMenuType (e) {
+    /**
+     * 更改菜单类型
+     */
+    onChangeMenuType () {
       if (this.form.menuType === 2) {
         this.menuEditShow = false
         this.menuLabel = '按钮/权限'

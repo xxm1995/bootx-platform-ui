@@ -13,6 +13,9 @@
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
       >
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
         <a-form-model-item
           label="类型"
           prop="orgCategory"

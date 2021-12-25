@@ -4,12 +4,12 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="角色代码">
+            <a-form-item label="编码">
               <a-input v-model="queryParam.code" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="角色名称">
+            <a-form-item label="名称">
               <a-input v-model="queryParam.name" placeholder="" />
             </a-form-item>
           </a-col>
@@ -39,8 +39,17 @@
       :loading="loading"
       :data="tableData">
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="角色代码" />
-      <vxe-table-column field="name" title="角色名称" />
+      <vxe-table-column field="code" title="编码" />
+      <vxe-table-column field="name" title="名称" />
+      <vxe-table-column field="type" title="类型">
+        <template slot-scope="{row}">
+          <span v-show="String(row.type) === '1'">自身数据</span>
+          <span v-show="String(row.type) === '2'">用户范围</span>
+          <span v-show="String(row.type) === '3'">部门范围</span>
+          <span v-show="String(row.type) === '4'">部门和用户范围</span>
+          <span v-show="String(row.type) === '5'">全部数据</span>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
@@ -52,26 +61,28 @@
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除角色"
+            title="是否删除该数据权限"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
-          <a-divider type="vertical"/>
-          <a-dropdown>
-            <a class="ant-dropdown-link">
-              授权 <a-icon type="down" />
-            </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a href="javascript:" @click="handleRoleMenu(row)">菜单授权</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:" @click="handleRolePath(row)">请求授权</a>
-              </a-menu-item>
-            </a-menu>
-          </a-dropdown>
+          <template v-if="[2,3,4].includes(row.type)">
+            <a-divider type="vertical"/>
+            <a-dropdown>
+              <a class="ant-dropdown-link">
+                关联 <a-icon type="down" />
+              </a>
+              <a-menu slot="overlay">
+                <a-menu-item v-if="[2,4].includes(row.type)">
+                  <a href="javascript:" @click="handleUserScope(row)">关联用户</a>
+                </a-menu-item>
+                <a-menu-item v-if="[3,4].includes(row.type)">
+                  <a href="javascript:" @click="handleDeptScope(row)">关联部门</a>
+                </a-menu-item>
+              </a-menu>
+            </a-dropdown>
+          </template>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -85,34 +96,28 @@
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
-
-    <role-edit
-      ref="roleEdit"
-      @ok="handleOk"
-    />
-    <role-menu-modal
-      ref="roleMenuModal"
-    />
-    <role-path-modal
-      ref="rolePathModal"
-    />
+    <data-scope-edit ref="dataScopeEdit" @ok="handleOk"/>
+    <dept-scope-modal ref="deptScopeModal"/>
+    <user-scope-modal ref="userScopeModal"/>
   </a-card>
+
 </template>
 
 <script>
-import RoleEdit from './RoleEdit'
-import RoleMenuModal from './RoleMenuModal'
-import RolePathModal from './RolePathModal'
-import { del, page } from '@/api/system/role'
 import { TableMixin } from '@/mixins/TableMixin'
+import { del, page } from '@/api/system/dataScope'
+import DataScopeEdit from './DataScopeEdit'
+import DeptScopeModal from './DeptScopeModal'
+import UserScopeModal from './UserScopeModal'
+
 export default {
-  name: 'RoleList',
-  components: {
-    RoleEdit,
-    RoleMenuModal,
-    RolePathModal
-  },
+  name: 'DataScopeList',
   mixins: [TableMixin],
+  components: {
+    DataScopeEdit,
+    DeptScopeModal,
+    UserScopeModal
+  },
   data () {
     return {
       tableData: [],
@@ -142,25 +147,22 @@ export default {
       })
     },
     add () {
-      this.$refs.roleEdit.init('', 'add')
+      this.$refs.dataScopeEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.roleEdit.init(record.id, 'edit')
+      this.$refs.dataScopeEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.roleEdit.init(record.id, 'show')
+      this.$refs.dataScopeEdit.init(record.id, 'show')
     },
-    // 菜单授权处理
-    handleRoleMenu (record) {
-      this.$refs.roleMenuModal.init(record.id)
+    // 用户范围
+    handleUserScope (record) {
+      this.$refs.userScopeModal.init(record.id)
     },
-    // 请求授权处理
-    handleRolePath (record) {
-      this.$refs.rolePathModal.init(record.id)
+    // 部门范围
+    handleDeptScope (record) {
+      this.$refs.deptScopeModal.init(record.id)
     }
-  },
-  created () {
-    this.init()
   }
 }
 </script>

@@ -1,5 +1,17 @@
 <template>
   <a-card :bordered="false">
+
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="查询">
+              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入菜单名称、路由名称、请求路径或组件名称" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
     <vxe-toolbar
       custom
       export
@@ -85,6 +97,7 @@
 import { tree, del } from '@/api/system/menu'
 import MenuEdit from './MenuEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import XEUtils from 'xe-utils'
 
 export default {
   name: 'MenuList',
@@ -94,13 +107,16 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      searchName: '',
+      remoteTableData: []
     }
   },
   methods: {
     init () {
       this.loading = true
       tree().then(res => {
-        this.tableData = res.data
+        this.remoteTableData = res.data
+        this.search()
         this.loading = false
       })
     },
@@ -120,6 +136,23 @@ export default {
       del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
+      })
+    },
+    /**
+     * 搜索
+     */
+    search () {
+      const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
+      if (searchName) {
+        const searchProps = ['name', 'title', 'path', 'component']
+        this.tableData = XEUtils.searchTree(this.remoteTableData, item =>
+          searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(searchName) > -1))
+      } else {
+        this.tableData = this.remoteTableData
+      }
+      // 默认展开子节点
+      this.$nextTick(() => {
+        this.$refs.xTree.setAllTreeExpand(true)
       })
     }
   },

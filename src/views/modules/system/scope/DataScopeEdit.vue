@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="角色管理"
+    title="数据范围权限管理"
     :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -15,8 +15,11 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
         <a-form-model-item
-          label="角色名称"
+          label="名称"
           prop="name"
         >
           <a-input
@@ -25,13 +28,28 @@
           />
         </a-form-model-item>
         <a-form-model-item
-          label="角色代码"
+          label="编码"
           prop="code"
         >
           <a-input
             :disabled="showable"
             v-model="form.code"
           />
+        </a-form-model-item>
+        <a-form-model-item
+          label="权限范围"
+          prop="type"
+        >
+          <a-radio-group
+            :disabled="!addable"
+            v-model="form.type"
+          >
+            <a-radio :value="1">自身数据</a-radio>
+            <a-radio :value="2">用户范围</a-radio>
+            <a-radio :value="3">部门范围</a-radio>
+            <a-radio :value="4">部门和用户范围</a-radio>
+            <a-radio :value="5">全部数据</a-radio>
+          </a-radio-group>
         </a-form-model-item>
         <a-form-model-item
           label="备注"
@@ -52,28 +70,31 @@
 </template>
 
 <script>
-import { get, add, update, existsByCode, existsByCodeNotId, existsByName, existsByNameNotId } from '@/api/system/role'
 import { FormMixin } from '@/mixins/FormMixin'
+import { add, existsByCode, existsByCodeNotId, existsByName, existsByNameNotId, get, update } from '@/api/system/dataScope'
+
 export default {
-  name: 'RoleEdit',
+  name: 'DataScopeEdit',
   mixins: [FormMixin],
   data () {
     return {
       form: {
         id: '',
         name: '',
+        type: 1,
         code: '',
         remark: ''
       },
       rules: {
         name: [
-          { required: true, message: '请输入角色名称' },
+          { required: true, message: '请输入数据权限名称' },
           { validator: this.validateName, trigger: 'blur' }
         ],
         code: [
-          { required: true, message: '请输入角色代码' },
+          { required: true, message: '请输入数据权限编码' },
           { validator: this.validateCode, trigger: 'blur' }
-        ]
+        ],
+        type: [{ required: true, message: '请选择数据权限范围' }]
       }
     }
   },

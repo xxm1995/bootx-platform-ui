@@ -58,7 +58,7 @@
       </vxe-table-column>
       <vxe-table-column field="generate" title="系统生成" >
         <template v-slot="{row}">
-          <a-tag v-if="row.system" color="red">是</a-tag>
+          <a-tag v-if="row.generate" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>
         </template>
       </vxe-table-column>

@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { get, add, update } from '@/api/system/path'
+import { get, add, update } from '@/api/system/permPath'
 import { FormMixin } from '@/mixins/FormMixin'
 export default {
   name: 'PathEdit',

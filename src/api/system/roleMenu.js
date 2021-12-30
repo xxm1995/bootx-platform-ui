@@ -1,11 +1,11 @@
 import { axios } from '@/utils/request'
 
 /**
- * 根据用户获取拥有的菜单权限
+ * 根据用户获取拥有的权限
  */
-export function findIdsByRole (roleId) {
+export function findPermissionIdsByRole (roleId) {
   return axios({
-    url: `/role/menu/findIdsByRole`,
+    url: `/role/menu/findPermissionIdsByRole`,
     method: 'GET',
     params: { roleId }
   })

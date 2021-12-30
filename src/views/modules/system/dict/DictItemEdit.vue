@@ -7,64 +7,66 @@
     :maskClosable="false"
     @cancel="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item label="主键" prop="id" hidden="true" >
-        <a-input v-model="form.id" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="字典编码"
-        prop="dictCode"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input
-          :disabled="true"
-          v-model="form.dictCode"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        label="字典项编码"
-        prop="code"
-      >
-        <a-input
-          :disabled="showable"
-          v-model="form.code"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        label="字典项名称"
-        prop="name"
-      >
-        <a-input
-          :disabled="showable"
-          v-model="form.name"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        v-show="wrapperCol"
-        prop="sortNo"
-        label="排序">
-        <a-input-number
-          placeholder="请输入字典项排序，可以是小数"
-          :disabled="showable"
-          v-model="form.sortNo"
-          style="width: 200px"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        label="描述"
-        prop="remark"
-      >
-        <a-input
-          :disabled="showable"
-          v-model="form.remark"
-        />
-      </a-form-model-item>
-    </a-form-model>
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="字典编码"
+          prop="dictCode"
+        >
+          <a-input
+            :disabled="true"
+            v-model="form.dictCode"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="字典项编码"
+          prop="code"
+        >
+          <a-input
+            :disabled="showable"
+            v-model="form.code"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="字典项名称"
+          prop="name"
+        >
+          <a-input
+            :disabled="showable"
+            v-model="form.name"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          v-show="wrapperCol"
+          prop="sortNo"
+          label="排序">
+          <a-input-number
+            placeholder="请输入字典项排序，可以是小数"
+            :disabled="showable"
+            v-model="form.sortNo"
+            style="width: 200px"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="描述"
+          prop="remark"
+        >
+          <a-input
+            :disabled="showable"
+            v-model="form.remark"
+          />
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>

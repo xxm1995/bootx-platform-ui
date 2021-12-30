@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import { tree } from '@/api/system/menu'
-import { findIdsByRole, findMenuIds, save } from '@/api/system/roleMenu'
+import { tree } from '@/api/system/permMenu'
+import { findPermissionIdsByRole, findMenuIds, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 
 export default {
@@ -71,7 +71,7 @@ export default {
       await tree().then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
-      await findIdsByRole(roleId).then(res => {
+      await findPermissionIdsByRole(roleId).then(res => {
         this.checkedKeys = res.data
       })
       this.loading = false

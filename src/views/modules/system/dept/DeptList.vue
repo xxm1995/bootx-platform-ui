@@ -1,5 +1,16 @@
 <template>
   <a-card :bordered="false">
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="查询">
+              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入部门名称或编码" />
+            </a-form-item>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
     <vxe-toolbar
       custom
       zoom
@@ -70,6 +81,7 @@
 import { tree, del } from '@/api/system/dept.js'
 import DeptEdit from './DeptEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import XEUtils from 'xe-utils'
 export default {
   name: 'DeptList',
   components: {
@@ -78,13 +90,16 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      searchName: '',
+      remoteTableData: []
     }
   },
   methods: {
     init () {
       this.loading = true
       tree().then(res => {
-        this.tableData = res.data
+        this.remoteTableData = res.data
+        this.search()
         this.loading = false
       })
     },
@@ -101,9 +116,24 @@ export default {
       this.$refs.deptEdit.init('', 'add', row)
     },
     remove (record) {
-      del(record.id).then(_ => {
+      this.loading = true
+      del(record.id).then(() => {
         this.$message.info('删除成功')
         this.init()
+      })
+    },
+    search () {
+      const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
+      if (searchName) {
+        const searchProps = ['deptName', 'orgCode']
+        this.tableData = XEUtils.searchTree(this.remoteTableData, item =>
+          searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(searchName) > -1))
+      } else {
+        this.tableData = this.remoteTableData
+      }
+      // 默认展开子节点
+      this.$nextTick(() => {
+        this.$refs.xTree.setAllTreeExpand(true)
       })
     }
   },

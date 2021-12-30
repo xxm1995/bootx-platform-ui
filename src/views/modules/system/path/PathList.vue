@@ -98,7 +98,7 @@
 </template>
 
 <script>
-import { del, page, syncSystem } from '@/api/system/path'
+import { del, page, syncSystem } from '@/api/system/permPath'
 import PathEdit from './PathEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {

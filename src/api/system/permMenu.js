@@ -38,3 +38,32 @@ export function del (id) {
     method: 'DELETE'
   })
 }
+
+/**
+ * 资源列表
+ */
+export function resourceList (menuId) {
+  return axios({
+    url: '/perm/menu/resourceList',
+    params: { menuId },
+    method: 'GET'
+  })
+}
+
+/**
+ * 权限码是否重复
+ */
+export function existsByPermCode (permCode) {
+  return axios({
+    url: '/perm/menu/existsByPermCode',
+    params: { permCode },
+    method: 'GET'
+  })
+}
+export function existsByPermCodeNotId (permCode, id) {
+  return axios({
+    url: '/perm/menu/existsByPermCodeNotId',
+    params: { permCode, id },
+    method: 'GET'
+  })
+}

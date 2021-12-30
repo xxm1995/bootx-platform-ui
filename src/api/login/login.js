@@ -23,11 +23,11 @@ export function loginOpenId (parameter) {
 }
 
 /**
- * 获取用户菜单和按钮权限
+ * 获取用户菜单和资源权限
  */
-export function getMenuAndButtonPermission () {
+export function getPermissions () {
   return request({
-    url: `/role/menu/findMenuAndButtonPermission`,
+    url: `/role/menu/getPermissions`,
     method: 'GET'
   })
 }

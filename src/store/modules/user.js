@@ -1,5 +1,5 @@
 import storage from 'store'
-import {login, getMenuAndButtonPermission, getUserInfo, logout, loginOpenId} from '@/api/login/login'
+import {login, getPermissions, getUserInfo, logout, loginOpenId} from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 import Vue from 'vue'
 
@@ -71,14 +71,14 @@ const user = {
     // 获取用户菜单和按钮权限
     GetUserPermission ({ commit }) {
       return new Promise((resolve, reject) => {
-        getMenuAndButtonPermission().then(response => {
+        getPermissions().then(response => {
           const result = response.data
-          const permissionList = result.buttonPermissions
+          const resourcePerms = result.resourcePerms
           const menus = result.menus
           // 保存权限, 默认拥有访客权限,防止无权限情况下无限刷新
-          permissionList.push('_GHOST')
-          commit('SET_PERMISSION', permissionList)
-          resolve({ permissionList, menus })
+          resourcePerms.push('_GHOST')
+          commit('SET_PERMISSION', resourcePerms)
+          resolve({ permissionList: resourcePerms, menus })
           // 清除多标签缓存
           Vue.ls.remove(CACHE_MULTI_TAB_COMPONENTS)
         }).catch(error => {

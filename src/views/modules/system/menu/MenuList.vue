@@ -1,6 +1,5 @@
 <template>
   <a-card :bordered="false">
-
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
@@ -58,11 +57,13 @@
           </div>
         </template>
       </vxe-table-column>
-      <vxe-table-column title="操作" fixed="right" width="170" :showOverflow="false" >
+      <vxe-table-column title="操作" fixed="right" width="210" :showOverflow="false" >
         <template v-slot="{row}">
           <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
           <a-divider type="vertical" />
           <a href="javascript:" @click="show(row.id)">查看</a>
+          <a-divider type="vertical" />
+          <a href="javascript:" @click="resourceList(row)">资源</a>
           <a-divider type="vertical" />
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -79,7 +80,7 @@
                   okText="是"
                   cancelText="否">
                   <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
-                  <a href="javascript:" v-else :disabled="true">删除</a>
+                  <a href="javascript:" v-else disabled>删除</a>
                 </a-popconfirm>
               </a-menu-item>
             </a-menu>
@@ -87,22 +88,23 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-    <menu-edit
-      ref="menuEdit"
-      @ok="handleOk"/>
+    <menu-edit ref="menuEdit" @ok="handleOk"/>
+    <resource-perm-list ref="resourcePermList"/>
   </a-card>
 </template>
 
 <script>
-import { tree, del } from '@/api/system/menu'
+import { tree, del } from '@/api/system/permMenu'
 import MenuEdit from './MenuEdit'
+import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
 
 export default {
   name: 'MenuList',
   components: {
-    MenuEdit
+    MenuEdit,
+    ResourcePermList
   },
   mixins: [TableMixin],
   data () {
@@ -137,6 +139,12 @@ export default {
         this.$message.info('删除成功')
         this.init()
       })
+    },
+    /**
+     * 资源列表
+     */
+    resourceList (record) {
+      this.$refs.resourcePermList.init(record)
     },
     /**
      * 搜索

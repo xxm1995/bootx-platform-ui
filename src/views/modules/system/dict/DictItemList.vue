@@ -50,6 +50,16 @@
         </template>
       </vxe-table-column>
     </vxe-table>
+    <vxe-pager
+      border
+      size="medium"
+      :loading="loading"
+      :current-page="pagination.current"
+      :page-size="pagination.size"
+      :total="pagination.total"
+      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
+      @page-change="handleTableChange">
+    </vxe-pager>
     <dict-item-edit
       ref="dictItemEdit"
       @ok="queryPage"

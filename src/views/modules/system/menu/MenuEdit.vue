@@ -204,7 +204,7 @@
 </template>
 
 <script>
-import { add, update, get, tree } from '@/api/system/permMenu'
+import { add, update, get, menuTree } from '@/api/system/permMenu'
 import { treeDataTranslate } from '@/utils/util'
 import { FormMixin } from '@/mixins/FormMixin'
 import IconSelector from '@/components/IconSelector'
@@ -248,7 +248,7 @@ export default {
   },
   methods: {
     loadTree () {
-      tree().then((res) => {
+      menuTree().then((res) => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },

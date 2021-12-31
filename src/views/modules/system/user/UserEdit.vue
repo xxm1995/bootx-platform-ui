@@ -76,7 +76,7 @@ export default {
   computed: {
     diff () {
       return {
-        phone: this.diffForm(this.form.name, this.rawForm.phone),
+        phone: this.diffForm(this.form.phone, this.rawForm.phone),
         email: this.diffForm(this.form.email, this.rawForm.email)
       }
     }
@@ -86,7 +86,8 @@ export default {
       this.confirmLoading = true
       get(id).then(res => {
         this.form = res.data
-        this.rawForm = { ...res.data }
+        delete this.form.password
+        this.rawForm = { ...this.form }
         this.confirmLoading = false
       })
     },
@@ -151,6 +152,11 @@ export default {
           callback('请输入正确格式的邮箱!')
         }
       }
+    },
+    resetForm () {
+      this.$nextTick(() => {
+        this.$refs.form.resetFields()
+      })
     }
   }
 }

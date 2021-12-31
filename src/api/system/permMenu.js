@@ -1,8 +1,15 @@
 import { axios } from '@/utils/request'
 
-export function tree () {
+export function menuTree () {
   return axios({
-    url: '/perm/menu/tree',
+    url: '/perm/menu/menuTree',
+    method: 'GET'
+  })
+}
+
+export function allTree () {
+  return axios({
+    url: '/perm/menu/allTree',
     method: 'GET'
   })
 }

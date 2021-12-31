@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { tree, del } from '@/api/system/permMenu'
+import { menuTree, del } from '@/api/system/permMenu'
 import MenuEdit from './MenuEdit'
 import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
@@ -116,7 +116,7 @@ export default {
   methods: {
     init () {
       this.loading = true
-      tree().then(res => {
+      menuTree().then(res => {
         this.remoteTableData = res.data
         this.search()
         this.loading = false

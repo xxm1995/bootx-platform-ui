@@ -9,6 +9,7 @@
     :visible="visible"
   >
     <a-spin :spinning="loading" style="margin-bottom: 2rem">
+      <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear @change="search"/>
       <a-tree
         :checkable="true"
         v-model="checkedKeys"
@@ -20,6 +21,17 @@
         @expand="onExpand"
         @select="onSelect"
       />
+<!--      <vxe-table-->
+<!--        resizable-->
+<!--        border="none"-->
+<!--        :show-header="false"-->
+<!--        :tree-config="{children: 'children'}"-->
+<!--        :row-config="{height: 20}"-->
+<!--        :checkbox-config="{labelField: 'title'}"-->
+<!--        :data="treeData"-->
+<!--        @checkbox-change="onCheck">-->
+<!--        <vxe-column height="auto" type="checkbox" tree-node/>-->
+<!--      </vxe-table>-->
     </a-spin>
     <div class="drawer-button">
       <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
@@ -40,9 +52,9 @@
 </template>
 
 <script>
-import { tree } from '@/api/system/permMenu'
-import { findPermissionIdsByRole, findMenuIds, save } from '@/api/system/roleMenu'
+import { findPermissionIdsByRole, findPermissionIds, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
+import { allTree } from '@/api/system/permMenu'
 
 export default {
   name: 'RoleMenuModal',
@@ -65,12 +77,15 @@ export default {
       this.visible = true
       this.loading = true
       this.roleId = roleId
-      findMenuIds().then(res => {
+      // 获取全部权限码
+      findPermissionIds().then(res => {
         this.allTreeKeys = res.data
       })
-      await tree().then(res => {
+      // 权限树
+      await allTree().then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
+      // 当前角色已经选择的
       await findPermissionIdsByRole(roleId).then(res => {
         this.checkedKeys = res.data
       })
@@ -105,13 +120,7 @@ export default {
     cancelCheckALL () {
       this.checkedKeys = []
     },
-    switchCheckStrictly (v) {
-      if (v === 1) {
-        this.checkStrictly = false
-      } else if (v === 2) {
-        this.checkStrictly = true
-      }
-    },
+    // 提交
     handleSubmit () {
       this.loading = true
       save({
@@ -121,8 +130,12 @@ export default {
         this.handleCancel()
       })
     },
+    // 取消
     handleCancel () {
       this.visible = false
+    },
+    search (e) {
+      const searchName = e.target.value
     }
   }
 }

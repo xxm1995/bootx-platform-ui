@@ -80,6 +80,7 @@ export default {
         permCode: '',
         effect: true,
         menuType: 2,
+        sortNo: 0,
         remark: ''
       },
       rules: {

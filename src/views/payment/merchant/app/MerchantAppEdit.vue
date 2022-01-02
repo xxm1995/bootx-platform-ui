@@ -191,7 +191,6 @@ export default {
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-        this.form = {}
       })
     }
   }

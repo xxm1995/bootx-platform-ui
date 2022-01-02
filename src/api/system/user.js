@@ -99,11 +99,44 @@ export function addUserRole (data) {
 }
 
 /**
+ * 获取用户拥有数据权限id集合
+ */
+export function findDataScopeIdsByUser (id) {
+  return axios({
+    url: `/user/data/scope/findIdsByUser`,
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 获取用户拥有数据权限集合
+ */
+export function getDataScopes (id) {
+  return axios({
+    url: `/user/data/scope/findAllByUser`,
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 添加用户数据权限关联关系
+ */
+export function addUserDataScope (data) {
+  return axios({
+    url: `/user/data/scope/saveAssign`,
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
  * 获取用户拥有部门id集合
  */
-export function getDeptIds (id) {
+export function findDeptIdsByUser (id) {
   return axios({
-    url: `/user/dept/findDeptIdsByUser`,
+    url: `/user/dept/findIdsByUser`,
     method: 'GET',
     params: { id }
   })
@@ -114,7 +147,7 @@ export function getDeptIds (id) {
  */
 export function getDeptList (id) {
   return axios({
-    url: `/user/dept/findDeptListByUser`,
+    url: `/user/dept/findAllByUser`,
     method: 'GET',
     params: { id }
   })

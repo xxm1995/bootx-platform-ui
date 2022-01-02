@@ -3,17 +3,22 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="权限标识">
               <a-input v-model="queryParam.code" placeholder=""/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="权限名称">
               <a-input v-model="queryParam.name" placeholder=""/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="权限分组">
+              <a-input v-model="queryParam.groupName" placeholder=""/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-button type="primary" @click="query">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
           </a-col>

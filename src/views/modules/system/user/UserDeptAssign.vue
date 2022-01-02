@@ -1,120 +1,155 @@
 <template>
-  <a-modal
+  <a-drawer
     title="用户部门分配"
-    :width="640"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
     :maskClosable="false"
-    @cancel="handleCancel"
+    :width="640"
+    placement="right"
+    :closable="true"
+    @close="handleCancel"
+    :visible="visible"
   >
-    <a-spin :spinning="confirmLoading">
-      <a-form-model
-        ref="form"
-        :model="form"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
+    <a-spin :spinning="loading" style="margin-bottom: 2rem">
+      <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear v-model="searchName" @change="search"/>
+      <a-tree
+        :checkable="true"
+        v-model="checkedKeys"
+        :expanded-keys="expandedKeys"
+        :auto-expand-parent="autoExpandParent"
+        :tree-data="treeData"
+        @check="onCheck"
+        @expand="onExpand"
       >
-        <a-form-model-item label="账号" prop="account">
-          <a-input :disabled="true" v-model="userinfo.username"/>
-        </a-form-model-item>
-        <a-form-model-item label="用户" prop="name">
-          <a-input :disabled="true" v-model="userinfo.name"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="部门"
-          prop="roleIds"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
-        >
-          <a-tree-select
-            allowClear
-            multiple
-            tree-default-expand-all
-            mode="multiple"
-            v-model="form.deptIds"
-            :default-value="form.roleIds"
-            :tree-data="deptTree"
-            style="width: 100%"
-            placeholder="选择部门"
-          >
-          </a-tree-select>
-        </a-form-model-item>
-      </a-form-model>
+        <template slot="title" slot-scope="{ title }">
+          <span v-if="title.indexOf(searchName) > -1">
+            {{ title.substr(0, title.indexOf(searchName)) }}
+            <span style="color: #f50">{{ searchName }}</span>
+            {{ title.substr(title.indexOf(searchName) + searchName.length) }}
+          </span>
+          <span v-else>{{ title }}</span>
+        </template>
+      </a-tree>
     </a-spin>
-    <template slot="footer">
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-    </template>
-  </a-modal>
+    <div class="drawer-button">
+      <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
+        <a-menu slot="overlay">
+          <a-menu-item key="1" @click="checkALL">全部勾选</a-menu-item>
+          <a-menu-item key="2" @click="cancelCheckALL">取消全选</a-menu-item>
+          <a-menu-item key="3" @click="expandAll">展开所有</a-menu-item>
+          <a-menu-item key="4" @click="closeAll">合并所有</a-menu-item>
+        </a-menu>
+        <a-button>
+          操作 <a-icon type="up" />
+        </a-button>
+      </a-dropdown>
+      <a-button @click="handleCancel()" style="margin-right: .8rem">取消</a-button>
+      <a-button @click="handleSubmit()" type="primary" :loading="loading" style="margin-right: 0.8rem">保存</a-button>
+    </div>
+  </a-drawer>
 </template>
 
 <script>
 import { tree } from '@/api/system/dept'
-import { addUserDept, getDeptIds } from '@/api/system/user'
+import { addUserDept, findDeptIdsByUser } from '@/api/system/user'
 import { treeDataTranslate } from '@/utils/util'
+import XEUtils from 'xe-utils'
 export default {
   name: 'UserDeptAssign',
   data () {
     return {
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 7 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 13 }
-      },
+      title: '角色菜单配置',
+      userId: '',
+      searchName: '',
+      // 所有的key
+      allTreeKeys: [],
+      // 展开的key
+      expandedKeys: [],
+      // 被选中的key
+      checkedKeys: [],
+      autoExpandParent: true,
       visible: false,
-      confirmLoading: false,
-      deptTree: [],
-      userinfo: {
-        account: '',
-        name: ''
-      },
-      form: {
-        userId: '',
-        deptIds: []
-      }
+      loading: false,
+      treeData: [],
+      // 树转换成的数组
+      treeList: []
     }
   },
   methods: {
-    edit (userInfo, type) {
-      this.userinfo = { ...userInfo }
-      this.form.userId = userInfo.id
+    async init (userId) {
       this.visible = true
-      // 获取部门树
-      tree().then(({ data }) => {
-        this.deptTree = treeDataTranslate(data, 'id', 'deptName')
+      this.loading = true
+      this.userId = userId
+      this.searchName = ''
+      this.expandedKeys = []
+      // 权限树
+      await tree().then(res => {
+        this.treeData = treeDataTranslate(res.data, 'id', 'deptName')
+        this.generateTreeList(res.data)
       })
-      // 获取用户部门信息
-      getDeptIds(userInfo.id).then(({ data }) => {
-        this.form.deptIds = data
+      // 当前用户已经分配的部门
+      await findDeptIdsByUser(userId).then(res => {
+        this.checkedKeys = res.data
+      })
+      // 所有的key值
+      this.allTreeKeys = this.treeList.map(item => item.id)
+      this.loading = false
+    },
+    // 展开/收起节点时触发
+    onExpand (expandedKeys) {
+      this.expandedKeys = expandedKeys
+      this.autoExpandParent = false
+    },
+    // 点击复选框触发
+    onCheck (checkedKeys) {
+      this.checkedKeys = checkedKeys
+    },
+    // 展开全部
+    expandAll () {
+      this.expandedKeys = this.allTreeKeys
+    },
+    // 合并全部
+    closeAll () {
+      this.expandedKeys = []
+    },
+    // 全选
+    checkALL () {
+      this.checkedKeys = this.allTreeKeys
+    },
+    // 全不选
+    cancelCheckALL () {
+      this.checkedKeys = []
+    },
+    // 提交
+    handleSubmit () {
+      this.loading = true
+      addUserDept({
+        userId: this.userId,
+        deptIds: this.checkedKeys
+      }).then(() => {
+        this.handleCancel()
       })
     },
+    // 取消
     handleCancel () {
       this.visible = false
-      this.resetForm()
     },
-    handleOk () {
-      this.$refs.form.validate(async valid => {
-        if (valid) {
-          this.confirmLoading = true
-          await addUserDept(this.form)
-          setTimeout(() => {
-            this.confirmLoading = false
-            this.$emit('ok')
-            this.visible = false
-          }, 200)
-        } else {
-          return false
+    // 树数据铺平
+    generateTreeList (treeData) {
+      for (let i = 0; i < treeData.length; i++) {
+        const node = treeData[i]
+        this.treeList.push(node)
+        if (node.children) {
+          this.generateTreeList(node.children)
         }
-      })
+      }
     },
-    resetForm () {
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
-        this.form = {}
-      })
+    // 搜索
+    search () {
+      const searchName = XEUtils.toValueString(this.searchName).toLowerCase()
+      this.expandedKeys = this.treeList.map(node => {
+        if (searchName && node.parentId && XEUtils.toValueString(node.deptName).toLowerCase().indexOf(searchName) > -1) {
+          return node.parentId
+        }
+      }).filter((item, i, self) => item && self.indexOf(item) === i)
     }
   }
 }

@@ -1,6 +1,6 @@
-<template xmlns="">
+<template>
   <a-modal
-    title="用户角色分配"
+    title="用户数据权限分配"
     :width="640"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -21,21 +21,18 @@
           <a-input :disabled="true" v-model="userinfo.name"/>
         </a-form-model-item>
         <a-form-model-item
-          label="角色"
-          prop="roleIds"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
+          label="数据权限"
+          prop="dataScopeIds"
         >
           <a-select
             allowClear
-            mode="multiple"
-            v-model="form.roleIds"
-            :default-value="form.roleIds"
+            v-model="form.dataScopeId"
+            :default-value="form.dataScopeId"
             :filter-option="searchRole"
             style="width: 100%"
-            placeholder="选择角色"
+            placeholder="选择数据权限"
           >
-            <a-select-option v-for="o in roleList" :key="o.id">
+            <a-select-option v-for="o in dataScopeList" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -50,11 +47,11 @@
 </template>
 
 <script>
-import { getRoleIds, addUserRole } from '@/api/system/user'
-import { list as roleList } from '@/api/system/role'
+import { addUserDataScope, findDataScopeIdsByUser } from '@/api/system/user'
+import { list as dataScopeList } from '@/api/system/dataScope'
 
 export default {
-  name: 'UserRoleAssign',
+  name: 'UserDataScopeAssign',
   data () {
     return {
       labelCol: {
@@ -67,14 +64,14 @@ export default {
       },
       visible: false,
       confirmLoading: false,
-      roleList: [],
+      dataScopeList: [],
       userinfo: {
         account: '',
         name: ''
       },
       form: {
         userId: '',
-        roleIds: []
+        dataScopeId: ''
       }
     }
   },
@@ -84,13 +81,13 @@ export default {
       this.form.userId = userInfo.id
       this.visible = true
       this.confirmLoading = true
-      // 获取角色列表
-      await roleList().then(value => {
-        this.roleList = value.data
+      // 获取数据角色列表
+      await dataScopeList().then(value => {
+        this.dataScopeList = value.data
       })
       // 获取角色信息
-      await getRoleIds(userInfo.id).then(({ data }) => {
-        this.form.roleIds = data
+      await findDataScopeIdsByUser(userInfo.id).then(({ data }) => {
+        this.form.dataScopeId = data
       })
       this.confirmLoading = false
     },
@@ -102,7 +99,7 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await addUserRole(this.form)
+          await addUserDataScope(this.form)
           setTimeout(() => {
             this.confirmLoading = false
             this.$emit('ok')

@@ -70,6 +70,9 @@
                 <a @click="assignRoles(row)">角色分配</a>
               </a-menu-item>
               <a-menu-item>
+                <a @click="assignDataScope(row)">数据权限分配</a>
+              </a-menu-item>
+              <a-menu-item>
                 <a @click="assignDept(row)">部门分配</a>
               </a-menu-item>
               <a-menu-item>
@@ -95,32 +98,19 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <!-- 角色分配 -->
-    <user-role-assign
-      ref="userRoleAssign"
-    />
+    <user-role-assign ref="userRoleAssign" />
+    <!-- 角色分配 -->
+    <user-data-scope-assign ref="userDataScopeAssign" />
     <!-- 部门分配 -->
-    <user-dept-assign
-      ref="userDeptAssign"
-    />
+    <user-dept-assign ref="userDeptAssign" />
     <!--  添加用户  -->
-    <user-add
-      @ok="init"
-      ref="userAdd"
-    />
+    <user-add @ok="init" ref="userAdd" />
     <!--  编辑用户  -->
-    <user-edit
-      @ok="init"
-      ref="userEdit"
-    />
-    <!--  查看用户  -->
-    <user-show
-      @ok="init"
-      ref="userShow"
-    />
+    <user-edit @ok="init" ref="userEdit" />
+    <!--  查看用户详情  -->
+    <user-show @ok="init" ref="userShow"/>
     <!--  重置密码  -->
-    <user-reset-password
-      ref="resetPassword"
-    />
+    <user-reset-password ref="resetPassword" />
   </a-card>
 </template>
 
@@ -128,6 +118,7 @@
 import { del, lockUser, page, unlockUser } from '@/api/system/user'
 import UserRoleAssign from './UserRoleAssign'
 import UserDeptAssign from './UserDeptAssign'
+import UserDataScopeAssign from './UserDataScopeAssign'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 import UserShow from './UserShow'
@@ -139,6 +130,7 @@ export default {
   components: {
     UserRoleAssign,
     UserDeptAssign,
+    UserDataScopeAssign,
     UserAdd,
     UserEdit,
     UserShow,
@@ -174,9 +166,13 @@ export default {
     assignRoles (record) {
       this.$refs.userRoleAssign.edit(record, 'edit')
     },
-    // 分配角色
+    // 分配数据权限
+    assignDataScope (record) {
+      this.$refs.userDataScopeAssign.edit(record, 'edit')
+    },
+    // 分配部门
     assignDept (record) {
-      this.$refs.userDeptAssign.edit(record, 'edit')
+      this.$refs.userDeptAssign.init(record.id)
     },
     add () {
       this.$refs.userAdd.init('', 'add')

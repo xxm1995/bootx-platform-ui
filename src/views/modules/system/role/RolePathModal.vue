@@ -11,20 +11,18 @@
     <a-spin :spinning="loading" style="margin-bottom: 2rem">
       <vxe-table
         resizable
-        border="none"
-        stripe
         show-overflow
-        showHeader
+        border="none"
         ref="table"
-        row-id="id"
         size="medium"
-        :checkbox-config="{trigger: 'row', highlight: true, range: true, checkRowKeys: checkedKeys}"
+        row-id="id"
+        :showHeader="true"
+        :tree-config="{children: 'children'}"
+        :checkbox-config="{labelField: 'name', checkRowKeys: checkedKeys}"
         :loading="loading"
-        :data="tableData"
-      >
-        <vxe-column type="checkbox" width="60"/>
-        <vxe-table-column field="code" title="权限代码" />
-        <vxe-table-column field="name" title="权限名称" />
+        :data="tableData">
+        <vxe-column type="checkbox" title="权限名称" tree-node/>
+        <vxe-column field="code" title="权限代码"></vxe-column>
       </vxe-table>
     </a-spin>
     <div class="drawer-button">
@@ -36,6 +34,7 @@
 
 <script>
 import { findPathsByUser, findIdsByRole, save } from '@/api/system/rolePath'
+import XEUtils from 'xe-utils'
 
 export default {
   name: 'RolePathModal',
@@ -50,7 +49,7 @@ export default {
     }
   },
   methods: {
-    init: async function (roleId) {
+    async init (roleId) {
       this.visible = true
       this.loading = true
       this.roleId = roleId
@@ -58,10 +57,16 @@ export default {
         this.checkedKeys = res.data
       })
       await findPathsByUser().then(res => {
-        this.$refs.table.reloadData(res.data)
-        this.tableData = res.data
+        const result = []
+        XEUtils.each(XEUtils.groupBy(res.data, 'groupName'), (childs, key) => {
+          result.push({
+            name: key,
+            children: childs
+          })
+        })
+        this.tableData = result
+        this.$refs.table.reloadData(this.tableData)
       })
-
       this.loading = false
     },
     // 全选
@@ -75,6 +80,7 @@ export default {
     handleSubmit () {
       this.loading = true
       const checkedKeys = this.$refs.table.getCheckboxRecords().map(res => res.id)
+        .filter(id => id.indexOf('row_') === -1)
       save({
         roleId: this.roleId,
         permissionIds: checkedKeys

@@ -56,7 +56,7 @@
         label="描述"
         prop="description"
       >
-        <a-input v-model="form.description" :disabled="showable"/>
+        <a-textarea v-model="form.description" :disabled="showable"/>
       </a-form-model-item>
     </a-form-model>
 

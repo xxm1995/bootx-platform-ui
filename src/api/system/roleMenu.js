@@ -22,16 +22,6 @@ export function findMenuIds () {
 }
 
 /**
- * 获取权限id列表,包含资源权限
- */
-export function findPermissionIds () {
-  return axios({
-    url: `/role/menu/findPermissionIds`,
-    method: 'GET'
-  })
-}
-
-/**
  * 保存
  */
 export function save (obj) {

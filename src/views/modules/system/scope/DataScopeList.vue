@@ -163,6 +163,9 @@ export default {
     handleDeptScope (record) {
       this.$refs.deptScopeModal.init(record.id)
     }
+  },
+  created () {
+    this.init()
   }
 }
 </script>

@@ -113,7 +113,7 @@ export default {
     remove (record) {
       itemDel(record.id).then(() => {
         this.$message.info('删除成功')
-        this.init()
+        this.queryPage()
       })
     },
     handleCancel () {

@@ -99,7 +99,7 @@ export default {
     remove (record) {
       del(record.id).then(() => {
         this.$message.info('删除成功')
-        this.init()
+        this.queryList()
       })
     },
     handleCancel () {

@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="用户部门分配"
+    title="部门范围权限分配"
     :maskClosable="false"
     :width="640"
     placement="right"

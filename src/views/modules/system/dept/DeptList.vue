@@ -23,6 +23,8 @@
           @click="add()">
           新建
         </a-button>
+        <a-button style="margin-left: 8px" @click="$refs.xTree.setAllTreeExpand(true)">展开所有</a-button>
+        <a-button style="margin-left: 8px" @click="$refs.xTree.clearTreeExpand()">关闭所有</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -38,7 +40,7 @@
         <template v-slot="{row}">
           <span v-show="String(row.orgCategory) === '1'">公司</span>
           <span v-show="String(row.orgCategory) === '2'">组织机构</span>
-          <span v-show="String(row.orgCategory) === '3'">岗位</span>
+<!--          <span v-show="String(row.orgCategory) === '3'">岗位</span>-->
         </template>
       </vxe-table-column>
       <vxe-table-column field="orgCode" title="机构编码"/>

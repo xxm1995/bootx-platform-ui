@@ -37,7 +37,7 @@
           @confirm="syncSystem()"
           okText="是"
           cancelText="否">
-          <a-button style="margin-left: 8px" icon="cloud-sync">同步</a-button>
+          <a-button style="margin-left: 8px" icon="cloud-sync">同步系统资源</a-button>
         </a-popconfirm>
       </template>
     </vxe-toolbar>

@@ -40,16 +40,20 @@
           label="权限范围"
           prop="type"
         >
-          <a-radio-group
+          <a-select
             :disabled="!addable"
             v-model="form.type"
+            style="width: 100%"
+            placeholder="选择支付方式"
           >
-            <a-radio :value="1">自身数据</a-radio>
-            <a-radio :value="2">用户范围</a-radio>
-            <a-radio :value="3">部门范围</a-radio>
-            <a-radio :value="4">部门和用户范围</a-radio>
-            <a-radio :value="5">全部数据</a-radio>
-          </a-radio-group>
+            <a-select-option :value="1">自身数据</a-select-option>
+            <a-select-option :value="2">用户范围</a-select-option>
+            <a-select-option :value="3">部门范围</a-select-option>
+            <a-select-option :value="4">部门和用户范围</a-select-option>
+            <a-select-option :value="5">全部数据</a-select-option>
+            <a-select-option :value="6">所在部门</a-select-option>
+            <a-select-option :value="7">所在及下级部门</a-select-option>
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
           label="备注"

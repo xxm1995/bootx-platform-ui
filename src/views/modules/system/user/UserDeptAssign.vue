@@ -12,7 +12,8 @@
       <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear v-model="searchName" @change="search"/>
       <a-tree
         :checkable="true"
-        v-model="checkedKeys"
+        :checkStrictly="title"
+        :checkedKeys="checkedKeys"
         :expanded-keys="expandedKeys"
         :auto-expand-parent="autoExpandParent"
         :tree-data="treeData"
@@ -123,7 +124,7 @@ export default {
       this.loading = true
       addUserDept({
         userId: this.userId,
-        deptIds: this.checkedKeys
+        deptIds: this.checkedKeys.checked
       }).then(() => {
         this.handleCancel()
       })

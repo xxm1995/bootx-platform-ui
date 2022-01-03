@@ -43,11 +43,13 @@
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="type" title="类型">
         <template slot-scope="{row}">
-          <span v-show="String(row.type) === '1'">自身数据</span>
-          <span v-show="String(row.type) === '2'">用户范围</span>
-          <span v-show="String(row.type) === '3'">部门范围</span>
-          <span v-show="String(row.type) === '4'">部门和用户范围</span>
-          <span v-show="String(row.type) === '5'">全部数据</span>
+          <span v-show="row.type === 1">自身数据</span>
+          <span v-show="row.type === 2">用户范围</span>
+          <span v-show="row.type === 3">部门范围</span>
+          <span v-show="row.type === 4">部门和用户范围</span>
+          <span v-show="row.type === 5">全部数据</span>
+          <span v-show="row.type === 6">所在部门</span>
+          <span v-show="row.type === 7">所在及下级部门</span>
         </template>
       </vxe-table-column>
       <vxe-table-column field="remark" title="备注" />

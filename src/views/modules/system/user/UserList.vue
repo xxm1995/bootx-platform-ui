@@ -70,10 +70,10 @@
                 <a @click="assignRoles(row)">角色分配</a>
               </a-menu-item>
               <a-menu-item>
-                <a @click="assignDataScope(row)">数据权限分配</a>
+                <a @click="assignDept(row)">部门分配</a>
               </a-menu-item>
               <a-menu-item>
-                <a @click="assignDept(row)">部门分配</a>
+                <a @click="assignDataScope(row)">数据权限分配</a>
               </a-menu-item>
               <a-menu-item>
                 <a @click="resetPwd(row)">重置密码</a>

@@ -26,7 +26,7 @@
           >
             <a-radio :value="1">公司</a-radio>
             <a-radio :value="2">部门</a-radio>
-            <a-radio :value="3">岗位</a-radio>
+<!--            <a-radio :value="3">岗位</a-radio>-->
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item

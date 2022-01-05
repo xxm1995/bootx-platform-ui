@@ -12,7 +12,7 @@
       <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear v-model="searchName" @change="search"/>
       <a-tree
         :checkable="true"
-        :checkStrictly="title"
+        :checkStrictly="true"
         :checkedKeys="checkedKeys"
         :expanded-keys="expandedKeys"
         :auto-expand-parent="autoExpandParent"

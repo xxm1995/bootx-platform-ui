@@ -1,30 +1,42 @@
 <template>
   <a-modal
     title="数据范围权限管理"
+    destroyOnClose
     :width="640"
     :visible="visible"
     :confirmLoading="loading"
     :maskClosable="false"
     @cancel="handleCancel"
   >
-    <vxe-toolbar
-      custom
-      zoom
-      :refresh="{query: queryPage}"
-    >
+    <vxe-toolbar>
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus">选择用户</a-button>
+        <div class="table-page-search-wrapper">
+          <a-form layout="inline">
+            <a-row :gutter="12">
+              <a-col :md="8" :sm="12">
+                <a-form-item label="名称">
+                  <a-input v-model="queryParam.name" placeholder="" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="8" :sm="12">
+                <a-form-item label="账号">
+                  <a-input v-model="queryParam.username" placeholder="" />
+                </a-form-item>
+              </a-col>
+              <a-col :md="8" :sm="24">
+                <a-button type="primary" @click="queryPage">查询</a-button>
+                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+              </a-col>
+            </a-row>
+          </a-form>
+        </div>
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
+      :height="350"
       row-id="id"
       ref="table"
-      size="medium"
-      :checkbox-config="{reserve: true,checkRowKeys: selectUserIds}"
+      :checkbox-config="{reserve: true,checkMethod: banCheckbox}"
       :loading="loading"
       :data="tableData"
     >
@@ -45,7 +57,7 @@
     </vxe-pager>
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" type="primary" @click="handleOk">保存</a-button>
+      <a-button key="forward" type="primary" @click="handleOk">选择</a-button>
     </template>
   </a-modal>
 </template>
@@ -59,6 +71,7 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      // 已经被选择的用户
       selectUserIds: [],
       visible: false,
       queryParam: {
@@ -96,6 +109,10 @@ export default {
     },
     handleCancel () {
       this.visible = false
+    },
+    // 禁止选中的行
+    banCheckbox ({ row }) {
+      return !this.selectUserIds.includes(row.id)
     }
   }
 }

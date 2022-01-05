@@ -10,8 +10,7 @@
   >
     <a-spin :spinning="loading" style="margin-bottom: 2rem">
       <vxe-table
-        resizable
-        show-overflow
+        :stripe="false"
         border="none"
         ref="table"
         size="medium"

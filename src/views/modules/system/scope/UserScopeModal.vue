@@ -2,7 +2,7 @@
   <a-drawer
     title="用户范围权限分配"
     :maskClosable="false"
-    width="70%"
+    width="50%"
     placement="right"
     :closable="true"
     @close="handleCancel"
@@ -13,33 +13,28 @@
       :refresh="{query: queryList}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="selectUserShow">选择用户</a-button>
+        <a-button type="primary" icon="usergroup-add" @click="selectUserShow">选择用户</a-button>
+        <a-popconfirm
+          title="是否删除这些关联的用户"
+          @confirm="deleteUser()"
+          okText="是"
+          cancelText="否">
+          <a-button v-show="selectIds.length > 0" type="danger" icon="usergroup-delete" style="margin-left: 5px">删除</a-button>
+        </a-popconfirm>
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
+      @checkbox-change="checkboxChange"
+      @checkbox-all="checkboxChange"
       row-id="id"
-      size="medium"
+      ref="table"
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
+      <vxe-table-column type="checkbox" width="60"/>
       <vxe-table-column field="name" title="用户名称" />
       <vxe-table-column field="username" title="用户账号" />
     </vxe-table>
-    <vxe-pager
-      border
-      size="medium"
-      :loading="loading"
-      :current-page="pagination.current"
-      :page-size="pagination.size"
-      :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-      @page-change="handleTableChange">
-    </vxe-pager>
     <user-select-modal ref="userSelectModal" @ok="selectUser"/>
   </a-drawer>
 </template>
@@ -48,7 +43,7 @@
 
 import { TableMixin } from '@/mixins/TableMixin'
 import UserSelectModal from './UserSelectModal'
-import { findUsersByDataScopeId, saveUserAssign } from '@/api/system/dataScope'
+import { deleteBatchUserAssign, findUsersByDataScopeId, saveUserAssign } from '@/api/system/dataScope'
 
 export default {
   name: 'UserScopeModal',
@@ -59,6 +54,7 @@ export default {
   data () {
     return {
       dataScopeId: '',
+      selectIds: [],
       loading: false,
       visible: false
     }
@@ -69,17 +65,22 @@ export default {
       this.dataScopeId = dataScopeId
       this.queryList()
     },
-    // 页面刷新
-    queryList () {
+    // 查询关联用户信息
+    async queryList () {
       this.loading = true
-      findUsersByDataScopeId(this.dataScopeId).then(res => {
+      await findUsersByDataScopeId(this.dataScopeId).then(res => {
         this.tableData = res.data
         this.loading = false
       })
     },
     // 打开选择用户窗口
     selectUserShow () {
-      this.$refs.userSelectModal.init([])
+      const userIds = this.tableData.map(res => res.userId)
+      this.$refs.userSelectModal.init(userIds)
+    },
+    // 多选变动事件
+    checkboxChange () {
+      this.selectIds = this.$refs.table.getCheckboxRecords().map(res => res.id)
     },
     // 选中用户, 进行保存
     selectUser (userIds) {
@@ -88,6 +89,13 @@ export default {
         dataScopeId: this.dataScopeId,
         userIds
       }).then(_ => {
+        this.queryList()
+      })
+    },
+    // 删除用户关联消息
+    deleteUser () {
+      this.loading = true
+      deleteBatchUserAssign(this.selectIds).then(_ => {
         this.queryList()
       })
     },

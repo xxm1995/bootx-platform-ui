@@ -151,7 +151,7 @@ export function saveUserAssign (obj) {
 export function deleteBatchUserAssign (obj) {
   return axios({
     url: '/data/scope/deleteUserAssigns',
-    method: 'POST',
+    method: 'DELETE',
     data: obj
   })
 }

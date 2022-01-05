@@ -12,6 +12,7 @@
       <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear v-model="searchName" @change="search"/>
       <a-tree
         :checkable="true"
+        :checkStrictly="true"
         v-model="checkedKeys"
         :expanded-keys="expandedKeys"
         :auto-expand-parent="autoExpandParent"
@@ -124,7 +125,7 @@ export default {
       this.loading = true
       saveDeptAssign({
         dataScopeId: this.dataScopeId,
-        deptIds: this.checkedKeys
+        deptIds: this.checkedKeys.checked
       }).then(() => {
         this.handleCancel()
       })

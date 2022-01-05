@@ -22,10 +22,6 @@
     </div>
     <vxe-toolbar
       custom
-      zoom
-      export
-      print
-      import
       :refresh="{query: init}"
     >
       <template v-slot:buttons>

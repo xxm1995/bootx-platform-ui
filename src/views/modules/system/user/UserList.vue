@@ -143,10 +143,7 @@ export default {
       queryParam: {
         account: '',
         name: ''
-      },
-      fields: [
-        { field: 'name', name: '名称', type: 'input' },
-        { field: 'sex', name: '性别' }]
+      }
     }
   },
   methods: {

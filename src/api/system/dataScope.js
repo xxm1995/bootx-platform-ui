@@ -122,3 +122,36 @@ export function getDeptIds (id) {
     params: { id }
   })
 }
+
+/**
+ * 获取关联的用户列表
+ */
+export function findUsersByDataScopeId (id) {
+  return axios({
+    url: '/data/scope/findUsersByDataScopeId',
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
+ * 保存关联用户权限
+ */
+export function saveUserAssign (obj) {
+  return axios({
+    url: '/data/scope/saveUserAssign',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 批量删除关联用户权限
+ */
+export function deleteBatchUserAssign (obj) {
+  return axios({
+    url: '/data/scope/deleteUserAssigns',
+    method: 'POST',
+    data: obj
+  })
+}

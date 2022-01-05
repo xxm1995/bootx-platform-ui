@@ -23,6 +23,9 @@
     <vxe-toolbar
       custom
       zoom
+      export
+      print
+      import
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
@@ -30,12 +33,7 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
-      size="medium"
       :loading="loading"
       :data="tableData">
       <vxe-table-column type="seq" title="序号" width="60" />
@@ -89,13 +87,10 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      border
-      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
     <data-scope-edit ref="dataScopeEdit" @ok="handleOk"/>

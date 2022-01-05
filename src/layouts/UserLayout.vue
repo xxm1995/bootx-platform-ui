@@ -8,7 +8,7 @@
           <div class="header">
             <a href="/">
               <img src="~@/assets/logo.svg" class="logo" alt="logo">
-              <span class="title">Bootx Admin</span>
+              <span class="title">Bootx Platform</span>
             </a>
           </div>
           <div class="desc">

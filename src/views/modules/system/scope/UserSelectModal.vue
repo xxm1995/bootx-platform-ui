@@ -51,8 +51,6 @@
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
-      :page-sizes="[3,5,10]"
       @page-change="handleTableChange">
     </vxe-pager>
     <template v-slot:footer>

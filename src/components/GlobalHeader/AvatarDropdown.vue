@@ -15,7 +15,7 @@
         </a-menu-item>
         <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
           <a-icon type="setting" />
-          修改密码
+          设置
         </a-menu-item>
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
@@ -62,9 +62,6 @@ export default {
         title: '信息',
         content: '您确定要注销吗？',
         onOk: () => {
-          // return new Promise((resolve, reject) => {
-          //   setTimeout(Math.random() > 0.5 ? resolve : reject, 1500)
-          // }).catch(() => console.log('Oops errors!'))
           return this.$store.dispatch('Logout').then(() => {
             this.$router.push({ name: 'login' })
           })

@@ -14,7 +14,7 @@
         <a-tab-pane key="3" tab="账号绑定">
           <binding/>
         </a-tab-pane>
-        <a-tab-pane key="3" tab="账号绑定">
+        <a-tab-pane key="4" tab="个人信息">
         </a-tab-pane>
       </a-tabs>
     </a-card>

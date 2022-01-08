@@ -93,14 +93,16 @@ export default {
     }
   },
   methods: {
-    init () {
+    async init () {
+      this.confirmLoading = true
       // 获取用户信息
-      getUserBaseInfo().then(res => {
+      await getUserBaseInfo().then(res => {
         this.user = res.data
       })
       // 初始化性别列表
       setTimeout(() => {
         this.sexList = this.getDictItemsByNumber('Sex')
+        this.confirmLoading = false
       }, 200)
     },
     // 保存

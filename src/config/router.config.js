@@ -39,8 +39,6 @@ export const loginBaseRouterMap = [
         name: 'settings',
         component: () => import('@/views/account/settings/Index'),
         meta: { title: '个人设置', hideHeader: true },
-        hidden: true,
-        redirect: '/account/settings/basic',
         hideChildrenInMenu: true,
         children: [
           {

@@ -186,6 +186,27 @@ export function unlockUser (userId) {
   })
 }
 
+/**
+ * 获取用户基础信息
+ */
+export function getUserBaseInfo () {
+  return axios({
+    url: `/user/getUserBaseInfo`,
+    method: 'get'
+  })
+}
+
+/**
+ * 更新用户基础信息
+ */
+export function updateBaseInfo (data) {
+  return axios({
+    url: '/user/updateBaseInfo',
+    method: 'POST',
+    data: data
+  })
+}
+
 /* 账号是否被使用 */
 export function existsUsername (username) {
   return axios({

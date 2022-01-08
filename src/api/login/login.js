@@ -43,11 +43,11 @@ export function logout () {
 }
 
 /**
- * 获取用户信息
+ * 登录后获取用户信息
  */
-export function getUserInfo () {
+export function getLoginAfterUserInfo () {
   return request({
-    url: `/user/getUserInfo`,
+    url: `/user/getLoginAfterUserInfo`,
     method: 'get'
   })
 }

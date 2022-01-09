@@ -4,39 +4,93 @@
       style="padding-left: 0;padding-top: 0;"
       title="安全设置"
     />
-    <a-list
-      itemLayout="horizontal"
-      :dataSource="data"
-    >
-      <a-list-item slot="renderItem" slot-scope="item, index" :key="index">
-        <a-list-item-meta>
-          <a slot="title">{{ item.title }}</a>
-          <span slot="description">
-            <span class="security-list-description">{{ item.description }}</span>
-            <span v-if="item.value"> : </span>
-            <span class="security-list-value">{{ item.value }}</span>
-          </span>
-        </a-list-item-meta>
-        <template v-if="item.actions">
-          <a slot="actions" @click="item.actions.callback">{{ item.actions.title }}</a>
-        </template>
-
-      </a-list-item>
-    </a-list>
+    <a-spin :spinning="loading">
+      <a-row :span="24">
+        <a-col :span="14">
+          <a-list>
+            <a-list-item>
+              <a-list-item-meta title="账户密码">
+                <template v-slot:description>
+                  <span class="security-list-description">账号登录密码</span>
+                </template>
+              </a-list-item-meta>
+              <template v-slot:actions>
+                <a @click="passwordEdit">修改</a>
+              </template>
+            </a-list-item>
+            <a-list-item>
+              <a-list-item-meta title="密保手机">
+                <template v-slot:description>
+                  <span class="security-list-description">已绑定手机</span>
+                  <span> : </span>
+                  <span class="security-list-value">{{ user.phone }}</span>
+                </template>
+              </a-list-item-meta>
+              <template v-slot:actions>
+                <a @click="phoneEdit">修改</a>
+              </template>
+            </a-list-item>
+            <a-list-item>
+              <a-list-item-meta title="账号邮箱">
+                <template v-slot:description>
+                  <span class="security-list-description">已绑定邮箱</span>
+                  <span> : </span>
+                  <span class="security-list-value">{{ user.email }}</span>
+                </template>
+              </a-list-item-meta>
+              <template v-slot:actions>
+                <a @click="emailEdit">修改</a>
+              </template>
+            </a-list-item>
+          </a-list>
+        </a-col>
+      </a-row>
+    </a-spin>
+    <password-edit ref="passwordEdit" @ok="init"/>
   </div>
 </template>
 
 <script>
+import { getUserSecurityInfo } from '@/api/system/user'
+import PasswordEdit from '../password/PasswordEdit'
+
 export default {
-  computed: {
-    data () {
-      return [
-        { title: this.$t('account.settings.security.password'), description: this.$t('account.settings.security.password-description'), value: '强', actions: { title: this.$t('account.settings.security.modify'), callback: () => { this.$message.info('This is a normal message') } } },
-        { title: this.$t('account.settings.security.phone'), description: this.$t('account.settings.security.phone-description'), value: '138****8293', actions: { title: this.$t('account.settings.security.modify'), callback: () => { this.$message.success('This is a message of success') } } },
-        { title: this.$t('account.settings.security.question'), description: this.$t('account.settings.security.question-description'), value: '', actions: { title: this.$t('account.settings.security.set'), callback: () => { this.$message.error('This is a message of error') } } },
-        { title: this.$t('account.settings.security.email'), description: this.$t('account.settings.security.email-description'), value: 'ant***sign.com', actions: { title: this.$t('account.settings.security.modify'), callback: () => { this.$message.warning('This is message of warning') } } }
-      ]
+  name: 'Security',
+  components: {
+    PasswordEdit
+  },
+  data () {
+    return {
+      loading: false,
+      user: {
+        phone: '',
+        email: ''
+      }
     }
+  },
+  methods: {
+    init () {
+      this.loading = true
+      getUserSecurityInfo().then(res => {
+        this.user = res.data
+        this.loading = false
+      })
+    },
+    // 显示密码修改
+    passwordEdit () {
+      this.$refs.passwordEdit.init('', 'edit')
+    },
+    // 修改绑定邮箱
+    emailEdit () {
+      this.$message.info('暂不支持')
+    },
+    // 修改绑定手机号
+    phoneEdit () {
+      this.$message.info('暂不支持')
+    }
+  },
+  mounted () {
+    this.init()
   }
 }
 </script>

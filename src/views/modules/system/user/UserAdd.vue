@@ -28,7 +28,6 @@
         <a-form-model-item label="确认密码" prop="confirmPassword" >
           <a-input-password
             type="password"
-            @blur="handleConfirmBlur"
             placeholder="请重新输入登录密码"
             v-model="form.confirmPassword"/>
         </a-form-model-item>
@@ -90,6 +89,7 @@ export default {
   methods: {
     edit () {
       this.confirmLoading = false
+      this.confirmDirty = false
       this.resetForm()
     },
     handleOk () {
@@ -112,15 +112,7 @@ export default {
         this.$refs.form.resetFields()
       })
     },
-    handleConfirmBlur (e) {
-      const value = e.target.value
-      this.confirmDirty = this.confirmDirty || !!value
-    },
     validateToNextPassword (rule, value, callback) {
-      const confirmPassword = this.form.confirmPassword
-      if (value && confirmPassword && value !== confirmPassword) {
-        callback('两次输入的密码不一样！')
-      }
       if (value && this.confirmDirty) {
         this.$refs.form.validateField(['confirmPassword'])
       }
@@ -128,6 +120,7 @@ export default {
     },
     compareToFirstPassword (rule, value, callback) {
       if (value && value !== this.form.password) {
+        this.confirmDirty = true
         callback('两次输入的密码不一样！')
       } else {
         callback()

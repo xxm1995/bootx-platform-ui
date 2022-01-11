@@ -71,7 +71,9 @@
               <a-menu-item>
                 <a @click="addChildren(row)">添加下级</a>
               </a-menu-item>
-              <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
+              <a-menu-item>
+                <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
+              </a-menu-item>
               <a-menu-item>
                 <a-popconfirm
                   title="是否删除菜单或权限"

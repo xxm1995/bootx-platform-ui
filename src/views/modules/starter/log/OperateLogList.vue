@@ -14,8 +14,10 @@
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+            <a-space>
+              <a-button type="primary" @click="query">查询</a-button>
+              <a-button @click="() => this.queryParam = {}">重置</a-button>
+            </a-space>
           </a-col>
         </a-row>
       </a-form>
@@ -26,10 +28,6 @@
       :refresh="{query: init}"
     />
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
       size="medium"
       :loading="loading"

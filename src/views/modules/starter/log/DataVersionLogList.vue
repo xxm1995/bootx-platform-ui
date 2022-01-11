@@ -4,13 +4,13 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="账号">
-              <a-input v-model="queryParam.account" placeholder="" />
+            <a-form-item label="数据名称">
+              <a-input v-model="queryParam.dataName" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="终端">
-              <a-input v-model="queryParam.client" placeholder="" />
+            <a-form-item label="数据主键">
+              <a-input v-model="queryParam.dataId" placeholder="" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -30,24 +30,17 @@
     <vxe-table
       row-id="id"
       size="medium"
+      @checkbox-change="checkboxChange"
+      @checkbox-all="checkboxChange"
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="id" title="ID"/>
-      <vxe-table-column field="userId" title="用户ID" />
-      <vxe-table-column field="account" title="账号" />
-      <vxe-table-column field="login" title="状态">
-        <template v-slot="{row}">
-          <a-tag v-if="row.login" color="green">成功</a-tag>
-          <a-tag v-else color="red">失败</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="ip" title="IP" />
-      <vxe-table-column field="client" title="终端" />
-      <vxe-table-column field="browser" title="浏览器类型" />
-      <vxe-table-column field="os" title="操作系统" />
-      <vxe-table-column field="msg" title="提示消息" />
-      <vxe-table-column field="loginTime" title="访问时间" />
+      <vxe-table-column type="checkbox" width="60"/>
+      <vxe-table-column field="dataName" title="数据名称" />
+      <vxe-table-column field="dataId" title="数据主键" />
+      <vxe-table-column field="dataContent" title="数据内容" />
+      <vxe-table-column field="version" title="数据版本" />
+      <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column title="操作" fixed="right" width="120">
         <template v-slot="{row}">
           <span>
@@ -57,44 +50,40 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      border
-      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
-    <login-log-info
-      ref="loginLogInfo"
-    />
+    <data-version-log-info ref="dataVersionLogInfo"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { loginPage } from '@/api/system/log'
-import LoginLogInfo from './LoginLogInfo'
+import { dataVersionPage } from '@/api/system/log'
+import DataVersionLogInfo from './DataVersionLogInfo'
 
 export default {
-  name: 'LoginLogList',
+  name: 'DataVersionLogList',
   mixins: [TableMixin],
   components: {
-    LoginLogInfo
+    DataVersionLogInfo
   },
   data () {
     return {
+      selectList: [],
       queryParam: {
-        account: '',
-        client: ''
+        dataName: '',
+        dataId: ''
       }
     }
   },
   methods: {
     init () {
       this.loading = true
-      loginPage({
+      dataVersionPage({
         ...this.queryParam,
         ...this.pages
       }).then(res => {
@@ -105,7 +94,11 @@ export default {
       })
     },
     show (record) {
-      this.$refs.loginLogInfo.init(record.id, 'show')
+      this.$refs.dataVersionLogInfo.init(record.id, 'show')
+    },
+    // 多选变动事件
+    checkboxChange () {
+      this.selectList = this.$refs.table.getCheckboxRecords()
     }
   },
   created () {

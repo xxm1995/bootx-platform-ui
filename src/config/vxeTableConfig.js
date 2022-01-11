@@ -1,6 +1,7 @@
 import VXETable from 'vxe-table'
 // vxeTable 全局配置
 VXETable.setup({
+  // 表格配置
   table: {
     resizable: true,
     border: true,
@@ -12,6 +13,7 @@ VXETable.setup({
       enterable: true
     }
   },
+  // 工具条配置
   toolbar: {
     size: null,
     import: {
@@ -24,6 +26,7 @@ VXETable.setup({
     buttons: [],
     tools: []
   },
+  // 分页配置
   pager: {
     border: true,
     size: 'medium'

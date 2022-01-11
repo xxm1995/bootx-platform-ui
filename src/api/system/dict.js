@@ -111,7 +111,7 @@ export function itemUpdate (obj) {
 
 export function itemDel (id) {
   return axios({
-    url: '/dict/delete',
+    url: '/dict/item/delete',
     method: 'DELETE',
     params: { id }
   })

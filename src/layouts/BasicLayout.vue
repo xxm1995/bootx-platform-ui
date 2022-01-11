@@ -171,7 +171,6 @@ export default {
         this.isMobile = true
         this.collapsed = false
         this.settings.contentWidth = CONTENT_WIDTH_TYPE.Fluid
-        // this.settings.fixSiderbar = false
       }
     },
     handleCollapse (val) {

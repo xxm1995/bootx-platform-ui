@@ -186,6 +186,48 @@ export function unlockUser (userId) {
   })
 }
 
+/**
+ * 获取用户安全信息
+ */
+export function getUserSecurityInfo () {
+  return axios({
+    url: `/user/getUserSecurityInfo`,
+    method: 'get'
+  })
+}
+
+/**
+ * 获取用户基础信息
+ */
+export function getUserBaseInfo () {
+  return axios({
+    url: `/user/getUserBaseInfo`,
+    method: 'get'
+  })
+}
+
+/**
+ * 更新用户基础信息
+ */
+export function updateBaseInfo (data) {
+  return axios({
+    url: '/user/updateBaseInfo',
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
+ * 修改密码
+ */
+export function updatePassword (password, newPassword) {
+  return axios({
+    url: '/user/updatePassword',
+    method: 'POST',
+    params: { password, newPassword }
+  })
+}
+
 /* 账号是否被使用 */
 export function existsUsername (username) {
   return axios({

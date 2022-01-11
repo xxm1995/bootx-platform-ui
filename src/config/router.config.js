@@ -38,52 +38,7 @@ export const loginBaseRouterMap = [
         path: '/account/settings',
         name: 'settings',
         component: () => import('@/views/account/settings/Index'),
-        meta: { title: '个人设置', hideHeader: true },
-        hidden: true,
-        redirect: '/account/settings/basic',
-        hideChildrenInMenu: true,
-        children: [
-          {
-            path: '/account/settings/basic',
-            name: 'BasicSettings',
-            component: () => import('@/views/account/settings/BasicSetting'),
-            meta: { title: '基本设置', hidden: true }
-          },
-          {
-            path: '/account/settings/security',
-            name: 'SecuritySettings',
-            component: () => import('@/views/account/settings/Security'),
-            meta: {
-              title: '安全设置',
-              hidden: true,
-              keepAlive: true,
-              permission: ['user']
-            }
-          },
-          {
-            path: '/account/settings/custom',
-            name: 'CustomSettings',
-            component: () => import('@/views/account/settings/Custom'),
-            meta: { title: '个性化', hidden: true, keepAlive: true }
-          },
-          {
-            path: '/account/settings/binding',
-            name: 'BindingSettings',
-            component: () => import('@/views/account/settings/Binding'),
-            meta: { title: '账号绑定', hidden: true, keepAlive: true }
-          },
-          {
-            path: '/account/settings/notification',
-            name: 'NotificationSettings',
-            component: () => import('@/views/account/settings/Notification'),
-            meta: {
-              title: '新消息通知',
-              hidden: true,
-              keepAlive: true,
-              permission: ['user']
-            }
-          }
-        ]
+        meta: { title: '个人设置', keepAlive: true, hideHeader: true }
       }
     ]
   }

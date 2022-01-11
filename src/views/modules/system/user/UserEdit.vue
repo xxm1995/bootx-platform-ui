@@ -66,7 +66,6 @@ export default {
           { validator: this.validateUsername, trigger: 'blur' }
         ],
         phone: [
-          { required: true, message: '请输入手机号' },
           { validator: this.validatePhone, trigger: 'blur' }
         ],
         email: [{ validator: this.validateEmail, trigger: 'blur' }]

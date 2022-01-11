@@ -1,14 +1,12 @@
 import storage from 'store'
-import {login, getPermissions, getUserInfo, logout, loginOpenId} from '@/api/login/login'
+import { login, getPermissions, getLoginAfterUserInfo, logout, loginOpenId } from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 import Vue from 'vue'
 
 const user = {
   state: {
     token: '',
-    name: '',
     welcome: '',
-    avatar: '',
     roles: [],
     permissions: [],
     info: {}
@@ -59,7 +57,7 @@ const user = {
     // 获取用户信息
     GetUserInfo ({ commit }) {
       return new Promise((resolve, reject) => {
-        getUserInfo().then(response => {
+        getLoginAfterUserInfo().then(response => {
           const result = response.data
           commit('SET_INFO', result)
           resolve(result)

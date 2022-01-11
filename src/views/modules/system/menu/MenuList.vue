@@ -59,11 +59,9 @@
       </vxe-table-column>
       <vxe-table-column title="操作" fixed="right" width="210" :showOverflow="false" >
         <template v-slot="{row}">
-          <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
-          <a-divider type="vertical" />
           <a href="javascript:" @click="show(row.id)">查看</a>
           <a-divider type="vertical" />
-          <a href="javascript:" @click="resourceList(row)">资源</a>
+          <a href="javascript:" @click="resourceList(row)">权限资源</a>
           <a-divider type="vertical" />
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -73,6 +71,7 @@
               <a-menu-item>
                 <a @click="addChildren(row)">添加下级</a>
               </a-menu-item>
+              <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
               <a-menu-item>
                 <a-popconfirm
                   title="是否删除菜单或权限"

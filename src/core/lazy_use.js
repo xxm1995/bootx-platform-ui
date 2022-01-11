@@ -7,6 +7,7 @@ import {
   Input,
   InputNumber,
   Button,
+  Empty,
   Switch,
   Radio,
   Checkbox,
@@ -67,6 +68,7 @@ Vue.use(Layout)
 Vue.use(Input)
 Vue.use(InputNumber)
 Vue.use(Button)
+Vue.use(Empty)
 Vue.use(Switch)
 Vue.use(Radio)
 Vue.use(Checkbox)

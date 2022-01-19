@@ -58,6 +58,7 @@
 import { mapActions } from 'vuex'
 import Security from './page/Security'
 import BasicInfo from './page/BasicInfo'
+import { getFileUrl } from '@/api/common/fileUpload'
 
 export default {
   name: 'AccountCenter',
@@ -79,6 +80,7 @@ export default {
         }
       ],
       noTitleKey: 'BasicInfo',
+      avatarUrl: '',
       userInfo: {}
     }
   },
@@ -91,6 +93,9 @@ export default {
       } = this
       GetUserInfo().then(res => {
         this.userInfo = res
+        getFileUrl(this.userInfo.avatar).then((res) => {
+          this.avatarUrl = res.data
+        })
       })
     },
     handleTabChange (key, type) {

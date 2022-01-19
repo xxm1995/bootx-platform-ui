@@ -1,7 +1,7 @@
 export default {
   'form.basic-form.basic.title': 'Basic form',
   'form.basic-form.basic.description':
-   'Form pages are used to collect or verify information to users, and basic forms are common in scenarios where there are fewer data items.',
+    'Form pages are used to collect or verify information to users, and basic forms are common in scenarios where there are fewer data items.',
   'form.basic-form.title.label': 'Title',
   'form.basic-form.title.placeholder': 'Give the target a name',
   'form.basic-form.title.required': 'Please enter a title',

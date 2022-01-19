@@ -52,7 +52,7 @@
 
 <script>
 import { getUserSecurityInfo } from '@/api/system/user'
-import PasswordEdit from '../password/PasswordEdit'
+import PasswordEdit from './PasswordEdit'
 
 export default {
   name: 'Security',

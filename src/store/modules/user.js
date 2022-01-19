@@ -2,6 +2,7 @@ import storage from 'store'
 import { login, getPermissions, getLoginAfterUserInfo, logout, loginOpenId } from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 import Vue from 'vue'
+import { getFileUrl } from '@/api/common/fileUpload'
 
 const user = {
   state: {
@@ -9,7 +10,8 @@ const user = {
     welcome: '',
     roles: [],
     permissions: [],
-    info: {}
+    info: {},
+    avatarUrl: ''
   },
 
   mutations: {
@@ -24,6 +26,9 @@ const user = {
     },
     SET_INFO: (state, info) => {
       state.info = info
+    },
+    SET_AVATAR_URL: (state, avatarUrl) => {
+      state.avatarUrl = avatarUrl
     }
   },
 
@@ -80,12 +85,22 @@ const user = {
           // 清除多标签缓存
           Vue.ls.remove(CACHE_MULTI_TAB_COMPONENTS)
         }).catch(error => {
-          console.log(error)
           reject(error)
         })
       })
     },
-
+    // 获取用户头像
+    GetUserAvatarUrl ({ commit }, avatarId) {
+      return new Promise((resolve, reject) => {
+        getFileUrl(avatarId).then((result) => {
+          const avatarUrl = result.data
+          commit('SET_AVATAR_URL', avatarUrl)
+          resolve(result)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
     // 登出
     Logout ({ commit, state }) {
       const resolve = new Promise((resolve) => {

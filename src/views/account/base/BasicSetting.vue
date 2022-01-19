@@ -51,7 +51,7 @@
             <div class="mask">
               <a-icon type="plus" />
             </div>
-            <img :src="user.avatar||'/avatar2.jpg'"/>
+            <img :src="avatarUrl||'/avatar2.jpg'"/>
           </div>
         </a-col>
       </a-row>
@@ -65,6 +65,8 @@ import AvatarModal from './AvatarModal'
 import { baseMixin } from '@/store/app-mixin'
 import { FormMixin } from '@/mixins/FormMixin'
 import { getUserBaseInfo, updateBaseInfo } from '@/api/system/user'
+import { getFileUrlPrefix, getFileUrl } from '@/api/common/fileUpload'
+
 export default {
   name: 'BasicSetting',
   mixins: [baseMixin, FormMixin],
@@ -80,6 +82,7 @@ export default {
         sm: { span: 12 }
       },
       sexList: [],
+      avatarUrl: '',
       user: {
         name: '',
         sex: 0,
@@ -88,7 +91,6 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '用户名称不可为空' }]
-
       }
     }
   },
@@ -98,6 +100,9 @@ export default {
       // 获取用户信息
       await getUserBaseInfo().then(res => {
         this.user = res.data
+        getFileUrlPrefix().then((res) => {
+          this.avatarUrl = res.data + this.user.avatar
+        })
       })
       // 初始化性别列表
       setTimeout(() => {
@@ -110,13 +115,16 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-            updateBaseInfo(this.user).then(_ => this.confirmLoading = false)
+          updateBaseInfo(this.user).then(_ => this.confirmLoading = false)
         }
       })
     },
     // 头像回调
-    setAvatar (url) {
-      this.user.avatar = url
+    setAvatar (id) {
+      this.user.avatar = id
+      getFileUrl(id).then((res) => {
+        this.avatarUrl = res.data
+      })
     }
   },
   mounted () {

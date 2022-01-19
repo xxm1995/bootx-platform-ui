@@ -1,6 +1,6 @@
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown :menu="showMenu" :current-user="currentUser" :class="prefixCls" />
+    <avatar-dropdown :menu="showMenu" :avatar-url="avatarUrl" :current-user="currentUser" :class="prefixCls" />
   </div>
 </template>
 
@@ -34,17 +34,22 @@ export default {
   data () {
     return {
       showMenu: true,
-      currentUser: {}
+      currentUser: {},
+      avatarUrl: ''
     }
   },
   methods: {
-    ...mapActions(['GetUserInfo']),
+    ...mapActions(['GetUserInfo', 'GetUserAvatarUrl']),
     getCurrentUser () {
       const {
-        GetUserInfo
+        GetUserInfo,
+        GetUserAvatarUrl
       } = this
       GetUserInfo().then(res => {
         this.currentUser = res
+        GetUserAvatarUrl(this.currentUser.avatar).then(res => {
+          this.avatarUrl = res.data
+        })
       })
     }
   },

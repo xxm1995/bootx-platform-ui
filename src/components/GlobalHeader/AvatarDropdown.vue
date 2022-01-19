@@ -3,7 +3,7 @@
     <span class="ant-pro-account-avatar">
       <a-avatar
         size="small"
-        :src="currentUser.avatar||defaultAvatar"
+        :src="avatarUrl||defaultAvatar"
         class="antd-pro-global-header-index-avatar" />
       <span>{{ currentUser.name }}</span>
     </span>
@@ -38,6 +38,10 @@ export default {
   props: {
     currentUser: {
       type: Object,
+      default: () => null
+    },
+    avatarUrl: {
+      type: String,
       default: () => null
     },
     menu: {

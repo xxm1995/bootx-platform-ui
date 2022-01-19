@@ -24,9 +24,9 @@
 <script>
 import { RouteView } from '@/layouts'
 import { baseMixin } from '@/store/app-mixin'
-import BasicSetting from './BasicSetting'
+import BasicSetting from '../base/BasicSetting'
 import Binding from './Binding'
-import Security from './Security'
+import Security from '../security/Security'
 
 export default {
   components: {

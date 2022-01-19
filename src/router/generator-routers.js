@@ -22,8 +22,8 @@ const constantRouterComponents = {
   // account
   'AccountCenter': () => import('@/views/account/center'),
   'AccountSettings': () => import('@/views/account/settings/Index'),
-  'BaseSettings': () => import('@/views/account/settings/BasicSetting'),
-  'SecuritySettings': () => import('@/views/account/settings/Security'),
+  'BaseSettings': () => import('@/views/account/base/BasicSetting'),
+  'SecuritySettings': () => import('@/views/account/security/Security'),
   'CustomSettings': () => import('@/views/account/settings/Custom'),
   'BindingSettings': () => import('@/views/account/settings/Binding'),
   'NotificationSettings': () => import('@/views/account/settings/Notification'),

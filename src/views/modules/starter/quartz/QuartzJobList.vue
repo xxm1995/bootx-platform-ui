@@ -40,10 +40,6 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
       :loading="loading"
       :data="tableData"
@@ -114,7 +110,6 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      border
       size="medium"
       :loading="loading"
       :current-page="pagination.current"

@@ -6,7 +6,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-button type="primary" icon="upload" @click="upload">上传</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -20,16 +20,15 @@
       <vxe-table-column field="fileType" title="文件类型" />
       <vxe-table-column field="fileSize" title="文件大小" >
         <template v-slot="{row}">
-          {{row.fileSize/1024}}KB
+          {{ row.fileSize/1024 }}KB
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <a href="javascript:" @click="edit(row)">编辑</a>
-          <a-divider type="vertical" />
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical" />
+          <a href="javascript:" @click="down(row)">下载</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -42,16 +41,21 @@
       :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange"
     />
+    <file-upload-edit ref="fileUploadEdit" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { page } from '@/api/starter/fileUpload'
+import FileUploadEdit from './FileUploadEdit'
 
 export default {
   name: 'FileUploadList',
   mixins: [TableMixin],
+  components: {
+    FileUploadEdit
+  },
   data () {
     return {
       queryParam: {
@@ -71,14 +75,16 @@ export default {
         this.loading = false
       })
     },
-    add () {
-      this.$refs.quartzJobEdit.init('', 'add')
+    // 上传
+    upload () {
+      this.$refs.fileUploadEdit.init()
     },
-    edit (record) {
-      this.$refs.quartzJobEdit.init(record.id, 'edit')
+    // 下载
+    down (record) {
+
     },
+    // 查看
     show (record) {
-      this.$refs.quartzJobEdit.init(record.id, 'show')
     }
   },
   created () {

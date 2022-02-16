@@ -16,21 +16,33 @@ export function fileUpload (formData) {
 }
 
 /**
- * 获取文件地址
+ * 获取文件预览地址
  */
-export function getFileUrl (id) {
+export function getFilePreviewUrl (id) {
   return request({
-    url: `/file/getFileUrl`,
+    url: `/file/getFilePreviewUrl`,
     method: 'get',
     params: { id }
   })
 }
+
 /**
  * 获取文件地址前缀
  */
-export function getFileUrlPrefix () {
+export function getFilePreviewUrlPrefix () {
   return request({
-    url: `/file/getFileUrlPrefix`,
+    url: `/file/getFilePreviewUrlPrefix`,
     method: 'get'
+  })
+}
+
+/**
+ * 获取文件下载地址
+ */
+export function getFileDownloadUrl (id) {
+  return request({
+    url: `/file/getFileDownloadUrl`,
+    method: 'get',
+    params: { id }
   })
 }

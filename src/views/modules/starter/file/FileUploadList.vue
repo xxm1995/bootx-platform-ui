@@ -49,6 +49,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { page } from '@/api/starter/fileUpload'
 import FileUploadEdit from './FileUploadEdit'
+import { getFileDownloadUrl, getFilePreviewUrl } from '@/api/common/fileUpload'
 
 export default {
   name: 'FileUploadList',
@@ -81,10 +82,15 @@ export default {
     },
     // 下载
     down (record) {
-
+      getFileDownloadUrl(record.id).then(res => {
+        window.open(res.data)
+      })
     },
     // 查看
     show (record) {
+      getFilePreviewUrl(record.id).then(res => {
+        window.open(res.data)
+      })
     }
   },
   created () {

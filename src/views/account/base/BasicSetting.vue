@@ -65,7 +65,7 @@ import AvatarModal from './AvatarModal'
 import { baseMixin } from '@/store/app-mixin'
 import { FormMixin } from '@/mixins/FormMixin'
 import { getUserBaseInfo, updateBaseInfo } from '@/api/system/user'
-import { getFileUrlPrefix, getFileUrl } from '@/api/common/fileUpload'
+import { getFilePreviewUrlPrefix, getFilePreviewUrl } from '@/api/common/fileUpload'
 
 export default {
   name: 'BasicSetting',
@@ -100,7 +100,7 @@ export default {
       // 获取用户信息
       await getUserBaseInfo().then(res => {
         this.user = res.data
-        getFileUrlPrefix().then((res) => {
+        getFilePreviewUrlPrefix().then((res) => {
           this.avatarUrl = res.data + this.user.avatar
         })
       })
@@ -122,7 +122,7 @@ export default {
     // 头像回调
     setAvatar (id) {
       this.user.avatar = id
-      getFileUrl(id).then((res) => {
+      getFilePreviewUrl(id).then((res) => {
         this.avatarUrl = res.data
       })
     }

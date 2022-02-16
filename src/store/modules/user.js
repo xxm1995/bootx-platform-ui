@@ -2,7 +2,7 @@ import storage from 'store'
 import { login, getPermissions, getLoginAfterUserInfo, logout, loginOpenId } from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 import Vue from 'vue'
-import { getFileUrl } from '@/api/common/fileUpload'
+import { getFilePreviewUrl } from '@/api/common/fileUpload'
 
 const user = {
   state: {
@@ -92,7 +92,7 @@ const user = {
     // 获取用户头像
     GetUserAvatarUrl ({ commit }, avatarId) {
       return new Promise((resolve, reject) => {
-        getFileUrl(avatarId).then((result) => {
+        getFilePreviewUrl(avatarId).then((result) => {
           const avatarUrl = result.data
           commit('SET_AVATAR_URL', avatarUrl)
           resolve(result)

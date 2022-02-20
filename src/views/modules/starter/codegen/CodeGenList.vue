@@ -1,5 +1,27 @@
 <template>
   <a-card :bordered="false">
+    <div class="table-page-search-wrapper">
+      <a-form layout="inline">
+        <a-row :gutter="48">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="表名称">
+              <a-input v-model="queryParam.tableName" placeholder="请输入表名称" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="表描述">
+              <a-input v-model="queryParam.tableComment" placeholder="请输入表描述" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-space>
+              <a-button type="primary" @click="query">查询</a-button>
+              <a-button @click="() => this.queryParam = {}">重置</a-button>
+            </a-space>
+          </a-col>
+        </a-row>
+      </a-form>
+    </div>
     <vxe-toolbar
       custom
       zoom
@@ -12,14 +34,14 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="tableName" title="表名" />
+      <vxe-table-column field="tableName" title="表名称" />
       <vxe-table-column field="engine" title="引擎类型" />
       <vxe-table-column field="tableComment" title="表表述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <a href="javascript:" @click="previewShow(row)">预览</a>
-          <a-divider type="vertical" />
+<!--          <a href="javascript:" @click="previewShow(row)">预览</a>-->
+<!--          <a-divider type="vertical" />-->
           <a href="javascript:" @click="generateShow(row)">生成</a>
         </template>
       </vxe-table-column>
@@ -55,17 +77,15 @@ export default {
     init () {
       this.loading = true
       page({
+        ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     // 打开预览
-    previewShow(record){
-      this.$refs.codeGenForm.show(record.tableName,'preview')
+    previewShow (record) {
+      this.$refs.codeGenForm.show(record.tableName, 'preview')
     },
     // 预览代码
     preview (from) {
@@ -74,8 +94,8 @@ export default {
       })
     },
     // 打开预览
-    generateShow(record){
-      this.$refs.codeGenForm.show(record.tableName,'gen')
+    generateShow (record) {
+      this.$refs.codeGenForm.show(record.tableName, 'gen')
     },
     // 生成代码
     generate (from) {

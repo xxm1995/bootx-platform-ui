@@ -3,19 +3,26 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="编号">
-              <a-input v-model="queryParam.code" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="名称">
               <a-input v-model="queryParam.name" placeholder="" />
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="创建人">
+              <a-input v-model="queryParam.creatorName" placeholder="" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="备注">
+              <a-input v-model="queryParam.remark" placeholder="" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-space>
+              <a-button type="primary" @click="query">查询</a-button>
+              <a-button @click="() => this.queryParam = {}">重置</a-button>
+            </a-space>
           </a-col>
         </a-row>
       </a-form>
@@ -30,21 +37,18 @@
       </template>
     </vxe-toolbar>
     <vxe-table
+      resizable
+      border
+      stripe
+      show-overflow
       row-id="id"
+      size="medium"
       :loading="loading"
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编号" />
-      <vxe-table-column field="name" title="配置名称" />
-      <vxe-table-column field="accessToken" title="AccessToken" />
-      <vxe-table-column field="enableSignatureCheck" title="是否开启验签" >
-        <template v-slot="{row}">
-          <a-tag v-if="row.enableSignatureCheck" color="green">开启</a-tag>
-          <a-tag v-else color="red">关闭</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="signSecret" title="验签秘钥" />
+      <vxe-table-column field="name" title="名称" />
+      <vxe-table-column field="creatorName" title="创建人" />
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
@@ -58,7 +62,7 @@
           </span>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除配置"
+            title="是否删除"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
@@ -73,29 +77,29 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <ding-robot-config-edit
-      ref="dingRobotConfigEdit"
+    <data-perm-demo-edit
+      ref="dataPermDemoEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page } from '@/api/notice/dingRobotConfig'
-import DingRobotConfigEdit from './DingRobotConfigEdit'
+import { del, page } from '@/api/demo/dataPermDemo'
+import DataPermDemoEdit from './DataPermDemoEdit'
 
 export default {
-  name: 'DingRobotConfigList',
-  components: {
-    DingRobotConfigEdit
-  },
+  name: 'DataPermDemoList',
   mixins: [TableMixin],
+  components: {
+    DataPermDemoEdit
+  },
   data () {
     return {
-      mailSecurityCode: 'MailSecurityCode',
       queryParam: {
-        code: '',
-        name: ''
+        name: '',
+        creatorName: '',
+        remark: ''
       }
     }
   },
@@ -106,20 +110,17 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     add () {
-      this.$refs.dingRobotConfigEdit.init('', 'add')
+      this.$refs.dataPermDemoEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.dingRobotConfigEdit.init(record.id, 'edit')
+      this.$refs.dataPermDemoEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.dingRobotConfigEdit.init(record.id, 'show')
+      this.$refs.dataPermDemoEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {

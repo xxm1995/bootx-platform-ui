@@ -79,8 +79,8 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/demo',
-    name: 'demo',
+    path: '/settlement',
+    name: 'settlement',
     component: () => import('@/views/demo/DemoIndex'),
     meta: { title: '结算台' }
   },

@@ -84,21 +84,22 @@ export default {
     }
   },
   methods: {
-    init (dict) {
-      this.visible = true
+    // 展示列表
+    list (dict) {
       this.dict = dict
+      this.init()
+    },
+    init () {
+      this.visible = true
       this.queryPage()
     },
     queryPage () {
       this.loading = true
       itemPage({
         dictId: this.dict.id,
-        ...this.pagination
+        ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     add () {

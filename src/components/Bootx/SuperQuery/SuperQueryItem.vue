@@ -34,11 +34,12 @@
         <a-input disabled v-if="['is_null','not_null'].includes(queryParam.compareType)" value="空"/>
         <!-- 文本输入 -->
         <a-input v-else-if="paramTypeJudge(index,'string')" placeholder="请输入查询值" v-model="queryParam.paramValue"/>
-        <!-- 字符输入 -->
+        <!-- 数字输入 -->
         <a-input-number
           style="width: 100%"
           v-else-if="paramTypeJudge(index,'number')"
           placeholder="请输入查询值"
+          :precision="queryParam.precision?queryParam.precision:0"
           v-model="queryParam.paramValue"/>
         <!-- 布尔 -->
         <a-radio-group v-else-if="paramTypeJudge(index,'boolean')" v-model="queryParam.paramValue">
@@ -53,20 +54,20 @@
         <a-date-picker
           v-else-if="paramTypeJudge(index,'date')"
           placeholder="请选择日期"
-          valueFormat="yyyy-MM-DD"
+          :valueFormat="queryParam.format?queryParam.format:'yyyy-MM-DD'"
           v-model="queryParam.paramValue"/>
         <!-- 时间 -->
         <a-time-picker
           v-else-if="paramTypeJudge(index,'time')"
           placeholder="请选择时间"
-          valueFormat="HH:mm:ss"
+          :valueFormat="queryParam.format?queryParam.format:'HH:mm:ss'"
           v-model="queryParam.paramValue"/>
         <!-- 日期时间 -->
         <a-date-picker
           showTime
           v-else-if="paramTypeJudge(index,'date_time')"
           placeholder="请选择日期时间"
-          valueFormat="yyyy-MM-DD HH:mm:ss"
+          :valueFormat="queryParam.format?queryParam.format:'yyyy-MM-DD HH:mm:ss'"
           v-model="queryParam.paramValue"/>
         <!-- 默认文本输入 -->
         <a-input v-else placeholder="请输入查询值" v-model="queryParam.paramValue"/>

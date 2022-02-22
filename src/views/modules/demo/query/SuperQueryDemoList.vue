@@ -4,13 +4,13 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
-            <a-form-item label="终端代码">
-              <a-input v-model="queryParam.code" placeholder="请输入终端代码" />
+            <a-form-item label="名称">
+              <a-input v-model="queryParam.name" placeholder="请输入名称" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="终端名称">
-              <a-input v-model="queryParam.name" placeholder="请输入终端名称" />
+            <a-form-item label="备注">
+              <a-input v-model="queryParam.remark" placeholder="请输入备注" />
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -42,28 +42,27 @@
     </vxe-toolbar>
     <vxe-table
       row-id="id"
-      size="medium"
       :loading="loading"
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="代码" />
       <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="captcha" title="启用验证码" >
+      <vxe-table-column field="age" title="年龄" />
+      <vxe-table-column field="vip" title="是否vip">
         <template v-slot="{row}">
-          <a-tag v-if="row.captcha" color="green">开启</a-tag>
-          <a-tag v-else color="red">关闭</a-tag>
+          <a-tag v-if="row.vip" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="enable" title="启用状态" >
+      <vxe-table-column field="birthday" title="生日" />
+      <vxe-table-column field="workTime" title="上班时间" />
+      <vxe-table-column field="registrationTime" title="注册时间" />
+      <vxe-table-column field="political" title="政治面貌" >
         <template v-slot="{row}">
-          <a-tag v-if="row.enable" color="green">启用</a-tag>
-          <a-tag v-else color="red">停用</a-tag>
+          {{ dictConvert('Political',row.political) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="timeout" title="超时时间(分钟)" />
-      <vxe-table-column field="description" title="描述" />
-      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column field="remark" title="备注" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
@@ -75,7 +74,7 @@
           </span>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除终端"
+            title="是否删除"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
@@ -85,6 +84,7 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
+      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
@@ -92,23 +92,22 @@
       @page-change="handleTableChange">
       />
     </vxe-pager>
-    <client-edit
-      ref="clientEdit"
+    <super-query-demo-edit
+      ref="superQueryDemoEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-
-import { page, del, superPage } from '@/api/system/client'
-import ClientEdit from './ClientEdit'
+import { page, del, superPage } from '@/api/demo/superQueryDemo'
+import SuperQueryDemoEdit from './SuperQueryDemoEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 import { BOOLEAN, DATE, DATE_TIME, LIST, NUMBER, STRING, TIME } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
-  name: 'ClientList',
+  name: 'SuperQueryDemoList',
   components: {
-    ClientEdit,
+    SuperQueryDemoEdit,
     BSuperQuery
   },
   mixins: [TableMixin],
@@ -116,29 +115,20 @@ export default {
     // 超级查询字段
     queryFields () {
       return [
-        { field: 'num', name: '数字', type: NUMBER },
-        { field: 'string', name: '字符', type: STRING },
-        { field: 'bool', name: '布尔', type: BOOLEAN },
-        { field: 'date', name: '日期', type: DATE },
-        { field: 'time', name: '时间', type: TIME },
-        { field: 'date_time', name: '日期时间', type: DATE_TIME },
-        { field: 'list',
-          name: '列表',
-          type: LIST,
-          list:
-            [
-              { name: '测试1', value: 'cs1' },
-              { name: '测试2', value: 'cs2' },
-              { name: '测试3', value: 'cs3' }
-            ] }
+        { field: 'name', name: '姓名', type: STRING },
+        { field: 'age', name: '年龄', type: NUMBER },
+        { field: 'vip', name: '是否vip', type: BOOLEAN },
+        { field: 'birthday', name: '生日', type: DATE },
+        { field: 'workTime', name: '上班时间', type: TIME },
+        { field: 'registrationTime', name: '注册时间', type: DATE_TIME },
+        { field: 'political', name: '政治面貌', type: LIST, list: this.politicalList }
       ]
     }
   },
   data () {
     return {
+      politicalList: [],
       queryParam: {
-        code: '',
-        name: ''
       }
     }
   },
@@ -150,16 +140,19 @@ export default {
         ...this.pages
       }).then(res => {
         this.pageQueryResHandel(res, this)
+        this.politicalList = this.getDictItemsByNumber('Political').map(item => {
+          return { name: item.name, value: item.code }
+        })
       })
     },
     add () {
-      this.$refs.clientEdit.init('', 'add')
+      this.$refs.superQueryDemoEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.clientEdit.init(record.id, 'edit')
+      this.$refs.superQueryDemoEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.clientEdit.init(record.id, 'show')
+      this.$refs.superQueryDemoEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {
@@ -167,8 +160,10 @@ export default {
         this.init()
       })
     },
+    // 超级查询
     superQuery (queryParams) {
       this.superQueryFlag = true
+      this.loading = true
       superPage(
         this.pages, { queryParams }
       ).then(res => {

@@ -31,10 +31,6 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
       size="medium"
       :loading="loading"
@@ -63,13 +59,10 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      border
-      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
     <dict-edit
@@ -109,10 +102,7 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     edit (record) {
@@ -122,7 +112,7 @@ export default {
       this.$refs.dictEdit.init(record.id, 'show')
     },
     itemList (record) {
-      this.$refs.dictItemList.init(record)
+      this.$refs.dictItemList.list(record)
     },
     remove (record) {
       del(record.id).then(() => {

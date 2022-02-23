@@ -20,7 +20,7 @@
         @check="onCheck"
         @expand="onExpand"
       >
-        <template slot="title" slot-scope="{ title }">
+        <template v-slot:title v-slot="{ title }">
           <span v-if="title.indexOf(searchName) > -1">
             {{ title.substr(0, title.indexOf(searchName)) }}
             <span style="color: #f50">{{ searchName }}</span>
@@ -32,12 +32,14 @@
     </a-spin>
     <div class="drawer-button">
       <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
-        <a-menu slot="overlay">
-          <a-menu-item key="1" @click="checkALL">全部勾选</a-menu-item>
-          <a-menu-item key="2" @click="cancelCheckALL">取消全选</a-menu-item>
-          <a-menu-item key="3" @click="expandAll">展开所有</a-menu-item>
-          <a-menu-item key="4" @click="closeAll">合并所有</a-menu-item>
-        </a-menu>
+        <template v-slot:overlay>
+          <a-menu>
+            <a-menu-item key="1" @click="checkALL">全部勾选</a-menu-item>
+            <a-menu-item key="2" @click="cancelCheckALL">取消全选</a-menu-item>
+            <a-menu-item key="3" @click="expandAll">展开所有</a-menu-item>
+            <a-menu-item key="4" @click="closeAll">合并所有</a-menu-item>
+          </a-menu>
+        </template>
         <a-button>
           操作 <a-icon type="up" />
         </a-button>

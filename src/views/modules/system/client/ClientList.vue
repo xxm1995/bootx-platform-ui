@@ -15,7 +15,7 @@
           </a-col>
           <a-col :md="8" :sm="24">
             <a-space>
-              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
+              <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
             </a-space>
           </a-col>
@@ -29,15 +29,6 @@
     >
       <template v-slot:buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
-        <b-super-query
-          :queryState="superQueryFlag"
-          :fields="queryFields"
-          :width="880"
-          button-title="超级查询"
-          model-title="超级查询器"
-          @query="superQuery"
-          @rest="restQuery"
-        />
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -103,37 +94,12 @@
 import { page, del, superPage } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
-import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
-import { BOOLEAN, DATE, DATE_TIME, LIST, NUMBER, STRING, TIME } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'ClientList',
   components: {
-    ClientEdit,
-    BSuperQuery
+    ClientEdit
   },
   mixins: [TableMixin],
-  computed: {
-    // 超级查询字段
-    queryFields () {
-      return [
-        { field: 'num', name: '数字', type: NUMBER },
-        { field: 'string', name: '字符', type: STRING },
-        { field: 'bool', name: '布尔', type: BOOLEAN },
-        { field: 'date', name: '日期', type: DATE },
-        { field: 'time', name: '时间', type: TIME },
-        { field: 'date_time', name: '日期时间', type: DATE_TIME },
-        { field: 'list',
-          name: '列表',
-          type: LIST,
-          list:
-            [
-              { name: '测试1', value: 'cs1' },
-              { name: '测试2', value: 'cs2' },
-              { name: '测试3', value: 'cs3' }
-            ] }
-      ]
-    }
-  },
   data () {
     return {
       queryParam: {
@@ -165,14 +131,6 @@ export default {
       del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
-      })
-    },
-    superQuery (queryParams) {
-      this.superQueryFlag = true
-      superPage(
-        this.pages, { queryParams }
-      ).then(res => {
-        this.pageQueryResHandel(res, this)
       })
     }
   },

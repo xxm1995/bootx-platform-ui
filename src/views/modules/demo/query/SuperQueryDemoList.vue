@@ -102,13 +102,11 @@
 import { page, del, superPage } from '@/api/demo/superQueryDemo'
 import SuperQueryDemoEdit from './SuperQueryDemoEdit'
 import { TableMixin } from '@/mixins/TableMixin'
-import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 import { BOOLEAN, DATE, DATE_TIME, LIST, NUMBER, STRING, TIME } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'SuperQueryDemoList',
   components: {
-    SuperQueryDemoEdit,
-    BSuperQuery
+    SuperQueryDemoEdit
   },
   mixins: [TableMixin],
   computed: {
@@ -135,14 +133,16 @@ export default {
   methods: {
     init () {
       this.loading = true
+       this.getDictItemsByNumberAsync('Political').then(res => {
+         this.politicalList = res.map(item => {
+           return { name: item.name, value: item.code }
+         })
+      })
       page({
         ...this.queryParam,
         ...this.pages
       }).then(res => {
         this.pageQueryResHandel(res, this)
-        this.politicalList = this.getDictItemsByNumber('Political').map(item => {
-          return { name: item.name, value: item.code }
-        })
       })
     },
     add () {

@@ -54,20 +54,22 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="addChildren(row)">添加下级</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除该部门组织"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="addChildren(row)">添加下级</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除该部门组织"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:">删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>

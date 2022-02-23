@@ -69,14 +69,16 @@
               <a class="ant-dropdown-link">
                 关联 <a-icon type="down" />
               </a>
-              <a-menu slot="overlay">
-                <a-menu-item v-if="[2,4].includes(row.type)">
-                  <a href="javascript:" @click="handleUserScope(row)">关联用户</a>
-                </a-menu-item>
-                <a-menu-item v-if="[3,4].includes(row.type)">
-                  <a href="javascript:" @click="handleDeptScope(row)">关联部门</a>
-                </a-menu-item>
-              </a-menu>
+              <template v-slot:overlay>
+                <a-menu>
+                  <a-menu-item v-if="[2,4].includes(row.type)">
+                    <a href="javascript:" @click="handleUserScope(row)">关联用户</a>
+                  </a-menu-item>
+                  <a-menu-item v-if="[3,4].includes(row.type)">
+                    <a href="javascript:" @click="handleDeptScope(row)">关联部门</a>
+                  </a-menu-item>
+                </a-menu>
+              </template>
             </a-dropdown>
           </template>
         </template>

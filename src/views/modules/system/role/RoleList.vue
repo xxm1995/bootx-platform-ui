@@ -63,14 +63,16 @@
             <a class="ant-dropdown-link">
               授权 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a href="javascript:" @click="handleRoleMenu(row)">菜单授权</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:" @click="handleRolePath(row)">请求授权</a>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a href="javascript:" @click="handleRoleMenu(row)">菜单授权</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:" @click="handleRolePath(row)">请求授权</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>

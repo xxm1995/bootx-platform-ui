@@ -65,24 +65,26 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="assignRoles(row)">角色分配</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a @click="assignDept(row)">部门分配</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a @click="assignDataScope(row)">数据权限分配</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a @click="resetPwd(row)">重置密码</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a v-if="row.status === 1 " @click="lockUserConfirm(row.id,true)">锁定账号</a>
-                <a v-if="row.status === 3 " @click="lockUserConfirm(row.id,false)">解锁账号</a>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="assignRoles(row)">角色分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="assignDept(row)">部门分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="assignDataScope(row)">数据权限分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="resetPwd(row)">重置密码</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a v-if="row.status === 1 " @click="lockUserConfirm(row.id,true)">锁定账号</a>
+                  <a v-if="row.status === 3 " @click="lockUserConfirm(row.id,false)">解锁账号</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>

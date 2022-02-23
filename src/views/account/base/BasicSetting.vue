@@ -106,7 +106,9 @@ export default {
       })
       // 初始化性别列表
       setTimeout(() => {
-        this.sexList = this.getDictItemsByNumber('Sex')
+        this.getDictItemsByNumberAsync('Sex').then(res => {
+          this.sexList = res
+        })
         this.confirmLoading = false
       }, 200)
     },

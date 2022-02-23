@@ -120,10 +120,11 @@
             :disabled="showable"
             placeholder="点击选择图标"
             v-model="form.icon">
-            <a-icon
-              slot="addonAfter"
-              type="setting"
-              @click="selectIcons" />
+            <template v-slot:addonAfter>
+              <a-icon
+                type="setting"
+                @click="selectIcons" />
+            </template>
           </a-input>
         </a-form-model-item>
         <a-form-model-item

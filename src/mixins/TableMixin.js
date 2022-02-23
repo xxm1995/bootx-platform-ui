@@ -1,9 +1,14 @@
-import { dictConvert as c, getDictItems, getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
-import SuperQueryModal from '@/components/Bootx/SuperQuery/SuperQueryModel'
+import {
+  dictConvert as c,
+  getDictItems, getDictItemsAsync,
+  getDictItemsByNumber,
+  getDictItemsByNumberAsync
+} from '@/components/Bootx/Dict/DictUtils'
+import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 
 export const TableMixin = {
   components: {
-    SuperQueryModal
+    BSuperQuery
   },
   data () {
     return {
@@ -73,9 +78,20 @@ export const TableMixin = {
     getDictItems (dictCode) {
       return getDictItems(dictCode)
     },
-    // 获取字典项列表(code值为数字)
+    // 获取字典列表 异步
+    async getDictItemsAsync (dictCode) {
+      return getDictItemsAsync(dictCode)
+    },
+    /**
+     * 获取字典项列表(code值为数字)
+     * 字段有  code name dictCode
+     */
     getDictItemsByNumber (dictCode) {
       return getDictItemsByNumber(dictCode)
+    },
+    // 获取字典项列表(code值为数字) 异步
+    async getDictItemsByNumberAsync (dictCode) {
+      return getDictItemsByNumberAsync(dictCode)
     }
   }
 }

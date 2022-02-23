@@ -1,4 +1,9 @@
-import { dictConvert as c, getDictItems, getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
+import {
+  dictConvert as c,
+  getDictItems,
+  getDictItemsAsync,
+  getDictItemsByNumber, getDictItemsByNumberAsync
+} from '@/components/Bootx/Dict/DictUtils'
 
 export const FormMixin = {
   data () {
@@ -55,17 +60,28 @@ export const FormMixin = {
     // 默认空方法
     resetForm () {
     },
-    // 字典翻译
-    dictConvert (dictCode, code) {
-      return c(dictCode, code)
-    },
     // 获取字典列表
     getDictItems (dictCode) {
       return getDictItems(dictCode)
     },
-    // 获取字典项列表(code值为数字)
+    // 字典翻译
+    dictConvert (dictCode, code) {
+      return c(dictCode, code)
+    },
+    // 获取字典列表 异步
+    async getDictItemsAsync (dictCode) {
+      return getDictItemsAsync(dictCode)
+    },
+    /**
+     * 获取字典项列表(code值为数字)
+     * 字段 name code 结构
+     */
     getDictItemsByNumber (dictCode) {
       return getDictItemsByNumber(dictCode)
+    },
+    // 获取字典项列表(code值为数字) 异步
+    async getDictItemsByNumberAsync (dictCode) {
+      return getDictItemsByNumberAsync(dictCode)
     },
     // 判断脱敏参数是否被修改的参数, 未修改返回空值
     diffForm (o1, o2) {

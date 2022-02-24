@@ -27,11 +27,11 @@
           :wrapper-col="wrapperCol"
         >
           <a-form-model-item label="支付方式" prop="payChannel">
-            <a-radio-group v-model="form.payChannel" default-value="ALI" button-style="solid">
-              <a-radio-button value="ALI">
+            <a-radio-group v-model="form.payChannel" :default-value="1" button-style="solid">
+              <a-radio-button :value="1">
                 支付宝
               </a-radio-button>
-              <a-radio-button value="WECHAT">
+              <a-radio-button :value="2">
                 微信
               </a-radio-button>
             </a-radio-group>
@@ -49,7 +49,7 @@
             <a-input v-model="form.title" />
           </a-form-model-item>
           <a-form-model-item label="金额" prop="amount">
-            <a-input v-model="form.amount" />
+            <a-input-number :precision="2" v-model="form.amount" />
           </a-form-model-item>
         </a-form-model>
       </div>
@@ -81,11 +81,11 @@ export default {
       visible: false,
       title: '扫码支付',
       form: {
-        payChannel: 'ALI',
+        payChannel: 1,
+        payWay: 4,
         businessId: '',
         title: '测试支付订单',
         // 二维码支付方式
-        payWay: 4,
         amount: 0.01
       },
       rules: {

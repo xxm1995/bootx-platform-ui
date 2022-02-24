@@ -120,7 +120,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, findPayTypeList, get, update } from '@/api/pay/alipayConfig'
+import { add, findPayTypeList, get, update } from '@/api/payment/alipayConfig'
 
 export default {
   name: 'AliPayConfigEdit',

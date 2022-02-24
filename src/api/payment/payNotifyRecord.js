@@ -5,8 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/payment/notify/record/page',
-    // url: `http://127.0.0.1:9502/notify/record/page`,
+    url: '/pay/notify/record/page',
     method: 'GET',
     params: params
   })
@@ -17,8 +16,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: `/payment/notify/record/findById`,
-    // url: `http://127.0.0.1:9502/notify/record/findById`,
+    url: '/pay/notify/record/findById',
     method: 'GET',
     params: { id }
   })
@@ -29,8 +27,7 @@ export function get (id) {
  */
 export function add (obj) {
   return axios({
-    url: '/payment/notify/record/add',
-    // url: `http://127.0.0.1:9502/notify/record/add`,
+    url: '/pay/notify/record/add',
     method: 'POST',
     data: obj
   })
@@ -41,8 +38,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/payment/notify/record/update',
-    // url: `http://127.0.0.1:9502/notify/record/update`,
+    url: '/pay/notify/record/update',
     method: 'POST',
     data: obj
   })
@@ -53,9 +49,8 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: `/payment/notify/record/delete`,
-    // url: `http://127.0.0.1:9005/notify/record/delete`,
-    method: 'DELETE',
-    params: { id }
+    url: '/pay/notify/record/delete',
+    params: { id },
+    method: 'DELETE'
   })
 }

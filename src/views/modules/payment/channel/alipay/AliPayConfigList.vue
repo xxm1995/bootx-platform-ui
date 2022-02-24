@@ -111,7 +111,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import AliPayConfigEdit from './AliPayConfigEdit'
-import { page, del, setUpActivity, clearActivity } from '@/api/pay/alipayConfig'
+import { page, del, setUpActivity, clearActivity } from '@/api/payment/alipayConfig'
 
 export default {
   name: 'AliPayConfigList',

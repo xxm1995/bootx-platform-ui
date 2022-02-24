@@ -29,7 +29,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { clearActivity, del, page, setUpActivity } from '@/api/pay/alipayConfig'
+import { clearActivity, del, page, setUpActivity } from '@/api/payment/alipayConfig'
 import WeChatConfigEdit from './WeChatConfigEdit'
 export default {
   name: 'WeChatConfigList',

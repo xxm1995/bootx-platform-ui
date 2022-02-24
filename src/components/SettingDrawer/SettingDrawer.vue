@@ -216,7 +216,7 @@ export default {
       this.$store.dispatch('ToggleTheme', theme)
     },
     doCopy () {
-      // get current settings from mixin or this.$store.state.app, pay attention to the property name
+      // get current settings from mixin or this.$store.state.app, payment attention to the property name
       const text = `export default {
   primaryColor: '${this.primaryColor}', // primary color of ant design
   navTheme: '${this.navTheme}', // theme for nav menu

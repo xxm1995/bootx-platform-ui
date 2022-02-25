@@ -1,0 +1,89 @@
+<template>
+  <a-modal
+    :title="title"
+    :width="modalWidth"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    :maskClosable="false"
+    @cancel="handleCancel"
+  >
+    <a-descriptions
+      title=""
+      :column="{md: 1, sm: 1, xs: 1}"
+    >
+      <a-descriptions-item label="用户id">
+        {{ form.userId }}
+      </a-descriptions-item>
+      <a-descriptions-item label="标题">
+        {{ form.title }}
+      </a-descriptions-item>
+      <a-descriptions-item label="业务id">
+        {{ form.businessId }}
+      </a-descriptions-item>
+      <a-descriptions-item label="金额">
+        {{ form.amount }}
+      </a-descriptions-item>
+      <a-descriptions-item label="支付状态">
+        {{ dictConvert('PayStatus',form.payStatus) }}
+      </a-descriptions-item>
+      <a-descriptions-item label="描述">
+        {{ form.description }}
+      </a-descriptions-item>
+      <a-descriptions-item label="错误码">
+        {{ form.errorCode }}
+      </a-descriptions-item>
+      <a-descriptions-item label="是否是异步支付">
+        {{ form.syncPayMode?'是':'否' }}
+      </a-descriptions-item>
+      <a-descriptions-item label="支付类型信息">
+        {{ form.payChannelInfo }}
+      </a-descriptions-item>
+
+    </a-descriptions>
+    <template v-slot:footer>
+      <a-button key="cancel" @click="handleCancel">取消</a-button>
+    </template>
+  </a-modal>
+</template>
+
+<script>
+  import { FormMixin } from '@/mixins/FormMixin'
+  import { get } from '@/api/payment/payment'
+  export default {
+    name: 'PaymentInfo',
+    mixins: [FormMixin],
+    data () {
+      return {
+        form: {
+          id: '',
+          userId: '',
+          businessId: '',
+          amount: '',
+          payStatus: '',
+          title: '',
+          description: '',
+          errorCode: '',
+          syncPayMode: '',
+          syncPayTypeCode: '',
+          payChannelInfo: '',
+          payTime: '',
+          expiredTime: ''
+        }
+      }
+    },
+    methods: {
+      edit (id) {
+          this.confirmLoading = true
+          get(id).then(res => {
+            this.form = res.data
+            console.log(this.form)
+            this.confirmLoading = false
+          })
+      }
+    }
+  }
+</script>
+
+<style scoped>
+
+</style>

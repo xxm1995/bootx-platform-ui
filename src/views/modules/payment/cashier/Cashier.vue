@@ -53,7 +53,7 @@
           </a-form-model-item>
         </a-form-model>
       </div>
-      <a-button type="primary" @click="payOk">
+      <a-button type="primary" @click="pay">
         发起支付
       </a-button>
     </div>
@@ -62,7 +62,7 @@
 
 <script>
 import VueQr from 'vue-qr'
-import { pay } from '@/api/demo/cashier'
+import { pay } from '@/api/payment/cashier'
 
 export default {
   name: 'Cashier',
@@ -107,7 +107,7 @@ export default {
     genOrderNo () {
       this.form.businessId = 'P' + new Date().getTime()
     },
-    payOk () {
+    pay () {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.loading = true

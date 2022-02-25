@@ -14,17 +14,14 @@
       <a-descriptions-item label="业务id">
         {{ form.paymentId }}
       </a-descriptions-item>
-      <a-descriptions-item label="通知消息">
-        {{ form.notifyInfo }}
-      </a-descriptions-item>
       <a-descriptions-item label="支付通道">
         {{ dictConvert('PayChannel',form.payChannel) }}
       </a-descriptions-item>
-      <a-descriptions-item label="支付方式">
-        {{ dictConvert('PayWay',form.payWay) }}
+      <a-descriptions-item label="通知消息">
+        {{ form.notifyInfo }}
       </a-descriptions-item>
       <a-descriptions-item label="状态">
-        {{ form.status }}
+        {{ form.status === 1 ? '成功':'失败' }}
       </a-descriptions-item>
       <a-descriptions-item label="提示消息">
         {{ form.msg }}
@@ -53,7 +50,6 @@
           paymentId: '',
           notifyInfo: '',
           payChannel: '',
-          payWay: '',
           status: '',
           msg: '',
           notifyTime: ''

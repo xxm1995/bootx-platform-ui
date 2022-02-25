@@ -31,12 +31,11 @@
           {{ dictConvert('PayChannel',row.payChannel) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="payWay" title="支付方式">
+      <vxe-table-column field="status" title="处理状态">
         <template v-slot="{row}">
-          {{ dictConvert('PayWay',row.payWay) }}
+          {{ row.status ? '成功':'失败' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="status" title="处理状态" />
       <vxe-table-column field="msg" title="提示信息" />
       <vxe-table-column field="notifyTime" title="回调时间" />
       <vxe-table-column field="createTime" title="创建时间" />

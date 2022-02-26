@@ -12,11 +12,21 @@ export function cancelByPaymentId (paymentId) {
 }
 
 /**
- * 取消支付(支付id)
+ * 取消支付(业务id)
  */
 export function cancelByBusinessId (businessId) {
   return axios({
     url: '/uni_pay/cancelByBusinessId',
+    method: 'POST',
+    params: { businessId }
+  })
+}
+/**
+ * 退款(支付id)
+ */
+export function refundByBusinessId (businessId) {
+  return axios({
+    url: '/uni_pay/refundByBusinessId',
     method: 'POST',
     params: { businessId }
   })

@@ -42,7 +42,6 @@
           {{ dictConvert('PayChannel', row.syncPayTypeCode) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="payTime" title="支付时间"/>
       <vxe-table-column field="description" title="描述"/>
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
@@ -101,7 +100,7 @@
 import { page } from '@/api/payment/payment.js'
 import PaymentInfo from './PaymentInfo'
 import { TableMixin } from '@/mixins/TableMixin'
-import { cancelByPaymentId, syncByBusinessId } from '@/api/payment/pay'
+import { cancelByPaymentId, refundByBusinessId, syncByBusinessId } from '@/api/payment/pay'
 export default {
   name: 'PaymentList',
   components: {
@@ -145,7 +144,9 @@ export default {
     },
     // 退款
     refund (record) {
-
+      refundByBusinessId(record.businessId).then(_ => {
+        this.init()
+      })
     }
   },
   created () {

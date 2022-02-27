@@ -7,7 +7,7 @@
     @ok="handleOk"
     :mask="false"
     okText="查询"
-    @cancel="handleCancel"
+    @cancel="`handleCancel`"
     cancelText="关闭">
     <a-spin :spinning="confirmLoading">
       <a-form-model>

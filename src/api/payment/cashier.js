@@ -1,9 +1,18 @@
 import { axios } from '@/utils/request'
 
-export function pay (obj) {
+/**
+ * 单独支付
+ */
+export function singlePay (obj) {
   return axios({
-    url: '/cashier/pay',
+    url: '/cashier/singlePay',
     method: 'POST',
     data: obj
   })
 }
+
+/**
+ * 聚合支付
+ */
+
+

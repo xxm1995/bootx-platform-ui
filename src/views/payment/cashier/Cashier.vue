@@ -13,16 +13,16 @@
                     <span class="color-change">{{ item.title }}</span>
                   </div>
                 </div>
-                <!--                <div style="position: relative">-->
-                <!--                  <div class="paydemo-type-h5" code="WECHAT_H5" @click="handleActive('WECHAT_H5')" @mouseover="hover = true" @mouseleave="hover = false">-->
-                <!--                    <img src="./imgs/wechat/wx_h5.svg" class="paydemo-type-img">-->
-                <!--                    <span>微信H5</span>-->
-                <!--                  </div>-->
-                <!--                  <div class="paydemo-type-h5 layui-hide codeImg_wx_h5" v-if="this.hover">-->
-                <!--                    <img style="width: 120px;height: 120px;padding-bottom: 10px" src="./imgs/wechat/wx_native.svg">-->
-                <!--                    <span >请使用手机浏览器扫码</span>-->
-                <!--                  </div>-->
-                <!--                </div>-->
+                <div style="position: relative">
+                  <div class="paydemo-type-h5" code="WECHAT_H5" @click="handleActive('WECHAT_H5')" @mouseover="hover = true" @mouseleave="hover = false">
+                    <img src="./imgs/wechat/wx_h5.svg" class="paydemo-type-img">
+                    <span>微信H5</span>
+                  </div>
+                  <div class="paydemo-type-h5 layui-hide codeImg_wx_h5" v-if="this.hover">
+                    <img style="width: 120px;height: 120px;padding-bottom: 10px" src="./imgs/wechat/w_pay.png">
+                    <span >请使用手机浏览器扫码</span>
+                  </div>
+                </div>
               </div>
               <div class="paydemo-type-name">支付宝支付</div>
               <div class="paydemo-type-body">
@@ -32,23 +32,23 @@
                     <span class="color-change">{{ item.title }}</span>
                   </div>
                 </div>
-                <!--                <div style="position: relative">-->
-                <!--                  <div class="paydemo-type-h5" code="ALI_WAP" @click="handleActive('ALI_WAP')"  @mouseover="alihover = true" @mouseleave="alihover = false">-->
-                <!--                    <img src="./imgs/ali/ali_wap.svg" class="paydemo-type-img">-->
-                <!--                    <span>支付宝WAP</span>-->
-                <!--                  </div>-->
-                <!--                  <div class="paydemo-type-h5 layui-hide codeImg_wx_h5" v-if="this.alihover">-->
-                <!--                    <img style="width: 120px;height: 120px;padding-bottom: 10px" src="./imgs/ali/ali_qr.svg">-->
-                <!--                    <span>请使用手机浏览器扫码</span>-->
-                <!--                  </div>-->
-                <!--                </div>-->
+                <div style="position: relative">
+                  <div class="paydemo-type-h5" code="ALI_WAP" @click="handleActive('ALI_WAP')" @mouseover="alihover = true" @mouseleave="alihover = false">
+                    <img src="./imgs/ali/ali_wap.svg" class="paydemo-type-img"/>
+                    <span>支付宝WAP</span>
+                  </div>
+                  <div class="paydemo-type-h5 layui-hide codeImg_wx_h5" v-if="this.alihover">
+                    <img style="width: 120px;height: 120px;padding-bottom: 10px" src="./imgs/wechat/w_pay.png"/>
+                    <span >请使用手机浏览器扫码</span>
+                  </div>
+                </div>
               </div>
 
               <div class="paydemo-type-name">聚合支付</div>
               <div class="paydemo-type-body">
                 <div v-for="item in aggregationPayList" :key="item.id" @click="handleActive(item.code)">
                   <div :class="item.code===currentActive?'colorChange':'paydemoType'" :code="item.code">
-                    <img :src="item.img" class="paydemo-type-img">
+                    <img :src="item.img" class="paydemo-type-img"/>
                     <span class="color-change">{{ item.title }}</span>
                   </div>
                 </div>
@@ -86,7 +86,6 @@
               </form>
             </div>
           </div>
-
           <div class="paydemo-type-content" style="background-color: #ffffff">
             <div class="paydemo-type-name">
               <span>最新支付</span>
@@ -112,22 +111,9 @@
         </div>
       </div>
       <!--  条码支付弹框-->
-      <a-modal
-        v-model="barVisible"
-        title="条码支付"
-        @ok="barPay"
-        @cancel="()=>{this.barVisible = false;this.refreshBusinessId()}"
-        :width="350">
-        <div >
-          <div style="display: flex;flex-direction: row;justify-content: space-between">
-            <a-input
-              allowClear
-              type="text"
-              v-model="barPayCode"
-              :placeholder="contentTitle"/>
-          </div>
-        </div>
-      </a-modal>
+      <cashier-qr-code
+        ref="cashierQrCode"
+        @cancel="refreshBusinessId"/>
       <!--   扫码弹出窗口   -->
       <a-modal
         v-model="qrVisible"
@@ -137,8 +123,7 @@
         :width="350">
         <div style="display: flex; flex-direction: column;align-items: center;">
           <vue-qr
-            :logo-src="logoSrc"
-            :size="191"
+            :size="190"
             :margin="0"
             :auto-color="true"
             :dot-scale="1"
@@ -156,12 +141,16 @@
 
 <script>
 import VueQr from 'vue-qr'
+import CashierQrCode from './CashierQrCode'
+import CashierBarCode from './CashierBarCode'
 import { barCodePay, qrCodePay } from '@/api/demo/demo'
 
 export default {
-  name: 'PayPage',
+  name: 'Cashier',
   components: {
-    VueQr
+    VueQr,
+    CashierQrCode,
+    CashierBarCode
   },
   data () {
     return {
@@ -381,19 +370,11 @@ export default {
     },
     // 生成业务id
     refreshBusinessId () {
-      this.businessId = 'M' + new Date().getTime() + Math.floor(Math.random() * 1000)
+      this.businessId = 'P' + new Date().getTime()
     },
     // 当前选择的支付类型
     handleActive (index) {
       this.currentActive = index
-    },
-    onPageChange (page) {
-      this.page.index = page
-      this.search()
-    },
-    onPageSizeChange (pageSize) {
-      this.page.size = pageSize
-      this.search()
     }
   },
   created () {

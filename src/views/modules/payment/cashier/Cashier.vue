@@ -62,7 +62,7 @@
 
 <script>
 import VueQr from 'vue-qr'
-import { pay } from '@/api/payment/cashier'
+import { singlePay } from '@/api/payment/cashier'
 
 export default {
   name: 'Cashier',
@@ -112,7 +112,7 @@ export default {
         if (valid) {
           this.loading = true
           this.visible = true
-          pay(this.form).then(res => {
+          singlePay(this.form).then(res => {
             this.payUrl = res.data
             this.loading = false
           })

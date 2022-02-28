@@ -113,7 +113,7 @@ export default {
           this.loading = true
           this.visible = true
           singlePay(this.form).then(res => {
-            this.payUrl = res.data
+            this.payUrl = res.data.syncPayInfo.payBody
             this.loading = false
           })
         } else {

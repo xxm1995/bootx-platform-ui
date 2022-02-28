@@ -4,17 +4,15 @@
     title="扫码支付"
     @cancel="handleCancel"
     :footer="null"
-    :width="350">
+    :width="250">
     <div style="display: flex; flex-direction: column;align-items: center">
       <vue-qr
-        :logo-src="logoSrc"
         :size="190"
         :margin="0"
         :auto-color="true"
         :dot-scale="1"
         :text="qrUrl" />
       <div style="padding-top: 20px;  display: flex; flex-direction: row;align-items: center;justify-content: center">
-        <img style="width: 25px;padding-right: 5px;" :src="icon"/>
         {{ bottomTitle }}
       </div>
     </div>
@@ -22,8 +20,13 @@
 </template>
 
 <script>
+import VueQr from 'vue-qr'
+
 export default {
   name: 'CashierQrCode',
+  components: {
+    VueQr
+  },
   data () {
     return {
       visible: false,
@@ -33,10 +36,9 @@ export default {
     }
   },
   methods: {
-    init (qrUrl, icon, bottomTitle) {
+    init (qrUrl, bottomTitle) {
       this.visible = true
       this.qrUrl = qrUrl
-      this.icon = icon
       this.bottomTitle = bottomTitle
     },
     handleCancel () {

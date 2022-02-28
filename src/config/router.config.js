@@ -88,7 +88,7 @@ export const constantRouterMap = [
     path: '/cashier',
     name: 'cashier',
     component: () => import('@/views/payment/cashier/Cashier'),
-    meta: { title: '高级结算台' }
+    meta: { title: '结算台支付演示' }
   },
 
   {

@@ -67,7 +67,7 @@
               </div>
               <div class="paydemo-type-content">
                 <div class="paydemo-type-name">支付信息</div>
-                <form class="layui-form">
+                <a-form class="layui-form">
                   <div class="paydemo-form-item">
                     <label>业务单号：</label>
                     <span>
@@ -94,9 +94,9 @@
                   </div>
                   <div style="margin-top:20px;text-align: right">
                     <span style="color: #FD482C;font-size: 18px;padding-right: 10px;" >{{ '¥ '+totalMoney }}</span>
-                    <button class="layui-btn" style="background-color: #1953ff;border-radius: 5px;" @click="pay">立即支付</button>
+                    <button :disabled="currentActive.payWay == null" class="layui-btn" style="background-color: #1953ff;border-radius: 5px;" @click="pay">立即支付</button>
                   </div>
-                </form>
+                </a-form>
               </div>
             </div>
           </div>
@@ -144,7 +144,8 @@ export default {
       AliPayList: [
         { img: require('./imgs/ali/ali_qr.svg'), title: '支付宝二维码', payInfo: { payChannel: 1, payWay: 4 } },
         { img: require('./imgs/ali/ali_bar.svg'), title: '支付宝条码', payInfo: { payChannel: 1, payWay: 5 } },
-        { img: require('./imgs/ali/ali_pc.svg'), title: '支付宝PC网站', payInfo: { payChannel: 1, payWay: 3 } }
+        { img: require('./imgs/ali/ali_pc.svg'), title: '支付宝PC网站', payInfo: { payChannel: 1, payWay: 3 } },
+        { img: require('./imgs/ali/ali_wap.svg'), title: '支付宝wap支付', payInfo: { payChannel: 1, payWay: 1 } }
       ],
       WxPayList: [
         { img: require('./imgs/wechat/wx_native.svg'), title: '微信二维码', payInfo: { payChannel: 2, payWay: 4 } },
@@ -156,26 +157,11 @@ export default {
         { img: require('./imgs/qr/auto_bar.svg'), title: '聚合条码(商家扫用户)', payInfo: { payChannel: 99, payWay: 5 } }
       ],
       payMoneyList: [ // 支付金额列表
-        {
-          label: '0.01',
-          value: 0.01
-        },
-        {
-          label: '0.1',
-          value: 0.1
-        },
-        {
-          label: '1.00',
-          value: 1
-        },
-        {
-          label: '5.00',
-          value: 5
-        },
-        {
-          label: '10.00',
-          value: 10
-        }
+        { label: '0.01', value: 0.01 },
+        { label: '0.1', value: 0.1 },
+        { label: '1.00', value: 1 },
+        { label: '5.00', value: 5 },
+        { label: '10.00', value: 10 }
       ],
       payMoneyValue: 0.01,
       totalMoney: 0.01,
@@ -226,7 +212,10 @@ export default {
       this.loading = true
       const { data } = await singlePay(param)
       this.loading = false
-      if (payChannel === 1) {
+      // pc支付
+      if ([1, 3].includes(payWay)) {
+        window.open(data.syncPayInfo.payBody)
+      } else if (payChannel === 1) {
         this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用支付宝"扫一扫"扫码支付')
       } else {
         this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用微信"扫一扫"扫码支付')

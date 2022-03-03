@@ -27,6 +27,7 @@
       <vxe-table-column field="businessId" title="业务id"/>
       <vxe-table-column field="title" title="标题"/>
       <vxe-table-column field="amount" title="金额"/>
+      <vxe-table-column field="refundableBalance" title="可退余额"/>
       <vxe-table-column field="payStatus" title="支付状态">
         <template v-slot="{row}">
           {{ dictConvert('PayStatus',row.payStatus) }}
@@ -37,9 +38,9 @@
           {{ row.syncPayMode?'是':'否' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="syncPayTypeCode" title="异步支付方式">
+      <vxe-table-column field="syncPayWay" title="异步支付方式">
         <template v-slot="{row}">
-          {{ dictConvert('PayChannel', row.syncPayTypeCode) }}
+          {{ dictConvert('PayChannel', row.syncPayWay) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="description" title="描述"/>
@@ -59,9 +60,6 @@
                   <a @click="sync(row)">刷新信息</a>
                 </a-menu-item>
                 <a-menu-item v-if="[0].includes(row.payStatus)">
-                  <a @click="pay(row)">支付</a>
-                </a-menu-item>
-                <a-menu-item v-if="[0].includes(row.payStatus)">
                   <a-popconfirm
                     title="是否关闭支付"
                     @confirm="cancel(row)"
@@ -70,7 +68,7 @@
                     <a href="javascript:" style="color: red">关闭</a>
                   </a-popconfirm>
                 </a-menu-item>
-                <a-menu-item v-if="[1].includes(row.payStatus)">
+                <a-menu-item v-if="[1,4].includes(row.payStatus) && row.refundableBalance > 0">
                   <a-popconfirm
                     title="是否发起退款"
                     @confirm="refund(row)"
@@ -99,12 +97,14 @@
 <script>
 import { page } from '@/api/payment/payment.js'
 import PaymentInfo from './PaymentInfo'
+import RefundModel from './RefundModel'
 import { TableMixin } from '@/mixins/TableMixin'
 import { cancelByPaymentId, refundByBusinessId, syncByBusinessId } from '@/api/payment/pay'
 export default {
   name: 'PaymentList',
   components: {
-    PaymentInfo
+    PaymentInfo,
+    RefundModel
   },
   mixins: [TableMixin],
   data () {

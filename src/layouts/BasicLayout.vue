@@ -23,7 +23,7 @@
     -->
     <template v-slot:headerContentRender>
       <div>
-        <a-tooltip title="刷新缓存">
+        <a-tooltip title="刷新字典缓存">
           <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="RefreshDictList" />
         </a-tooltip>
       </div>

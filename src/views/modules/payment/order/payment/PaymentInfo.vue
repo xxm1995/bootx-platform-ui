@@ -23,8 +23,23 @@
       <a-descriptions-item label="金额">
         {{ form.amount }}
       </a-descriptions-item>
+      <a-descriptions-item label="可退余额">
+        {{ form.refundableBalance }}
+      </a-descriptions-item>
       <a-descriptions-item label="支付状态">
         {{ dictConvert('PayStatus',form.payStatus) }}
+      </a-descriptions-item>
+      <a-descriptions-item label="是否是异步支付">
+        {{ form.syncPayMode?'是':'否' }}
+      </a-descriptions-item>
+      <a-descriptions-item label="异步支付方式">
+        {{ dictConvert('PayChannel',form.syncPayWay) }}
+      </a-descriptions-item>
+      <a-descriptions-item label="支付类型信息">
+        {{ form.payChannelInfo }}
+      </a-descriptions-item>
+      <a-descriptions-item label="可退款信息">
+        {{ form.refundableInfo }}
       </a-descriptions-item>
       <a-descriptions-item label="描述">
         {{ form.description }}
@@ -32,13 +47,9 @@
       <a-descriptions-item label="错误码">
         {{ form.errorCode }}
       </a-descriptions-item>
-      <a-descriptions-item label="是否是异步支付">
-        {{ form.syncPayMode?'是':'否' }}
+      <a-descriptions-item label="错误信息">
+        {{ form.errorMsg }}
       </a-descriptions-item>
-      <a-descriptions-item label="支付类型信息">
-        {{ form.payChannelInfo }}
-      </a-descriptions-item>
-
     </a-descriptions>
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
@@ -59,13 +70,15 @@
           userId: '',
           businessId: '',
           amount: '',
+          refundableBalance: '',
           payStatus: '',
           title: '',
           description: '',
           errorCode: '',
           syncPayMode: '',
-          syncPayTypeCode: '',
+          syncPayWay: '',
           payChannelInfo: '',
+          refundableInfo: '',
           payTime: '',
           expiredTime: ''
         }

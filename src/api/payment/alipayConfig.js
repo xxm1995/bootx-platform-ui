@@ -24,9 +24,9 @@ export function get (id) {
 /**
  * 获取支付宝支持支付方式
  */
-export function findPayTypeList () {
+export function findPayWayList () {
   return axios({
-    url: '/alipay/findPayTypeList',
+    url: '/alipay/findPayWayList',
     method: 'GET'
   })
 }

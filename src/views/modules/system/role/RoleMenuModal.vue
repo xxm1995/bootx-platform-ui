@@ -19,7 +19,7 @@
         @check="onCheck"
         @expand="onExpand"
       >
-        <template slot="title" slot-scope="{ title }">
+        <template v-slot:title v-slot="{ title }">
           <span v-if="title.indexOf(searchName) > -1">
             {{ title.substr(0, title.indexOf(searchName)) }}
             <span style="color: #f50">{{ searchName }}</span>

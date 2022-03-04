@@ -56,7 +56,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">操作</a>

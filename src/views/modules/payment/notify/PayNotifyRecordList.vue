@@ -3,7 +3,34 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="支付单号">
+              <a-input v-model="queryParam.paymentId" placeholder="请输入支付单号" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="支付通道">
+              <a-select
+                allowClear
+                v-model="queryParam.payChannel"
+                placeholder="选择支付通道"
+              >
+                <a-select-option v-for="o in payChannelList" :key="o.code">{{ o.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col><a-col :md="6" :sm="24">
+            <a-form-item label="处理状态">
+              <a-select
+                allowClear
+                v-model="queryParam.status"
+                placeholder="选择消息处理状态"
+              >
+                <a-select-option :key="1">成功</a-select-option>
+                <a-select-option :key="0">失败</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
@@ -37,8 +64,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="msg" title="提示信息" />
-      <vxe-table-column field="notifyTime" title="回调时间" />
-      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column field="notifyTime" title="通知时间" />
       <vxe-table-column fixed="right" width="70" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
@@ -74,13 +100,20 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      payChannelList: [],
       queryParam: {
+        paymentId: '',
+        payChannel: undefined,
+        status: undefined
       }
     }
   },
   methods: {
     init () {
       this.loading = true
+      this.getDictItemsByNumberAsync('PayChannel').then(res => {
+        this.payChannelList = res
+      })
       page({
         ...this.queryParam,
         ...this.pages

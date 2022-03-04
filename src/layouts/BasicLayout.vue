@@ -35,6 +35,7 @@
       </div>
     </setting-drawer>
     <template v-slot:rightContentRender>
+      <!-- 后期添加菜单搜索功能 -->
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <!-- custom footer / 自定义Footer -->

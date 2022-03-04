@@ -36,7 +36,7 @@
       <vxe-table-column field="code" title="编码" />
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="type" title="类型">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <span v-show="row.type === 1">自身数据</span>
           <span v-show="row.type === 2">用户范围</span>
           <span v-show="row.type === 3">部门范围</span>
@@ -49,7 +49,7 @@
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>

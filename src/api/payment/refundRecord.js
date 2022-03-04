@@ -5,21 +5,9 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/payment/page',
+    url: '/pay/refund/page',
     method: 'GET',
     params: params
-  })
-}
-
-/**
- * 超级查询
- */
-export function superPage (params, queryParams) {
-  return axios({
-    url: '/payment/superPage',
-    method: 'POST',
-    params: params,
-    data: queryParams
   })
 }
 
@@ -28,9 +16,8 @@ export function superPage (params, queryParams) {
  */
 export function get (id) {
   return axios({
-    url: '/payment/findById',
+    url: '/pay/refund/findById',
     method: 'GET',
     params: { id }
   })
 }
-

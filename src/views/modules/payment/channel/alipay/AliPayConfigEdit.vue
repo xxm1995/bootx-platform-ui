@@ -41,17 +41,17 @@
             </template>
           </a-input>
         </a-form-model-item>
-        <a-form-model-item label="支持支付方式" prop="payTypeList">
+        <a-form-model-item label="支持支付方式" prop="payWayList">
           <a-select
             allowClear
             mode="multiple"
             :disabled="showable"
-            v-model="form.payTypeList"
-            :default-value="form.payTypeList"
+            v-model="form.payWayList"
+            :default-value="form.payWayList"
             style="width: 100%"
             placeholder="选择支付方式"
           >
-            <a-select-option v-for="o in payTypeList" :key="o.key">
+            <a-select-option v-for="o in payWayList" :key="o.key">
               {{ o.value }}
             </a-select-option>
           </a-select>
@@ -120,14 +120,14 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, findPayTypeList, get, update } from '@/api/payment/alipayConfig'
+import { add, findPayWayList, get, update } from '@/api/payment/alipayConfig'
 
 export default {
   name: 'AliPayConfigEdit',
   mixins: [FormMixin],
   data () {
     return {
-      payTypeList: [],
+      payWayList: [],
       form: {
         name: '',
         appId: '',
@@ -142,7 +142,7 @@ export default {
         alipayRootCert: '',
         privateKey: '',
         expireTime: '',
-        payTypeList: [],
+        payWayList: [],
         sandbox: false,
         activity: null,
         state: '',
@@ -167,7 +167,7 @@ export default {
         privateKey: [ { required: true, message: '请输入支付私钥' } ],
         sandbox: [ { required: true, message: '请选择是否为沙箱环境' } ],
         expireTime: [ { required: true, message: '请输入默认超时配置' } ],
-        payTypeList: [ { required: true, message: '请选择支持的支付类型' } ]
+        payWayList: [ { required: true, message: '请选择支持的支付类型' } ]
       }
     },
     diff () {
@@ -183,8 +183,8 @@ export default {
   },
   methods: {
     edit (id, type) {
-      findPayTypeList().then(res => {
-        this.payTypeList = res.data
+      findPayWayList().then(res => {
+        this.payWayList = res.data
       })
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true

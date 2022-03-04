@@ -35,7 +35,7 @@
 示例
 ```javascript
 [
-  { field: 'num', name: '数字', type: NUMBER },
+  { field: 'num', name: '数字', type: NUMBER, precision: 0 },
   { field: 'string', name: '字符', type: STRING },
   { field: 'bool', name: '布尔', type: BOOLEAN },
   { field: 'date', name: '日期', type: DATE },

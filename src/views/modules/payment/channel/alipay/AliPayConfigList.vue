@@ -26,7 +26,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="$refs.aliPayConfigEdit.init('','add')">新建</a-button>
+        <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -63,7 +63,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">编辑</a>
@@ -72,21 +72,23 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a v-if="!row.activity" @click="()=>setUpActivity(row)">启用</a>
-                <a v-else @click="()=>clearActivity(row)">停用</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除该配置"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" style="color: red">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a v-if="!row.activity" @click="()=>setUpActivity(row)">启用</a>
+                  <a v-else @click="()=>clearActivity(row)">停用</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除该配置"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" style="color: red">删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>
@@ -134,11 +136,11 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
+    },
+    add () {
+      this.$refs.aliPayConfigEdit.init('', 'add')
     },
     edit (record) {
       this.$refs.aliPayConfigEdit.init(record.id, 'edit')

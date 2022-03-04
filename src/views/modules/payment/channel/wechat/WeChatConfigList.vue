@@ -20,6 +20,70 @@
         </a-row>
       </a-form-model>
     </div>
+    <vxe-toolbar
+      custom
+      zoom
+      :refresh="{query: init}"
+    >
+      <template v-slot:buttons>
+        <a-button type="primary" icon="plus" @click="add">新建</a-button>
+      </template>
+    </vxe-toolbar>
+    <vxe-table
+      row-id="id"
+      :loading="loading"
+      :data="tableData"
+    >
+
+      <vxe-table-column type="seq" title="序号" width="60" />
+      <vxe-table-column field="name" title="名称"/>
+      <vxe-table-column field="appId" title="微信应用AppId"/>
+      <vxe-table-column field="authType" title="认证方式" >
+        <template v-slot="{row}">
+          <a-tag v-show="row.authType === 1">公钥</a-tag>
+          <a-tag v-show="row.authType === 2">证书</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="sandbox" title="沙箱" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.sandbox">是</a-tag>
+          <a-tag v-else>否</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="activity" title="活动状态" >
+        <template v-slot="{row}">
+          <a-tag color="green" v-if="row.activity">启用</a-tag>
+          <a-tag color="red" v-else>未启用</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+        <template v-slot="{row}">
+          <span>
+            <a href="javascript:" @click="show(row)">查看</a>
+          </span>
+          <a-divider type="vertical"/>
+          <span>
+            <a href="javascript:" @click="edit(row)">编辑</a>
+          </span>
+          <a-divider type="vertical"/>
+          <a-popconfirm
+            title="是否删除"
+            @confirm="remove(row)"
+            okText="是"
+            cancelText="否">
+            <a href="javascript:" style="color: red">删除</a>
+          </a-popconfirm>
+        </template>
+      </vxe-table-column>
+    </vxe-table>
+    <vxe-pager
+      size="medium"
+      :loading="loading"
+      :current-page="pagination.current"
+      :page-size="pagination.size"
+      :total="pagination.total"
+      @page-change="handleTableChange"/>
     <we-chat-config-edit
       ref="weChatConfigEdit"
       @ok="handleOk"
@@ -29,7 +93,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { clearActivity, del, page, setUpActivity } from '@/api/payment/alipayConfig'
+import { clearActivity, del, page, setUpActivity } from '@/api/payment/wechatPayConfig'
 import WeChatConfigEdit from './WeChatConfigEdit'
 export default {
   name: 'WeChatConfigList',
@@ -57,6 +121,9 @@ export default {
         this.pagination.total = Number(res.data.total)
         this.loading = false
       })
+    },
+    add () {
+      this.$refs.weChatConfigEdit.init('', 'add')
     },
     edit (record) {
       this.$refs.weChatConfigEdit.init(record.id, 'edit')

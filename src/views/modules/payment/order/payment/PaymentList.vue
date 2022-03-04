@@ -3,9 +3,24 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="支付单号">
+              <a-input v-model="queryParam.paymentId" placeholder="请输入支付单号" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="业务ID">
+              <a-input v-model="queryParam.businessId" placeholder="请输入业务ID" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="标题">
+              <a-input v-model="queryParam.businessId" placeholder="请输入标题" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
+              <a-button :disabled="superQueryFlag"  type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
             </a-space>
           </a-col>
@@ -17,6 +32,17 @@
       zoom
       :refresh="{query: init}"
     >
+      <template v-slot:buttons>
+        <b-super-query
+          :queryState="superQueryFlag"
+          :fields="queryFields"
+          :width="880"
+          button-title="超级查询"
+          model-title="超级查询器"
+          @query="superQuery"
+          @rest="restQuery"
+        />
+      </template>
     </vxe-toolbar>
     <vxe-table
       row-id="id"
@@ -24,7 +50,7 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="businessId" title="业务id"/>
+      <vxe-table-column field="businessId" title="业务ID"/>
       <vxe-table-column field="title" title="标题"/>
       <vxe-table-column field="amount" title="金额"/>
       <vxe-table-column field="refundableBalance" title="可退余额"/>
@@ -38,9 +64,9 @@
           {{ row.syncPayMode?'是':'否' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="syncPayWay" title="异步支付方式">
+      <vxe-table-column field="syncPayChannel" title="异步支付方式">
         <template v-slot="{row}">
-          {{ dictConvert('PayChannel', row.syncPayWay) }}
+          {{ dictConvert('PayChannel', row.syncPayChannel) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="description" title="描述"/>
@@ -95,11 +121,12 @@
 </template>
 
 <script>
-import { page } from '@/api/payment/payment.js'
+import { page, superPage } from '@/api/payment/payment.js'
 import PaymentInfo from './PaymentInfo'
 import RefundModel from './RefundModel'
 import { TableMixin } from '@/mixins/TableMixin'
 import { cancelByPaymentId, refundByBusinessId, syncByBusinessId } from '@/api/payment/pay'
+import { BOOLEAN, DATE_TIME, LIST, NUMBER, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'PaymentList',
   components: {
@@ -109,13 +136,45 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      syncPayChannelList: [],
+      payStatusList: [],
       queryParam: {
+        paymentId: '',
+        businessId: '',
+        title: ''
       }
+    }
+  },
+  computed: {
+    // 超级查询字段
+    queryFields () {
+      return [
+        { field: 'id', name: '支付ID', type: STRING },
+        { field: 'businessId', name: '业务ID', type: STRING },
+        { field: 'userId', name: '用户ID', type: STRING },
+        { field: 'title', name: '标题', type: STRING },
+        { field: 'amount', name: '金额', type: NUMBER, precision: 2 },
+        { field: 'errorCode', name: '错误码', type: STRING },
+        { field: 'syncPayMode', name: '异步支付', type: BOOLEAN },
+        { field: 'syncPayChannel', name: '异步支付方式', type: LIST, list: this.syncPayChannelList },
+        { field: 'payTime', name: '支付时间', type: DATE_TIME },
+        { field: 'payStatus', name: '支付状态', type: LIST, list: this.payStatusList }
+      ]
     }
   },
   methods: {
     init () {
       this.loading = true
+      this.getDictItemsByNumberAsync('PayStatus').then(res => {
+        this.payStatusList = res.map(item => {
+          return { name: item.name, value: item.code }
+        })
+      })
+      this.getDictItemsByNumberAsync('PayChannel').then(res => {
+        this.syncPayChannelList = res.map(item => {
+          return { name: item.name, value: item.code }
+        })
+      })
       page({
         ...this.queryParam,
         ...this.pages
@@ -146,6 +205,16 @@ export default {
     refund (record) {
       refundByBusinessId(record.businessId).then(_ => {
         this.init()
+      })
+    },
+    // 超级查询
+    superQuery (queryParams) {
+      this.superQueryFlag = true
+      this.loading = true
+      superPage(
+        this.pages, { queryParams }
+      ).then(res => {
+        this.pageQueryResHandel(res, this)
       })
     }
   },

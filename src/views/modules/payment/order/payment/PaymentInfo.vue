@@ -33,7 +33,7 @@
         {{ form.syncPayMode?'是':'否' }}
       </a-descriptions-item>
       <a-descriptions-item label="异步支付方式">
-        {{ dictConvert('PayChannel',form.syncPayWay) }}
+        {{ dictConvert('PayChannel',form.syncPayChannel) }}
       </a-descriptions-item>
       <a-descriptions-item label="支付类型信息">
         {{ form.payChannelInfo }}
@@ -76,7 +76,7 @@
           description: '',
           errorCode: '',
           syncPayMode: '',
-          syncPayWay: '',
+          syncPayChannel: '',
           payChannelInfo: '',
           refundableInfo: '',
           payTime: '',

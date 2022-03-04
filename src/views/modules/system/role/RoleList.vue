@@ -44,7 +44,7 @@
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
-        <template slot-scope="{row}">
+        <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>

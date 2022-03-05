@@ -34,3 +34,13 @@ export function get (id) {
   })
 }
 
+/**
+ * 根据业务ID获取支付状态
+ */
+export function findStatusByBusinessId (businessId) {
+  return axios({
+    url: '/payment/findStatusByBusinessId',
+    method: 'GET',
+    params: { businessId }
+  })
+}

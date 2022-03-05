@@ -11,8 +11,11 @@
       title=""
       :column="{md: 1, sm: 1, xs: 1}"
     >
-      <a-descriptions-item label="付款付单号">
+      <a-descriptions-item label="付款记录ID">
         {{ form.paymentId }}
+      </a-descriptions-item>
+      <a-descriptions-item label="付款记录ID">
+        {{ form.businessId }}
       </a-descriptions-item>
       <a-descriptions-item label="标题">
         {{ form.title }}
@@ -54,6 +57,7 @@
           id: null,
           refundOrderId: null,
           paymentId: null,
+          businessId: null,
           userId: null,
           title: null,
           amount: null,

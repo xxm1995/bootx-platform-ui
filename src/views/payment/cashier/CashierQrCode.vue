@@ -42,8 +42,11 @@ export default {
       this.bottomTitle = bottomTitle
     },
     handleCancel () {
-      this.visible = false
+      this.handleClose()
       this.$emit('cancel')
+    },
+    handleClose () {
+      this.visible = false
     }
   }
 }

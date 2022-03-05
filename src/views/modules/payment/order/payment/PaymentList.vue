@@ -20,7 +20,7 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-space>
-              <a-button :disabled="superQueryFlag"  type="primary" @click="query">查询</a-button>
+              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
             </a-space>
           </a-col>
@@ -37,7 +37,7 @@
           :queryState="superQueryFlag"
           :fields="queryFields"
           :width="880"
-          button-title="超级查询"
+          button-title="超级查询器"
           model-title="超级查询器"
           @query="superQuery"
           @rest="restQuery"
@@ -69,7 +69,7 @@
           {{ dictConvert('PayChannel', row.syncPayChannel) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="description" title="描述"/>
+      <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>

@@ -63,6 +63,7 @@
 <script>
 import VueQr from 'vue-qr'
 import { singlePay } from '@/api/payment/cashier'
+import { findStatusByBusinessId } from '@/api/payment/payment'
 
 export default {
   name: 'Cashier',
@@ -95,7 +96,9 @@ export default {
         payWay: [{ required: true, message: '不可为空' }],
         amount: [{ required: true, message: '不可为空' }]
       },
-      payUrl: ''
+      payUrl: '',
+      // 定时查询支付状态定时器
+      interval: null
     }
   },
   methods: {
@@ -115,6 +118,7 @@ export default {
           singlePay(this.form).then(res => {
             this.payUrl = res.data.syncPayInfo.payBody
             this.loading = false
+            this.checkPayStatus()
           })
         } else {
           return false
@@ -126,6 +130,27 @@ export default {
       this.loading = false
       this.genOrderNo()
       this.payUrl = ''
+      clearInterval(this.interval)
+      this.interval = null
+    },
+    checkPayStatus () {
+      this.interval = setInterval(() => {
+        if (this.interval) {
+          clearInterval(this.interval)
+          this.interval = null
+        }
+        findStatusByBusinessId(this.form.businessId).then(res => {
+          // 成功
+          if (res.data === 1) {
+            this.$message.success('支付成功')
+            this.handleCancel()
+          }
+          if ([2, 3].includes(res.data)) {
+            this.$message.error('支付失败')
+            this.handleCancel()
+          }
+        })
+      }, 1000 * 3)
     }
   },
   created () {

@@ -3,7 +3,22 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="支付记录ID">
+              <a-input v-model="queryParam.paymentId" placeholder="请输入支付记录ID" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="业务ID">
+              <a-input v-model="queryParam.businessId" placeholder="请输入业务ID" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="标题">
+              <a-input v-model="queryParam.businessId" placeholder="请输入标题" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
@@ -24,7 +39,8 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="paymentId" title="原支付单号"/>
+      <vxe-table-column field="paymentId" title="支付记录ID"/>
+      <vxe-table-column field="businessId" title="原业务ID"/>
       <vxe-table-column field="title" title="标题"/>
       <vxe-table-column field="amount" title="退款金额"/>
       <vxe-table-column field="refundTime" title="退款时间"/>

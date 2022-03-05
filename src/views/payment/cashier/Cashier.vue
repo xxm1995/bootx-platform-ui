@@ -39,7 +39,7 @@
                     </div>
                   </div>
                   <div style="position: relative">
-                    <div class="paydemo-type-h5" code="ALI_WAP" @click="handleActive('ALI_WAP')" @mouseover="aliHover = true" @mouseleave="aliHover = false">
+                    <div class="paydemo-type-h5" code="ALI_WAP" @mouseover="aliHover = true" @mouseleave="aliHover = false">
                       <img src="./imgs/ali/ali_wap.svg" class="paydemo-type-img"/>
                       <span>支付宝WAP</span>
                     </div>
@@ -57,8 +57,8 @@
 
                 <div class="paydemo-type-name">聚合支付</div>
                 <div class="paydemo-type-body">
-                  <div v-for="item in aggregationPayList" :key="item.id" @click="handleActive(item.code)">
-                    <div :class="item.code===currentActive?'colorChange':'paydemoType'">
+                  <div v-for="item in aggregationPayList" :key="item.payInfo.payWay" @click="handleActive(item.payInfo)">
+                    <div :class="item.payInfo===currentActive?'colorChange':'paydemoType'">
                       <img :src="item.img" class="paydemo-type-img"/>
                       <span class="color-change">{{ item.title }}</span>
                     </div>
@@ -105,10 +105,11 @@
       <!--  条码支付弹框-->
       <cashier-qr-code
         ref="cashierQrCode"
-        @cancel="refreshBusinessId"/>
+        @cancel="handleCancel"/>
       <!--   扫码弹出窗口   -->
       <cashier-bar-code
         ref="cashierBarCode"
+        @cancel="handleCancel"
         @ok="barPay"/>
     </div>
   </div>
@@ -118,7 +119,8 @@
 import VueQr from 'vue-qr'
 import CashierQrCode from './CashierQrCode'
 import CashierBarCode from './CashierBarCode'
-import { singlePay } from '@/api/payment/cashier'
+import { createAggregatePay, singlePay } from '@/api/payment/cashier'
+import { findStatusByBusinessId } from '@/api/payment/payment'
 
 export default {
   name: 'Cashier',
@@ -158,19 +160,16 @@ export default {
       ],
       payMoneyList: [ // 支付金额列表
         { label: '0.01', value: 0.01 },
-        { label: '0.1', value: 0.1 },
-        { label: '1.00', value: 1 },
-        { label: '5.00', value: 5 },
-        { label: '10.00', value: 10 }
+        { label: '1.01', value: 1.01 },
+        { label: '9.99', value: 9.99 },
+        { label: '99.99', value: 99.99 },
+        { label: '2500', value: 2500 }
       ],
       payMoneyValue: 0.01,
       totalMoney: 0.01,
       payMoneyShow: false,
-      page: {
-        index: 1,
-        size: 10,
-        total: 0
-      }
+      // 定时查询支付状态定时器
+      interval: null
     }
   },
   methods: {
@@ -189,7 +188,9 @@ export default {
       const { payChannel, payWay } = this.currentActive
       // 聚合扫码
       if (payChannel === 99 && payWay === 4) {
+        this.aggregationQr()
       } else if (payChannel === 99 && payWay === 5) { // 聚合条码
+        this.$refs.cashierBarCode.init('请输入支付宝、微信条码')
       } else { // 普通支付
         // 付款码
         if (payWay === 5) {
@@ -210,16 +211,31 @@ export default {
       }
       // 接受结果
       this.loading = true
-      const { data } = await singlePay(param)
+      const { data } = await singlePay(param).catch(_ => this.loading = false)
       this.loading = false
       // pc支付
       if ([1, 3].includes(payWay)) {
         window.open(data.syncPayInfo.payBody)
       } else if (payChannel === 1) {
         this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用支付宝"扫一扫"扫码支付')
+        this.checkPayStatus()
       } else {
         this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用微信"扫一扫"扫码支付')
+        this.checkPayStatus()
       }
+    },
+    // 聚合扫码
+    async aggregationQr () {
+      const param = {
+        businessId: this.businessId,
+        amount: this.totalMoney,
+        title: this.title
+      }
+      createAggregatePay(param).then(res => {
+        const qrUrl = 'http://pay1.bootx.cn/cashier/aggregatePay?key=' + res.data
+        this.$refs.cashierQrCode.init(qrUrl, '请使用支付宝或微信"扫一扫"扫码支付')
+        this.checkPayStatus()
+      })
     },
     // 条码支付
     barPay (authCode) {
@@ -227,18 +243,14 @@ export default {
       const param = {
         businessId: this.businessId,
         amount: this.totalMoney,
-        title: this.form.title,
+        title: this.title,
         authCode,
         payChannel,
         payWay
       }
-      singlePay(param).then(result => {
-        this.refreshBusinessId()
+      singlePay(param).then(_ => {
+        this.checkPayStatus()
       })
-    },
-    // 聚合扫码
-    aggregationQr () {
-
     },
     // 生成业务id
     refreshBusinessId () {
@@ -247,6 +259,34 @@ export default {
     // 当前选择的支付类型
     handleActive (payInfo) {
       this.currentActive = payInfo
+    },
+    // 关闭
+    handleCancel () {
+      this.$refs.cashierQrCode.handleClose()
+      this.$refs.cashierBarCode.handleClose()
+      this.refreshBusinessId()
+      clearInterval(this.interval)
+      this.interval = null
+    },
+    // 检查支付状态
+    checkPayStatus () {
+      if (this.interval) {
+        clearInterval(this.interval)
+        this.interval = null
+      }
+      this.interval = setInterval(() => {
+        findStatusByBusinessId(this.businessId).then(res => {
+          // 成功
+          if (res.data === 1) {
+            this.$message.success('支付成功')
+            this.handleCancel()
+          }
+          if ([2, 3].includes(res.data)) {
+            this.$message.error('支付失败')
+            this.handleCancel()
+          }
+        })
+      }, 1000 * 3)
     }
   },
   created () {

@@ -12,7 +12,12 @@ export function singlePay (obj) {
 }
 
 /**
- * 聚合支付
+ * 创建聚合扫码支付
  */
-
-
+export function createAggregatePay (obj) {
+  return axios({
+    url: '/cashier/createAggregatePay',
+    method: 'POST',
+    data: obj
+  })
+}

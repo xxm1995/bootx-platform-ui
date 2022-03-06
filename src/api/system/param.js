@@ -23,12 +23,13 @@ export function get (id) {
 }
 
 /**
- * 获取全部
+ * 根据键名获取键值
  */
-export function findAll () {
+export function findByParamKey (key) {
   return axios({
-    url: `/system/param/findAll`,
-    method: 'GET'
+    url: `/system/param/findByParamKey`,
+    method: 'GET',
+    params: { key }
   })
 }
 

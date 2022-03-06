@@ -22,8 +22,6 @@
     </div>
     <vxe-toolbar
       custom
-      export
-      print
       zoom
       :refresh="{query: init}"
     >
@@ -32,13 +30,7 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
-      :print-config="{}"
-      :export-config="{}"
       :loading="loading"
       :data="tableData"
     >
@@ -48,7 +40,7 @@
       <vxe-table-column field="value" title="参数值" />
       <vxe-table-column field="type" title="参数类型" >
         <template v-slot="{row}">
-          <span>{{ dictConvert(paramType,row.type) }}</span>
+          <a-tag>{{ dictConvert(paramType,row.type) }}</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column align="" field="internal" title="内置参数" >
@@ -119,10 +111,7 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     add () {

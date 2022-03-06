@@ -60,7 +60,7 @@
           </a-select>
         </a-form-model-item>
         <a-form-model-item
-          v-show="!addable"
+          v-show="showable"
           label="系统内置"
           prop="internal"
         >
@@ -131,6 +131,7 @@ export default {
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
+          this.confirmLoading = true
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
@@ -146,6 +147,7 @@ export default {
         }
       })
     },
+    // 校验
     async validateKey (rule, value, callback) {
       const { key, id } = this.form
       let res

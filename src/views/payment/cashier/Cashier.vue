@@ -119,8 +119,10 @@
 import VueQr from 'vue-qr'
 import CashierQrCode from './CashierQrCode'
 import CashierBarCode from './CashierBarCode'
-import { createAggregatePay, singlePay } from '@/api/payment/cashier'
+import { singlePay } from '@/api/payment/cashier'
+import { createAggregatePay } from '@/api/payment/aggregate'
 import { findStatusByBusinessId } from '@/api/payment/payment'
+import { findByParamKey } from '@/api/system/param'
 
 export default {
   name: 'Cashier',
@@ -231,11 +233,14 @@ export default {
         amount: this.totalMoney,
         title: this.title
       }
-      createAggregatePay(param).then(res => {
-        const qrUrl = 'http://pay1.bootx.cn/cashier/aggregatePay?key=' + res.data
-        this.$refs.cashierQrCode.init(qrUrl, '请使用支付宝或微信"扫一扫"扫码支付')
-        this.checkPayStatus()
-      })
+      // 获取聚合支付的地址
+      const { data: qrUrlPrefix } = await findByParamKey('CashierAggregateUrl')
+      // 获取聚合支付的标识key
+      const { data: qrKey } = await createAggregatePay(param)
+      // 发起支付
+      const qrUrl = qrUrlPrefix + qrKey
+      this.$refs.cashierQrCode.init(qrUrl, '请使用支付宝或微信"扫一扫"扫码支付')
+      this.checkPayStatus()
     },
     // 条码支付
     barPay (authCode) {

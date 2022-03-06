@@ -5,6 +5,7 @@ import {
   getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
+import { findByParamKey } from '@/api/system/param'
 
 export const TableMixin = {
   components: {
@@ -90,8 +91,12 @@ export const TableMixin = {
       return getDictItemsByNumber(dictCode)
     },
     // 获取字典项列表(code值为数字) 异步
-    async getDictItemsByNumberAsync (dictCode) {
+    getDictItemsByNumberAsync (dictCode) {
       return getDictItemsByNumberAsync(dictCode)
+    },
+    // 获取系统参数值
+    getParam (key) {
+      return findByParamKey(key)
     }
   }
 }

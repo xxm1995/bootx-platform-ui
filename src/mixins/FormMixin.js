@@ -4,6 +4,7 @@ import {
   getDictItemsAsync,
   getDictItemsByNumber, getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
+import { findByParamKey } from '@/api/system/param'
 
 export const FormMixin = {
   data () {
@@ -80,8 +81,12 @@ export const FormMixin = {
       return getDictItemsByNumber(dictCode)
     },
     // 获取字典项列表(code值为数字) 异步
-    async getDictItemsByNumberAsync (dictCode) {
+    getDictItemsByNumberAsync (dictCode) {
       return getDictItemsByNumberAsync(dictCode)
+    },
+    // 获取系统参数值
+    getParam (key) {
+      return findByParamKey(key)
     },
     // 判断脱敏参数是否被修改的参数, 未修改返回空值
     diffForm (o1, o2) {

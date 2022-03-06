@@ -275,10 +275,6 @@ export default {
     },
     // 检查支付状态
     checkPayStatus () {
-      if (this.interval) {
-        clearInterval(this.interval)
-        this.interval = null
-      }
       this.interval = setInterval(() => {
         findStatusByBusinessId(this.businessId).then(res => {
           // 成功

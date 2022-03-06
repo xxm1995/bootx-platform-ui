@@ -135,10 +135,6 @@ export default {
     },
     checkPayStatus () {
       this.interval = setInterval(() => {
-        if (this.interval) {
-          clearInterval(this.interval)
-          this.interval = null
-        }
         findStatusByBusinessId(this.form.businessId).then(res => {
           // 成功
           if (res.data === 1) {

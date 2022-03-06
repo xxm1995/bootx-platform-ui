@@ -20,7 +20,7 @@
         @check="onCheck"
         @expand="onExpand"
       >
-        <template v-slot:title v-slot="{ title }">
+        <template v-slot:title="{ title }">
           <span v-if="title.indexOf(searchName) > -1">
             {{ title.substr(0, title.indexOf(searchName)) }}
             <span style="color: #f50">{{ searchName }}</span>
@@ -59,7 +59,6 @@ export default {
   name: 'UserDeptAssign',
   data () {
     return {
-      title: '角色菜单配置',
       userId: '',
       searchName: '',
       // 所有的key

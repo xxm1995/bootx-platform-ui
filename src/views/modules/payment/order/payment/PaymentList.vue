@@ -1,6 +1,6 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
+    <div class="table-page-search-wrapper" >
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
@@ -95,13 +95,7 @@
                   </a-popconfirm>
                 </a-menu-item>
                 <a-menu-item v-if="[1,4].includes(row.payStatus) && row.refundableBalance > 0">
-                  <a-popconfirm
-                    title="是否发起退款"
-                    @confirm="refund(row)"
-                    okText="是"
-                    cancelText="否">
-                    <a href="javascript:" style="color: red">退款</a>
-                  </a-popconfirm>
+                  <a href="javascript:" @click="refund(row)" style="color: red">退款</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -117,6 +111,7 @@
       :total="pagination.total"
       @page-change="handleTableChange"/>
     <payment-info ref="paymentInfo"/>
+    <refund-model ref="refundModel" @ok="superQueryFlag?superQuery:init"/>
   </a-card>
 </template>
 
@@ -125,7 +120,7 @@ import { page, superPage } from '@/api/payment/payment.js'
 import PaymentInfo from './PaymentInfo'
 import RefundModel from './RefundModel'
 import { TableMixin } from '@/mixins/TableMixin'
-import { cancelByPaymentId, refundByBusinessId, syncByBusinessId } from '@/api/payment/pay'
+import { cancelByPaymentId, syncByBusinessId } from '@/api/payment/pay'
 import { BOOLEAN, DATE_TIME, LIST, NUMBER, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'PaymentList',
@@ -164,6 +159,7 @@ export default {
   },
   methods: {
     init () {
+      this.superQueryFlag = false
       this.loading = true
       this.getDictItemsByNumberAsync('PayStatus').then(res => {
         this.payStatusList = res.map(item => {
@@ -182,18 +178,11 @@ export default {
         this.pageQueryResHandel(res, this)
       })
     },
-    show (record) {
-      this.$refs.paymentInfo.init(record.id, 'show')
-    },
     // 同步信息
     sync (record) {
       syncByBusinessId(record.businessId).then(_ => {
         this.init()
       })
-    },
-    // 发起支付
-    pay (record) {
-
     },
     // 关闭支付
     cancel (record) {
@@ -201,11 +190,13 @@ export default {
         this.init()
       })
     },
+    // 查看信息
+    show (record) {
+      this.$refs.paymentInfo.init(record.id)
+    },
     // 退款
     refund (record) {
-      refundByBusinessId(record.businessId).then(_ => {
-        this.init()
-      })
+      this.$refs.refundModel.init(record.id)
     },
     // 超级查询
     superQuery (queryParams) {

@@ -94,7 +94,7 @@
                   </div>
                   <div style="margin-top:20px;text-align: right">
                     <span style="color: #FD482C;font-size: 18px;padding-right: 10px;" >{{ '¥ '+totalMoney }}</span>
-                    <button :disabled="currentActive.payWay == null" class="layui-btn" style="background-color: #1953ff;border-radius: 5px;" @click="pay">立即支付</button>
+                    <a-button type="primary" :disabled="currentActive.payWay == null" @click="pay">立即支付</a-button>
                   </div>
                 </a-form>
               </div>

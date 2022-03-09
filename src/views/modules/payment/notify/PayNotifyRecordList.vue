@@ -15,7 +15,7 @@
                 v-model="queryParam.payChannel"
                 placeholder="选择支付通道"
               >
-                <a-select-option v-for="o in payChannelList" :key="o.code">{{ o.name }}</a-select-option>
+                <a-select-option v-for="o in asyncPayChannel" :key="o.code">{{ o.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col><a-col :md="6" :sm="24">
@@ -100,7 +100,7 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
-      payChannelList: [],
+      asyncPayChannel: [],
       queryParam: {
         paymentId: '',
         payChannel: undefined,
@@ -111,8 +111,8 @@ export default {
   methods: {
     init () {
       this.loading = true
-      this.getDictItemsByNumberAsync('PayChannel').then(res => {
-        this.payChannelList = res
+      this.getDictItemsByNumberAsync('AsyncPayChannel').then(res => {
+        this.asyncPayChannel = res
       })
       page({
         ...this.queryParam,

@@ -8,7 +8,7 @@ import store from '@/store'
  */
 async function getDictListAsync () {
   let dictList = store.getters.dictList
-  if (dictList) {
+  if (!dictList) {
     await store.dispatch('InitDictList')
     dictList = store.getters.dictList
   }

@@ -89,7 +89,6 @@
           this.confirmLoading = true
           get(id).then(res => {
             this.form = res.data
-            console.log(this.form)
             this.confirmLoading = false
           })
       }

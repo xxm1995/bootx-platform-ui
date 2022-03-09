@@ -14,8 +14,11 @@
       <a-descriptions-item label="付款记录ID">
         {{ form.paymentId }}
       </a-descriptions-item>
-      <a-descriptions-item label="付款记录ID">
+      <a-descriptions-item label="业务ID">
         {{ form.businessId }}
+      </a-descriptions-item>
+      <a-descriptions-item label="业务ID">
+        {{ form.refundRequestNo }}
       </a-descriptions-item>
       <a-descriptions-item label="标题">
         {{ form.title }}
@@ -29,7 +32,7 @@
       <a-descriptions-item label="退款终端ip">
         {{ form.clientIp }}
       </a-descriptions-item>
-      <a-descriptions-item label="退款信息" span="2">
+      <a-descriptions-item label="退款信息">
         {{ form.refundableInfo }}
       </a-descriptions-item>
       <a-descriptions-item label="错误码">
@@ -57,7 +60,7 @@
           id: null,
           refundOrderId: null,
           paymentId: null,
-          businessId: null,
+          refundRequestNo: null,
           userId: null,
           title: null,
           amount: null,
@@ -102,11 +105,6 @@
           } else {
             return false
           }
-        })
-      },
-      resetForm () {
-        this.$nextTick(() => {
-          this.$refs.form.resetFields()
         })
       }
     }

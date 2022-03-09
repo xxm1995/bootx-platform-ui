@@ -21,14 +21,26 @@ export function cancelByBusinessId (businessId) {
     params: { businessId }
   })
 }
+
 /**
- * 退款(支付id)
+ * 全额退款(支付id)
  */
 export function refundByBusinessId (businessId) {
   return axios({
     url: '/uni_pay/refundByBusinessId',
     method: 'POST',
     params: { businessId }
+  })
+}
+
+/**
+ * 退款
+ */
+export function refund (obj) {
+  return axios({
+    url: '/uni_pay/refund',
+    method: 'POST',
+    data: obj
   })
 }
 

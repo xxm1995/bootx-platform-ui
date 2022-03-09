@@ -39,7 +39,7 @@
           :width="880"
           button-title="超级查询器"
           model-title="超级查询器"
-          @query="superQuery"
+          @query="changeSuperQuery"
           @rest="restQuery"
         />
       </template>
@@ -82,7 +82,7 @@
             </a>
             <template v-slot:overlay>
               <a-menu>
-                <a-menu-item>
+                <a-menu-item v-if="row.syncPayMode">
                   <a @click="sync(row)">刷新信息</a>
                 </a-menu-item>
                 <a-menu-item v-if="[0].includes(row.payStatus)">
@@ -111,7 +111,7 @@
       :total="pagination.total"
       @page-change="handleTableChange"/>
     <payment-info ref="paymentInfo"/>
-    <refund-model ref="refundModel" @ok="superQueryFlag?superQuery:init"/>
+    <refund-model ref="refundModel" @ok="init"/>
   </a-card>
 </template>
 
@@ -133,6 +133,7 @@ export default {
     return {
       syncPayChannelList: [],
       payStatusList: [],
+      superQueryParam: {},
       queryParam: {
         paymentId: '',
         businessId: '',
@@ -159,6 +160,12 @@ export default {
   },
   methods: {
     init () {
+      if (this.superQueryFlag) {
+        this.superQuery()
+      } else { this.queryPage() }
+    },
+    // 普通查询
+    queryPage () {
       this.superQueryFlag = false
       this.loading = true
       this.getDictItemsByNumberAsync('PayStatus').then(res => {
@@ -198,12 +205,17 @@ export default {
     refund (record) {
       this.$refs.refundModel.init(record.id)
     },
+    // 超级查询条件变动
+    changeSuperQuery (queryParams) {
+      this.superQueryParam = queryParams
+      this.superQuery()
+    },
     // 超级查询
-    superQuery (queryParams) {
+    superQuery () {
       this.superQueryFlag = true
       this.loading = true
       superPage(
-        this.pages, { queryParams }
+        this.pages, { queryParams: this.superQueryParam }
       ).then(res => {
         this.pageQueryResHandel(res, this)
       })

@@ -28,12 +28,7 @@
         >
           <a-form-model-item label="支付方式" prop="payChannel">
             <a-radio-group v-model="form.payChannel" :default-value="1" button-style="solid">
-              <a-radio-button :value="1">
-                支付宝
-              </a-radio-button>
-              <a-radio-button :value="2">
-                微信
-              </a-radio-button>
+              <a-radio-button v-for="o in payChannel" :value="o.code" :key="o.code"> {{ o.name }} </a-radio-button>
             </a-radio-group>
           </a-form-model-item>
           <a-form-model-item label="订单编号" prop="businessId">
@@ -75,6 +70,11 @@ export default {
       labelCol: {
         sm: { span: 7 }
       },
+      payChannel: [
+        { code: 1, name: '支付宝' },
+        { code: 2, name: '微信' },
+        { code: 3, name: '云闪付' }
+      ],
       wrapperCol: {
         sm: { span: 13 }
       },

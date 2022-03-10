@@ -152,8 +152,7 @@ export default {
     // 同步
     syncSystem () {
       syncSystem().then(() => {
-        this.$message.info('同步成功')
-        this.init()
+        this.$message.info('同步中，请稍后重新查看路径权限信息')
       })
     }
   },

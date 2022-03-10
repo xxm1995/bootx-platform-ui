@@ -15,7 +15,7 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="标题">
-              <a-input v-model="queryParam.businessId" placeholder="请输入标题" />
+              <a-input v-model="queryParam.title" placeholder="请输入标题" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -45,16 +45,19 @@
       </template>
     </vxe-toolbar>
     <vxe-table
+      ref="table"
       row-id="id"
+      :sort-config="{remote:true,trigger:'cell'}"
+      @sort-change="sortChange"
       :loading="loading"
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="businessId" title="业务ID"/>
       <vxe-table-column field="title" title="标题"/>
-      <vxe-table-column field="amount" title="金额"/>
-      <vxe-table-column field="refundableBalance" title="可退余额"/>
-      <vxe-table-column field="payStatus" title="支付状态">
+      <vxe-table-column field="amount" title="金额" sortable/>
+      <vxe-table-column field="refundableBalance" title="可退余额" sortable/>
+      <vxe-table-column field="payStatus" title="支付状态" sortable>
         <template v-slot="{row}">
           {{ dictConvert('PayStatus',row.payStatus) }}
         </template>
@@ -69,7 +72,7 @@
           {{ dictConvert('PayChannel', row.syncPayChannel) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column field="createTime" title="创建时间" sortable/>
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
@@ -133,7 +136,11 @@ export default {
     return {
       syncPayChannelList: [],
       payStatusList: [],
-      superQueryParam: {},
+      superQueryParam: [],
+      sortParam: {
+        sortField: undefined,
+        asc: undefined
+      },
       queryParam: {
         paymentId: '',
         businessId: '',
@@ -180,7 +187,8 @@ export default {
       })
       page({
         ...this.queryParam,
-        ...this.pages
+        ...this.pages,
+        ...this.sortParam
       }).then(res => {
         this.pageQueryResHandel(res, this)
       })
@@ -205,6 +213,12 @@ export default {
     refund (record) {
       this.$refs.refundModel.init(record.id)
     },
+    // 排序条件变动
+    sortChange ({ order, property }) {
+      this.sortParam.sortField = order ? property : null
+      this.sortParam.asc = order === 'asc'
+      this.init()
+    },
     // 超级查询条件变动
     changeSuperQuery (queryParams) {
       this.superQueryParam = queryParams
@@ -215,7 +229,10 @@ export default {
       this.superQueryFlag = true
       this.loading = true
       superPage(
-        this.pages, { queryParams: this.superQueryParam }
+        this.pages, {
+          queryParams: this.superQueryParam,
+          queryOrders: [this.sortParam]
+        }
       ).then(res => {
         this.pageQueryResHandel(res, this)
       })

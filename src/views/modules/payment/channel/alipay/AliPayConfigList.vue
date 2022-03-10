@@ -30,12 +30,7 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
-      size="medium"
       :loading="loading"
       :data="tableData">
       <vxe-table-column type="seq" title="序号" width="60" />

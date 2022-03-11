@@ -13,7 +13,9 @@
         placeholder="账号/手机号/邮箱 "
         v-model="form.account"
       >
-        <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        <template v-slot:prefix>
+          <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </template>
       </a-input>
     </a-form-model-item>
     <a-form-model-item prop="password">
@@ -24,7 +26,9 @@
         placeholder="密码"
         v-model="form.password"
       >
-        <a-icon slot="prefix" type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        <template v-slot:prefix>
+          <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </template>
       </a-input-password>
     </a-form-model-item>
 
@@ -37,7 +41,9 @@
             placeholder="验证码"
             v-model="form.captcha"
           >
-            <a-icon slot="prefix" type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            <template v-slot:prefix>
+              <a-icon slot="prefix" type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </template>
           </a-input>
         </a-form-model-item>
       </a-col>

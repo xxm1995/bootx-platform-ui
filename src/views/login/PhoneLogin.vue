@@ -11,7 +11,9 @@
         placeholder="请输入手机号"
         v-model="form.phone"
       >
-        <a-icon slot="prefix" type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        <template v-slot:prefix>
+          <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+        </template>
       </a-input>
     </a-form-model-item>
     <a-form-model-item prop="smsCaptcha">
@@ -24,7 +26,9 @@
             autocomplete="false"
             v-model="form.smsCaptcha"
           >
-            <a-icon slot="prefix" type="safety-certificate" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            <template v-slot:prefix>
+              <a-icon type="safety-certificate" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </template>
           </a-input>
         </a-col>
         <a-col :span="8">
@@ -36,7 +40,7 @@
             :disabled="state.smsSendBtn"
             @click.stop.prevent="getCaptcha"
             v-text="!state.smsSendBtn && '获取验证码' || '请等待 ' +(state.time+' s')"
-          ></a-button>
+          />
         </a-col>
       </a-row>
     </a-form-model-item>

@@ -4,18 +4,13 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
-            <a-form-item label="支付单号">
-              <a-input v-model="queryParam.paymentId" placeholder="请输入支付单号" />
+            <a-form-item label="钱包ID">
+              <a-input v-model="queryParam.walletId" placeholder="请输入钱包ID" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-form-item label="业务ID">
-              <a-input v-model="queryParam.businessId" placeholder="请输入业务ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="标题">
-              <a-input v-model="queryParam.title" placeholder="请输入标题" />
+            <a-form-item label="用户ID">
+              <a-input v-model="queryParam.userId" placeholder="请输入用户ID" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -32,7 +27,9 @@
       zoom
       :refresh="{query: init}"
     >
-      <a-button type="primary" icon="plus" @click="add">开通钱包</a-button>
+      <template v-slot:buttons>
+        <a-button type="primary" icon="usergroup-add" @click="add">开通钱包</a-button>
+      </template>
     </vxe-toolbar>
     <vxe-table
       ref="table"
@@ -63,8 +60,14 @@
             <template v-slot:overlay>
               <a-menu>
                 <a-menu-item>
+                  <a @click="showLog(row.id)">钱包日志</a>
+                </a-menu-item>
+                <a-menu-item>
                   <a v-if="row.status === 1 " @click="lockConfirm(row.id,true)">锁定钱包</a>
                   <a v-if="row.status === 2 " @click="lockConfirm(row.id,false)">解锁钱包</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="recharge(row.id)">金额变动</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -80,26 +83,34 @@
       :total="pagination.total"
       @page-change="handleTableChange"/>
     <wallet-info ref="walletInfo"/>
+    <wallet-log-list ref="walletLogList"/>
+    <user-select-modal ref="userSelectModal" @ok="createWalletBatch"/>
+    <wallet-changer ref="walletChanger" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { lock, page, unlock } from '@/api/payment/wallet'
+import { createWalletBatch, lock, page, unlock } from '@/api/payment/wallet'
 import WalletInfo from './WalletInfo'
+import UserSelectModal from './UserSelectModal'
+import WalletChanger from './WalletChanger'
+import WalletLogList from './WalletLogList'
 
 export default {
   name: 'WalletList',
   mixins: [TableMixin],
   components: {
-    WalletInfo
+    WalletLogList,
+    WalletInfo,
+    UserSelectModal,
+    WalletChanger
   },
   data () {
     return {
       queryParam: {
-        paymentId: '',
-        businessId: '',
-        title: ''
+        walletId: '',
+        userId: ''
       }
     }
   },
@@ -113,16 +124,27 @@ export default {
         this.pageQueryResHandel(res, this)
       })
     },
+    // 查看详情
     show (record) {
       this.$refs.walletInfo.init(record.id, 'show')
     },
-    // 开通钱包
+    // 开通钱包窗口
     add () {
-
+      this.$refs.userSelectModal.init()
+    },
+    // 批量开通钱包
+    createWalletBatch (userIds) {
+      this.loading = true
+      this.$message.info('批量开通钱包中')
+      createWalletBatch(userIds).then(() => this.init())
     },
     // 钱包日志
-    showLog () {
-
+    showLog (walletId) {
+      this.$refs.walletLogList.list(walletId)
+    },
+    // 调整余额
+    recharge (walletId) {
+      this.$refs.walletChanger.init(walletId)
     },
     /**
      * 禁用钱包

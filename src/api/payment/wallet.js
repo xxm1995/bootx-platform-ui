@@ -12,13 +12,45 @@ export function page (params) {
 }
 
 /**
+ * 分页(未开通钱包的用户)
+ */
+export function pageByNotWallet (params) {
+  return axios({
+    url: '/wallet/pageByNotWallet',
+    method: 'GET',
+    params: params
+  })
+}
+
+/**
  * 获取单条
  */
-export function get (id) {
+export function get (walletId) {
   return axios({
     url: '/wallet/findById',
     method: 'GET',
-    params: { id }
+    params: { walletId }
+  })
+}
+/**
+ * 获取钱包详情
+ */
+export function getWalletInfo (walletId) {
+  return axios({
+    url: '/wallet/getWalletInfo',
+    method: 'GET',
+    params: { walletId }
+  })
+}
+
+/**
+ * 批量开通钱包
+ */
+export function createWalletBatch (obj) {
+  return axios({
+    url: '/wallet/createWalletBatch',
+    method: 'POST',
+    data: obj
   })
 }
 
@@ -41,5 +73,16 @@ export function unlock (walletId) {
     url: '/wallet/unlock',
     method: 'POST',
     params: { walletId }
+  })
+}
+
+/**
+ * 钱包余额变动
+ */
+export function changerBalance (obj) {
+  return axios({
+    url: '/wallet/changerBalance',
+    method: 'POST',
+    data: obj
   })
 }

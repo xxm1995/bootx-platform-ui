@@ -70,42 +70,16 @@
           clientIp: null,
           errorCode: null,
           errorMsg: null
-        },
-        rules: {
-
         }
       }
     },
     methods: {
       edit (id, type) {
-        if (['edit', 'show'].includes(type)) {
           this.confirmLoading = true
           get(id).then(res => {
             this.form = res.data
             this.confirmLoading = false
           })
-        } else {
-          this.confirmLoading = false
-        }
-      },
-      handleOk () {
-        this.$refs.form.validate(async valid => {
-          if (valid) {
-            this.confirmLoading = true
-            if (this.type === 'add') {
-              await add(this.form)
-            } else if (this.type === 'edit') {
-              await update(this.form)
-            }
-            setTimeout(() => {
-              this.confirmLoading = false
-              this.$emit('ok')
-              this.visible = false
-            }, 200)
-          } else {
-            return false
-          }
-        })
       }
     }
   }

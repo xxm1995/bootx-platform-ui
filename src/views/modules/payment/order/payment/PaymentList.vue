@@ -47,7 +47,7 @@
     <vxe-table
       ref="table"
       row-id="id"
-      :sort-config="{remote:true,trigger:'cell'}"
+      :sort-config="{remote:true,trigger:'cell',defaultSort:{field:'createTime',order:'desc'}}"
       @sort-change="sortChange"
       :loading="loading"
       :data="tableData"
@@ -138,8 +138,8 @@ export default {
       payStatusList: [],
       superQueryParam: [],
       sortParam: {
-        sortField: undefined,
-        asc: undefined
+        sortField: 'createTime',
+        asc: false
       },
       queryParam: {
         paymentId: '',

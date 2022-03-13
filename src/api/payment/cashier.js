@@ -10,3 +10,14 @@ export function singlePay (obj) {
     data: obj
   })
 }
+
+/**
+ * 组合支付
+ */
+export function combinationPay (obj) {
+  return axios({
+    url: '/cashier/combinationPay',
+    method: 'POST',
+    data: obj
+  })
+}

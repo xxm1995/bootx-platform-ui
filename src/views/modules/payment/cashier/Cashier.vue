@@ -48,9 +48,11 @@
           </a-form-model-item>
         </a-form-model>
       </div>
-      <a-button type="primary" @click="pay">
-        发起支付
-      </a-button>
+      <div style="display: flex;justify-content: center">
+        <a-button type="primary" @click="pay">
+          发起支付
+        </a-button>
+      </div>
     </div>
   </a-card>
 </template>

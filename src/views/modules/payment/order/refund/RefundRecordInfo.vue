@@ -26,6 +26,9 @@
       <a-descriptions-item label="退款金额">
         {{ form.amount }}
       </a-descriptions-item>
+      <a-descriptions-item label="剩余可退款金额">
+        {{ form.refundableBalance }}
+      </a-descriptions-item>
       <a-descriptions-item label="退款时间">
         {{ form.refundTime }}
       </a-descriptions-item>

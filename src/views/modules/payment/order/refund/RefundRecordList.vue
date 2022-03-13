@@ -15,7 +15,7 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="标题">
-              <a-input v-model="queryParam.businessId" placeholder="请输入标题" />
+              <a-input v-model="queryParam.title" placeholder="请输入标题" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -43,6 +43,7 @@
       <vxe-table-column field="businessId" title="原业务ID"/>
       <vxe-table-column field="title" title="标题"/>
       <vxe-table-column field="amount" title="退款金额"/>
+      <vxe-table-column field="refundableBalance" title="剩余可退金额"/>
       <vxe-table-column field="refundTime" title="退款时间"/>
       <vxe-table-column field="clientIp" title="客户ip"/>
       <vxe-table-column fixed="right" width="100" :showOverflow="false" title="操作">

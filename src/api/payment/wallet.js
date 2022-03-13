@@ -32,6 +32,17 @@ export function get (walletId) {
     params: { walletId }
   })
 }
+
+/**
+ * 获取用户钱包
+ */
+export function findByUser () {
+  return axios({
+    url: '/wallet/findByUser',
+    method: 'GET'
+  })
+}
+
 /**
  * 获取钱包详情
  */

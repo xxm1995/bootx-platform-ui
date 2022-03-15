@@ -66,7 +66,7 @@ export function createWalletBatch (obj) {
 }
 
 /**
- * 锁定用户
+ * 锁定钱包
  */
 export function lock (walletId) {
   return axios({
@@ -77,7 +77,7 @@ export function lock (walletId) {
 }
 
 /**
- * 解锁用户
+ * 解锁钱包
  */
 export function unlock (walletId) {
   return axios({

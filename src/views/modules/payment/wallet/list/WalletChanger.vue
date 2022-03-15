@@ -38,7 +38,6 @@
       <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">提交</a-button>
     </template>
   </a-modal>
-
 </template>
 
 <script>
@@ -66,7 +65,6 @@ export default {
       this.form.amount = null
     },
     handleOk () {
-      console.log()
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true

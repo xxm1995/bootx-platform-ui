@@ -12,6 +12,17 @@ export function page (params) {
 }
 
 /**
+ * 详情
+ */
+export function findByCardNo (cardNo) {
+  return axios({
+    url: '/voucher/findByCardNo',
+    method: 'GET',
+    params: { cardNo }
+  })
+}
+
+/**
  * 锁定钱包
  */
 export function lock (id) {

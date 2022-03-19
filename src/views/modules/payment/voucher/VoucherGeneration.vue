@@ -130,9 +130,9 @@ export default {
     },
     // 时间范围变动
     changeTime (_, times) {
-      console.log(_,times)
-      this.form.startTime = times[0]
-      this.form.endTime = times[1]
+      console.log(_, times)
+      this.form.startTime = times[0] + ' 00:00:00'
+      this.form.endTime = times[1] + ' 23:59:59'
     },
     resetForm () {
       this.$nextTick(() => {

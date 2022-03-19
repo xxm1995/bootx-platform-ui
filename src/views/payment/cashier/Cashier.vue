@@ -217,12 +217,12 @@ export default {
       this.loading = false
       // pc支付
       if ([1, 3].includes(payWay)) {
-        window.open(data.syncPayInfo.payBody)
+        window.open(data.asyncPayInfo.payBody)
       } else if (payChannel === 1) {
-        this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用支付宝"扫一扫"扫码支付')
+        this.$refs.cashierQrCode.init(data.asyncPayInfo.payBody, '请使用支付宝"扫一扫"扫码支付')
         this.checkPayStatus()
       } else {
-        this.$refs.cashierQrCode.init(data.syncPayInfo.payBody, '请使用微信"扫一扫"扫码支付')
+        this.$refs.cashierQrCode.init(data.asyncPayInfo.payBody, '请使用微信"扫一扫"扫码支付')
         this.checkPayStatus()
       }
     },

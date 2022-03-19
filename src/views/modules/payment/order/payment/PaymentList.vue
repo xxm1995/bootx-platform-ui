@@ -62,14 +62,14 @@
           {{ dictConvert('PayStatus',row.payStatus) }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="syncPayMode" title="是否是异步支付">
+      <vxe-table-column field="asyncPayMode" title="是否是异步支付">
         <template v-slot="{row}">
-          {{ row.syncPayMode?'是':'否' }}
+          {{ row.asyncPayMode?'是':'否' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="syncPayChannel" title="异步支付方式">
+      <vxe-table-column field="asyncPayChannel" title="异步支付方式">
         <template v-slot="{row}">
-          {{ dictConvert('PayChannel', row.syncPayChannel) }}
+          {{ dictConvert('PayChannel', row.asyncPayChannel) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" sortable/>
@@ -85,7 +85,7 @@
             </a>
             <template v-slot:overlay>
               <a-menu>
-                <a-menu-item v-if="row.syncPayMode">
+                <a-menu-item v-if="row.asyncPayMode">
                   <a @click="sync(row)">刷新信息</a>
                 </a-menu-item>
                 <a-menu-item v-if="[0].includes(row.payStatus)">
@@ -158,8 +158,8 @@ export default {
         { field: 'title', name: '标题', type: STRING },
         { field: 'amount', name: '金额', type: NUMBER, precision: 2 },
         { field: 'errorCode', name: '错误码', type: STRING },
-        { field: 'syncPayMode', name: '异步支付', type: BOOLEAN },
-        { field: 'syncPayChannel', name: '异步支付方式', type: LIST, list: this.syncPayChannelList },
+        { field: 'asyncPayMode', name: '异步支付', type: BOOLEAN },
+        { field: 'asyncPayChannel', name: '异步支付方式', type: LIST, list: this.syncPayChannelList },
         { field: 'payTime', name: '支付时间', type: DATE_TIME },
         { field: 'payStatus', name: '支付状态', type: LIST, list: this.payStatusList }
       ]

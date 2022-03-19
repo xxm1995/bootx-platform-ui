@@ -30,16 +30,16 @@
         {{ dictConvert('PayStatus',form.payStatus) }}
       </a-descriptions-item>
       <a-descriptions-item label="是否是异步支付">
-        {{ form.syncPayMode?'是':'否' }}
+        {{ form.asyncPayMode?'是':'否' }}
       </a-descriptions-item>
       <a-descriptions-item label="异步支付方式">
-        {{ dictConvert('PayChannel',form.syncPayChannel) }}
+        {{ dictConvert('PayChannel',form.asyncPayChannel) }}
       </a-descriptions-item>
-      <a-descriptions-item label="支付类型信息">
-        {{ form.payChannelInfo }}
+      <a-descriptions-item label="支付信息">
+        <a-tag v-for="o in form.payChannelInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="可退款信息">
-        {{ form.refundableInfo }}
+        <a-tag v-for="o in form.refundableInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="描述">
         {{ form.description }}
@@ -75,10 +75,12 @@
           title: '',
           description: '',
           errorCode: '',
-          syncPayMode: '',
-          syncPayChannel: '',
+          asyncPayMode: '',
+          asyncPayChannel: '',
           payChannelInfo: '',
+          payChannelInfoList: [],
           refundableInfo: '',
+          refundableInfoList: [],
           payTime: '',
           expiredTime: ''
         }
@@ -89,6 +91,7 @@
           this.confirmLoading = true
           get(id).then(res => {
             this.form = res.data
+            console.log(this.form)
             this.confirmLoading = false
           })
       }

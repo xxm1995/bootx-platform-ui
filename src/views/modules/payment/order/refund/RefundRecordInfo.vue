@@ -17,7 +17,7 @@
       <a-descriptions-item label="业务ID">
         {{ form.businessId }}
       </a-descriptions-item>
-      <a-descriptions-item label="业务ID">
+      <a-descriptions-item label="多次退款业务号">
         {{ form.refundRequestNo }}
       </a-descriptions-item>
       <a-descriptions-item label="标题">
@@ -36,7 +36,7 @@
         {{ form.clientIp }}
       </a-descriptions-item>
       <a-descriptions-item label="退款信息">
-        {{ form.refundableInfo }}
+        <a-tag v-for="o in form.refundableInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="错误码">
         {{ form.errorCode }}
@@ -68,6 +68,7 @@
           title: null,
           amount: null,
           refundableInfo: null,
+          refundableInfoList: [],
           refundStatus: null,
           refundTime: null,
           clientIp: null,

@@ -145,8 +145,8 @@ export default {
           }
           const { data } = await combinationPay(form)
           // 同步还是异步支付
-          if (data.syncPayMode) {
-            this.payUrl = data.syncPayInfo.payBody
+          if (data.asyncPayMode) {
+            this.payUrl = data.asyncPayInfo.payBody
             this.visible = true
             this.loading = false
             this.checkPayStatus()

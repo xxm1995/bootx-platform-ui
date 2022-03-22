@@ -23,7 +23,7 @@
             :label="dictConvert('PayChannel',o.payChannel)"
             prop="name"
           >
-            <a-input-number :min="0" :precision="2" v-model="o.amount"/>
+            <a-input-number :min="0.01" :max="o.amount" :precision="2" v-model="o.amount"/>
           </a-form-model-item>
         </template>
       </a-form-model>

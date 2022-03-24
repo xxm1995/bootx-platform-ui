@@ -30,6 +30,12 @@
         <a-input v-model="form.name" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
+        label="系统内置"
+      >
+        <a-tag v-if="form.system" color="green">是</a-tag>
+        <a-tag v-else color="red">否</a-tag>
+      </a-form-model-item>
+      <a-form-model-item
         label="启用验证码"
         prop="captcha"
       >
@@ -39,7 +45,7 @@
         label="启用状态"
         prop="enable"
       >
-        <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable" />
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
       </a-form-model-item>
       <a-form-model-item
         label="超时时间(分钟)"
@@ -79,6 +85,7 @@ export default {
         code: '',
         name: '',
         captcha: true,
+        system: false,
         enable: true,
         timeout: '5',
         description: ''

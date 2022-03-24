@@ -40,6 +40,12 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="code" title="代码" />
       <vxe-table-column field="name" title="名称" />
+      <vxe-table-column field="captcha" title="系统内置" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.system" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="captcha" title="启用验证码" >
         <template v-slot="{row}">
           <a-tag v-if="row.captcha" color="green">开启</a-tag>
@@ -66,11 +72,12 @@
           </span>
           <a-divider type="vertical"/>
           <a-popconfirm
+            :disabled="row.system"
             title="是否删除终端"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
+            <a href="javascript:" :disabled="row.system" :style="{color: row.system?'grey':'red'}">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>

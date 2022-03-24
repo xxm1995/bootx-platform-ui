@@ -30,7 +30,7 @@
       <template v-slot:buttons>
         <a-space>
           <a-button type="primary" @click="generationBatch">生成储值卡</a-button>
-          <a-button @click="importBatch">导入储值卡</a-button>
+<!--          <a-button @click="importBatch">导入储值卡</a-button>-->
         </a-space>
       </template>
     </vxe-toolbar>
@@ -74,9 +74,9 @@
                   <a v-if="row.status === 1 " @click="lockConfirm(row.id,true)">停用</a>
                   <a v-if="row.status === 2 " @click="lockConfirm(row.id,false)">启用</a>
                 </a-menu-item>
-                <a-menu-item>
-                  <a>金额变动</a>
-                </a-menu-item>
+<!--                <a-menu-item>-->
+<!--                  <a>金额变动</a>-->
+<!--                </a-menu-item>-->
               </a-menu>
             </template>
           </a-dropdown>
@@ -91,6 +91,7 @@
       :total="pagination.total"
       @page-change="handleTableChange"/>
     <voucher-generation ref="voucherGeneration" @ok="init"/>
+    <voucher-info ref="voucherInfo"/>
   </a-card>
 </template>
 
@@ -98,12 +99,14 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { lock, page, unlock } from '@/api/payment/voucher'
 import VoucherGeneration from './VoucherGeneration'
+import VoucherInfo from './VoucherInfo'
 
 export default {
   name: 'VoucherList',
   mixins: [TableMixin],
   components: {
-    VoucherGeneration
+    VoucherGeneration,
+    VoucherInfo
   },
   data () {
     return {
@@ -125,6 +128,7 @@ export default {
     },
     // 查看详情
     show (record) {
+      this.$refs.voucherInfo.init(record.id, 'show')
     },
     // 批量生成
     generationBatch () {

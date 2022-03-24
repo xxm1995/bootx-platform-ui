@@ -12,6 +12,17 @@ export function page (params) {
 }
 
 /**
+ * 获取单条
+ */
+export function get (id) {
+  return axios({
+    url: '/voucher/findById',
+    method: 'GET',
+    params: { id }
+  })
+}
+
+/**
  * 详情
  */
 export function findByCardNo (cardNo) {
@@ -23,7 +34,7 @@ export function findByCardNo (cardNo) {
 }
 
 /**
- * 锁定钱包
+ * 锁定
  */
 export function lock (id) {
   return axios({
@@ -34,7 +45,7 @@ export function lock (id) {
 }
 
 /**
- * 解锁钱包
+ * 解锁
  */
 export function unlock (id) {
   return axios({

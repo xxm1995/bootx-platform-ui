@@ -159,9 +159,9 @@ export default {
       } else {
         this.tableData = this.remoteTableData
       }
-      // 默认展开子节点
+      // 默认关闭子节点
       this.$nextTick(() => {
-        this.$refs.xTree.setAllTreeExpand(true)
+        this.$refs.xTree.setAllTreeExpand(false)
       })
     }
   },

@@ -98,7 +98,7 @@
 
 <script>
 
-import { page, del, superPage } from '@/api/system/client'
+import { page, del } from '@/api/system/client'
 import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {

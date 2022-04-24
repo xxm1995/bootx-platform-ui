@@ -21,7 +21,7 @@
         label="编码"
         prop="code"
       >
-        <a-input v-model="form.code" :disabled="showable"/>
+        <a-input v-model="form.code" :disabled="showable||form.system"/>
       </a-form-model-item>
       <a-form-model-item
         label="名称"
@@ -59,6 +59,17 @@
         />
       </a-form-model-item>
       <a-form-model-item
+        label="密码可错误次数"
+        prop="timeout"
+      >
+        <a-input-number
+          v-model="form.pwdErrNum"
+          :disabled="showable"
+          :min="-1"
+          :step="1"
+        />
+      </a-form-model-item>
+      <a-form-model-item
         label="描述"
         prop="description"
       >
@@ -87,7 +98,8 @@ export default {
         captcha: true,
         system: false,
         enable: true,
-        timeout: '5',
+        timeout: 5,
+        pwdErrNum: -1,
         description: ''
       },
       rules: {

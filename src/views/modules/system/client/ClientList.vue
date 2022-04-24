@@ -59,6 +59,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="timeout" title="超时时间(分钟)" />
+      <vxe-table-column field="pwdErrNum" title="密码错误次数" />
       <vxe-table-column field="description" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">

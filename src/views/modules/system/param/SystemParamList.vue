@@ -45,7 +45,7 @@
       </vxe-table-column>
       <vxe-table-column align="" field="internal" title="内置参数" >
         <template v-slot="{row}">
-          <a-tag v-if="row.system" color="red">是</a-tag>
+          <a-tag v-if="row.internal" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>
         </template>
       </vxe-table-column>
@@ -62,7 +62,7 @@
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
+            <a href="javascript:" :disabled="row.internal" :style="row.internal?{}:{color: 'red'}">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>
@@ -123,7 +123,7 @@ export default {
     show (record) {
       this.$refs.systemParamEdit.init(record.id, 'show')
     },
-    delete (record) {
+    remove (record) {
       del(record.id).then(() => {
         this.$message.info('删除成功')
         this.init()

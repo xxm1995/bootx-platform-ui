@@ -19,21 +19,23 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
+          label="参数键名"
+          prop="paramKey"
+        >
+          <span v-if="form.internal">{{ form.paramKey }}</span>
+          <a-input
+            v-else
+            :disabled="showable"
+            v-model="form.name"
+          />
+        </a-form-model-item>
+        <a-form-model-item
           label="参数名称"
           prop="name"
         >
           <a-input
             :disabled="showable"
             v-model="form.name"
-          />
-        </a-form-model-item>
-        <a-form-model-item
-          label="参数键名"
-          prop="paramKey"
-        >
-          <a-input
-            :disabled="showable"
-            v-model="form.paramKey"
           />
         </a-form-model-item>
         <a-form-model-item

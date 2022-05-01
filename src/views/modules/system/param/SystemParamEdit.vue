@@ -26,7 +26,7 @@
           <a-input
             v-else
             :disabled="showable"
-            v-model="form.name"
+            v-model="form.paramKey"
           />
         </a-form-model-item>
         <a-form-model-item

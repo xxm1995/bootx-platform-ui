@@ -67,44 +67,49 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否立即运行该定时任务"
-                  @confirm="execute(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:">立即运行</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item v-show="row.state === 0">
-                <a-popconfirm
-                  title="是否启动定时任务"
-                  @confirm="start(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:">启动</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item v-show="row.state === 1">
-                <a-popconfirm
-                  title="是否停止定时任务"
-                  @confirm="stop(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" style="color: red">停止</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除定时任务"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" style="color: red">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a href="javascript:" @click="logPage(row)">执行日志</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否立即运行该定时任务"
+                    @confirm="execute(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:">立即运行</a>
+                  </a-popconfirm>
+                </a-menu-item>
+                <a-menu-item v-show="row.state === 0">
+                  <a-popconfirm
+                    title="是否启动定时任务"
+                    @confirm="start(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:">启动</a>
+                  </a-popconfirm>
+                </a-menu-item>
+                <a-menu-item v-show="row.state === 1">
+                  <a-popconfirm
+                    title="是否停止定时任务"
+                    @confirm="stop(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" style="color: red">停止</a>
+                  </a-popconfirm>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除定时任务"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" style="color: red">删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>
@@ -115,13 +120,13 @@
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange"
     />
     <quartz-job-edit
       ref="quartzJobEdit"
       @ok="handleOk"
     />
+    <quartz-job-log-list ref="quartzJobLogList"/>
   </a-card>
 </template>
 
@@ -129,19 +134,20 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { page, del, start, stop, execute } from '@/api/starter/quartz'
 import QuartzJobEdit from './QuartzJobEdit'
+import QuartzJobLogList from './QuartzJobLogList'
 
 export default {
   name: 'QuartzJobList',
   mixins: [TableMixin],
   components: {
-    QuartzJobEdit
+    QuartzJobEdit,
+    QuartzJobLogList
   },
   data () {
     return {
       queryParam: {
         jobClassName: '',
         status: ''
-
       }
     }
   },
@@ -166,6 +172,9 @@ export default {
     },
     show (record) {
       this.$refs.quartzJobEdit.init(record.id, 'show')
+    },
+    logPage (record) {
+      this.$refs.quartzJobLogList.list(record.jobClassName)
     },
     remove (record) {
       del(record.id).then(() => {

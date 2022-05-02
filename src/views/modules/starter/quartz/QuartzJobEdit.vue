@@ -81,7 +81,10 @@ export default {
       },
       rules: {
         name: [{ required: true, message: '请输入任务名称' }],
-        jobClassName: [{ required: true, message: '请输入任务类名' }],
+        jobClassName: [
+          { required: true, message: '请输入任务类名' },
+          { validator: this.validateJobClass, trigger: 'blur' }
+        ],
         cron: [{ required: true, message: '请输入cron' }]
       }
     }
@@ -122,9 +125,14 @@ export default {
         this.$refs.form.resetFields()
       })
     },
-    judgeJobClass (clazz) {
-      judgeJobClass(clazz).then(() => {
-      })
+    // 判断是否是任务类
+    async validateJobClass (rule, value, callback) {
+      const res = await judgeJobClass(value)
+      if (!res.data) {
+        callback()
+      } else {
+        callback(res.data)
+      }
     }
   }
 }

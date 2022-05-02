@@ -18,10 +18,6 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
       size="medium"
       :loading="loading"
@@ -57,7 +53,6 @@
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
     </vxe-pager>
     <dict-item-edit

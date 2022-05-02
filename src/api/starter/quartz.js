@@ -64,10 +64,29 @@ export function execute (id) {
   })
 }
 
+/**
+ * 判断是否是定时任务类
+ */
 export function judgeJobClass (jobClassName) {
   return axios({
     url: '/quartz/judgeJobClass',
-    method: 'POST',
+    method: 'GET',
     params: { jobClassName }
+  })
+}
+
+export function logPage (params) {
+  return axios({
+    url: '/quartz/log/page',
+    method: 'GET',
+    params: params
+  })
+}
+
+export function logGet (id) {
+  return axios({
+    url: '/quartz/log/findById',
+    method: 'GET',
+    params: { id }
   })
 }

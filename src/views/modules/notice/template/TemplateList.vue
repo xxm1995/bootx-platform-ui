@@ -76,7 +76,6 @@
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      :layouts="['PrevPage', 'JumpNumber', 'NextPage', 'FullJump', 'Sizes', 'Total']"
       @page-change="handleTableChange">
       />
     </vxe-pager>

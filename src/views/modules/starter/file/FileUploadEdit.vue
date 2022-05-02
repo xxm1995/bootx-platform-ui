@@ -38,7 +38,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, judgeJobClass, update } from '@/api/starter/quartz'
+import { add, get, update } from '@/api/starter/quartz'
 
 export default {
   name: 'FileUploadEdit',
@@ -90,10 +90,6 @@ export default {
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
-      })
-    },
-    judgeJobClass (clazz) {
-      judgeJobClass(clazz).then(() => {
       })
     }
   }

@@ -61,10 +61,6 @@ export const FormMixin = {
     // 默认空方法
     resetForm () {
     },
-    // 获取字典列表
-    getDictItems (dictCode) {
-      return getDictItems(dictCode)
-    },
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, code)
@@ -72,6 +68,13 @@ export const FormMixin = {
     // 获取字典列表 异步
     async getDictItemsAsync (dictCode) {
       return getDictItemsAsync(dictCode)
+    },
+    // 获取字典下拉框数据列表
+    async getDictDropDownAsync (dictCode) {
+      const list = await getDictItemsAsync(dictCode)
+      return list.map(o => {
+        return { label: o.name, value: o.code }
+      })
     },
     /**
      * 获取字典项列表(code值为数字)

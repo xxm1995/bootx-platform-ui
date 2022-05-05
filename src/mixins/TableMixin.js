@@ -75,22 +75,21 @@ export const TableMixin = {
     dictConvert (dictCode, code) {
       return c(dictCode, String(code))
     },
-    // 获取字典列表
-    getDictItems (dictCode) {
-      return getDictItems(dictCode)
-    },
     // 获取字典列表 异步
     async getDictItemsAsync (dictCode) {
       return getDictItemsAsync(dictCode)
     },
+    // 获取字典下拉框数据列表
+    async getDictDropDownAsync (dictCode) {
+      const list = await getDictItemsAsync(dictCode)
+      return list.map(o => {
+        return { label: o.name, value: o.code }
+      })
+    },
     /**
-     * 获取字典项列表(code值为数字)
+     * 获取字典项列表(code值为数字) 异步
      * 字段有  code name dictCode
      */
-    getDictItemsByNumber (dictCode) {
-      return getDictItemsByNumber(dictCode)
-    },
-    // 获取字典项列表(code值为数字) 异步
     getDictItemsByNumberAsync (dictCode) {
       return getDictItemsByNumberAsync(dictCode)
     },

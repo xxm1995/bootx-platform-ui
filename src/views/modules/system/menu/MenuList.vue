@@ -25,8 +25,8 @@
           @click="add()">
           新建
         </a-button>
-        <a-button style="margin-left: 8px" @click="$refs.xTree.setAllTreeExpand(true)">展开所有</a-button>
-        <a-button style="margin-left: 8px" @click="$refs.xTree.clearTreeExpand()">关闭所有</a-button>
+        <a-button style="margin-left: 8px" @click="allTreeExpand(true)">展开所有</a-button>
+        <a-button style="margin-left: 8px" @click="allTreeExpand(false)">关闭所有</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -111,6 +111,8 @@ export default {
   data () {
     return {
       searchName: '',
+      // 默认树关闭
+      treeExpand: false,
       remoteTableData: []
     }
   },
@@ -148,20 +150,31 @@ export default {
       this.$refs.resourcePermList.init(record)
     },
     /**
+     * 展开or关闭
+     */
+    allTreeExpand (treeExpand) {
+      this.$nextTick(() => {
+        this.$refs.xTree.setAllTreeExpand(treeExpand)
+      })
+      this.treeExpand = treeExpand
+    },
+    /**
      * 搜索
      */
     search () {
       const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
+      let treeExpand = this.treeExpand
       if (searchName) {
         const searchProps = ['name', 'title', 'path', 'component']
         this.tableData = XEUtils.searchTree(this.remoteTableData, item =>
           searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(searchName) > -1))
+        // 搜索状态默认展开
+        treeExpand = true
       } else {
         this.tableData = this.remoteTableData
       }
-      // 默认关闭子节点
       this.$nextTick(() => {
-        this.$refs.xTree.setAllTreeExpand(false)
+        this.$refs.xTree.setAllTreeExpand(treeExpand)
       })
     }
   },

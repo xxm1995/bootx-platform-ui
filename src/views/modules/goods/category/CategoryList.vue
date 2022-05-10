@@ -5,7 +5,7 @@
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
             <a-form-item label="查询">
-              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入部门名称或编码" />
+              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入类目名称" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -28,26 +28,26 @@
       </template>
     </vxe-toolbar>
     <vxe-table
+      row-id="id"
       resizable
       border="inner"
       ref="xTree"
-      :loading="loading"
       :tree-config="{children: 'children'}"
+      :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="deptName" title="机构/部门名称" tree-node/>
-      <vxe-table-column field="orgCategory" title="机构类别">
+      <vxe-table-column field="name" title="名称" tree-node/>
+      <vxe-table-column field="enable" title="状态">
         <template v-slot="{row}">
-          <span v-show="String(row.orgCategory) === '1'">公司</span>
-          <span v-show="String(row.orgCategory) === '2'">组织机构</span>
+          {{ row.enable ? '启用':'停用' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="orgCode" title="机构编码"/>
+      <vxe-table-column field="remark" title="描述"/>
       <vxe-table-column title="操作">
         <template v-slot="{row}">
-          <a href="javascript:" @click="edit(row.id)">编辑</a>
+          <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
-          <a href="javascript:" @click="show(row.id)">查看</a>
+          <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical" />
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -73,56 +73,53 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-    <dept-edit
-      ref="deptEdit"
-      @ok="handleOk"
-    />
+    <category-edit ref="categoryEdit" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-import { tree, del } from '@/api/system/dept.js'
-import DeptEdit from './DeptEdit'
+import { findTree, del } from '@/api/goods/category'
 import { TableMixin } from '@/mixins/TableMixin'
+import CategoryEdit from './CategoryEdit'
 import XEUtils from 'xe-utils'
+
 export default {
-  name: 'DeptList',
+  name: 'CategoryList',
   components: {
-    DeptEdit
+    CategoryEdit
   },
   mixins: [TableMixin],
   data () {
     return {
+      remoteTableData: [],
       searchName: '',
-      // 默认树关闭
-      treeExpand: false,
-      remoteTableData: []
+      queryParam: {
+      }
     }
   },
   methods: {
     init () {
       this.loading = true
-      tree().then(res => {
+      findTree().then(res => {
         this.remoteTableData = res.data
         this.search()
         this.loading = false
       })
     },
     add () {
-      this.$refs.deptEdit.init('', 'add')
-    },
-    edit (id) {
-      this.$refs.deptEdit.init(id, 'edit')
-    },
-    show (id) {
-      this.$refs.deptEdit.init(id, 'show')
+      this.$refs.categoryEdit.init('', 'add')
     },
     addChildren (row) {
-      this.$refs.deptEdit.init('', 'add', row)
+      this.$refs.categoryEdit.init('', 'add', row)
+    },
+    edit (record) {
+      this.$refs.categoryEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.categoryEdit.init(record.id, 'show')
     },
     remove (record) {
-      this.loading = true
-      del(record.id).then(() => {
+      del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
       })
@@ -143,7 +140,7 @@ export default {
       const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
       let treeExpand = this.treeExpand
       if (searchName) {
-        const searchProps = ['deptName', 'orgCode']
+        const searchProps = ['name']
         this.tableData = XEUtils.searchTree(this.remoteTableData, item =>
           searchProps.some(key => XEUtils.toValueString(item[key]).toLowerCase().indexOf(searchName) > -1))
         // 搜索状态默认展开

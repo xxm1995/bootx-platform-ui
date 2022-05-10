@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import * as loginService from '@/api/login/login'
 // eslint-disable-next-line
-import { BasicLayout, BlankLayout, PageView, RouteView } from '@/layouts'
+import { BasicLayout, BlankLayout, PageView, RouteView, IframeView } from '@/layouts'
 import { loginBaseRouterMap } from '@/config/router.config'
 // 前端路由表
 const constantRouterComponents = {
@@ -10,6 +10,7 @@ const constantRouterComponents = {
   BlankLayout: BlankLayout,
   RouteView: RouteView,
   PageView: PageView,
+  IframeView: IframeView,
   '403': () => import(/* webpackChunkName: "error" */ '@/views/exception/403'),
   '404': () => import(/* webpackChunkName: "error" */ '@/views/exception/404'),
   '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
@@ -115,6 +116,8 @@ export const generator = (routerMap, parent) => {
         icon: icon || item.icon || null,
         hiddenHeaderContent: hiddenHeaderContent || item.hiddenHeaderContent,
         target: target || item.targetOutside ? '_blank' : null,
+        targetOutside: item.targetOutside,
+        url: item.path,
         permission: item.name
       }
     }
@@ -126,9 +129,15 @@ export const generator = (routerMap, parent) => {
       // 是否设置了隐藏子菜单
       currentRouter.hideChildrenInMenu = hideChildren || item.hideChildrenInMenu
     }
-    // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
+    // 处理外部链接
     if (!currentRouter.path.startsWith('http')) {
+      // 为了防止出现后端返回结果不规范，处理有可能出现拼接出两个 反斜杠
       currentRouter.path = currentRouter.path.replace('//', '/')
+    } else {
+      // 如果是内部打开的外部链接, 对path进行哈希编码, 否则可能会打不开
+      if (!currentRouter.meta.targetOutside) {
+        currentRouter.path = hash(currentRouter.path)
+      }
     }
     // 重定向
     item.redirect && (currentRouter.redirect = item.redirect)
@@ -139,4 +148,19 @@ export const generator = (routerMap, parent) => {
     }
     return currentRouter
   })
+}
+
+// 哈希函数
+function hash (s) {
+  console.log(s.length)
+  let hash = 0
+  let i
+  let chr
+  if (s.length === 0) return hash
+  for (i = 0; i < s.length; i++) {
+    chr = s.charCodeAt(i)
+    hash = ((hash << 5) - hash) + chr
+    hash |= 0 // Convert to 32bit integer
+  }
+  return String(Math.abs(hash))
 }

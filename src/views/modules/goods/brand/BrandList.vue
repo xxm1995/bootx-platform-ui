@@ -4,6 +4,11 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
+            <a-form-item label="查询">
+              <a-input v-model="queryParam.name" allow-clear placeholder="请输入品牌名称" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
@@ -29,7 +34,11 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="类目名称"/>
       <vxe-table-column field="logo" title="品牌图标"/>
-      <vxe-table-column field="state" title="状态"/>
+      <vxe-table-column field="enable" title="启用状态">
+        <template v-slot="{row}">
+          {{ row.enable?'启用':'停用' }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="remark" title="描述"/>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
@@ -78,6 +87,7 @@
     data () {
       return {
         queryParam: {
+          name: ''
         }
       }
     },

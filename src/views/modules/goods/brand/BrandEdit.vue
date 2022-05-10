@@ -34,13 +34,17 @@
           label="状态"
           prop="state"
         >
-          <a-input v-model="form.state" :disabled="showable"/>
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.enable"/>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
           prop="remark"
         >
-          <a-input v-model="form.remark" :disabled="showable"/>
+          <a-textarea v-model="form.remark" :disabled="showable"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -61,13 +65,13 @@ export default {
     return {
       form: {
         id: null,
-        name: null,
-        logo: null,
-        state: null,
-        remark: null,
+        name: '',
+        logo: '',
+        enable: true,
+        remark: ''
       },
       rules: {
-
+        name: [{ required: true, message: '请输入品牌名称' }]
       }
     }
   },

@@ -3,17 +3,22 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="字典编码">
-              <a-input v-model="queryParam.code" placeholder="" />
+              <a-input v-model="queryParam.code" placeholder="请输入字典编码" />
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="字典名称">
-              <a-input v-model="queryParam.name" placeholder="" />
+              <a-input v-model="queryParam.name" placeholder="请输入字典名称"/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="分组标签">
+              <a-input v-model="queryParam.groupTag" placeholder="请输入分组标签" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-button type="primary" @click="query">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
           </a-col>
@@ -39,6 +44,11 @@
       <vxe-table-column type="seq" title="序号" width="60"/>
       <vxe-table-column field="code" title="编码" />
       <vxe-table-column field="name" title="名称" />
+      <vxe-table-column field="groupTag" title="分类标签">
+        <template v-slot="{row}">
+          <a-tag color="green">{{ row.groupTag||'空' }}</a-tag>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="remark" title="描述" />
       <vxe-table-column title="操作" fixed="right" width="220">
         <template v-slot="{row}">
@@ -91,7 +101,8 @@ export default {
     return {
       queryParam: {
         code: '',
-        name: ''
+        name: '',
+        groupTag: ''
       }
     }
   },

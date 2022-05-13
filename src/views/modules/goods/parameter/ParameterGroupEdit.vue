@@ -19,40 +19,22 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="字典编码"
-          prop="code"
-        >
-          <a-input
-            :disabled="showable"
-            v-model="form.code"
-          />
-        </a-form-model-item>
-        <a-form-model-item
-          label="名称"
+          label="参数组名称"
           prop="name"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.name"
-          />
+          <a-input v-model="form.name" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="分类标签"
-          prop="groupTag"
+          label="排序"
+          prop="sortNo"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.groupTag"
-          />
+          <a-input-number v-model="form.sortNo" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
           prop="remark"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.remark"
-          />
+          <a-textarea v-model="form.remark" :disabled="showable"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -65,31 +47,27 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/dict'
+import { get, add, update } from '@/api/goods/parameterGroup'
 export default {
-  name: 'DictEdit',
+  name: 'ParameterGroupEdit',
   mixins: [FormMixin],
   data () {
     return {
+      categoryId: null,
       form: {
-        code: '',
-        name: '',
-        groupTag: '',
-        remark: ''
+        id: null,
+        name: null,
+        sortNo: 0,
+        remark: null
       },
       rules: {
-        code: [
-          { required: true, message: '请输入字典编码' },
-          { validator: this.validateCode, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入字典名称' }
-        ]
+        name: [ { required: true, message: '请输入名称' } ]
       }
     }
   },
   methods: {
-    edit (id, type) {
+    edit (id, type, categoryId) {
+      this.categoryId = categoryId
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -105,7 +83,10 @@ export default {
         if (valid) {
           this.confirmLoading = true
           if (this.type === 'add') {
-            await add(this.form)
+            await add({
+              ...this.form,
+              categoryId: this.categoryId
+            })
           } else if (this.type === 'edit') {
             await update(this.form)
           }
@@ -123,21 +104,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-    },
-    // 验证字典编码
-    async validateCode (rule, value, callback) {
-      const { code, id } = this.form
-      let res
-      if (this.type === 'edit') {
-        res = await existsByCodeNotId(code, id)
-      } else {
-        res = await existsByCode(code)
-      }
-      if (!res.data) {
-        callback()
-      } else {
-        callback('该编码已存在!')
-      }
     }
   }
 }

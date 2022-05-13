@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/specification/page',
+    url: '/categoryParameter/page',
     method: 'GET',
     params: params
   })
@@ -16,19 +16,9 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: '/specification/findById',
+    url: '/categoryParameter/findById',
     method: 'GET',
     params: { id }
-  })
-}
-
-/**
- * 查询全部
- */
-export function findAll () {
-  return axios({
-    url: '/specification/findAll',
-    method: 'GET'
   })
 }
 
@@ -37,7 +27,7 @@ export function findAll () {
  */
 export function add (obj) {
   return axios({
-    url: '/specification/add',
+    url: '/categoryParameter/add',
     method: 'POST',
     data: obj
   })
@@ -48,7 +38,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/specification/update',
+    url: '/categoryParameter/update',
     method: 'POST',
     data: obj
   })
@@ -59,7 +49,7 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: '/specification/delete',
+    url: '/categoryParameter/delete',
     params: { id },
     method: 'DELETE'
   })

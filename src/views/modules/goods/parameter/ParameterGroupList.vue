@@ -1,17 +1,5 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
     <vxe-toolbar
       custom
       zoom
@@ -27,27 +15,20 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="规格名称"/>
-      <vxe-table-column field="type" title="类型">
-        <template v-slot="{row}">
-          {{ dictConvert('SpecType', row.type) }}
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="options" title="规格选项值"/>
+      <vxe-table-column field="name" title="参数组名称"/>
+      <vxe-table-column field="sortNo" title="排序"/>
       <vxe-table-column field="remark" title="描述"/>
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="220" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <span>
-            <a href="javascript:" @click="show(row)">查看</a>
-          </span>
+          <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <span>
-            <a href="javascript:" @click="edit(row)">编辑</a>
-          </span>
+          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a-divider type="vertical"/>
+          <a href="javascript:" @click="parameterList(row)">字典配置</a>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除"
+            title="是否删除字典"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
@@ -63,55 +44,75 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <specification-edit
-      ref="specificationEdit"
+    <parameter-group-edit
+      ref="parameterGroupEdit"
       @ok="handleOk"/>
+    <parameter-list ref="parameterList"/>
   </a-card>
 </template>
 
 <script>
-  import { page, del } from '@/api/goods/specification'
-  import SpecificationEdit from './SpecificationEdit'
+  import { page, del } from '@/api/goods/parameterGroup'
+  import ParameterGroupEdit from './ParameterGroupEdit'
+  import ParameterList from './ParameterList'
   import { TableMixin } from '@/mixins/TableMixin'
   export default {
-    name: 'SpecificationList',
+    name: 'ParameterGroupList',
     components: {
-      SpecificationEdit
+      ParameterGroupEdit,
+      ParameterList
     },
     mixins: [TableMixin],
     data () {
       return {
+        categoryId: null,
         queryParam: {
         }
       }
     },
+    watch: {
+      // 监听路由，只要路由有变化(路径，参数等变化)都有执行下面的函数
+      $route: {
+        handler: () => {
+          this.categoryId = this.$route.query.categoryId
+          this.init()
+        },
+        deep: true
+      }
+    },
     methods: {
       init () {
+        console.log(this.categoryId)
         this.loading = true
         page({
           ...this.queryParam,
-          ...this.pages
+          ...this.pages,
+          categoryId: this.categoryId
         }).then(res => {
           this.pageQueryResHandel(res, this)
         })
       },
       add () {
-        this.$refs.specificationEdit.init('', 'add')
+        this.$refs.parameterGroupEdit.init('', 'add', this.categoryId)
       },
       edit (record) {
-        this.$refs.specificationEdit.init(record.id, 'edit')
+        this.$refs.parameterGroupEdit.init(record.id, 'edit')
       },
       show (record) {
-        this.$refs.specificationEdit.init(record.id, 'show')
+        this.$refs.parameterGroupEdit.init(record.id, 'show')
       },
       remove (record) {
         del(record.id).then(_ => {
           this.$message.info('删除成功')
           this.init()
         })
+      },
+      parameterList (record) {
+        this.$refs.parameterList.list(record.id, this.categoryId)
       }
     },
     created () {
+      this.categoryId = this.$route.query.categoryId
       this.init()
     }
   }

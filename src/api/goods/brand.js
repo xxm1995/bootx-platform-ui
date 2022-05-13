@@ -12,6 +12,16 @@ export function page (params) {
 }
 
 /**
+ * 查询全部
+ */
+export function findAll () {
+  return axios({
+    url: '/brand/findAll',
+    method: 'GET'
+  })
+}
+
+/**
  * 获取单条
  */
 export function get (id) {
@@ -54,3 +64,5 @@ export function del (id) {
     method: 'DELETE'
   })
 }
+
+

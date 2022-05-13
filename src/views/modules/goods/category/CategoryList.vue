@@ -55,12 +55,21 @@
             </a>
             <template v-slot:overlay>
               <a-menu>
-                <a-menu-item>
+                <a-menu-item v-if="row.level !== 3">
                   <a @click="addChildren(row)">添加下级</a>
+                </a-menu-item>
+                <a-menu-item v-if="row.level === 3">
+                  <a @click="bindBrand(row)">绑定品牌</a>
+                </a-menu-item>
+                <a-menu-item v-if="row.level === 3">
+                  <a @click="bindSpec(row)">绑定规格</a>
+                </a-menu-item>
+                <a-menu-item v-if="row.level === 3">
+                  <a @click="bindParameter(row)">绑定参数</a>
                 </a-menu-item>
                 <a-menu-item>
                   <a-popconfirm
-                    title="是否删除该部门组织"
+                    title="是否删除该类目"
                     @confirm="remove(row)"
                     okText="是"
                     cancelText="否">
@@ -74,6 +83,8 @@
       </vxe-table-column>
     </vxe-table>
     <category-edit ref="categoryEdit" @ok="handleOk"/>
+    <bind-brand-model ref="bindBrandModel"/>
+    <bind-spec-model ref="bindSpecModel"/>
   </a-card>
 </template>
 
@@ -81,12 +92,16 @@
 import { findTree, del } from '@/api/goods/category'
 import { TableMixin } from '@/mixins/TableMixin'
 import CategoryEdit from './CategoryEdit'
+import BindBrandModel from './BindBrandModel'
+import BindSpecModel from './BindSpecModel'
 import XEUtils from 'xe-utils'
 
 export default {
   name: 'CategoryList',
   components: {
-    CategoryEdit
+    CategoryEdit,
+    BindBrandModel,
+    BindSpecModel
   },
   mixins: [TableMixin],
   data () {
@@ -124,6 +139,25 @@ export default {
         this.init()
       })
     },
+    /**
+     * 绑定参数
+     */
+    bindParameter (record) {
+      this.$router.push({ name: 'ParameterGroup', query: { categoryId: record.id } })
+    },
+    /**
+     * 绑定品牌
+     */
+    bindBrand (record) {
+      this.$refs.bindBrandModel.init('', '', record)
+    },
+    /**
+     * 绑定规格
+     */
+    bindSpec (record) {
+      this.$refs.bindSpecModel.init('', '', record)
+    },
+
     /**
      * 展开or关闭
      */

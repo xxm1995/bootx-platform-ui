@@ -19,40 +19,46 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="字典编码"
-          prop="code"
-        >
-          <a-input
-            :disabled="showable"
-            v-model="form.code"
-          />
-        </a-form-model-item>
-        <a-form-model-item
-          label="名称"
+          label="品牌名称"
           prop="name"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.name"
-          />
+          <a-input v-model="form.name" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="分类标签"
-          prop="groupTag"
+          label="选择值(列表)"
+          prop="options"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.groupTag"
-          />
+          <a-input v-model="form.options" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="是否必填"
+          prop="required"
+        >
+          <a-input v-model="form.required" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="排序"
+          prop="sortNo"
+        >
+          <a-input v-model="form.sortNo" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="参数组id"
+          prop="groupId"
+        >
+          <a-input v-model="form.groupId" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="类目id"
+          prop="categoryId"
+        >
+          <a-input v-model="form.categoryId" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
           prop="remark"
         >
-          <a-input
-            :disabled="showable"
-            v-model="form.remark"
-          />
+          <a-input v-model="form.remark" :disabled="showable"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -65,26 +71,24 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/dict'
+import { get, add, update } from '@/api/goods/parameter'
 export default {
-  name: 'DictEdit',
+  name: 'ParameterEdit',
   mixins: [FormMixin],
   data () {
     return {
       form: {
-        code: '',
-        name: '',
-        groupTag: '',
-        remark: ''
+        id: null,
+        name: null,
+        options: null,
+        required: null,
+        sortNo: null,
+        groupId: null,
+        categoryId: null,
+        remark: null,
       },
       rules: {
-        code: [
-          { required: true, message: '请输入字典编码' },
-          { validator: this.validateCode, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入字典名称' }
-        ]
+
       }
     }
   },
@@ -123,21 +127,6 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-    },
-    // 验证字典编码
-    async validateCode (rule, value, callback) {
-      const { code, id } = this.form
-      let res
-      if (this.type === 'edit') {
-        res = await existsByCodeNotId(code, id)
-      } else {
-        res = await existsByCode(code)
-      }
-      if (!res.data) {
-        callback()
-      } else {
-        callback('该编码已存在!')
-      }
     }
   }
 }

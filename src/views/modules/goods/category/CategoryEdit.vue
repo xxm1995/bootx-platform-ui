@@ -18,7 +18,7 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="机构名称"
+          label="类目名称"
           prop="name"
         >
           <a-input
@@ -151,7 +151,6 @@ export default {
     },
     // 验证类目名称是否重复
     async validateName (rule, value, callback) {
-      console.log()
       let result
       if (this.type === 'add') {
         result = await existsByName(value)

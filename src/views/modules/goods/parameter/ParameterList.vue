@@ -27,13 +27,12 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="规格名称"/>
-      <vxe-table-column field="type" title="类型">
-        <template v-slot="{row}">
-          {{ dictConvert('SpecType', row.type) }}
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="options" title="规格选项值"/>
+      <vxe-table-column field="name" title="品牌名称"/>
+      <vxe-table-column field="options" title="选择值(列表)"/>
+      <vxe-table-column field="required" title="是否必填"/>
+      <vxe-table-column field="sortNo" title="排序"/>
+      <vxe-table-column field="groupId" title="参数组id"/>
+      <vxe-table-column field="categoryId" title="类目id"/>
       <vxe-table-column field="remark" title="描述"/>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
@@ -63,46 +62,55 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <specification-edit
-      ref="specificationEdit"
+    <parameter-edit
+      ref="parameterEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-  import { page, del } from '@/api/goods/specification'
-  import SpecificationEdit from './SpecificationEdit'
+  import { page, del } from '@/api/goods/parameter'
+  import ParameterEdit from './ParameterEdit'
   import { TableMixin } from '@/mixins/TableMixin'
   export default {
-    name: 'SpecificationList',
+    name: 'ParameterList',
     components: {
-      SpecificationEdit
+      ParameterEdit
     },
     mixins: [TableMixin],
     data () {
       return {
+        categoryId: null,
+        groupId: null,
         queryParam: {
         }
       }
     },
     methods: {
+      list (id, categoryId) {
+        this.categoryId = categoryId
+        this.groupId = id
+        this.init()
+      },
       init () {
         this.loading = true
         page({
           ...this.queryParam,
-          ...this.pages
+          ...this.pages,
+          groupId: this.groupId,
+          categoryId: this.categoryId
         }).then(res => {
           this.pageQueryResHandel(res, this)
         })
       },
       add () {
-        this.$refs.specificationEdit.init('', 'add')
+        this.$refs.parameterEdit.init('', 'add')
       },
       edit (record) {
-        this.$refs.specificationEdit.init(record.id, 'edit')
+        this.$refs.parameterEdit.init(record.id, 'edit')
       },
       show (record) {
-        this.$refs.specificationEdit.init(record.id, 'show')
+        this.$refs.parameterEdit.init(record.id, 'show')
       },
       remove (record) {
         del(record.id).then(_ => {
@@ -110,9 +118,6 @@
           this.init()
         })
       }
-    },
-    created () {
-      this.init()
     }
   }
 </script>

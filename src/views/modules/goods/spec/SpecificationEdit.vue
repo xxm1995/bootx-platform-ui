@@ -25,16 +25,30 @@
           <a-input v-model="form.name" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="规格值"
-          prop="values"
+          label="规格类型"
+          prop="type"
         >
-          <a-input v-model="form.values" :disabled="showable"/>
+          <a-select
+            :disabled="showable"
+            allowClear
+            v-model="form.type"
+            style="width: 100%"
+            placeholder="选择规格类型">
+            <a-select-option value="input">输入</a-select-option>
+            <a-select-option value="select">列表选择</a-select-option>
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
-          label="状态"
-          prop="state"
+          label="规格选项值"
+          prop="options"
+          v-if="form.type === 'select'"
         >
-          <a-input v-model="form.state" :disabled="showable"/>
+          <a-select
+            mode="tags"
+            style="width: 100%"
+            v-model="form.options"
+            placeholder="输入选项后按回车">
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
@@ -57,22 +71,32 @@ import { get, add, update } from '@/api/goods/specification'
 export default {
   name: 'SpecificationEdit',
   mixins: [FormMixin],
+  computed: {
+      rules () {
+        return {
+          name: [
+            { required: true, message: '请输入规格名称' },
+            { validator: this.validateName, trigger: 'blur' }
+          ],
+          type: [{ required: true, message: '请选择规格类型' }],
+          values: [{ required: this.form.type === 'select', message: '请选择规格类型' }]
+        }
+    }
+  },
   data () {
     return {
       form: {
         id: null,
-        name: null,
-        values: null,
-        state: null,
-        remark: null,
-      },
-      rules: {
-
+        name: '',
+        type: 'input',
+        options: undefined,
+        remark: ''
       }
     }
   },
   methods: {
     edit (id, type) {
+      this.form.options = undefined
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -101,6 +125,10 @@ export default {
           return false
         }
       })
+    },
+    // 验证是否重复
+    validateName (rule, value, callback) {
+      callback()
     },
     resetForm () {
       this.$nextTick(() => {

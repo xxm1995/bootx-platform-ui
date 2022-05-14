@@ -30,7 +30,7 @@
       <vxe-table-column field="name" title="规格名称"/>
       <vxe-table-column field="type" title="类型">
         <template v-slot="{row}">
-          {{ dictConvert('SpecType', row.type) }}
+          {{ dictConvert('GoodsParamType', row.type) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="options" title="规格选项值"/>

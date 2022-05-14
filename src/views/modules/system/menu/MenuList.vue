@@ -13,8 +13,6 @@
     </div>
     <vxe-toolbar
       custom
-      export
-      print
       zoom
       :refresh="{query: init}"
     >

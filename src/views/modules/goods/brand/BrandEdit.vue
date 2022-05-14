@@ -19,7 +19,7 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="类目名称"
+          label="品牌名称"
           prop="name"
         >
           <a-input v-model="form.name" :disabled="showable"/>

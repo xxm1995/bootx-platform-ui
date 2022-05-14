@@ -45,6 +45,7 @@
         >
           <a-select
             mode="tags"
+            :disabled="showable"
             style="width: 100%"
             v-model="form.options"
             placeholder="输入选项后按回车">
@@ -79,7 +80,7 @@ export default {
             { validator: this.validateName, trigger: 'blur' }
           ],
           type: [{ required: true, message: '请选择规格类型' }],
-          values: [{ required: this.form.type === 'select', message: '请选择规格类型' }]
+          options: [{ required: this.form.type === 'select', message: '请输入参数选项' }]
         }
     }
   },
@@ -89,7 +90,7 @@ export default {
         id: null,
         name: '',
         type: 'input',
-        options: undefined,
+        options: [],
         remark: ''
       }
     }

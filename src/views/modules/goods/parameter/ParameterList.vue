@@ -1,17 +1,13 @@
 <template>
-  <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+  <a-drawer
+    :visible="visible"
+    title="参数列表"
+    :maskClosable="true"
+    :width="1000"
+    placement="right"
+    :closable="true"
+    @close="handleCancel"
+  >
     <vxe-toolbar
       custom
       zoom
@@ -27,12 +23,19 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="品牌名称"/>
+      <vxe-table-column field="name" title="参数名称"/>
+      <vxe-table-column field="type" title="类型">
+        <template v-slot="{row}">
+          {{ dictConvert('GoodsParamType', row.type) }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="options" title="选择值(列表)"/>
-      <vxe-table-column field="required" title="是否必填"/>
-      <vxe-table-column field="sortNo" title="排序"/>
-      <vxe-table-column field="groupId" title="参数组id"/>
-      <vxe-table-column field="categoryId" title="类目id"/>
+      <vxe-table-column field="required" title="是否必填">
+        <template v-slot="{row}">
+          <a-tag>{{ row.required?'是':'否' }}</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="sortNo" title="排序" :visible="false"/>
       <vxe-table-column field="remark" title="描述"/>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
@@ -65,7 +68,7 @@
     <parameter-edit
       ref="parameterEdit"
       @ok="handleOk"/>
-  </a-card>
+  </a-drawer>
 </template>
 
 <script>
@@ -82,6 +85,7 @@
       return {
         categoryId: null,
         groupId: null,
+        visible: false,
         queryParam: {
         }
       }
@@ -90,6 +94,7 @@
       list (id, categoryId) {
         this.categoryId = categoryId
         this.groupId = id
+        this.visible = true
         this.init()
       },
       init () {
@@ -104,7 +109,7 @@
         })
       },
       add () {
-        this.$refs.parameterEdit.init('', 'add')
+        this.$refs.parameterEdit.init('', 'add', { groupId: this.groupId, categoryId: this.categoryId })
       },
       edit (record) {
         this.$refs.parameterEdit.init(record.id, 'edit')
@@ -117,6 +122,9 @@
           this.$message.info('删除成功')
           this.init()
         })
+      },
+      handleCancel () {
+        this.visible = false
       }
     }
   }

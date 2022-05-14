@@ -54,3 +54,18 @@ export function del (id) {
     method: 'DELETE'
   })
 }
+
+export function existsByName (name, categoryId) {
+  return axios({
+    url: '/categoryParameterGroup/existsByName',
+    method: 'GET',
+    params: { name, categoryId }
+  })
+}
+export function existsByNameNotId (name, categoryId, id) {
+  return axios({
+    url: '/categoryParameterGroup/existsByNameNotId',
+    method: 'GET',
+    params: { name, categoryId, id }
+  })
+}

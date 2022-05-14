@@ -47,7 +47,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/goods/parameterGroup'
+import { get, add, update, existsByName, existsByNameNotId } from '@/api/goods/parameterGroup'
 export default {
   name: 'ParameterGroupEdit',
   mixins: [FormMixin],
@@ -61,7 +61,10 @@ export default {
         remark: null
       },
       rules: {
-        name: [ { required: true, message: '请输入名称' } ]
+        name: [
+          { required: true, message: '请输入名称' },
+          { validator: this.validateName, trigger: 'blur' }
+        ]
       }
     }
   },
@@ -100,11 +103,27 @@ export default {
         }
       })
     },
+    // 验证是否重复
+    async validateName (rule, value, callback) {
+        const { name, id } = this.form
+        let res
+        if (this.type === 'edit') {
+          res = await existsByNameNotId(name, this.categoryId, id)
+        } else {
+          res = await existsByName(name, this.categoryId)
+        }
+        if (!res.data) {
+          callback()
+        } else {
+          callback('该参数组已存在!')
+        }
+    },
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
     }
+
   }
 }
 </script>

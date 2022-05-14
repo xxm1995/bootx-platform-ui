@@ -1,11 +1,11 @@
 <template>
-  <a-card :bordered="false">
+  <a-card>
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
             <a-form-item label="查询">
-              <a-input v-model="queryParam.name" allow-clear placeholder="请输入品牌名称" />
+              <a-input v-model="queryParam.name" allow-clear placeholder="请输入商品名称" />
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -32,8 +32,9 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="品牌名称"/>
-      <vxe-table-column field="logo" title="品牌图标"/>
+      <vxe-table-column field="name" title="商品名称"/>
+      <vxe-table-column field="displayLowerPrice" title="最低价格"/>
+      <vxe-table-column field="displayUpperPrice" title="最高价格"/>
       <vxe-table-column field="enable" title="启用状态">
         <template v-slot="{row}">
           {{ row.enable?'启用':'停用' }}
@@ -68,59 +69,52 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <brand-edit
-      ref="brandEdit"
-      @ok="handleOk"/>
+    <goods-edit ref="goodsEdit" @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-  import { page, del } from '@/api/goods/brand'
-  import BrandEdit from './BrandEdit'
-  import { TableMixin } from '@/mixins/TableMixin'
-  export default {
-    name: 'BrandList',
-    components: {
-      BrandEdit
-    },
-    mixins: [TableMixin],
-    data () {
-      return {
-        queryParam: {
-          name: ''
-        }
+import { TableMixin } from '@/mixins/TableMixin'
+import { page } from '@/api/goods/goods'
+import GoodsEdit from './GoodsEdit'
+
+export default {
+  name: 'GoodsList',
+  components: {
+    GoodsEdit
+  },
+  mixins: [TableMixin],
+  data () {
+    return {
+      queryParam: {
+        name: ''
       }
-    },
-    methods: {
-      init () {
-        this.loading = true
-        page({
-          ...this.queryParam,
-          ...this.pages
-        }).then(res => {
-          this.pageQueryResHandel(res, this)
-        })
-      },
-      add () {
-        this.$refs.brandEdit.init('', 'add')
-      },
-      edit (record) {
-        this.$refs.brandEdit.init(record.id, 'edit')
-      },
-      show (record) {
-        this.$refs.brandEdit.init(record.id, 'show')
-      },
-      remove (record) {
-        del(record.id).then(_ => {
-          this.$message.info('删除成功')
-          this.init()
-        })
-      }
-    },
-    created () {
-      this.init()
     }
+  },
+  methods: {
+    init () {
+      this.loading = true
+      page({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
+    },
+    add () {
+      this.$refs.goodsEdit.init('', 'add')
+    },
+    edit (record) {
+      this.$refs.goodsEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.goodsEdit.init(record.id, 'show')
+    },
+  },
+  mounted () {
+    this.init()
   }
+}
 </script>
 
 <style scoped>

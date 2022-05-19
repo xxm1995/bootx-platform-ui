@@ -78,9 +78,9 @@ export default {
   data () {
     return {
       form: {
-        client: 'pc',
-        account: 'xxm1995',
-        password: '123456',
+        client: '',
+        account: '',
+        password: '',
         captchaKey: '',
         captcha: ''
       },
@@ -159,6 +159,7 @@ export default {
   },
   created () {
     this.form.account = process.env.VUE_APP_USER_ACCOUNT
+    this.form.client = process.env.VUE_APP_ClIENT
     this.init()
   }
 }

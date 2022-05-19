@@ -4,6 +4,18 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
+            <a-form-item label="终端">
+              <a-select
+                v-model="clientCode"
+                @change="init"
+                :default-value="clientCode"
+                style="width: 100%"
+              >
+                <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
             <a-form-item label="查询">
               <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入菜单名称、路由名称、请求路径或组件名称" />
             </a-form-item>
@@ -98,6 +110,7 @@ import MenuEdit from './MenuEdit'
 import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
+import { findAllByAlonePrem } from '@/api/system/client'
 
 export default {
   name: 'MenuList',
@@ -108,6 +121,9 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      // 终端编码
+      clientCode: 'admin',
+      clients: [],
       searchName: '',
       // 默认树关闭
       treeExpand: false,
@@ -117,20 +133,20 @@ export default {
   methods: {
     init () {
       this.loading = true
-      menuTree().then(res => {
+      menuTree(this.clientCode).then(res => {
         this.remoteTableData = res.data
         this.search()
         this.loading = false
       })
     },
     add () {
-      this.$refs.menuEdit.init('', 'add')
+      this.$refs.menuEdit.init('', 'add',null,this.clientCode)
     },
     addChildren (row) {
-      this.$refs.menuEdit.init('', 'add', row)
+      this.$refs.menuEdit.init('', 'add', row, this.clientCode)
     },
     edit (id) {
-      this.$refs.menuEdit.init(id, 'edit')
+      this.$refs.menuEdit.init(id, 'edit', null, this.clientCode)
     },
     show (id) {
       this.$refs.menuEdit.init(id, 'show')
@@ -140,6 +156,11 @@ export default {
         this.$message.info('删除成功')
         this.init()
       })
+    },
+    // 初始化终端列表
+    async initClients () {
+      const { data } = await findAllByAlonePrem()
+      this.clients = data
     },
     /**
      * 资源列表
@@ -177,6 +198,7 @@ export default {
     }
   },
   created () {
+    this.initClients()
     this.init()
   }
 }

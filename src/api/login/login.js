@@ -25,10 +25,11 @@ export function loginOpenId (parameter) {
 /**
  * 获取用户菜单和资源权限
  */
-export function getPermissions () {
+export function getPermissions (clientCode) {
   return request({
     url: `/role/menu/getPermissions`,
-    method: 'GET'
+    method: 'GET',
+    params: { clientCode }
   })
 }
 

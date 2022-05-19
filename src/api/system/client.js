@@ -47,6 +47,26 @@ export function existsByCodeNotId (code, id) {
 }
 
 /**
+ * 查询全部
+ */
+export function findAll () {
+  return axios({
+    url: '/client/findAll',
+    method: 'GET'
+  })
+}
+
+/**
+ * 查询有独立菜单和权限的终端列表
+ */
+export function findAllByAlonePrem () {
+  return axios({
+    url: '/client/findAllByAlonePrem',
+    method: 'GET'
+  })
+}
+
+/**
  * 根据code获取终端信息
  */
 export function findByCode (code) {

@@ -48,6 +48,12 @@
         <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
       </a-form-model-item>
       <a-form-model-item
+        label="独立菜单管理"
+        prop="alonePrem"
+      >
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.alonePrem" :disabled="showable||form.system" />
+      </a-form-model-item>
+      <a-form-model-item
         label="超时时间(分钟)"
         prop="timeout"
       >
@@ -96,6 +102,7 @@ export default {
         code: '',
         name: '',
         captcha: true,
+        alonePrem: true,
         system: false,
         enable: true,
         timeout: 5,
@@ -115,6 +122,9 @@ export default {
         ],
         enable: [
           { required: true, message: '请选择启用状态' }
+        ],
+        alonePrem: [
+          { required: true, message: '请启用菜单管理' }
         ],
         timeout: [
           { required: true, message: '请填写超时时间' },

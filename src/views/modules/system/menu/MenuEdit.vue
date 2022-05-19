@@ -215,6 +215,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
+      clientCode: '',
       form: {
         id: '',
         parentId: '',
@@ -249,11 +250,12 @@ export default {
   },
   methods: {
     loadTree () {
-      menuTree().then((res) => {
+      menuTree(this.clientCode).then((res) => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    async edit (id, type, row) {
+    async edit (id, type, row, clientCode) {
+      this.clientCode = clientCode
       this.confirmLoading = true
       await this.loadTree()
       if (type === 'edit' || type === 'show') {
@@ -287,6 +289,7 @@ export default {
           }
           that.confirmLoading = true
           if (this.type === 'add') {
+            this.form.clientCode = this.clientCode
             await add(this.form)
           } else {
             await update(this.form)

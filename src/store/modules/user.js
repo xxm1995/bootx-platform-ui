@@ -74,7 +74,7 @@ const user = {
     // 获取用户菜单和按钮权限
     GetUserPermission ({ commit }) {
       return new Promise((resolve, reject) => {
-        getPermissions().then(response => {
+        getPermissions(process.env.VUE_APP_ClIENT).then(response => {
           const result = response.data
           const resourcePerms = result.resourcePerms
           const menus = result.menus

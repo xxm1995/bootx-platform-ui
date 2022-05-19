@@ -31,14 +31,27 @@
             placeholder="请重新输入登录密码"
             v-model="form.confirmPassword"/>
         </a-form-model-item>
-
+        <a-form-model-item label="关联终端" prop="clientIdList">
+          <a-select
+            allowClear
+            mode="multiple"
+            v-model="form.clientIdList"
+            :default-value="form.clientIdList"
+            :filter-option="search"
+            style="width: 100%"
+            placeholder="选择关联的终端"
+          >
+            <a-select-option v-for="o in clientList" :key="o.id">
+              {{ o.name }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
         <a-form-model-item label="手机号" prop="phone">
           <a-input placeholder="请输入用户手机号" v-model="form.phone"/>
         </a-form-model-item>
         <a-form-model-item label="邮箱" prop="email">
           <a-input placeholder="请输入用户邮箱" v-model="form.email"/>
         </a-form-model-item>
-
       </a-form-model>
     </a-spin>
     <div class="drawer-button" >
@@ -52,6 +65,7 @@
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, existsUsername, existsPhone, existsEmail } from '@/api/system/user'
 import { validateEmail, validateMobile } from '@/utils/validate'
+import { findAllByAlonePrem } from '@/api/system/client'
 
 export default {
   name: 'UserAdd',
@@ -59,11 +73,13 @@ export default {
   data () {
     return {
       confirmDirty: false,
+      clientList: [],
       form: {
         name: '',
         username: '',
         phone: '',
         email: '',
+        clientIdList: [],
         avatar: '',
         password: '',
         confirmPassword: ''
@@ -88,6 +104,7 @@ export default {
   },
   methods: {
     edit () {
+      this.initClientList()
       this.confirmLoading = false
       this.confirmDirty = false
       this.resetForm()
@@ -106,6 +123,21 @@ export default {
           return false
         }
       })
+    },
+    // 初始化终端列表
+    async initClientList () {
+      const { data } = await findAllByAlonePrem()
+      this.clientList = data.map(res => {
+        return {
+          id: res.id,
+          name: res.name
+        }
+      })
+    },
+    search (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     },
     resetForm () {
       this.$nextTick(() => {

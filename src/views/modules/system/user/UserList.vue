@@ -5,12 +5,12 @@
         <a-row :gutter="48">
           <a-col :md="8" :sm="24">
             <a-form-item label="账号">
-              <a-input v-model="queryParam.username" placeholder=""/>
+              <a-input v-model="queryParam.username" placeholder="请输入要查询的账号"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item label="姓名">
-              <a-input v-model="queryParam.name" placeholder=""/>
+              <a-input v-model="queryParam.name" placeholder="请输入要查询的姓名"/>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
@@ -140,7 +140,10 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
+      // 用户状态编码
       userStatusCode: 'UserStatusCode',
+      // 终端列表
+      clientList: [],
       queryParam: {
         account: '',
         name: ''
@@ -154,10 +157,7 @@ export default {
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     // 分配角色

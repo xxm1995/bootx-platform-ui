@@ -152,7 +152,6 @@ export const generator = (routerMap, parent) => {
 
 // 哈希函数
 function hash (s) {
-  console.log(s.length)
   let hash = 0
   let i
   let chr

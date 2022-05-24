@@ -1,6 +1,5 @@
 import {
   dictConvert as c,
-  getDictItems,
   getDictItemsAsync,
   getDictItemsByNumber, getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'

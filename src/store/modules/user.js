@@ -1,6 +1,6 @@
 import storage from 'store'
 import { login, getPermissions, getLoginAfterUserInfo, logout, loginOpenId } from '@/api/login/login'
-import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
+import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS, USERINFO } from '@/store/mutation-types'
 import Vue from 'vue'
 import { getFilePreviewUrl } from '@/api/common/fileUpload'
 
@@ -8,25 +8,25 @@ const user = {
   state: {
     token: '',
     welcome: '',
-    roles: [],
     permissions: [],
     info: {},
     avatarUrl: ''
   },
 
   mutations: {
+    // 设置token
     SET_TOKEN: (state, token) => {
       state.token = token
     },
-    SET_ROLES: (state, roles) => {
-      state.roles = roles
-    },
+    // 设置权限
     SET_PERMISSION: (state, permissions) => {
       state.permissions = permissions
     },
+    // 设置用户信息
     SET_INFO: (state, info) => {
       state.info = info
     },
+    // 设置头像
     SET_AVATAR_URL: (state, avatarUrl) => {
       state.avatarUrl = avatarUrl
     }
@@ -64,6 +64,7 @@ const user = {
       return new Promise((resolve, reject) => {
         getLoginAfterUserInfo().then(response => {
           const result = response.data
+          storage.set(USERINFO, result, 7 * 24 * 60 * 60 * 1000)
           commit('SET_INFO', result)
           resolve(result)
         }).catch(error => {
@@ -113,8 +114,9 @@ const user = {
       resolve.then(() => {
         commit('SET_TOKEN', '')
         commit('SET_PERMISSION', [])
-        commit('SET_ROLES', [])
+        commit('SET_INFO', {})
         storage.remove(ACCESS_TOKEN)
+        storage.remove(USERINFO)
       })
       return resolve
     }

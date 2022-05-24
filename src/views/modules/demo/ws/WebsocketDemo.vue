@@ -1,42 +1,47 @@
 <template>
-
+  <a-card>
+    <a-textarea disabled v-model="showMsg"></a-textarea>
+    <a-textarea v-model="msg"></a-textarea>
+    <a-button @click="push">发送</a-button>
+  </a-card>
 </template>
 
 <script>
-import SockJS from 'sockjs-client'
+
+import { WebsocketMixin } from '@/mixins/WebsocketMixin'
+import storage from 'store'
+import { USERINFO } from '@/store/mutation-types'
 
 export default {
   name: 'WebsocketDemo',
+  mixins: [WebsocketMixin],
   data () {
     return {
-      sock: null
+      msg: '',
+      showMsg: ''
     }
   },
   methods: {
-    connection () {
+    initWs () {
       // 建立连接对象
-      const sock = new SockJS('http://127.0.0.1:8080/test/ws')
-      this.sock = sock
-      sock.onopen = () => {
-        console.log('open')
-        sock.send('test')
-      }
+      const userId = storage.get(USERINFO).userId
+      this.websocketUrl = 'ws://127.0.0.1:9999/test/ws/' + userId
+      this.initWebSocket()
+    },
+    // 发送消息
+    push () {
+      this.websocketSend(this.msg)
+    },
 
-      sock.onmessage = e => {
-        console.log('message', e.data)
-        sock.close()
-      }
-
-      sock.onclose = () => {
-        console.log('close')
-      }
+    websocketOnmessage (e) {
+      this.showMsg = e.data
+      console.log(e.data)
     }
   },
   mounted () {
-    this.connection()
+    this.initWs()
   },
   beforeDestroy () {
-    this.sock
   }
 }
 </script>

@@ -1,7 +1,6 @@
 import {
   dictConvert as c,
-  getDictItems, getDictItemsAsync,
-  getDictItemsByNumber,
+  getDictItemsAsync,
   getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'

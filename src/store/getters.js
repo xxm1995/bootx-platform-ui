@@ -4,7 +4,6 @@ const getters = {
   theme: state => state.app.theme,
   color: state => state.app.color,
   token: state => state.user.token,
-  roles: state => state.user.roles,
   permissions: state => state.user.permissions,
   userInfo: state => state.user.info,
   addRouters: state => state.permission.addRouters,

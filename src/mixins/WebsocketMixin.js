@@ -1,3 +1,4 @@
+import { findByParamKey } from '@/api/system/param'
 
 export const WebsocketMixin = {
   data () {
@@ -11,6 +12,11 @@ export const WebsocketMixin = {
     this.websocketOnclose()
   },
   methods: {
+    // 获取系统参数值
+    getParam (key) {
+      return findByParamKey(key)
+    },
+    // 初始化websocket
     initWebSocket () {
       this.websocket = new WebSocket(this.websocketUrl)
       this.websocket.onopen = this.websocketOnopen

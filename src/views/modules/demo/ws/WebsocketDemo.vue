@@ -25,8 +25,10 @@ export default {
     initWs () {
       // 建立连接对象
       const userId = storage.get(USERINFO).userId
-      this.websocketUrl = 'ws://127.0.0.1:9999/test/ws/' + userId
-      this.initWebSocket()
+      this.getParam('WebsocketServerUrl').then(({ data: url }) => {
+        this.websocketUrl = url + '/test/ws/' + userId
+        this.initWebSocket()
+      })
     },
     // 发送消息
     push () {

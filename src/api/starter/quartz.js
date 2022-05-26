@@ -56,11 +56,24 @@ export function stop (id) {
   })
 }
 
+/**
+ * 立即执行
+ */
 export function execute (id) {
   return axios({
     url: '/quartz/execute',
     method: 'POST',
     params: { id }
+  })
+}
+
+/**
+ * 同步任务状态
+ */
+export function syncJobStatus () {
+  return axios({
+    url: '/quartz/syncJobStatus',
+    method: 'POST'
   })
 }
 

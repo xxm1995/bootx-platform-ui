@@ -36,7 +36,10 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add">新建</a-button>
+          <a-button icon="sync" @click="syncJobStatus">状态同步</a-button>
+        </a-space>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -132,7 +135,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { page, del, start, stop, execute } from '@/api/starter/quartz'
+import { page, del, start, stop, execute, syncJobStatus } from '@/api/starter/quartz'
 import QuartzJobEdit from './QuartzJobEdit'
 import QuartzJobLogList from './QuartzJobLogList'
 
@@ -197,6 +200,12 @@ export default {
     execute (record) {
       execute(record.id).then(() => {
         this.$message.info('运行成功')
+      })
+    },
+    // 同步任务状态
+    syncJobStatus () {
+      syncJobStatus().then(() => {
+        this.$message.info('任务状态同步成功')
       })
     }
   },

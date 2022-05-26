@@ -34,7 +34,7 @@ export default {
     push () {
       this.websocketSend(this.msg)
     },
-
+    // 接收消息
     websocketOnmessage (e) {
       this.showMsg = e.data
       console.log(e.data)

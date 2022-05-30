@@ -7,13 +7,11 @@
 </template>
 
 <script>
-
-import { WebsocketMixin } from '@/mixins/WebsocketMixin'
 import storage from 'store'
 import { USERINFO } from '@/store/mutation-types'
-
+import { WebsocketMixin } from '@/mixins/WebsocketMixin'
 export default {
-  name: 'WebsocketDemo',
+  name: 'RabbitMQDemo',
   mixins: [WebsocketMixin],
   data () {
     return {
@@ -43,6 +41,7 @@ export default {
   mounted () {
     this.initWs()
   }
+
 }
 </script>
 

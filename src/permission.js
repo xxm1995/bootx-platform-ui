@@ -10,7 +10,7 @@ import { i18nRender } from '@/locales'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult', 'demo', 'cashier'] // no redirect allowList
+const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/analysis'
 
@@ -29,7 +29,6 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetUserPermission')
           .then(({ permissionList, menus }) => {
-            // 生成路由(后期改为动态路由)
             store.dispatch('GenerateRoutes', { permissionList, menus }).then(() => {
               // 动态添加可访问路由表
               const routers = store.getters.addRouters
@@ -61,7 +60,10 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    if (allowList.includes(to.name)) {
+    // 判断组件是否可以免登陆
+    if (to.meta && to.meta.ignoreLogin) {
+      next()
+    } else if (allowList.includes(to.name)) {
       // 在免登录名单，直接进入
       next()
     } else {

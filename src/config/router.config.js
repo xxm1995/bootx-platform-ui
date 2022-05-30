@@ -82,13 +82,13 @@ export const constantRouterMap = [
     path: '/settlement',
     name: 'settlement',
     component: () => import('@/views/demo/DemoIndex'),
-    meta: { title: '结算台' }
+    meta: { title: '结算台', ignoreLogin: true }
   },
   {
     path: '/cashier',
     name: 'cashier',
     component: () => import('@/views/payment/cashier/Cashier'),
-    meta: { title: '结算台支付演示' }
+    meta: { title: '结算台支付演示', ignoreLogin: true }
   },
 
   {

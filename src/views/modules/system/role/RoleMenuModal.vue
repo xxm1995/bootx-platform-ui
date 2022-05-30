@@ -31,7 +31,10 @@
       </a-tree>
     </a-spin>
     <div class="drawer-button">
-      <a-dropdown style="float: left" :trigger="['click']" placement="topCenter">
+      <a-select style="float: left" @change="clientSwitch" v-model="clientCode">
+        <a-select-option v-for="o in clientList" :key="o.code">{{ o.name }}</a-select-option>
+      </a-select>
+      <a-dropdown style="float: left;margin-left: 5px" :trigger="['click']" placement="topCenter">
         <template v-slot:overlay>
           <a-menu>
             <a-menu-item key="1" @click="checkALL">全部勾选</a-menu-item>
@@ -57,6 +60,7 @@ import { findPermissionIdsByRole, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 import { allTree } from '@/api/system/permMenu'
 import XEUtils from 'xe-utils'
+import { findAllByAlonePrem } from '@/api/system/client'
 
 export default {
   name: 'RoleMenuModal',
@@ -64,6 +68,8 @@ export default {
     return {
       roleId: '',
       searchName: '',
+      clientList: [],
+      clientCode: 'admin',
       // 父子选项默认不受控
       checkStrictly: true,
       // 所有的key
@@ -81,24 +87,40 @@ export default {
     }
   },
   methods: {
-    async init (roleId) {
+    // 终端列表
+    initClientList () {
+      findAllByAlonePrem().then(({ data }) => {
+        this.clientList = data.map(res => {
+          return {
+            code: res.code,
+            name: res.name
+          }
+        })
+      })
+    },
+    // 初始化菜单分配信息
+    async initAssign () {
       this.visible = true
       this.loading = true
-      this.roleId = roleId
       this.searchName = ''
       this.expandedKeys = []
       // 权限树
-      await allTree().then(res => {
+      await allTree(this.clientCode).then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
         this.generateTreeList(res.data)
       })
       // 当前角色已经选择的
-      await findPermissionIdsByRole(roleId).then(res => {
+      await findPermissionIdsByRole(this.roleId, this.clientCode).then(res => {
         this.checkedKeys = res.data
       })
       // 所有的key值
       this.allTreeKeys = this.treeList.map(item => item.id)
       this.loading = false
+    },
+    init (roleId) {
+      this.roleId = roleId
+      this.initClientList()
+      this.initAssign()
     },
     // 展开/收起节点时触发
     onExpand (expandedKeys) {
@@ -132,6 +154,11 @@ export default {
     // 切换父子受控状态
     switchCheckStrictly (v) {
       this.checkStrictly = v
+    },
+    // 终端切换
+    clientSwitch (item) {
+      this.clientCode = item
+      this.initAssign()
     },
     // 提交
     handleSubmit () {

@@ -55,7 +55,7 @@
       <vxe-table-column field="name" title="权限名称" />
       <vxe-table-column field="code" title="权限标识" />
       <vxe-table-column field="groupName" title="请求分组" />
-      <vxe-table-column field="enable" title="启用状态" >
+      <vxe-table-column field="enable" title="启用鉴权" >
         <template v-slot="{row}">
           <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">停用</a-tag>

@@ -22,7 +22,7 @@
           <a-input hidden v-model="form.id"/>
         </a-form-model-item>
         <a-form-model-item hidden prop="generate">
-          <a-input hidden v-model="form.generate"/>
+          <a-switch hidden v-model="form.generate"/>
         </a-form-model-item>
         <a-form-model-item
           label="请求路径"
@@ -46,7 +46,6 @@
             <a-select-option value="DELETE">DELETE</a-select-option>
             <a-select-option value="PUT">PUT</a-select-option>
           </a-select>
-
         </a-form-model-item>
         <a-form-model-item
           label="权限名称"
@@ -76,7 +75,7 @@
           />
         </a-form-model-item>
         <a-form-model-item
-          label="启用状态"
+          label="启用鉴权"
           prop="enable"
         >
           <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable" />
@@ -92,7 +91,7 @@
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template slot="footer" v-if="editable">
+    <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" v-if="!showable" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
@@ -123,7 +122,7 @@ export default {
         name: [{ required: true, message: '请求权限名称必填' }],
         requestType: [{ required: true, message: '请求类型必填' }],
         path: [{ required: true, message: '请求路径必填' }],
-        enable: [{ required: true, message: '必选是否启用' }]
+        enable: [{ required: true, message: '启用鉴权必选' }]
       }
     }
   },

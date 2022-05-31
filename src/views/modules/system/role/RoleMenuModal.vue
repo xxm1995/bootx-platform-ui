@@ -165,6 +165,7 @@ export default {
       this.loading = true
       save({
         roleId: this.roleId,
+        clientCode: this.clientCode,
         permissionIds: this.checkedKeys
       }).then(() => {
         this.handleCancel()

@@ -3,7 +3,7 @@ import { axios } from '@/utils/request'
 /**
  * 根据用户获取拥有的权限
  */
-export function findPermissionIdsByRole (roleId,clientCode) {
+export function findPermissionIdsByRole (roleId, clientCode) {
   return axios({
     url: `/role/menu/findPermissionIdsByRole`,
     method: 'GET',

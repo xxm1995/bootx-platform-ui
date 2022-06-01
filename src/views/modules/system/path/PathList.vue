@@ -4,18 +4,23 @@
       <a-form layout="inline">
         <a-row :gutter="24">
           <a-col :md="6" :sm="24">
+            <a-form-item label="权限路径">
+              <a-input v-model="queryParam.path" placeholder="请输入要查询的权限路径"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-form-item label="权限标识">
-              <a-input v-model="queryParam.code" placeholder=""/>
+              <a-input v-model="queryParam.code" placeholder="请输入要查询的权限标识"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="权限名称">
-              <a-input v-model="queryParam.name" placeholder=""/>
+              <a-input v-model="queryParam.name" placeholder="请输入要查询的权限名称"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="权限分组">
-              <a-input v-model="queryParam.groupName" placeholder=""/>
+              <a-input v-model="queryParam.groupName" placeholder="请输入要查询的权限分组"/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
@@ -76,7 +81,7 @@
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical" />
           <a-popconfirm
-            title="是否删除菜单或权限"
+            title="是否删除请求权限"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">

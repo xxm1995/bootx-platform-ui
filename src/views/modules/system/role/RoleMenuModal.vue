@@ -2,7 +2,7 @@
   <a-drawer
     title="角色菜单配置"
     :maskClosable="false"
-    :width="800"
+    :width="1000"
     placement="right"
     :closable="true"
     @close="handleCancel"
@@ -21,10 +21,12 @@
         @expand="onExpand"
       >
         <template v-slot:title="{ title }">
-          <span v-if="title.indexOf(searchName) > -1">
-            {{ title.substr(0, title.indexOf(searchName)) }}
-            <span style="color: #f50">{{ searchName }}</span>
-            {{ title.substr(title.indexOf(searchName) + searchName.length) }}
+          <span v-if="title.toLowerCase().indexOf(searchName.toLowerCase()) > -1">
+            {{ searchRenderStart(title,searchName) }}
+            <span style="color: #f50">
+              {{ searchRenderMiddle(title,searchName) }}
+            </span>
+            {{ searchRenderEnd(title,searchName) }}
           </span>
           <span v-else>{{ title }}</span>
         </template>
@@ -193,6 +195,18 @@ export default {
           return node.parentId
         }
       }).filter((item, i, self) => item && self.indexOf(item) === i)
+    },
+    // 渲染搜索项目数据开始段
+    searchRenderStart (title, searchName) {
+      return title.substr(0, title.toLowerCase().indexOf(searchName.toLowerCase()))
+    },
+    // 渲染搜索项目数据中间段
+    searchRenderMiddle (title, searchName) {
+      return title.substr(title.toLowerCase().indexOf(searchName.toLowerCase()), title.toLowerCase().indexOf(searchName.toLowerCase()) + searchName.length)
+    },
+    // 渲染搜索项目数据结束段
+    searchRenderEnd (title, searchName) {
+      return title.substr(title.toLowerCase().indexOf(searchName.toLowerCase()) + searchName.length)
     }
   }
 }

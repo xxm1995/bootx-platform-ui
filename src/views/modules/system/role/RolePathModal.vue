@@ -2,7 +2,7 @@
   <a-drawer
     :title="title"
     :maskClosable="false"
-    :width="800"
+    :width="1000"
     placement="right"
     :closable="true"
     @close="handleCancel"

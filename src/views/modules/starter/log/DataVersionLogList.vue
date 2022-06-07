@@ -35,7 +35,7 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="checkbox" width="60"/>
+      <vxe-table-column type="checkbox" width="40"/>
       <vxe-table-column field="dataName" title="数据名称" />
       <vxe-table-column field="dataId" title="数据主键" />
       <vxe-table-column field="dataContent" title="数据内容" />

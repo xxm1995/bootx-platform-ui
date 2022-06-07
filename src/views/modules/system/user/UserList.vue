@@ -26,19 +26,43 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add">新建</a-button>
+          <a-dropdown v-show="batchOperateFlag">
+            <a-button > 批量操作 <a-icon type="down" /></a-button>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="assignRolesBatch()">角色分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="assignDeptBatch()">部门分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="assignDataScopeBatch()">数据权限分配</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="lockUserConfirmBatch(true)">锁定账号</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="lockUserConfirmBatch(false)">解锁账号</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
+        </a-space>
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
       show-overflow
       row-id="id"
+      ref="table"
       size="medium"
+      @checkbox-all="selectAllEvent"
+      @checkbox-change="selectChangeEvent"
       :loading="loading"
       :data="tableData">
-      <vxe-table-column type="seq" title="序号" width="60" />
+      <vxe-column type="checkbox" width="40"/>
       <vxe-table-column field="name" title="姓名" />
       <vxe-table-column field="username" title="账号" />
       <vxe-table-column field="phone" title="手机号" />
@@ -100,8 +124,10 @@
     </vxe-pager>
     <!-- 角色分配 -->
     <user-role-assign ref="userRoleAssign" />
+    <user-role-assign-batch ref="userRoleAssignBatch" />
     <!-- 角色分配 -->
     <user-data-scope-assign ref="userDataScopeAssign" />
+    <user-data-scope-assign-batch ref="userDataScopeAssignBatch"/>
     <!-- 部门分配 -->
     <user-dept-assign ref="userDeptAssign" />
     <!--  添加用户  -->
@@ -116,10 +142,12 @@
 </template>
 
 <script>
-import { del, lockUser, page, unlockUser } from '@/api/system/user'
-import UserRoleAssign from './UserRoleAssign'
-import UserDeptAssign from './UserDeptAssign'
-import UserDataScopeAssign from './UserDataScopeAssign'
+import { del, lockBatch, lockUser, page, unlockUser, unlockUserBatch } from '@/api/system/user'
+import UserRoleAssign from './role/UserRoleAssign'
+import UserRoleAssignBatch from './role/UserRoleAssignBatch'
+import UserDeptAssign from './dept/UserDeptAssign'
+import UserDataScopeAssign from './scope/UserDataScopeAssign'
+import UserDataScopeAssignBatch from './scope/UserDataScopeAssignBatch'
 import UserAdd from './UserAdd'
 import UserEdit from './UserEdit'
 import UserShow from './UserShow'
@@ -130,8 +158,10 @@ export default {
   name: 'UserList',
   components: {
     UserRoleAssign,
+    UserRoleAssignBatch,
     UserDeptAssign,
     UserDataScopeAssign,
+    UserDataScopeAssignBatch,
     UserAdd,
     UserEdit,
     UserShow,
@@ -162,15 +192,29 @@ export default {
     },
     // 分配角色
     assignRoles (record) {
-      this.$refs.userRoleAssign.edit(record, 'edit')
+      this.$refs.userRoleAssign.edit(record)
+    },
+    // 批量分配角色
+    assignRolesBatch () {
+      const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      this.$refs.userRoleAssignBatch.edit(userIds)
     },
     // 分配数据权限
     assignDataScope (record) {
-      this.$refs.userDataScopeAssign.edit(record, 'edit')
+      this.$refs.userDataScopeAssign.edit(record)
+    },
+    // 批量分配数据权限
+    assignDataScopeBatch () {
+      const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      this.$refs.userDataScopeAssignBatch.edit(userIds)
     },
     // 分配部门
     assignDept (record) {
       this.$refs.userDeptAssign.init(record.id)
+    },
+    // 批量分配数据部门
+    assignDeptBatch () {
+      const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
     },
     add () {
       this.$refs.userAdd.init('', 'add')
@@ -185,7 +229,7 @@ export default {
       this.$refs.resetPassword.init(record.id, 'edit')
     },
     /**
-     * 锁定用户
+     * 锁定/解锁用户
      * @param userId 用户id
      * @param type true 锁定, false 解锁
      */
@@ -202,6 +246,35 @@ export default {
           that.init()
         }
       })
+    },
+    /**
+     * 批量锁定/解锁用户
+     * @param type true 锁定, false 解锁
+     */
+    lockUserConfirmBatch (type) {
+      const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      const that = this
+      this.$confirm({
+        title: type ? '是否锁定该用户' : '是否解锁该用户',
+        onOk: async function () {
+          if (type) {
+            await lockBatch(userIds)
+          } else {
+            await unlockUserBatch(userIds)
+          }
+          that.init()
+        }
+      })
+    },
+    // 选中全部
+    selectAllEvent () {
+      const records = this.$refs.table.getCheckboxRecords()
+      this.batchOperateFlag = !!records.length
+    },
+    // 选中事件
+    selectChangeEvent () {
+      const records = this.$refs.table.getCheckboxRecords()
+      this.batchOperateFlag = !!records.length
     },
     remove (record) {
       del(record.id).then(res => {

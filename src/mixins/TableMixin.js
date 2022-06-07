@@ -14,6 +14,8 @@ export const TableMixin = {
     return {
       // 加载状态
       loading: false,
+      // 批量操作标识
+      batchOperateFlag: false,
       // 高级查询条件生效状态
       superQueryFlag: false,
       // 分页返回数据

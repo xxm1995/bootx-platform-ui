@@ -92,7 +92,18 @@ export function getRoles (id) {
  */
 export function addUserRole (data) {
   return axios({
-    url: `/user/role/saveAndUpdate`,
+    url: `/user/role/saveAssign`,
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
+ * 添加用户角色关联关系 批量
+ */
+export function addUserRoleBatch (data) {
+  return axios({
+    url: `/user/role/saveAssignBatch`,
     method: 'POST',
     data: data
   })
@@ -132,6 +143,17 @@ export function addUserDataScope (data) {
 }
 
 /**
+ * 添加用户数据权限关联关系 批量
+ */
+export function addUserDataScopeBatch (data) {
+  return axios({
+    url: `/user/data/scope/saveAssignBatch`,
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
  * 获取用户拥有部门id集合
  */
 export function findDeptIdsByUser (id) {
@@ -158,7 +180,7 @@ export function getDeptList (id) {
  */
 export function addUserDept (data) {
   return axios({
-    url: `/user/dept/saveAndUpdate`,
+    url: `/user/dept/saveAssign`,
     method: 'POST',
     data: data
   })
@@ -176,6 +198,17 @@ export function lockUser (userId) {
 }
 
 /**
+ * 锁定用户 批量
+ */
+export function lockBatch (userIds) {
+  return axios({
+    url: '/user/admin/lockBatch',
+    method: 'POST',
+    data: userIds
+  })
+}
+
+/**
  * 解锁用户
  */
 export function unlockUser (userId) {
@@ -183,6 +216,17 @@ export function unlockUser (userId) {
     url: '/user/admin/unlock',
     method: 'POST',
     params: { userId }
+  })
+}
+
+/**
+ * 解锁用户
+ */
+export function unlockUserBatch (userIds) {
+  return axios({
+    url: '/user/admin/unlockBatch',
+    method: 'POST',
+    data: userIds
   })
 }
 

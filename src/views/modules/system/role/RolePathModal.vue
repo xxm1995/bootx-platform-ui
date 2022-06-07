@@ -57,10 +57,11 @@ export default {
       })
       await findPathsByUser().then(res => {
         const result = []
-        XEUtils.each(XEUtils.groupBy(res.data, 'groupName'), (childs, key) => {
+        // 对数据进行分组
+        XEUtils.each(XEUtils.groupBy(res.data, 'groupName'), (children, key) => {
           result.push({
             name: key,
-            children: childs
+            children: children
           })
         })
         this.tableData = result

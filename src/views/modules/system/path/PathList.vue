@@ -36,14 +36,30 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
-        <a-popconfirm
-          title="是否同步系统请求资源"
-          @confirm="syncSystem()"
-          okText="是"
-          cancelText="否">
-          <a-button style="margin-left: 8px" icon="sync">同步系统资源</a-button>
-        </a-popconfirm>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add">新建</a-button>
+          <a-popconfirm
+            title="是否批量启用"
+            @confirm="batchOperate(true)"
+            okText="是"
+            cancelText="否">
+            <a-button v-show="batchOperateFlag">批量启用</a-button>
+          </a-popconfirm>
+          <a-popconfirm
+            title="是否批量停用"
+            @confirm="batchOperate(false)"
+            okText="是"
+            cancelText="否">
+            <a-button v-show="batchOperateFlag">批量停用</a-button>
+          </a-popconfirm>
+          <a-popconfirm
+            title="是否同步系统请求资源"
+            @confirm="syncSystem()"
+            okText="是"
+            cancelText="否">
+            <a-button icon="sync">同步系统资源</a-button>
+          </a-popconfirm>
+        </a-space>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -52,10 +68,13 @@
       stripe
       show-overflow
       row-id="id"
+      ref="table"
+      @checkbox-all="selectAllEvent"
+      @checkbox-change="selectChangeEvent"
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
+      <vxe-column type="checkbox" width="40"/>
       <vxe-table-column field="path" title="请求路径" />
       <vxe-table-column field="name" title="权限名称" />
       <vxe-table-column field="code" title="权限标识" />
@@ -107,7 +126,7 @@
 </template>
 
 <script>
-import { del, page, syncSystem } from '@/api/system/permPath'
+import { batchUpdateEnable, del, page, syncSystem } from '@/api/system/permPath'
 import PathEdit from './PathEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {
@@ -126,7 +145,7 @@ export default {
   },
   methods: {
     init () {
-      this.loading = true
+      this.batchOperateFlag = false
       page({
         ...this.queryParam,
         ...this.pages
@@ -151,6 +170,27 @@ export default {
       del(record.id).then(() => {
         this.$message.info('删除成功')
         this.init()
+      })
+    },
+    // 选中全部
+    selectAllEvent () {
+      const records = this.$refs.table.getCheckboxRecords()
+      this.batchOperateFlag = !!records.length
+    },
+    // 选中事件
+    selectChangeEvent () {
+      const records = this.$refs.table.getCheckboxRecords()
+      this.batchOperateFlag = !!records.length
+    },
+    // 批量操作
+    batchOperate (flag) {
+      const ids = this.$refs.table.getCheckboxRecords().map(o=>o.id)
+      batchUpdateEnable({
+        permPathIds: ids,
+        enable: flag
+      }).then(() => {
+        this.init()
+        this.$message.info('批量修改状态成功')
       })
     },
     // 同步

@@ -66,6 +66,17 @@ export function del (id) {
 }
 
 /**
+ * 批量更新状态
+ */
+export function batchUpdateEnable (obj) {
+  return axios({
+    url: '/perm/path/batchUpdateEnable',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
  * 同步
  */
 export function syncSystem () {

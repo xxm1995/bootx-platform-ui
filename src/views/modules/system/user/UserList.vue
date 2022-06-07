@@ -130,6 +130,7 @@
     <user-data-scope-assign-batch ref="userDataScopeAssignBatch"/>
     <!-- 部门分配 -->
     <user-dept-assign ref="userDeptAssign" />
+    <user-dept-assign-batch ref="userDeptAssignBatch" />
     <!--  添加用户  -->
     <user-add @ok="init" ref="userAdd" />
     <!--  编辑用户  -->
@@ -142,10 +143,11 @@
 </template>
 
 <script>
-import { del, lockBatch, lockUser, page, unlockUser, unlockUserBatch } from '@/api/system/user'
+import { del, lockUser, lockUserBatch, page, unlockUser, unlockUserBatch } from '@/api/system/user'
 import UserRoleAssign from './role/UserRoleAssign'
 import UserRoleAssignBatch from './role/UserRoleAssignBatch'
 import UserDeptAssign from './dept/UserDeptAssign'
+import UserDeptAssignBatch from './dept/UserDeptAssignBatch'
 import UserDataScopeAssign from './scope/UserDataScopeAssign'
 import UserDataScopeAssignBatch from './scope/UserDataScopeAssignBatch'
 import UserAdd from './UserAdd'
@@ -160,6 +162,7 @@ export default {
     UserRoleAssign,
     UserRoleAssignBatch,
     UserDeptAssign,
+    UserDeptAssignBatch,
     UserDataScopeAssign,
     UserDataScopeAssignBatch,
     UserAdd,
@@ -215,6 +218,7 @@ export default {
     // 批量分配数据部门
     assignDeptBatch () {
       const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      this.$refs.userDeptAssignBatch.init(userIds)
     },
     add () {
       this.$refs.userAdd.init('', 'add')
@@ -236,7 +240,7 @@ export default {
     lockUserConfirm (userId, type) {
       const that = this
       this.$confirm({
-        title: type ? '是否锁定该用户' : '是否解锁该用户',
+        title: type ? '是否锁定选中的用户' : '是否解锁选中的用户',
         onOk: async function () {
           if (type) {
             await lockUser(userId)
@@ -258,7 +262,7 @@ export default {
         title: type ? '是否锁定该用户' : '是否解锁该用户',
         onOk: async function () {
           if (type) {
-            await lockBatch(userIds)
+            await lockUserBatch(userIds)
           } else {
             await unlockUserBatch(userIds)
           }

@@ -187,6 +187,17 @@ export function addUserDept (data) {
 }
 
 /**
+ * 添加用户部门关联关系 批量
+ */
+export function addUserDeptBatch (data) {
+  return axios({
+    url: `/user/dept/saveAssignBatch`,
+    method: 'POST',
+    data: data
+  })
+}
+
+/**
  * 锁定用户
  */
 export function lockUser (userId) {
@@ -200,7 +211,7 @@ export function lockUser (userId) {
 /**
  * 锁定用户 批量
  */
-export function lockBatch (userIds) {
+export function lockUserBatch (userIds) {
   return axios({
     url: '/user/admin/lockBatch',
     method: 'POST',

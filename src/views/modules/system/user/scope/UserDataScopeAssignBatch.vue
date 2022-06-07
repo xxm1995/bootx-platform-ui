@@ -8,9 +8,9 @@
     @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
-      <a-row style="margin-bottom: 20px">
-        <a-col span="16" offset="5">
-          <a-alert message="注意！会清空用户原有分配的数据权限" banner />
+      <a-row>
+        <a-col span="16" offset="4">
+          <a-alert style="margin-bottom: 20px" message="注意！会清空用户原有分配的数据权限" banner closable/>
         </a-col>
       </a-row>
       <a-form-model

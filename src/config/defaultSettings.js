@@ -17,8 +17,10 @@ export default {
   primaryColor: '#13C2C2', // primary color of ant design
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
-  fixedHeader: false, // sticky header
-  fixSiderbar: false, // sticky siderbar
+  // 菜单栏是否固定
+  fixedHeader: true, // sticky header
+  // 菜单栏是否固定
+  fixSiderbar: true, // sticky siderbar
   colorWeak: false,
   multiTab: true,
   // vue-ls options

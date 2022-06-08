@@ -259,7 +259,7 @@ export default {
       const userIds = this.$refs.table.getCheckboxRecords().map(o => o.id)
       const that = this
       this.$confirm({
-        title: type ? '是否锁定该用户' : '是否解锁该用户',
+        title: type ? '是否锁定选中的用户' : '是否解锁选中的用户',
         onOk: async function () {
           if (type) {
             await lockUserBatch(userIds)

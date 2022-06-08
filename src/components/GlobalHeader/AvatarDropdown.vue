@@ -2,21 +2,23 @@
   <a-dropdown v-if="currentUser && currentUser.name" placement="bottomRight">
     <span class="ant-pro-account-avatar">
       <a-avatar
+        ref="aa"
         size="small"
         :src="avatarUrl||defaultAvatar"
         class="antd-pro-global-header-index-avatar" />
       <span>{{ currentUser.name }}</span>
+<!--      <setting-drawer ref="settingDrawer" title="系统设置"/>-->
     </span>
     <template v-slot:overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
-<!--        <a-menu-item v-if="menu" key="center" @click="handleToCenter">-->
-<!--          <a-icon type="user" />-->
-<!--          个人中心-->
-<!--        </a-menu-item>-->
-        <a-menu-item v-if="menu" key="settings" @click="handleToSettings">
+        <a-menu-item v-if="menu" key="userSettings" @click="handleToUserSettings">
           <a-icon type="setting" />
           个人设置
         </a-menu-item>
+<!--        <a-menu-item v-if="menu" key="systemSettings" @click="handleToSystemSettings">-->
+<!--          <a-icon type="tool" />-->
+<!--          系统设置-->
+<!--        </a-menu-item>-->
         <a-menu-divider v-if="menu" />
         <a-menu-item key="logout" @click="handleLogout">
           <a-icon type="logout" />
@@ -32,9 +34,13 @@
 
 <script>
 import { Modal } from 'ant-design-vue'
+import SettingDrawer from '@/components/SettingDrawer/SettingDrawer'
 
 export default {
   name: 'AvatarDropdown',
+  components: {
+    SettingDrawer
+  },
   props: {
     currentUser: {
       type: Object,
@@ -58,8 +64,11 @@ export default {
     handleToCenter () {
       this.$router.push({ path: '/account/center' })
     },
-    handleToSettings () {
+    handleToUserSettings () {
       this.$router.push({ path: '/account/settings' })
+    },
+    handleToSystemSettings () {
+      this.$refs.settingDrawer.showDrawer()
     },
     handleLogout (e) {
       Modal.confirm({

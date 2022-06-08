@@ -1,5 +1,5 @@
 <template>
-  <div class="footer">
+  <div class="footer" >
     <div class="copyright">
       Copyright
       <a-icon type="copyright" /> 2021 <span>Bootx Platform{{ version }}</span>

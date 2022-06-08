@@ -38,20 +38,22 @@
       <template v-slot:buttons>
         <a-space>
           <a-button type="primary" icon="plus" @click="add">新建</a-button>
-          <a-popconfirm
-            title="是否批量启用"
-            @confirm="batchOperate(true)"
-            okText="是"
-            cancelText="否">
-            <a-button v-show="batchOperateFlag">批量启用</a-button>
-          </a-popconfirm>
-          <a-popconfirm
-            title="是否批量停用"
-            @confirm="batchOperate(false)"
-            okText="是"
-            cancelText="否">
-            <a-button v-show="batchOperateFlag">批量停用</a-button>
-          </a-popconfirm>
+          <a-dropdown v-show="batchOperateFlag">
+            <a-button > 批量操作 <a-icon type="down" /></a-button>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="batchUpdateEnable(true)">批量启用</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="batchUpdateEnable(false)">批量停用</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="assignDataScopeBatch()">批量删除</a>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
           <a-popconfirm
             title="是否同步系统请求资源"
             @confirm="syncSystem()"
@@ -63,10 +65,6 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
       ref="table"
       @checkbox-all="selectAllEvent"
@@ -93,7 +91,7 @@
       </vxe-table-column>
       <vxe-table-column field="remark" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -126,7 +124,7 @@
 </template>
 
 <script>
-import { batchUpdateEnable, del, page, syncSystem } from '@/api/system/permPath'
+import { batchUpdateEnable, del, delBatch, page, syncSystem } from '@/api/system/permPath'
 import PathEdit from './PathEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 export default {
@@ -146,6 +144,7 @@ export default {
   methods: {
     init () {
       this.batchOperateFlag = false
+      this.loading = true
       page({
         ...this.queryParam,
         ...this.pages
@@ -172,6 +171,20 @@ export default {
         this.init()
       })
     },
+    // 批量删除
+    assignDataScopeBatch () {
+      const ids = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      const that = this
+      this.$confirm({
+        title: '是否批量删除选中的数据',
+        onOk: async function () {
+          delBatch(ids).then(() => {
+            that.init()
+            that.$message.info('批量删除成功')
+          })
+        }
+      })
+    },
     // 选中全部
     selectAllEvent () {
       const records = this.$refs.table.getCheckboxRecords()
@@ -182,15 +195,21 @@ export default {
       const records = this.$refs.table.getCheckboxRecords()
       this.batchOperateFlag = !!records.length
     },
-    // 批量操作
-    batchOperate (flag) {
-      const ids = this.$refs.table.getCheckboxRecords().map(o=>o.id)
-      batchUpdateEnable({
-        permPathIds: ids,
-        enable: flag
-      }).then(() => {
-        this.init()
-        this.$message.info('批量修改状态成功')
+    // 批量启停用
+    batchUpdateEnable (type) {
+      const ids = this.$refs.table.getCheckboxRecords().map(o => o.id)
+      const that = this
+      this.$confirm({
+        title: type ? '是否批量启用' : '是否批量停用',
+        onOk: async function () {
+          batchUpdateEnable({
+            permPathIds: ids,
+            enable: type
+          }).then(() => {
+            that.init()
+            that.$message.info('批量修改状态成功')
+          })
+        }
       })
     },
     // 同步

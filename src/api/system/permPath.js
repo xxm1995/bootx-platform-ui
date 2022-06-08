@@ -66,6 +66,17 @@ export function del (id) {
 }
 
 /**
+ * 删除
+ */
+export function delBatch (ids) {
+  return axios({
+    url: `/perm/path/deleteBatch`,
+    method: 'DELETE',
+    data: ids
+  })
+}
+
+/**
  * 批量更新状态
  */
 export function batchUpdateEnable (obj) {

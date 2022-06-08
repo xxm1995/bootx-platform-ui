@@ -19,6 +19,19 @@ canvas {
   display: block;
 }
 
+html{
+  // 滚动条样式优化
+  ::-webkit-scrollbar
+  {
+    width: 5px;
+    background-color: #F5F5F5;
+  }
+  ::-webkit-scrollbar-thumb
+  {
+    background-color: #dcdfe6;
+  }
+}
+
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -48,7 +61,7 @@ ol {
   .ant-form-inline {
     .ant-form-item {
       display: flex;
-      margin-bottom: 24px;
+      margin-bottom: 10px;
       margin-right: 0;
 
       .ant-form-item-control-wrapper {
@@ -59,7 +72,7 @@ ol {
 
       > .ant-form-item-label {
         line-height: 32px;
-        padding-right: 8px;
+        padding-right: 5px;
         width: auto;
       }
       .ant-form-item-control {

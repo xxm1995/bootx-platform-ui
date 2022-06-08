@@ -221,4 +221,11 @@ export default {
 
 <style lang="less">
 @import "./BasicLayout.less";
+.ant-menu{
+  // 隐藏菜单栏滚动条
+  &::-webkit-scrollbar
+  {
+    width: 0;
+  }
+}
 </style>

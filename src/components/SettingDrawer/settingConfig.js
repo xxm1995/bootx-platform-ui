@@ -1,5 +1,6 @@
 // import defaultSettings from '../defaultSettings';
 import themeColor from './themeColor.js'
+import { message } from 'ant-design-vue/es'
 
 // let lessNodesAppended
 const colorList = [
@@ -30,7 +31,20 @@ const colorList = [
 ]
 
 const updateTheme = newPrimaryColor => {
+  const hideMessage = message.loading('正在编译主题！', 0)
   themeColor.changeColor(newPrimaryColor)
+  // less.modifyVars可用
+  console.log(window.less)
+  window.less.modifyVars({
+    '@primary-color': newPrimaryColor
+  })
+    .then(() => {
+      hideMessage()
+    })
+    .catch(() => {
+      message.error('更新主题失败')
+      hideMessage()
+    })
 }
 
 const updateColorWeak = colorWeak => {

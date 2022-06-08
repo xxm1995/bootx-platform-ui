@@ -41,9 +41,11 @@ export default {
     this.selectedLastPath()
   },
   methods: {
+    // 不能删除
     onEdit (targetKey, action) {
       this[action](targetKey)
     },
+    // 删除
     remove (key) {
       const removeRoute = this.pages.filter(item => item.fullPath === key)
       this.pages = this.pages.filter(page => page.fullPath !== key)
@@ -52,10 +54,6 @@ export default {
       if (!this.fullPathList.includes(this.activeKey)) {
         this.selectedLastPath()
       }
-      let index = this.fullPathList.indexOf(key)
-      this.fullPathList = this.fullPathList.filter(item => item !== key)
-      index = index >= this.fullPathList.length ? this.fullPathList.length - 1 : index
-      this.activePage = this.fullPathList[index]
 
       // 关闭页面则从缓存中删除路由，下次点击菜单会重新加载页面
       const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
@@ -80,6 +78,7 @@ export default {
         this.$message.info('这是最后一个标签了, 无法被关闭')
       }
     },
+    // 关闭左侧
     closeLeft (e) {
       const currentIndex = this.fullPathList.indexOf(e)
       if (currentIndex > 0) {
@@ -92,6 +91,7 @@ export default {
         this.$message.info('左侧没有标签')
       }
     },
+    // 关闭右侧
     closeRight (e) {
       const currentIndex = this.fullPathList.indexOf(e)
       if (currentIndex < (this.fullPathList.length - 1)) {
@@ -104,6 +104,7 @@ export default {
         this.$message.info('右侧没有标签')
       }
     },
+    // 关闭全部
     closeAll (e) {
       const currentIndex = this.fullPathList.indexOf(e)
       this.fullPathList.forEach((item, index) => {
@@ -112,12 +113,32 @@ export default {
         }
       })
     },
-    closeMenuClick (key, route) {
+    // 刷新页面 (未完成)
+    routeReload (e) {
+      const currentIndex = this.fullPathList.indexOf(e)
+      const route = this.pages[currentIndex]
+      console.log(route)
+
+      // 关闭页面则从缓存中删除路由，下次点击菜单会重新加载页面
+      const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+      const componentName = route.meta.componentName
+      if (cacheComponents.includes(componentName)) {
+        cacheComponents.splice(cacheComponents.findIndex(item => item === componentName), 1)
+        Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+      }
+      this.pages.splice(currentIndex, 1)
+      // this.$router.push('/system/log/DataVersionLog')
+
+      this.pages.splice(currentIndex, 0, route)
+    },
+    // 右键菜单点击
+    menuClick (key, route) {
       this[key](route)
     },
     renderTabPaneMenu (e) {
+      // <a-menu-item key="routeReload">刷新</a-menu-item>
       return (
-        <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.closeMenuClick(key, e) } } }}>
+        <a-menu {...{ on: { click: ({ key, item, domEvent }) => { this.menuClick(key, e) } } }}>
           <a-menu-item key="closeThat">关闭当前</a-menu-item>
           <a-menu-item key="closeRight">关闭右侧</a-menu-item>
           <a-menu-item key="closeLeft">关闭左侧</a-menu-item>
@@ -177,3 +198,8 @@ export default {
   }
 }
 </script>
+<style lang="less" scoped>
+.ant-pro-multi-tab{
+  margin-bottom: 10px;
+}
+</style>

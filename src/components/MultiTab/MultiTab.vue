@@ -1,7 +1,7 @@
 <script>
 import events from './events'
-import Vue from 'vue'
 import { CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
+import storage from 'store'
 
 export default {
   name: 'MultiTab',
@@ -56,12 +56,12 @@ export default {
       }
 
       // 关闭页面则从缓存中删除路由，下次点击菜单会重新加载页面
-      const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+      const cacheComponents = storage.get(CACHE_MULTI_TAB_COMPONENTS) || []
       if (removeRoute && removeRoute[0]) {
         const componentName = removeRoute[0].meta.componentName
         if (cacheComponents.includes(componentName)) {
           cacheComponents.splice(cacheComponents.findIndex(item => item === componentName), 1)
-          Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+          storage.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
         }
       }
     },
@@ -120,11 +120,11 @@ export default {
       console.log(route)
 
       // 关闭页面则从缓存中删除路由，下次点击菜单会重新加载页面
-      const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+      const cacheComponents = storage.get(CACHE_MULTI_TAB_COMPONENTS) || []
       const componentName = route.meta.componentName
       if (cacheComponents.includes(componentName)) {
         cacheComponents.splice(cacheComponents.findIndex(item => item === componentName), 1)
-        Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+        storage.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
       }
       this.pages.splice(currentIndex, 1)
       // this.$router.push('/system/log/DataVersionLog')

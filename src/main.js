@@ -36,7 +36,7 @@ Vue.use(Storage, config.storageOptions)
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 
-new Vue({
+const vue = new Vue({
   router,
   store,
   i18n,
@@ -44,3 +44,5 @@ new Vue({
   created: bootstrap,
   render: h => h(App)
 }).$mount('#app')
+
+export default vue

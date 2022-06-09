@@ -289,8 +289,15 @@ export default {
   },
   created () {
     this.init()
+    // 创建监听
+    this.$bus.on('cs', data => {
+      console.log('事件总线接收消息', data)
+    })
+  },
+  destroyed () {
+    // 解除监听
+    this.$bus.off('cs')
   }
-
 }
 </script>
 

@@ -62,6 +62,7 @@ import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
+import VueBus from 'vue-bus'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -110,11 +111,15 @@ Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(Space)
 Vue.use(VXETable)
+// 事件总线
+Vue.use(VueBus)
 
+// vxe
 Vue.prototype.$XSaveFile = VXETable.saveFile
 Vue.prototype.$XReadFile = VXETable.readFile
 Vue.prototype.$XPrint = VXETable.print
 
+// 通知
 Vue.prototype.$confirm = Modal.confirm
 Vue.prototype.$message = message
 Vue.prototype.$notification = notification

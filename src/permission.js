@@ -7,6 +7,7 @@ import notification from 'ant-design-vue/es/notification'
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
+import { initWebSocket } from '@/websocket/userGlobalWebSocker'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -29,6 +30,7 @@ router.beforeEach((to, from, next) => {
         store
           .dispatch('GetUserPermission')
           .then(({ permissionList, menus }) => {
+            // 连接全局websocket会话
             store.dispatch('GenerateRoutes', { permissionList, menus }).then(() => {
               // 动态添加可访问路由表
               const routers = store.getters.addRouters
@@ -42,6 +44,7 @@ router.beforeEach((to, from, next) => {
                 // 跳转到目的路由
                 next({ path: redirect })
               }
+              initWebSocket().then()
             })
           })
           .catch(() => {
@@ -54,7 +57,6 @@ router.beforeEach((to, from, next) => {
               next({ path: loginRoutePath, query: { redirect: to.fullPath } })
             })
           })
-
       } else {
         next()
       }

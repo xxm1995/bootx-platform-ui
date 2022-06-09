@@ -63,7 +63,7 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import LogoSvg from '../assets/logo.svg?inline'
-import Vue from 'vue'
+import storage from 'store'
 
 export default {
   name: 'BasicLayout',
@@ -117,13 +117,13 @@ export default {
       mainMenu: state => state.permission.addRouters
     }),
     includedComponents () {
-      const includedComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS)
+      const includedComponents = storage.get(CACHE_MULTI_TAB_COMPONENTS)
       // 如果是缓存路由，则加入到缓存
       if (this.$route.meta.keepAlive && this.$route.meta.componentName) {
-        const cacheComponents = Vue.ls.get(CACHE_MULTI_TAB_COMPONENTS) || []
+        const cacheComponents = storage.get(CACHE_MULTI_TAB_COMPONENTS) || []
         if (!cacheComponents.includes(this.$route.meta.componentName)) {
           cacheComponents.push(this.$route.meta.componentName)
-          Vue.ls.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
+          storage.set(CACHE_MULTI_TAB_COMPONENTS, cacheComponents)
           return cacheComponents
         }
       }

@@ -10,7 +10,7 @@
 
 import { WebsocketMixin } from '@/mixins/WebsocketMixin'
 import storage from 'store'
-import { USERINFO } from '@/store/mutation-types'
+import { USERINFO, WEBSOCKET_SERVER_URL } from '@/store/mutation-types'
 
 export default {
   name: 'WebsocketDemo',
@@ -25,7 +25,7 @@ export default {
     initWs () {
       // 建立连接对象
       const userId = storage.get(USERINFO).userId
-      this.getParam('WebsocketServerUrl').then(({ data: url }) => {
+      this.getParam(WEBSOCKET_SERVER_URL).then(({ data: url }) => {
         this.websocketUrl = url + '/test/ws/' + userId
         this.initWebSocket()
       })

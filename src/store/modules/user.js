@@ -1,7 +1,6 @@
 import storage from 'store'
 import { login, getPermissions, getLoginAfterUserInfo, logout, loginOpenId } from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS, USERINFO } from '@/store/mutation-types'
-import Vue from 'vue'
 import { getFilePreviewUrl } from '@/api/common/fileUpload'
 
 const user = {
@@ -84,7 +83,7 @@ const user = {
           commit('SET_PERMISSION', resourcePerms)
           resolve({ permissionList: resourcePerms, menus })
           // 清除多标签缓存
-          Vue.ls.remove(CACHE_MULTI_TAB_COMPONENTS)
+          storage.remove(CACHE_MULTI_TAB_COMPONENTS)
         }).catch(error => {
           reject(error)
         })

@@ -32,17 +32,6 @@ function websocketOnclose (e) {
   console.log('用户全局WebSocket连接被关闭')
   reconnect()
 }
-/**
- * 发送消息
- */
-export function websocketSend (text) {
-  // 数据发送
-  try {
-    websocket.send(text)
-  } catch (err) {
-    console.log('发送信息报错 (' + err.code + ')')
-  }
-}
 
 /**
  * 重连
@@ -72,13 +61,6 @@ function websocketOnmessage (e) {
   } else if ([EVENT_NOTICE].includes(res.type)) {
     wsEventNotice(res)
   }
-}
-
-/**
- * 心跳检测
- */
-function heartbeat () {
-
 }
 
 /**
@@ -127,4 +109,9 @@ function wsNotification (res) {
 function wsEventNotice (res) {
   // 发布事件到消息总线
   Vue.$bus.emit(res.eventCode, res.data)
+}
+
+// 监听页面关闭事件, 关闭ws连接
+window.onbeforeunload = function () {
+  websocket.close()
 }

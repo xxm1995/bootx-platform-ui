@@ -21,7 +21,6 @@ import './config/vxeTableConfig'
 import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less' // global style
-import config from '@/config/defaultSettings'
 
 Vue.config.productionTip = false
 
@@ -31,7 +30,6 @@ Vue.use(VueAxios)
 Vue.component('pro-layout', ProLayout)
 Vue.component('page-container', PageHeaderWrapper)
 Vue.component('page-header-wrapper', PageHeaderWrapper)
-Vue.use(Storage, config.storageOptions)
 
 window.umi_plugin_ant_themeVar = themePluginConfig.theme
 

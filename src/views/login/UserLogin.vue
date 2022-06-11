@@ -80,7 +80,7 @@ export default {
       form: {
         client: '',
         account: '',
-        password: '',
+        password: '123456',
         captchaKey: '',
         captcha: ''
       },

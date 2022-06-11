@@ -21,7 +21,6 @@ import './config/vxeTableConfig'
 import './permission' // permission control
 import './utils/filter' // global filter
 import './global.less' // global style
-import Storage from 'vue-ls'
 import config from '@/config/defaultSettings'
 
 Vue.config.productionTip = false

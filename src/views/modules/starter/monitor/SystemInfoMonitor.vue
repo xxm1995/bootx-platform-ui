@@ -6,20 +6,20 @@
         <a-card :loading="loading" title="系统信息" style="margin-bottom: 20px" :bordered="false">
           <table class="table" >
             <tr >
-              <td class="td">系统名称：</td>
-              <td class="td">{{ sysOsInfo.osName }}</td>
+              <td>系统名称：</td>
+              <td>{{ sysOsInfo.osName }}</td>
             </tr>
             <tr >
-              <td class="td">系统架构：</td>
-              <td class="td">{{ sysOsInfo.osArch }}</td>
+              <td>系统架构：</td>
+              <td>{{ sysOsInfo.osArch }}</td>
             </tr>
             <tr >
-              <td class="td">系统版本：</td>
-              <td class="td">{{ sysOsInfo.osVersion }}</td>
+              <td>系统版本：</td>
+              <td>{{ sysOsInfo.osVersion }}</td>
             </tr>
             <tr >
-              <td class="td">主机名称：</td>
-              <td class="td">{{ sysOsInfo.osHostName }}</td>
+              <td>主机名称：</td>
+              <td>{{ sysOsInfo.osHostName }}</td>
             </tr>
             <tr >
               <td >主机IP地址：</td>
@@ -32,20 +32,20 @@
         <a-card :loading="loading" title="Java环境信息" style="margin-bottom: 20px">
           <table class="table" >
             <tr >
-              <td class="td">虚拟机名称：</td>
-              <td class="td">{{ sysJavaInfo.jvmName }}</td>
+              <td>虚拟机名称：</td>
+              <td>{{ sysJavaInfo.jvmName }}</td>
             </tr>
             <tr >
-              <td class="td">虚拟机版本：</td>
-              <td class="td">{{ sysJavaInfo.jvmVersion }}</td>
+              <td>虚拟机版本：</td>
+              <td>{{ sysJavaInfo.jvmVersion }}</td>
             </tr>
             <tr >
-              <td class="td">虚拟机供应商：</td>
-              <td class="td">{{ sysJavaInfo.jvmVendor }}</td>
+              <td>虚拟机供应商：</td>
+              <td>{{ sysJavaInfo.jvmVendor }}</td>
             </tr>
             <tr >
-              <td class="td">java名称：</td>
-              <td class="td">{{ sysJavaInfo.javaName }}</td>
+              <td>java名称：</td>
+              <td>{{ sysJavaInfo.javaName }}</td>
             </tr>
             <tr >
               <td >java版本：</td>
@@ -58,8 +58,8 @@
     <a-card :loading="loading" title="硬件信息" style="margin-bottom: 20px">
       <table class="table" >
         <tr >
-          <td class="td">CPU型号信息：</td>
-          <td class="td">
+          <td>CPU型号信息：</td>
+          <td>
             <a-tooltip placement="topLeft">
               <template v-slot:title>
                 <span>{{ hardwareInfo.cpuModel }}</span>
@@ -67,14 +67,14 @@
               <a-tag class="cpuModel">{{ hardwareInfo.cpuModel }}</a-tag>
             </a-tooltip>
           </td>
-          <td class="td">CPU核数：</td>
-          <td class="td">{{ hardwareInfo.cpuNum }}</td>
+          <td>CPU核数：</td>
+          <td>{{ hardwareInfo.cpuNum }}</td>
         </tr>
         <tr >
-          <td class="td">总内存：</td>
-          <td class="td">{{ hardwareInfo.totalMemory }}</td>
-          <td class="td">已使用内存：</td>
-          <td class="td">{{ hardwareInfo.usedMemory }}</td>
+          <td>总内存：</td>
+          <td>{{ hardwareInfo.totalMemory }}</td>
+          <td>已使用内存：</td>
+          <td>{{ hardwareInfo.usedMemory }}</td>
         </tr>
         <tr>
           <td >空余内存：</td>
@@ -87,16 +87,16 @@
     <a-card :loading="loading" title="JVM内存信息" style="margin-bottom: 20px">
       <table class="table" >
         <tr >
-          <td class="td">JVM最大内存：</td>
-          <td class="td">{{ sysJvmMemInfo.jvmMaxMemory }}</td>
-          <td class="td">JVM可用内存：</td>
-          <td class="td">{{ sysJvmMemInfo.jvmUsableMemory }}</td>
+          <td>JVM最大内存：</td>
+          <td>{{ sysJvmMemInfo.jvmMaxMemory }}</td>
+          <td>JVM可用内存：</td>
+          <td>{{ sysJvmMemInfo.jvmUsableMemory }}</td>
         </tr>
         <tr >
-          <td class="td">JVM总内存：</td>
-          <td class="td">{{ sysJvmMemInfo.jvmTotalMemory }}</td>
-          <td class="td">JVM已使用内存：</td>
-          <td class="td">{{ sysJvmMemInfo.jvmUsedMemory }}</td>
+          <td>JVM总内存：</td>
+          <td>{{ sysJvmMemInfo.jvmTotalMemory }}</td>
+          <td>JVM已使用内存：</td>
+          <td>{{ sysJvmMemInfo.jvmUsedMemory }}</td>
         </tr>
         <tr>
           <td >JVM空余内存：</td>
@@ -112,24 +112,24 @@
           <a-card>
             <table class="table" >
               <tr>
-                <td class="td">磁盘名称：</td>
-                <td class="td">{{ disk.name }}</td>
+                <td>磁盘名称：</td>
+                <td>{{ disk.name }}</td>
               </tr>
               <tr>
-                <td class="td">磁盘容量：</td>
-                <td class="td">{{ disk.totalSpace }}</td>
+                <td>磁盘容量：</td>
+                <td>{{ disk.totalSpace }}</td>
               </tr>
               <tr>
-                <td class="td">已用空间：</td>
-                <td class="td">{{ disk.usedSpace }}</td>
+                <td>已用空间：</td>
+                <td>{{ disk.usedSpace }}</td>
               </tr>
               <tr>
-                <td class="td">剩余空间：</td>
-                <td class="td">{{ disk.freeSpace }}</td>
+                <td>剩余空间：</td>
+                <td>{{ disk.freeSpace }}</td>
               </tr>
               <tr>
-                <td class="td">使用率：</td>
-                <td class="td">{{ disk.usedRate }}</td>
+                <td>使用率：</td>
+                <td>{{ disk.usedRate }}</td>
               </tr>
             </table>
           </a-card>
@@ -140,7 +140,7 @@
 </template>
 
 <script>
-import { axios } from '@/utils/request'
+import { getSystemInfo } from '@/api/starter/monitor'
 
 export default {
   name: 'SystemInfoMonitor',
@@ -162,10 +162,7 @@ export default {
       }, 1000 * 5)
     },
     getSysInfo () {
-      axios({
-        url: '/monitor/system/getSystemInfo',
-        method: 'get'
-      }).then(({ data }) => {
+      getSystemInfo().then(({ data }) => {
         this.loading = false
         const { sysOsInfo, sysJavaInfo, sysJvmMemInfo, sysDiskInfos, hardwareInfo } = data
         this.sysOsInfo = sysOsInfo
@@ -180,7 +177,6 @@ export default {
     this.init()
   },
   destroyed () {
-    console.log('销毁')
     clearInterval(this.interval)
     this.interval = null
   }
@@ -194,7 +190,7 @@ export default {
   line-height: 30px;
   text-align: center;
 }
-.td {
+td {
   border-bottom:1px solid rgba(232, 232, 232, 0.99);
 }
 .cpuModel {

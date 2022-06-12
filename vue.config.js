@@ -4,6 +4,7 @@ const GitRevisionPlugin = require('git-revision-webpack-plugin')
 const GitRevision = new GitRevisionPlugin()
 const buildDate = JSON.stringify(new Date().toLocaleString())
 const createThemeColorReplacerPlugin = require('./config/plugin.config')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 function resolve (dir) {
   return path.join(__dirname, dir)
@@ -28,10 +29,10 @@ const vueConfig = {
         APP_VERSION: `"${require('./package.json').version}"`,
         GIT_HASH: JSON.stringify(getGitHash()),
         BUILD_DATE: buildDate
-      })
+      }),
+      // 查看编译完各组件占情况, 从这放开
+      // new BundleAnalyzerPlugin()
     ]
-    // 如果打算使用CDN, 从这放开
-    // externals: isProd ? assetsCDN.externals : {}
   },
 
   chainWebpack: (config) => {

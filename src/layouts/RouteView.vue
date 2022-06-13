@@ -34,7 +34,7 @@ export default {
           return cacheComponents
         }
       }
-      return storage.get(CACHE_MULTI_TAB_COMPONENTS)
+      return storage.get(CACHE_MULTI_TAB_COMPONENTS) || []
     },
     keepAlive () {
       return this.$route.meta.keepAlive

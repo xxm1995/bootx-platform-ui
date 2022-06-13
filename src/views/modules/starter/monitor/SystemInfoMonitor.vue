@@ -157,6 +157,7 @@ export default {
   },
   methods: {
     init () {
+      this.getSysInfo()
       this.interval = setInterval(() => {
         this.getSysInfo()
       }, 1000 * 5)

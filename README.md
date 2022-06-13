@@ -1,7 +1,7 @@
 # Bootx-Platform-UI 
 <p>
  <img src='https://gitee.com/bootx/bootx-platform/badge/star.svg?theme=dark' alt='star'/>
- <img src="https://img.shields.io/badge/Boot%20Platform-2.0.0-success.svg" alt="Build Status">
+ <img src="https://img.shields.io/badge/Boot%20Platform-1.1.0-success.svg" alt="Build Status">
  <img src="https://img.shields.io/badge/Author-Bootx-orange.svg" alt="Build Status">
  <img src="https://img.shields.io/badge/Vue-2.6-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/license-Apache%20License%202.0-green.svg"/>

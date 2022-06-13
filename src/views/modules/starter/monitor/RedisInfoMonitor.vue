@@ -56,6 +56,7 @@
 <script>
 import { getRedisInfo } from '@/api/starter/monitor'
 import * as echarts from 'echarts/core'
+import { debounce } from 'lodash'
 require('echarts/theme/roma') // echarts theme
 
 export default {
@@ -68,6 +69,8 @@ export default {
       commandStatsChart: null,
       // 内存使用图表
       memoryUsedChart: null,
+      // 图表渲染防抖
+      chartReactiveDebounce: {},
       info: {},
       commandStats: {},
       dbSize: 0
@@ -75,6 +78,7 @@ export default {
   },
   methods: {
     init () {
+      this.getRedisInfo()
       this.interval = setInterval(() => {
         this.getRedisInfo()
       }, 1000 * 5)
@@ -145,19 +149,27 @@ export default {
           }
         ]
       })
+    },
+    /**
+     * 图表自适应
+     */
+    chartReactive () {
+      this.commandStatsChart.resize()
+      this.memoryUsedChart.resize()
     }
   },
-  created () {
-    this.init()
-  },
   mounted () {
+    this.init()
     // 初始化图表
     this.commandStatsChart = echarts.init(this.$refs.commandStatsChart, 'roma')
     this.memoryUsedChart = echarts.init(this.$refs.memoryUsedChart, 'roma')
+    this.chartReactiveDebounce = debounce(this.chartReactive, 300)
+    window.addEventListener('resize', this.chartReactiveDebounce)
   },
   destroyed () {
     clearInterval(this.interval)
     this.interval = null
+    window.removeEventListener('resize', this.chartReactiveDebounce)
   }
 }
 </script>

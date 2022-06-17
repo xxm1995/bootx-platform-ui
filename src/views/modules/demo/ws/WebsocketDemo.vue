@@ -61,7 +61,7 @@ export default {
     this.$bus.on('event_test_websocket', this.globalWsListener)
   },
   destroyed () {
-    // // 解绑事件监听
+    // 解绑事件监听
     this.$bus.off('event_test_websocket')
     this.websocketOnclose()
   }

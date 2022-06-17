@@ -1,20 +1,19 @@
 // eslint-disable-next-line
 import * as loginService from '@/api/login/login'
 // eslint-disable-next-line
-import { BasicLayout, BlankLayout, PageView, RouteView, IframeView } from '@/layouts'
 import { loginBaseRouterMap } from '@/config/router.config'
 // 前端路由表
 const constantRouterComponents = {
   // 基础页面 layout 必须引入
-  BasicLayout: BasicLayout,
-  BlankLayout: BlankLayout,
-  RouteView: RouteView,
-  PageView: PageView,
-  IframeView: IframeView,
-  '403': () => import(/* webpackChunkName: "error" */ '@/views/exception/403'),
-  '404': () => import(/* webpackChunkName: "error" */ '@/views/exception/404'),
-  '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
-  'Dev': () => import(/* webpackChunkName: "error" */ '@/views/exception/Dev'),
+  BasicLayout: () => import(/* webpackChunkName: "BasicLayout" */ '@/layouts/BasicLayout'),
+  BlankLayout: () => import(/* webpackChunkName: "BlankLayout" */ '@/layouts/BlankLayout'),
+  RouteView: () => import(/* webpackChunkName: "RouteView" */ '@/layouts/RouteView'),
+  PageView: () => import(/* webpackChunkName: "PageView" */ '@/layouts/PageView'),
+  IframeView: () => import(/* webpackChunkName: "IframeView" */ '@/layouts/IframeView'),
+  '403': () => import(/* webpackChunkName: "403" */ '@/views/exception/403'),
+  '404': () => import(/* webpackChunkName: "404" */ '@/views/exception/404'),
+  '500': () => import(/* webpackChunkName: "500" */ '@/views/exception/500'),
+  'Dev': () => import(/* webpackChunkName: "Dev" */ '@/views/exception/Dev'),
 
   // 你需要动态引入的页面组件
   'Workplace': () => import('@/views/dashboard/Workplace'),
@@ -27,7 +26,7 @@ const constantRouterComponents = {
   'SecuritySettings': () => import('@/views/account/security/Security'),
   'CustomSettings': () => import('@/views/account/settings/Custom'),
   'BindingSettings': () => import('@/views/account/settings/Binding'),
-  'NotificationSettings': () => import('@/views/account/settings/Notification'),
+  'NotificationSettings': () => import('@/views/account/settings/Notification')
 
 }
 
@@ -41,7 +40,7 @@ const rootRouter = {
   key: '',
   name: 'BasicLayout',
   path: '',
-  component: BasicLayout,
+  component: () => import('@/layouts/BasicLayout'),
   redirect: '/dashboard',
   meta: {
     title: '首页'
@@ -63,7 +62,6 @@ export const generatorDynamicRouter = (menus) => {
       menuNav.push(rootRouter)
       const routers = generator(menuNav)
       routers.push(notFoundRouter)
-      // console.log(r-outers)
       resolve(routers)
     } catch (err) {
       reject(err)

@@ -6,7 +6,7 @@
         size="small"
         :src="avatarUrl||defaultAvatar"
         class="antd-pro-global-header-index-avatar" />
-      <span>{{ currentUser.name }}</span>
+      <span style="margin-right: 5px;">{{ currentUser.name }}</span>
 <!--      <setting-drawer ref="settingDrawer" title="系统设置"/>-->
     </span>
     <template v-slot:overlay>
@@ -73,7 +73,7 @@ export default {
     handleLogout (e) {
       Modal.confirm({
         title: '信息',
-        content: '您确定要注销吗？',
+        content: '您确定要注销退出吗？',
         onOk: () => {
           return this.$store.dispatch('Logout').then(() => {
             this.$router.push({ name: 'login' })

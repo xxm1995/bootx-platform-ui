@@ -3,6 +3,11 @@
 // 顶栏高度
 @headerHeight: 55px;
 
+.headHeight(){
+  height: @headerHeight;
+  line-height: @headerHeight;
+}
+
 // 顶栏
 .layout {
   .header {
@@ -14,19 +19,30 @@
   }
 }
 #logo{
-  height: @headerHeight;
-  line-height: @headerHeight;
+  .headHeight()
 }
 
 .ant-layout-header{
-  height: @headerHeight;
-  line-height: @headerHeight;
+  .headHeight()
 }
 .ant-pro-global-header {
   z-index: 99;
   height: @headerHeight;
   background-color: #FFFFFF;
 }
+.ant-pro-global-header-trigger{
+  .headHeight()
+}
+.ant-pro-global-header-content{
+  .headHeight()
+}
+.ant-pro-global-header-index-light{
+  .headHeight()
+}
+.ant-pro-global-header-index-right{
+  .headHeight()
+}
+
 
 // 主体边距
 .ant-layout-content{
@@ -52,7 +68,7 @@
 
   .ant-pro-account-avatar {
     .antd-pro-global-header-index-avatar {
-      margin: ~'calc((@{layout-header-height} - 24px) / 2)' 0;
+      margin: ~'calc((@{headerHeight} - 24px) / 2)' 0;
       margin-right: 8px;
       color: @primary-color;
       vertical-align: top;

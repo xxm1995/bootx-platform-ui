@@ -1,23 +1,19 @@
 <template>
   <div :class="wrpCls">
-    <avatar-dropdown :menu="showMenu" :avatar-url="avatarUrl" :current-user="currentUser" :class="prefixCls" />
+    <!--  使用用户菜单  -->
+    <user-menu/>
   </div>
 </template>
 
 <script>
-import AvatarDropdown from './AvatarDropdown'
-import { mapActions } from 'vuex'
+import UserMenu from '@/components/tools/UserMenu'
 
 export default {
   name: 'RightContent',
   components: {
-    AvatarDropdown
+    UserMenu
   },
   props: {
-    prefixCls: {
-      type: String,
-      default: 'ant-pro-global-header-index-action'
-    },
     isMobile: {
       type: Boolean,
       default: () => false
@@ -31,28 +27,6 @@ export default {
       required: true
     }
   },
-  data () {
-    return {
-      showMenu: true,
-      currentUser: {},
-      avatarUrl: ''
-    }
-  },
-  methods: {
-    ...mapActions(['GetUserInfo', 'GetUserAvatarUrl']),
-    getCurrentUser () {
-      const {
-        GetUserInfo,
-        GetUserAvatarUrl
-      } = this
-      GetUserInfo().then(res => {
-        this.currentUser = res
-        GetUserAvatarUrl(this.currentUser.avatar).then(res => {
-          this.avatarUrl = res.data
-        })
-      })
-    }
-  },
   computed: {
     wrpCls () {
       return {
@@ -60,9 +34,6 @@ export default {
         [`ant-pro-global-header-index-${(this.isMobile || !this.topMenu) ? 'light' : this.theme}`]: true
       }
     }
-  },
-  mounted () {
-    this.getCurrentUser()
   }
 }
 </script>

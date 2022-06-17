@@ -16,27 +16,37 @@ export const loginBaseRouterMap = [
   // 首页
   {
     path: '/dashboard',
-    name: 'Welcome',
-    component: Welcome,
-    meta: { title: '首页', keepAlive: true, icon: bxAnaalyse }
+    name: 'Dashboard',
+    hidden: true,
+    redirect: '/dashboard/welcome',
+    component: RouteView,
+    meta: { title: '首页', keepAlive: true, icon: bxAnaalyse },
+    children: [
+      {
+        path: '/dashboard/welcome',
+        name: 'Welcome',
+        component: Welcome,
+        meta: { title: '欢迎', keepAlive: true }
+      }
+    ]
   },
   {
     path: '/account',
     component: RouteView,
     hidden: true,
     redirect: '/account/center',
-    name: 'account',
+    name: 'Account',
     meta: { title: '个人页', icon: 'user', keepAlive: true },
     children: [
       {
         path: '/account/center',
-        name: 'center',
+        name: 'AccountCenter',
         component: () => import('@/views/account/center'),
         meta: { title: '个人中心', keepAlive: true }
       },
       {
         path: '/account/settings',
-        name: 'settings',
+        name: 'AccountSettings',
         component: () => import('@/views/account/settings/Index'),
         meta: { title: '个人设置', keepAlive: true, hideHeader: true }
       }

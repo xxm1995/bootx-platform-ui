@@ -13,7 +13,7 @@
           我们推荐使用这种方式进行 LOGO 和 title 自定义
     -->
     <template v-slot:menuHeaderRender>
-      <div>
+      <div class="menuHeaderRender">
         <!--        <logo-svg />-->
         <h1>{{ title }}</h1>
       </div>
@@ -221,6 +221,9 @@ export default {
 
 <style lang="less">
 @import "./BasicLayout.less";
+.menuHeaderRender{
+  .headHeight()
+}
 .ant-menu{
   // 隐藏菜单栏滚动条
   &::-webkit-scrollbar

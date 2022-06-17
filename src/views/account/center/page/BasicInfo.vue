@@ -46,9 +46,6 @@ export default {
       Object.assign(this.userinfo, this.form)
       console.log(this.userinfo)
     }
-  },
-  mounted() {
-    console.log(123)
   }
 }
 </script>

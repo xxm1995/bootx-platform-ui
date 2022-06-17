@@ -258,23 +258,33 @@ export default {
       this.clientCode = clientCode
       this.confirmLoading = true
       await this.loadTree()
+      // 编辑或查看
       if (type === 'edit' || type === 'show') {
         this.editable = true
         const res = await get(id)
         this.form = res.data
-      } else {
+        this.confirmLoading = false
+      } else if (type === 'add') {
         // 新增
         this.confirmLoading = false
+      } else if (type === 'addChildren') {
         // 添加下级
-        if (row) {
-          this.form.menuType = 1
-          this.$nextTick(() => {
-            this.form.parentId = row.id
-            this.form.path = row.path
-          })
-        }
+        this.form.menuType = 1
+        this.$nextTick(() => {
+          this.form.parentId = row.id
+          this.form.path = row.path
+        })
+        this.confirmLoading = false
+      } else if (type === 'copy') {
+        // 复制
+        const { data } = await get(id)
+        console.log(data)
+        delete data.id
+        this.form = data
+        this.confirmLoading = false
+      } else {
+        this.confirmLoading = false
       }
-      this.confirmLoading = false
     },
     handleOk () {
       const that = this
@@ -288,7 +298,7 @@ export default {
             that.validateStatus = 'success'
           }
           that.confirmLoading = true
-          if (this.type === 'add') {
+          if (['add', 'addChildren', 'copy'].includes(this.type)) {
             this.form.clientCode = this.clientCode
             await add(this.form)
           } else {

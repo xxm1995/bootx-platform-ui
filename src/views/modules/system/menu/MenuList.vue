@@ -82,6 +82,9 @@
                 <a @click="addChildren(row)">添加下级</a>
               </a-menu-item>
               <a-menu-item>
+                <a @click="copy(row.id)">复制</a>
+              </a-menu-item>
+              <a-menu-item>
                 <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
               </a-menu-item>
               <a-menu-item>
@@ -143,7 +146,10 @@ export default {
       this.$refs.menuEdit.init('', 'add',null,this.clientCode)
     },
     addChildren (row) {
-      this.$refs.menuEdit.init('', 'add', row, this.clientCode)
+      this.$refs.menuEdit.init('', 'addChildren', row, this.clientCode)
+    },
+    copy (id) {
+      this.$refs.menuEdit.init(id, 'copy', null, this.clientCode)
     },
     edit (id) {
       this.$refs.menuEdit.init(id, 'edit', null, this.clientCode)

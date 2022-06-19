@@ -94,7 +94,6 @@ export default {
         if (!valid) {
           const state = this.state
           state.smsSendBtn = true
-          console.log(state)
           const interval = window.setInterval(() => {
             if (state.time-- <= 0) {
               state.time = 60

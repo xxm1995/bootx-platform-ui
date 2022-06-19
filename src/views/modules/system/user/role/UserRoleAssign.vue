@@ -50,7 +50,7 @@
 </template>
 
 <script>
-import { getRoleIds, addUserRole } from '@/api/system/user'
+import { getRoleIds, addUserRole } from '@/api/system/userAssign'
 import { list as roleList } from '@/api/system/role'
 
 export default {

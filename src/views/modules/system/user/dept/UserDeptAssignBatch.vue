@@ -53,7 +53,7 @@
 
 <script>
 import { tree } from '@/api/system/dept'
-import { addUserDept, addUserDeptBatch } from '@/api/system/user'
+import { addUserDeptBatch } from '@/api/system/userAssign'
 import { treeDataTranslate } from '@/utils/util'
 import XEUtils from 'xe-utils'
 export default {

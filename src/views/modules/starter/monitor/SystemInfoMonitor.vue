@@ -60,12 +60,7 @@
         <tr >
           <td>CPU型号信息：</td>
           <td>
-            <a-tooltip placement="topLeft">
-              <template v-slot:title>
-                <span>{{ hardwareInfo.cpuModel }}</span>
-              </template>
-              <a-tag class="cpuModel">{{ hardwareInfo.cpuModel }}</a-tag>
-            </a-tooltip>
+            <ellipsis :length="18" tooltip>{{ hardwareInfo.cpuModel }}</ellipsis>
           </td>
           <td>CPU核数：</td>
           <td>{{ hardwareInfo.cpuNum }}</td>
@@ -141,9 +136,12 @@
 
 <script>
 import { getSystemInfo } from '@/api/starter/monitor'
-
+import Ellipsis from '@/components/Ellipsis'
 export default {
   name: 'SystemInfoMonitor',
+  components: {
+    Ellipsis
+  },
   data () {
     return {
       loading: true,

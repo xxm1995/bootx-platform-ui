@@ -49,7 +49,8 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, getRoles, getDeptList, getDataScopes } from '@/api/system/user'
+import { get } from '@/api/system/user'
+import { getRoles, getDataScopes, getDeptList } from '@/api/system/userAssign'
 import { findAllByAlonePrem } from '@/api/system/client'
 
 export default {

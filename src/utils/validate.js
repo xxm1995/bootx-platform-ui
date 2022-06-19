@@ -30,9 +30,9 @@ export function isURL (s) {
   return /^http[s]?:\/\/.*/.test(s)
 }
 
-export function isvalidUsername (str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+export function isValidUsername (str) {
+  const validMap = ['admin', 'editor']
+  return validMap.indexOf(str.trim()) >= 0
 }
 
 /* 合法uri */
@@ -54,20 +54,20 @@ export function validateUpperCase (str) {
 }
 
 /* 大小写字母 */
-export function validatAlphabets (str) {
+export function validateAlphabets (str) {
   const reg = /^[A-Za-z]+$/
   return reg.test(str)
 }
 
 /* 验证pad还是pc */
-export const vaildatePc = function () {
+export const validatePc = function () {
   const userAgentInfo = navigator.userAgent
   const Agents = ['Android', 'iPhone',
     'SymbianOS', 'Windows Phone',
     'iPad', 'iPod'
   ]
   let flag = true
-  for (var v = 0; v < Agents.length; v++) {
+  for (let v = 0; v < Agents.length; v++) {
     if (userAgentInfo.indexOf(Agents[v]) > 0) {
       flag = false
       break
@@ -77,19 +77,9 @@ export const vaildatePc = function () {
 }
 
 /**
- * validate 邮件
- * @param email
- * @returns {boolean}
- */
-export function validateEmail (email) {
-  const re = /^(([^<>()\\[\]\\.,;:\s@"]+(\.[^<>()\\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-  return re.test(email)
-}
-
-/**
  * 判断身份证号码
  */
-export function cardid (code) {
+export function validateCardId (code) {
   let result = true
   let msg = ''
   const city = {
@@ -129,7 +119,7 @@ export function cardid (code) {
     82: '澳门',
     91: '国外 '
   }
-  if (!validatenull(code)) {
+  if (!validateNull(code)) {
     if (code.length === 18) {
       if (!code || !/(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(code)) {
         msg = '证件号码格式错误'
@@ -167,16 +157,34 @@ export function cardid (code) {
 }
 
 /**
+ * 邮件
+ */
+export function validateEmail (email) {
+  const isEmail = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/
+  let result = false
+  let msg = ''
+  if (!validateNull(email)) {
+    if (!isEmail.test(email)) {
+      msg = '邮箱格式不正确'
+    } else {
+      result = true
+    }
+  } else {
+    msg = '邮箱不能为空'
+  }
+  return { result, msg }
+}
+
+/**
  * 判断手机号码是否正确
  */
 export function validateMobile (phone) {
   let result = false
   let msg = ''
-  const isPhone = /^0\d{2,3}-?\d{7,8}$/
-  // 增加134 减少|1349[0-9]{7}，增加181,增加145，增加17[678]
-  if (!validatenull(phone)) {
+  const isPhone = /^(1[0-9])\d{9}$/
+  if (!validateNull(phone)) {
     if (phone.length === 11) {
-      if (isPhone.test(phone)) {
+      if (!isPhone.test(phone)) {
         msg = '手机号码格式不正确'
       } else {
         result = true
@@ -193,7 +201,7 @@ export function validateMobile (phone) {
 /**
  * 判断姓名是否正确
  */
-export function validatename (name) {
+export function validateName (name) {
   const regName = /^[\u4e00-\u9fa5]{2,4}$/
   return regName.test(name)
 }
@@ -201,7 +209,7 @@ export function validatename (name) {
 /**
  * 判断是否为整数
  */
-export function validatenum (num, type) {
+export function validateNum (num, type) {
   let regName = /[^\d.]/g
   if (type === 1) {
     if (!regName.test(num)) return false
@@ -215,7 +223,7 @@ export function validatenum (num, type) {
 /**
  * 判断是否为小数
  */
-export function validatenumord (num, type) {
+export function validateNumOrd (num, type) {
   let regName = /[^\d.]/g
   if (type === 1) {
     if (!regName.test(num)) return false
@@ -229,7 +237,7 @@ export function validatenumord (num, type) {
 /**
  * 判断是否为空
  */
-export function validatenull (val) {
+export function validateNull (val) {
   if (typeof val === 'boolean') {
     return false
   }

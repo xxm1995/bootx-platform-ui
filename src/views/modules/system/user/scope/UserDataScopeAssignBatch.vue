@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import { addUserDataScopeBatch } from '@/api/system/user'
+import { addUserDataScopeBatch } from '@/api/system/userAssign'
 import { list as dataScopeList } from '@/api/system/dataScope'
 
 export default {

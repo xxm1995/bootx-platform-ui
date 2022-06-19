@@ -68,7 +68,7 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          updatePassword(this.form.oldPassword, this.form.newPassword).then(()=>{
+          updatePassword(this.form.oldPassword, this.form.newPassword).then(() => {
             this.confirmLoading = false
             this.$emit('ok')
             this.visible = false

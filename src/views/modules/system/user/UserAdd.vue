@@ -63,7 +63,8 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, existsUsername, existsPhone, existsEmail } from '@/api/system/user'
+import { add } from '@/api/system/user'
+import { existsUsername, existsPhone, existsEmail } from '@/api/system/userAssist'
 import { validateEmail, validateMobile } from '@/utils/validate'
 import { findAllByAlonePrem } from '@/api/system/client'
 
@@ -189,7 +190,7 @@ export default {
       if (!value) {
         callback()
       } else {
-        if (validateEmail(value)) {
+        if (validateEmail(value).result) {
           existsEmail(value).then((res) => {
             if (!res.data) {
               callback()

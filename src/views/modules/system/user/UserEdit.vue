@@ -51,13 +51,8 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import {
-  get,
-  update,
-  existsUsernameNotId,
-  existsPhoneNotId,
-  existsEmailNotId
-} from '@/api/system/user'
+import { get, update } from '@/api/system/user'
+import { existsUsernameNotId, existsPhoneNotId, existsEmailNotId } from '@/api/system/userAssist'
 import { validateMobile, validateEmail } from '@/utils/validate'
 import { findAllByAlonePrem } from '@/api/system/client'
 
@@ -173,7 +168,7 @@ export default {
       if (!value) {
         callback()
       } else {
-        if (validateEmail(value)) {
+        if (validateEmail(value).result) {
           existsEmailNotId(value, this.form.id).then((res) => {
             if (!res.data) {
               callback()
@@ -190,7 +185,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-    },
+    }
   }
 }
 </script>

@@ -41,7 +41,7 @@
                 v-model="user.birthday"/>
             </a-form-model-item>
             <a-form-model-item>
-              <a-button type="primary" @click="handleOk">更新基本信息</a-button>
+              <a-button type="primary" @click="handleOk">更新基础信息</a-button>
             </a-form-model-item>
           </a-form-model>
         </a-col>

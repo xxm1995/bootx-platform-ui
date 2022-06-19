@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import WEditor from 'wangeditor'
+import WEditor from '@wangeditor/editorwangeditor'
 
 export default {
   name: 'WangEditor',

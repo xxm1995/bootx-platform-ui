@@ -19,11 +19,11 @@
               </template>
             </a-list-item>
             <a-list-item>
-              <a-list-item-meta title="密保手机">
+              <a-list-item-meta title="绑定手机号">
                 <template v-slot:description>
-                  <span class="security-list-description">已绑定手机</span>
+                  <span>已绑定手机</span>
                   <span> : </span>
-                  <span class="security-list-value">{{ user.phone }}</span>
+                  <span>{{ user.phone }}</span>
                 </template>
               </a-list-item-meta>
               <template v-slot:actions>
@@ -33,9 +33,9 @@
             <a-list-item>
               <a-list-item-meta title="账号邮箱">
                 <template v-slot:description>
-                  <span class="security-list-description">已绑定邮箱</span>
+                  <span>已绑定邮箱</span>
                   <span> : </span>
-                  <span class="security-list-value">{{ user.email }}</span>
+                  <span>{{ user.email }}</span>
                 </template>
               </a-list-item-meta>
               <template v-slot:actions>
@@ -47,17 +47,23 @@
       </a-row>
     </a-spin>
     <password-edit ref="passwordEdit" @ok="init"/>
+    <phone-edit ref="phoneEdit" @ok="init" :phone="user.phone"/>
+    <email-edit ref="emailEdit" @ok="init" :email="user.email"/>
   </div>
 </template>
 
 <script>
 import { getUserSecurityInfo } from '@/api/system/user'
 import PasswordEdit from './PasswordEdit'
+import PhoneEdit from './PhoneEdit'
+import EmailEdit from './EmailEdit'
 
 export default {
   name: 'Security',
   components: {
-    PasswordEdit
+    PasswordEdit,
+    PhoneEdit,
+    EmailEdit
   },
   data () {
     return {
@@ -82,11 +88,11 @@ export default {
     },
     // 修改绑定邮箱
     emailEdit () {
-      this.$message.info('暂不支持')
+      this.$refs.emailEdit.init('', 'edit')
     },
     // 修改绑定手机号
     phoneEdit () {
-      this.$message.info('暂不支持')
+      this.$refs.phoneEdit.init('', 'edit')
     }
   },
   mounted () {

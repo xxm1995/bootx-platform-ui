@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { addUserDataScope, findDataScopeIdsByUser } from '@/api/system/user'
+import { addUserDataScope, findDataScopeIdsByUser } from '@/api/system/userAssign'
 import { list as dataScopeList } from '@/api/system/dataScope'
 
 export default {

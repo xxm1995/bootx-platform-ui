@@ -4,17 +4,28 @@ import storage from 'store'
 import notification from 'ant-design-vue/es/notification'
 import { VueAxios } from './axios'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import XEUtils from 'xe-utils'
 
 // 创建 axios 实例
 const request = axios.create({
   // API 请求的默认前缀
   baseURL: process.env.VUE_APP_API_BASE_URL,
-  timeout: 10000 // 请求超时时间
+  timeout: process.env.VUE_APP_TIMEOUT // 请求超时时间
 })
 
 // 异常拦截处理器
 const errorHandler = (error) => {
-  if (error.response) {
+  if (error.message === 'Network Error') {
+    notification.error({
+      message: '错误',
+      description: '网络错误，请稍后重试'
+    })
+  } else if (XEUtils.startsWith(error.message, 'timeout of ')) {
+    notification.error({
+      message: '错误',
+      description: '请求超时，请稍后重试'
+    })
+  } else if (error.response) {
     const data = error.response.data
     if (error.response.status === 403) {
       notification.error({

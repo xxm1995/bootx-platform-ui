@@ -1,7 +1,7 @@
 <template>
   <a-modal
     :title="title"
-    :width="740"
+    :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"
@@ -21,19 +21,26 @@
         label="任务名称"
         prop="name"
       >
-        <a-input v-model="form.name" :disabled="showable"/>
+        <a-input v-model="form.name" placeholder="请输入任务名称" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
         label="任务类名"
         prop="jobClassName"
       >
-        <a-input v-model="form.jobClassName" :disabled="showable"/>
+        <a-input v-model="form.jobClassName" placeholder="请输入任务类名" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
         label="cron"
         prop="cron"
       >
-        <a-input v-model="form.cron" :disabled="showable"/>
+        <a-input v-model="form.cron" placeholder="请选择cron表达式" :disabled="true">
+          <template v-slot:addonAfter>
+            <a @click="showCronModal" class="config-btn" :disabled="showable">
+              <a-icon type="setting"></a-icon>
+              选择
+            </a>
+          </template>
+        </a-input>
       </a-form-model-item>
       <a-form-model-item
         label="state"
@@ -46,15 +53,30 @@
         label="参数"
         prop="parameter"
       >
-        <a-textarea v-model="form.parameter" :disabled="showable"/>
+        <a-textarea v-model="form.parameter" placeholder="请输入参数" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
         label="备注"
         prop="remark"
       >
-        <a-textarea v-model="form.remark" :disabled="showable"/>
+        <a-textarea v-model="form.remark" placeholder="请输入备注" :disabled="showable"/>
       </a-form-model-item>
     </a-form-model>
+
+    <a-modal
+      :visible="cronShow"
+      title="Cron表达式"
+      :width="modalWidth"
+      @ok="cronOk"
+      @cancel="cronCancel"
+      destroyOnClose>
+      <easy-cron
+        v-model="cronValue"
+        :hideYear="false"
+        :hideSecond="false"
+        style="width: 100%"
+      />
+    </a-modal>
     <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
@@ -64,13 +86,18 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
+import EasyCron from '@/components/EasyCron/EasyCron'
 import { add, get, judgeJobClass, update } from '@/api/starter/quartz'
 
 export default {
   name: 'QuartzJobEdit',
   mixins: [FormMixin],
+  components: { EasyCron },
   data () {
     return {
+      modalWidth: 740,
+      cronShow: false,
+      cronValue: null,
       form: {
         name: '',
         jobClassName: '',
@@ -85,7 +112,7 @@ export default {
           { required: true, message: '请输入任务类名' },
           { validator: this.validateJobClass, trigger: 'blur' }
         ],
-        cron: [{ required: true, message: '请输入cron' }]
+        cron: [{ required: true, message: '请输入或选择cron' }]
       }
     }
   },
@@ -125,7 +152,9 @@ export default {
         this.$refs.form.resetFields()
       })
     },
-    // 判断是否是任务类
+    /**
+     * 判断是否是任务类
+     */
     async validateJobClass (rule, value, callback) {
       const res = await judgeJobClass(value)
       if (!res.data) {
@@ -133,6 +162,27 @@ export default {
       } else {
         callback(res.data)
       }
+    },
+    /**
+     * 显示出来选择Cron窗口
+     */
+    showCronModal () {
+      this.cronShow = true
+      this.cronValue = this.form.cron
+    },
+    /**
+     * cron 确认回调
+     */
+    cronOk () {
+      this.form.cron = this.cronValue
+      this.cronCancel()
+    },
+    /**
+     * cron 关闭回调
+     */
+    cronCancel () {
+      this.$refs.form.validateField(['cron'])
+      this.cronShow = false
     }
   }
 }

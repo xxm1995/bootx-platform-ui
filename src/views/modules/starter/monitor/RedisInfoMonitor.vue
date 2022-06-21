@@ -69,8 +69,7 @@ export default {
       commandStatsChart: null,
       // 内存使用图表
       memoryUsedChart: null,
-      // 图表渲染防抖
-      chartReactiveDebounce: {},
+      // Redis信息
       info: {},
       commandStats: {},
       dbSize: 0
@@ -151,25 +150,27 @@ export default {
       })
     },
     /**
-     * 图表自适应
+     * 图表自适应 防抖
      */
-    chartReactive () {
+    chartReactive: debounce(function () {
+      console.log(123)
       this.commandStatsChart.resize()
       this.memoryUsedChart.resize()
-    }
+    }, 300)
   },
   mounted () {
     this.init()
     // 初始化图表
     this.commandStatsChart = echarts.init(this.$refs.commandStatsChart, 'roma')
     this.memoryUsedChart = echarts.init(this.$refs.memoryUsedChart, 'roma')
-    this.chartReactiveDebounce = debounce(this.chartReactive, 300)
-    window.addEventListener('resize', this.chartReactiveDebounce)
+    // noinspection JSCheckFunctionSignatures
+    window.addEventListener('resize', this.chartReactive)
   },
   destroyed () {
     clearInterval(this.interval)
     this.interval = null
-    window.removeEventListener('resize', this.chartReactiveDebounce)
+    // noinspection JSCheckFunctionSignatures
+    window.removeEventListener('resize', this.chartReactive)
   }
 }
 </script>

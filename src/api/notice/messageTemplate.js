@@ -57,3 +57,15 @@ export function del (id) {
     method: 'DELETE'
   })
 }
+
+/**
+ * 渲染
+ */
+export function render (code, paramMap) {
+  return axios({
+    url: '/message/template/rendering',
+    method: 'POST',
+    params: { code },
+    data: { ...paramMap }
+  })
+}

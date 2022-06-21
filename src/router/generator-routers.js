@@ -25,7 +25,7 @@ const constantRouterComponents = {
   'BaseSettings': () => import('@/views/account/base/BasicSetting'),
   'SecuritySettings': () => import('@/views/account/security/Security'),
   'CustomSettings': () => import('@/views/account/settings/Custom'),
-  'BindingSettings': () => import('@/views/account/settings/Binding'),
+  'BindingSettings': () => import('@/views/account/bind/Binding'),
   'NotificationSettings': () => import('@/views/account/settings/Notification')
 
 }

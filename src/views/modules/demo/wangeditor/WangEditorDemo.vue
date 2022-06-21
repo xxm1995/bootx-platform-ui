@@ -21,6 +21,10 @@
 <script>
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css'
+// markdown支持
+import markdownModule from '@wangeditor/plugin-md'
+import { Boot } from '@wangeditor/editor'
+Boot.registerModule(markdownModule)
 
 export default {
   name: 'WangEditorDemo',

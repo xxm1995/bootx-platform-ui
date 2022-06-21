@@ -49,7 +49,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -59,13 +59,27 @@
             <a href="javascript:" @click="edit(row)">编辑</a>
           </span>
           <a-divider type="vertical"/>
-          <a-popconfirm
-            title="是否删除模板"
-            @confirm="remove(row)"
-            okText="是"
-            cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
-          </a-popconfirm>
+          <a-dropdown>
+            <a class="ant-dropdown-link">
+              更多 <a-icon type="down" />
+            </a>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a href="javascript:" @click="render(row)">测试</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除模板"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" style="color: red">删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
+          </a-dropdown>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -79,22 +93,23 @@
       @page-change="handleTableChange">
       />
     </vxe-pager>
-    <template-edit
-      ref="templateEdit"
-      @ok="handleOk"/>
+    <template-edit ref="templateEdit" @ok="handleOk"/>
+    <template-render ref="templateRender"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import TemplateEdit from './TemplateEdit'
+import TemplateRender from './TemplateRender'
 import { del, page } from '@/api/notice/messageTemplate'
 
 export default {
   name: 'TemplateList',
   mixins: [TableMixin],
   components: {
-    TemplateEdit
+    TemplateEdit,
+    TemplateRender
   },
   data () {
     return {
@@ -126,6 +141,9 @@ export default {
     },
     show (record) {
       this.$refs.templateEdit.init(record.id, 'show')
+    },
+    render (record) {
+      this.$refs.templateRender.init(record.id)
     },
     remove (record) {
       del(record.id).then(_ => {

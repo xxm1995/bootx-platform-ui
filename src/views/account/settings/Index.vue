@@ -15,6 +15,7 @@
           <binding/>
         </a-tab-pane>
         <a-tab-pane key="4" tab="个人信息">
+          <user-info/>
         </a-tab-pane>
       </a-tabs>
     </a-card>
@@ -25,7 +26,8 @@
 import { RouteView } from '@/layouts'
 import { baseMixin } from '@/store/app-mixin'
 import BasicSetting from '../base/BasicSetting'
-import Binding from './Binding'
+import Binding from '../bind/Binding'
+import UserInfo from './UserInfo'
 import Security from '../security/Security'
 
 export default {
@@ -33,6 +35,7 @@ export default {
     RouteView,
     BasicSetting,
     Binding,
+    UserInfo,
     Security
   },
   mixins: [baseMixin]

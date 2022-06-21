@@ -53,7 +53,7 @@
         label="备注"
         prop="remark"
       >
-        <a-input v-model="form.remark" :disabled="showable"/>
+        <a-textarea v-model="form.remark" :disabled="showable"/>
       </a-form-model-item>
     </a-form-model>
 

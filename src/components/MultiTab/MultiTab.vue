@@ -199,7 +199,4 @@ export default {
 }
 </script>
 <style lang="less" scoped>
-.ant-pro-multi-tab{
-  margin-bottom: 10px;
-}
 </style>

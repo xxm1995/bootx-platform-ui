@@ -42,9 +42,9 @@
     <template v-slot:footerRender>
       <global-footer />
     </template>
-<!--    -->
+    <!--  多页签  -->
     <multi-tab v-if="multiTab"/>
-    // 页面
+    <!--  页面  -->
     <router-view/>
   </pro-layout>
 </template>

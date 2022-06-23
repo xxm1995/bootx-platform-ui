@@ -83,12 +83,9 @@ export default {
     fetchNotice () {
       this.visible = true
       this.loading = true
-      axios({
-        url: '/monitor/system/getSystemInfo',
-        method: 'get'
-      }).then(res => {
+      setTimeout(() => {
         this.loading = false
-      })
+      }, 250)
     },
     /**
      * 接到推送的消息

@@ -34,7 +34,9 @@
           :validate-status="validateStatus"
           :hasFeedback="true"
           :required="true">
-          <span slot="help">{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
+          <template v-slot:help>
+            <span>{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
+          </template>
           <a-tree-select
             style="width:100%"
             :dropdown-style="{ maxHeight: '200px', overflow: 'auto' }"

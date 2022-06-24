@@ -67,8 +67,6 @@
 
 <script>
 
-import { axios } from '@/utils/request'
-
 export default {
   name: 'HeaderNotice',
   data () {

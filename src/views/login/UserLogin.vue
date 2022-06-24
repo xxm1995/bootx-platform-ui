@@ -42,7 +42,7 @@
             v-model="form.captcha"
           >
             <template v-slot:prefix>
-              <a-icon slot="prefix" type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+              <a-icon type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </template>
           </a-input>
         </a-form-model-item>

@@ -65,26 +65,28 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否设为默认配置"
-                  @confirm="setUpActivity(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:">设为默认</a>
-                </a-popconfirm>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除配置"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" style="color: red">删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否设为默认配置"
+                    @confirm="setUpActivity(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:">设为默认</a>
+                  </a-popconfirm>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除配置"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" style="color: red">删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>

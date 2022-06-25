@@ -77,27 +77,29 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <a-menu slot="overlay">
-              <a-menu-item>
-                <a @click="addChildren(row)">添加下级</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a @click="copy(row.id)">复制</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
-              </a-menu-item>
-              <a-menu-item>
-                <a-popconfirm
-                  title="是否删除菜单或权限"
-                  @confirm="remove(row)"
-                  okText="是"
-                  cancelText="否">
-                  <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
-                  <a href="javascript:" v-else disabled>删除</a>
-                </a-popconfirm>
-              </a-menu-item>
-            </a-menu>
+            <template v-slot:overlay>
+              <a-menu>
+                <a-menu-item>
+                  <a @click="addChildren(row)">添加下级</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a @click="copy(row.id)">复制</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a-popconfirm
+                    title="是否删除菜单或权限"
+                    @confirm="remove(row)"
+                    okText="是"
+                    cancelText="否">
+                    <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
+                    <a href="javascript:" v-else disabled>删除</a>
+                  </a-popconfirm>
+                </a-menu-item>
+              </a-menu>
+            </template>
           </a-dropdown>
         </template>
       </vxe-table-column>

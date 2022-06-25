@@ -85,7 +85,12 @@ export default {
     searchMethods (value) {
       this.searchMenuVisible = false
       const route = this.searchMenuOptions.filter(item => item.name === value)[0]
-      this.$router.push({ path: route.path })
+      console.log(route)
+      if (route.meta.targetOutside) {
+        window.open(route.meta.url)
+      } else {
+        this.$router.push({ path: route.path })
+      }
     }
   },
   mounted () {

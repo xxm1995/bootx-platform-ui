@@ -57,9 +57,9 @@ export function existsEmailNotId (email, id) {
 /**
  * 发送更改手机验证码
  */
-export function sendCurrentPhoneCaptcha () {
+export function sendCurrentPhoneChangeCaptcha () {
   return axios({
-    url: `/user/sendCurrentPhoneCaptcha`,
+    url: `/user/sendCurrentPhoneChangeCaptcha`,
     method: 'post'
   })
 }
@@ -67,9 +67,9 @@ export function sendCurrentPhoneCaptcha () {
 /**
  * 校验发送更改手机验证码
  */
-export function validateCurrentPhoneCaptcha (captcha) {
+export function validateCurrentPhoneChangeCaptcha (captcha) {
   return axios({
-    url: `/user/validateCurrentPhoneCaptcha`,
+    url: `/user/validateCurrentPhoneChangeCaptcha`,
     method: 'get',
     params: { captcha }
   })
@@ -78,9 +78,9 @@ export function validateCurrentPhoneCaptcha (captcha) {
 /**
  * 发送更改手机号验证码
  */
-export function sendPhoneCaptcha (phone) {
+export function sendPhoneChangeCaptcha (phone) {
   return axios({
-    url: `/user/sendPhoneCaptcha`,
+    url: `/user/sendPhoneChangeCaptcha`,
     method: 'post',
     params: { phone }
   })
@@ -89,9 +89,9 @@ export function sendPhoneCaptcha (phone) {
 /**
  * 校验发送更改手机验证码
  */
-export function validatePhoneCaptcha (phone, captcha) {
+export function validatePhoneChangeCaptcha (phone, captcha) {
   return axios({
-    url: `/user/validatePhoneCaptcha`,
+    url: `/user/validatePhoneChangeCaptcha`,
     method: 'get',
     params: { phone, captcha }
   })
@@ -100,9 +100,9 @@ export function validatePhoneCaptcha (phone, captcha) {
 /**
  * 发送更改邮箱验证码
  */
-export function sendCurrentEmailCaptcha () {
+export function sendCurrentEmailChangeCaptcha () {
   return axios({
-    url: `/user/sendCurrentEmailCaptcha`,
+    url: `/user/sendCurrentEmailChangeCaptcha`,
     method: 'post'
   })
 }
@@ -110,9 +110,9 @@ export function sendCurrentEmailCaptcha () {
 /**
  * 验证当前用户发送更改邮箱验证码
  */
-export function validateCurrentEmailCaptcha (captcha) {
+export function validateCurrentEmailChangeCaptcha (captcha) {
   return axios({
-    url: `/user/validateCurrentEmailCaptcha`,
+    url: `/user/validateCurrentEmailChangeCaptcha`,
     method: 'get',
     params: { captcha }
   })
@@ -121,9 +121,9 @@ export function validateCurrentEmailCaptcha (captcha) {
 /**
  * 发送更改邮箱验证码
  */
-export function sendEmailCaptcha (email) {
+export function sendEmailChangeCaptcha (email) {
   return axios({
-    url: `/user/sendEmailCaptcha`,
+    url: `/user/sendEmailChangeCaptcha`,
     method: 'post',
     params: { email }
   })
@@ -132,9 +132,9 @@ export function sendEmailCaptcha (email) {
 /**
  * 验证更改邮箱验证码
  */
-export function validateEmailCaptcha (email, captcha) {
+export function validateEmailChangeCaptcha (email, captcha) {
   return axios({
-    url: `/user/validateEmailCaptcha`,
+    url: `/user/validateEmailChangeCaptcha`,
     method: 'get',
     params: { email, captcha }
   })

@@ -69,9 +69,9 @@ import { FormMixin } from '@/mixins/FormMixin'
 import { validateMobile } from '@/utils/validate'
 import {
   existsPhone,
-  sendCurrentPhoneCaptcha,
-  sendPhoneCaptcha,
-  validateCurrentPhoneCaptcha, validatePhoneCaptcha
+  sendCurrentPhoneChangeCaptcha,
+  sendPhoneChangeCaptcha,
+  validateCurrentPhoneChangeCaptcha, validatePhoneChangeCaptcha
 } from '@/api/system/userAssist'
 
 export default {
@@ -179,7 +179,7 @@ export default {
         callback()
         return
       }
-      const { data } = await validateCurrentPhoneCaptcha(value)
+      const { data } = await validateCurrentPhoneChangeCaptcha(value)
       data ? callback() : callback('验证码错误')
     },
     /**
@@ -190,14 +190,14 @@ export default {
         callback()
         return
       }
-      const { data } = await validatePhoneCaptcha(this.form.phone, value)
+      const { data } = await validatePhoneChangeCaptcha(this.form.phone, value)
       data ? callback() : callback('验证码错误')
     },
     /**
      *  发送验证码 旧
      */
     sendOldPhoneCaptcha () {
-      sendCurrentPhoneCaptcha().then(() => {
+      sendCurrentPhoneChangeCaptcha().then(() => {
         this.$message.info('发送验证码成功')
         const state = this.state
         state.oldCaptcha = true
@@ -217,7 +217,7 @@ export default {
       this.$refs.form.validateField(['phone'], async valid => {
         console.log(valid)
         if (!valid) {
-          sendPhoneCaptcha(this.form.phone).then(() => {
+          sendPhoneChangeCaptcha(this.form.phone).then(() => {
             this.$message.info('发送验证码成功')
             const state = this.state
             state.newCaptcha = true

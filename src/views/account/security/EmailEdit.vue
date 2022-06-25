@@ -67,7 +67,7 @@
 import { updateEmail } from '@/api/system/user'
 import { FormMixin } from '@/mixins/FormMixin'
 import { validateEmail } from '@/utils/validate'
-import { existsEmail, sendCurrentEmailCaptcha, sendEmailCaptcha, validateCurrentEmailCaptcha, validateEmailCaptcha } from '@/api/system/userAssist'
+import { existsEmail, sendCurrentEmailChangeCaptcha, sendEmailChangeCaptcha, validateCurrentEmailChangeCaptcha, validateEmailChangeCaptcha } from '@/api/system/userAssist'
 
 export default {
   name: 'EmailEdit',
@@ -176,7 +176,7 @@ export default {
         callback()
         return
       }
-      const { data } = await validateCurrentEmailCaptcha(value)
+      const { data } = await validateCurrentEmailChangeCaptcha(value)
       data ? callback() : callback('验证码错误')
     },
     /**
@@ -187,14 +187,14 @@ export default {
         callback()
         return
       }
-      const { data } = await validateEmailCaptcha(this.form.email, value)
+      const { data } = await validateEmailChangeCaptcha(this.form.email, value)
       data ? callback() : callback('验证码错误')
     },
     /**
      *  发送验证码 旧邮箱
      */
     sendOldEmailCaptcha () {
-      sendCurrentEmailCaptcha().then(() => {
+      sendCurrentEmailChangeCaptcha().then(() => {
         this.$message.info('发送验证码成功')
         const state = this.state
         state.oldCaptcha = true
@@ -214,7 +214,7 @@ export default {
       this.$refs.form.validateField(['email'], async valid => {
         console.log(valid)
         if (!valid) {
-          sendEmailCaptcha(this.form.email).then(() => {
+          sendEmailChangeCaptcha(this.form.email).then(() => {
             this.$message.info('发送验证码成功')
             const state = this.state
             state.newCaptcha = true

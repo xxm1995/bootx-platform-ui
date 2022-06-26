@@ -24,7 +24,7 @@
       custom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
@@ -69,7 +69,7 @@
               <a class="ant-dropdown-link">
                 关联 <a-icon type="down" />
               </a>
-              <template v-slot:overlay>
+              <template #overlay>
                 <a-menu>
                   <a-menu-item v-if="[2,4].includes(row.type)">
                     <a href="javascript:" @click="handleUserScope(row)">关联用户</a>

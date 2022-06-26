@@ -62,3 +62,14 @@ export function sendSmsCode (phone) {
     params: { phone }
   })
 }
+
+/**
+ * 注册
+ */
+export function register (obj) {
+  return request({
+    url: `/user/register`,
+    method: 'post',
+    data: obj
+  })
+}

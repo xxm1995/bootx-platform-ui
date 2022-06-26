@@ -28,7 +28,7 @@
         <a-input v-model="form.author"/>
       </a-form-model-item>
     </a-form-model>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" type="primary" @click="handleOk">生成</a-button>
     </template>

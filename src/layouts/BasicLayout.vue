@@ -6,13 +6,12 @@
     :isMobile="isMobile"
     :handleMediaQuery="handleMediaQuery"
     :handleCollapse="handleCollapse"
-    :i18nRender="i18nRender"
     v-bind="settings"
   >
     <!-- 1.0.0+ 版本 pro-layout 提供 API，
           我们推荐使用这种方式进行 LOGO 和 title 自定义
     -->
-    <template v-slot:menuHeaderRender>
+    <template #menuHeaderRender>
       <div class="menuHeaderRender">
         <!--        <logo-svg />-->
         <h1>{{ title }}</h1>
@@ -21,7 +20,7 @@
     <!-- 1.0.0+ 版本 pro-layout 提供 API,
           增加 Header 左侧内容区自定义
     -->
-    <template v-slot:headerContentRender>
+    <template #headerContentRender>
       <div>
         <a-tooltip title="刷新字典缓存">
           <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="RefreshDictList" />
@@ -34,12 +33,12 @@
         This is SettingDrawer custom footer content.
       </div>
     </setting-drawer>
-    <template v-slot:rightContentRender>
+    <template #rightContentRender>
       <!-- 后期添加菜单搜索功能 -->
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
     </template>
     <!-- custom footer / 自定义Footer -->
-    <template v-slot:footerRender>
+    <template #footerRender>
       <global-footer />
     </template>
     <!--  多页签  -->
@@ -51,7 +50,6 @@
 
 <script>
 import { SettingDrawer, updateTheme } from '@ant-design-vue/pro-layout'
-import { i18nRender } from '@/locales'
 import { mapActions, mapState } from 'vuex'
 import {
   CACHE_MULTI_TAB_COMPONENTS,
@@ -163,7 +161,6 @@ export default {
   },
   methods: {
     ...mapActions(['InitDictList']),
-    i18nRender,
     handleMediaQuery (val) {
       this.query = val
       if (this.isMobile && !val['screen-xs']) {

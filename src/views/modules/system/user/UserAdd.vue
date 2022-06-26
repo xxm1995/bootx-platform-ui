@@ -20,10 +20,14 @@
           <a-input placeholder="请输入用户名称" v-model="form.name"/>
         </a-form-model-item>
         <a-form-model-item label="登录密码" prop="password" >
-          <a-input-password
-            type="password"
-            placeholder="请输入登录密码"
-            v-model="form.password" />
+          <password-level :visible="passwordLevelVisible" :password="form.password">
+            <a-input-password
+              type="password"
+              placeholder="请输入登录密码"
+              @focus="passwordLevelVisible = true"
+              @blur="passwordLevelVisible = false"
+              v-model="form.password" />
+          </password-level>
         </a-form-model-item>
         <a-form-model-item label="确认密码" prop="confirmPassword" >
           <a-input-password
@@ -63,6 +67,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
+import PasswordLevel from '@/components/PasswordLevel'
 import { add } from '@/api/system/user'
 import { existsUsername, existsPhone, existsEmail } from '@/api/system/userAssist'
 import { validateEmail, validateMobile } from '@/utils/validate'
@@ -71,10 +76,14 @@ import { findAllByAlonePrem } from '@/api/system/client'
 export default {
   name: 'UserAdd',
   mixins: [FormMixin],
+  components:{
+    PasswordLevel
+  },
   data () {
     return {
       confirmDirty: false,
       clientList: [],
+      passwordLevelVisible: false,
       form: {
         name: '',
         username: '',

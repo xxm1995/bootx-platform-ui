@@ -17,7 +17,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>

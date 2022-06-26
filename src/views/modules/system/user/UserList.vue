@@ -25,12 +25,12 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-space>
           <a-button type="primary" icon="plus" @click="add">新建</a-button>
           <a-dropdown v-show="batchOperateFlag">
             <a-button > 批量操作 <a-icon type="down" /></a-button>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a @click="assignRolesBatch()">角色分配</a>
@@ -89,7 +89,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a @click="assignRoles(row)">角色分配</a>

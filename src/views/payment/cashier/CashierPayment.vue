@@ -14,7 +14,7 @@
       :rowKey="record => record.userId"
       :pagination="true"
     >
-      <span v-slot:status="{text,record}">
+      <span #status="{text,record}">
         <a-tag color="blue" v-if="record.status==='1'">待支付</a-tag>
         <a-tag color="green" v-if="record.status==='2'">已支付</a-tag>
         <a-tag color="orange" v-if="record.status==='3'">已取消</a-tag>

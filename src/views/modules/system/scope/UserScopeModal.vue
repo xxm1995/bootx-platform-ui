@@ -12,7 +12,7 @@
       custom
       :refresh="{query: queryList}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="usergroup-add" @click="selectUserShow">选择用户</a-button>
         <a-popconfirm
           title="是否删除这些关联的用户"

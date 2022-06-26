@@ -27,7 +27,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
@@ -58,14 +58,11 @@
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="alonePrem" title="独立权限" >
+      <vxe-table-column field="alonePrem" title="类型" >
         <template v-slot="{row}">
-          <a-tag v-if="row.alonePrem" color="green">有</a-tag>
-          <a-tag v-else color="red">无</a-tag>
+          {{ row.alonePrem?'独立应用':'登录方式' }}
         </template>
       </vxe-table-column>
-      <vxe-table-column field="timeout" title="超时时间(分钟)" :visible="false"/>
-      <vxe-table-column field="pwdErrNum" title="密码错误次数" :visible="false"/>
       <vxe-table-column field="description" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">

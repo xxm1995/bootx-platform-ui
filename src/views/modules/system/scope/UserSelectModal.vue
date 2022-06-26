@@ -9,7 +9,7 @@
     @cancel="handleCancel"
   >
     <vxe-toolbar>
-      <template v-slot:buttons>
+      <template #buttons>
         <div class="table-page-search-wrapper">
           <a-form layout="inline">
             <a-row :gutter="12">
@@ -53,7 +53,7 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" type="primary" @click="handleOk">选择</a-button>
     </template>

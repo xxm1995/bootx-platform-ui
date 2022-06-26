@@ -32,7 +32,7 @@
             </a-form-model-item>
             <a-form-model-item label="订单编号" prop="businessId">
               <a-input-search v-model="form.businessId" @search="genOrderNo">
-                <template v-slot:enterButton>
+                <template #enterButton>
                   <a-button>
                     生成订单号
                   </a-button>
@@ -44,13 +44,13 @@
             </a-form-model-item>
             <a-form-model-item label="金额" prop="amount">
               <a-input-number :precision="2" :min="0.01" v-model="form.amount" />
-              <template v-if="form.payChannel === 5" v-slot:help>
+              <template v-if="form.payChannel === 5" #help>
                 <span>钱包余额：{{ wallet.balance }}</span>
               </template>
             </a-form-model-item>
             <a-form-model-item label="储值卡" prop="voucherNo" v-if="form.payChannel === 6">
               <a-input v-model="form.voucherNo" />
-              <template v-slot:help>
+              <template #help>
                 <span>储值卡面值：{{ voucher.faceValue }} 余额：{{ voucher.balance }}</span>
               </template>
             </a-form-model-item>

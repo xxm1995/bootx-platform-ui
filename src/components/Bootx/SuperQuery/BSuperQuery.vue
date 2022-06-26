@@ -1,7 +1,7 @@
 <template>
   <span>
     <a-tooltip v-if="queryState">
-      <template v-slot:title>
+      <template #title>
         <span>查询条件生效</span>
         <a-divider type="vertical"/>
         <a href="javascript:" @click="supperQueryRest">清空</a>

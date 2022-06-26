@@ -69,30 +69,28 @@ export const constantRouterMap = [
       {
         path: 'login',
         name: 'login',
+        meta: { title: '登录', ignoreLogin: true },
         component: () => import(/* webpackChunkName: "user" */ '@/views/login/Index')
+      },
+      {
+        path: 'forget',
+        name: 'forget',
+        meta: { title: '忘记密码', ignoreLogin: true },
+        component: () => import(/* webpackChunkName: "user" */ '@/views/user/ForgetPassword')
       },
       {
         path: 'register',
         name: 'register',
+        meta: { title: '注册', ignoreLogin: true },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
       },
       {
-        path: 'register-result',
+        path: 'registerResult',
         name: 'registerResult',
+        meta: { title: '注册成功信息', ignoreLogin: true },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
-      },
-      {
-        path: 'recover',
-        name: 'recover',
-        component: undefined
       }
     ]
-  },
-  {
-    path: '/settlement',
-    name: 'settlement',
-    component: () => import('@/views/demo/DemoIndex'),
-    meta: { title: '结算台', ignoreLogin: true }
   },
   {
     path: '/cashier',
@@ -100,7 +98,6 @@ export const constantRouterMap = [
     component: () => import('@/views/payment/cashier/Cashier'),
     meta: { title: '结算台支付演示', ignoreLogin: true }
   },
-
   {
     path: '/404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')

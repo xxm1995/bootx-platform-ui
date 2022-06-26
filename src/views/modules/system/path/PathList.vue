@@ -35,12 +35,12 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-space>
           <a-button type="primary" icon="plus" @click="add">新建</a-button>
           <a-dropdown v-show="batchOperateFlag">
             <a-button > 批量操作 <a-icon type="down" /></a-button>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a @click="batchUpdateEnable(true)">批量启用</a>

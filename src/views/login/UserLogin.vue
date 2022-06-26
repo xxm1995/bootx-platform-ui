@@ -13,7 +13,7 @@
         placeholder="账号/手机号/邮箱 "
         v-model="form.account"
       >
-        <template v-slot:prefix>
+        <template #prefix>
           <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </template>
       </a-input>
@@ -26,13 +26,13 @@
         placeholder="密码"
         v-model="form.password"
       >
-        <template v-slot:prefix>
+        <template #prefix>
           <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </template>
       </a-input-password>
     </a-form-model-item>
 
-    <a-row :span="24" v-if="client.captcha" style="bo">
+    <a-row :span="24" v-if="client.captcha">
       <a-col :span="16">
         <a-form-model-item prop="captcha">
           <a-input
@@ -41,7 +41,7 @@
             placeholder="验证码"
             v-model="form.captcha"
           >
-            <template v-slot:prefix>
+            <template #prefix>
               <a-icon type="smile" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </template>
           </a-input>
@@ -64,7 +64,7 @@
         @click="handleSubmit"
         :loading="state.loginBtn"
         :disabled="state.loginBtn"
-      >确定</a-button>
+      >登录</a-button>
     </a-form-item>
   </a-form-model>
 </template>

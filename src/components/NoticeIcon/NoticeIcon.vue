@@ -9,7 +9,7 @@
     :arrowPointAtCenter="true"
     :overlayStyle="{ width: '300px', top: '50px' }"
   >
-    <template v-slot:content>
+    <template #content>
       <a-spin :spinning="loading">
         <a-tabs >
           <a-tab-pane tab="通知消息" key="1">

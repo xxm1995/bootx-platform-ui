@@ -7,7 +7,7 @@
       <a-button @click="handleCloseCurrentTab" style="margin-right: 16px;">关闭当前页</a-button>
       <a-button @click="handleOpenTab" style="margin-right: 16px;">打开 任务列表</a-button>
       <a-popconfirm :visible="visible" @confirm="confirm" @cancel="cancel" okText="确定" cancelText="取消">
-        <template v-slot:title>
+        <template #title>
           <div>
             <a-form :form="form" layout="inline">
               <a-form-item label="自定义名称">
@@ -20,7 +20,7 @@
       </a-popconfirm>
 
       <a-popconfirm :visible="visible2" @confirm="confirm2" @cancel="() => visible2 = false" okText="确定" cancelText="取消">
-        <template v-slot:title>
+        <template #title>
           <div>
             <p>页面 KEY 是由页面的路由 <code>path</code> 决定的</p>
             <p>如果要修改某一个页面标题，该页面必须已经被打开在 Tab 栏</p>

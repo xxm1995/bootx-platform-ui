@@ -21,10 +21,14 @@
         <a-input disabled="" v-model="form.name"/>
       </a-form-model-item>
       <a-form-model-item label="登录密码" prop="password" >
-        <a-input-password
-          type="password"
-          placeholder="请输入登录密码"
-          v-model="form.password" />
+        <password-level :visible="passwordLevelVisible" :password="form.password">
+          <a-input-password
+            type="password"
+            placeholder="请输入登录密码"
+            @focus="passwordLevelVisible = true"
+            @blur="passwordLevelVisible = false"
+            v-model="form.password" />
+        </password-level>
       </a-form-model-item>
       <a-form-model-item label="确认密码" prop="confirmPassword" >
         <a-input-password
@@ -33,7 +37,7 @@
           v-model="form.confirmPassword"/>
       </a-form-model-item>
     </a-form-model>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
@@ -42,14 +46,20 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
+import PasswordLevel from '@/components/PasswordLevel'
+
 import { get, restartPassword } from '@/api/system/user'
 
 export default {
   name: 'UserResetPassword',
   mixins: [FormMixin],
+  components: {
+    PasswordLevel
+  },
   data () {
     return {
       confirmDirty: false,
+      passwordLevelVisible: false,
       form: {
         id: '',
         username: '',

@@ -9,7 +9,7 @@
       <span style="margin-right: 5px;">{{ currentUser.name }}</span>
 <!--      <setting-drawer ref="settingDrawer" title="系统设置"/>-->
     </span>
-    <template v-slot:overlay>
+    <template #overlay>
       <a-menu class="ant-pro-drop-down menu" :selected-keys="[]">
         <a-menu-item v-if="menu" key="userSettings" @click="handleToUserSettings">
           <a-icon type="setting" />

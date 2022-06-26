@@ -11,7 +11,7 @@
         placeholder="请输入手机号"
         v-model="form.phone"
       >
-        <template v-slot:prefix>
+        <template #prefix>
           <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </template>
       </a-input>
@@ -26,7 +26,7 @@
             autocomplete="false"
             v-model="form.smsCaptcha"
           >
-            <template v-slot:prefix>
+            <template #prefix>
               <a-icon type="safety-certificate" :style="{ color: 'rgba(0,0,0,.25)' }"/>
             </template>
           </a-input>
@@ -53,7 +53,7 @@
         @click="handleSubmit"
         :loading="state.loginBtn"
         :disabled="state.loginBtn"
-      >确定</a-button>
+      >登录</a-button>
     </a-form-model-item>
   </a-form-model>
 </template>
@@ -88,6 +88,9 @@ export default {
   },
   methods: {
     ...mapActions(['loginOpenId', 'Logout']),
+    /**
+     * 获取手机验证码
+     */
     getCaptcha (e) {
       e.preventDefault()
       this.$refs.form.validateField('phone', async valid => {
@@ -117,13 +120,16 @@ export default {
         }
       })
     },
-
-    // 校验手机号
+    /**
+     * 校验手机号
+     */
     validatePhone (rule, value, callback) {
       const { msg, result } = validateMobile(value)
       result ? callback() : callback(msg)
     },
-
+    /**
+     * 登录
+     */
     handleSubmit (e) {
       e.preventDefault()
       const {

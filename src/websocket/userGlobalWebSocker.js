@@ -69,6 +69,7 @@ function websocketOnmessage (e) {
 export async function initWebSocket () {
   // 获取token
   const token = storage.get(ACCESS_TOKEN)
+  // 判断一下token是否有效
   if (!wsUrl) {
     const { data: url } = await findByParamKey(WEBSOCKET_SERVER_URL)
     wsUrl = url

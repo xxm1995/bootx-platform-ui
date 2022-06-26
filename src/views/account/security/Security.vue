@@ -10,35 +10,35 @@
           <a-list>
             <a-list-item>
               <a-list-item-meta title="账户密码">
-                <template v-slot:description>
+                <template #description>
                   <span class="security-list-description">账号登录密码</span>
                 </template>
               </a-list-item-meta>
-              <template v-slot:actions>
+              <template #actions>
                 <a @click="passwordEdit">修改</a>
               </template>
             </a-list-item>
             <a-list-item>
               <a-list-item-meta title="绑定手机号">
-                <template v-slot:description>
+                <template #description>
                   <span>已绑定手机</span>
                   <span> : </span>
                   <span>{{ user.phone }}</span>
                 </template>
               </a-list-item-meta>
-              <template v-slot:actions>
+              <template #actions>
                 <a @click="phoneEdit">修改</a>
               </template>
             </a-list-item>
             <a-list-item>
               <a-list-item-meta title="账号邮箱">
-                <template v-slot:description>
+                <template #description>
                   <span>已绑定邮箱</span>
                   <span> : </span>
                   <span>{{ user.email }}</span>
                 </template>
               </a-list-item-meta>
-              <template v-slot:actions>
+              <template #actions>
                 <a @click="emailEdit">修改</a>
               </template>
             </a-list-item>

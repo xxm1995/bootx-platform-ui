@@ -76,7 +76,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { operatePage } from '@/api/system/log'
+import { operatePage } from '@/api/starter/log'
 import OperateLogInfo from './OperateLogInfo'
 
 export default {

@@ -62,7 +62,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { dataVersionPage } from '@/api/system/log'
+import { dataVersionPage } from '@/api/starter/log'
 import DataVersionLogInfo from './DataVersionLogInfo'
 
 export default {

@@ -15,7 +15,7 @@
         </div>
       </div>
     </a-spin>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" :loading="loading" type="primary" @click="handleOk">确定</a-button>
     </template>

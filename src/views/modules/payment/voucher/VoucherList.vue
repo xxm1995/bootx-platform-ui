@@ -27,7 +27,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-space>
           <a-button type="primary" @click="generationBatch">生成储值卡</a-button>
 <!--          <a-button @click="importBatch">导入储值卡</a-button>-->
@@ -68,7 +68,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a v-if="row.status === 1 " @click="lockConfirm(row.id,true)">停用</a>

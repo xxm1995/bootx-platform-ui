@@ -27,7 +27,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="usergroup-add" @click="add">开通钱包</a-button>
       </template>
     </vxe-toolbar>
@@ -57,7 +57,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a @click="showLog(row.id)">钱包日志</a>

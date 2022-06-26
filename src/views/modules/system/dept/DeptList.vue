@@ -16,7 +16,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button
           type="primary"
           icon="plus"
@@ -53,7 +53,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a @click="addChildren(row)">添加下级</a>

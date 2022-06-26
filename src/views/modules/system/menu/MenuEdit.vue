@@ -34,7 +34,7 @@
           :validate-status="validateStatus"
           :hasFeedback="true"
           :required="true">
-          <template v-slot:help>
+          <template #help>
             <span>{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
           </template>
           <a-tree-select
@@ -62,7 +62,7 @@
             placeholder="请输入路由名称"
             v-model="form.name"
             :disabled="showable">
-            <template v-slot:suffix>
+            <template #suffix>
               <a-tooltip
                 title="尽量保证路由名称的唯一"
               >
@@ -80,7 +80,7 @@
             :disabled="showable"
             placeholder="请输入菜单路径"
           >
-            <template v-slot:suffix>
+            <template #suffix>
               <a-tooltip
                 title="路由访问路径"
               >
@@ -97,7 +97,7 @@
             :disabled="showable"
             placeholder="请输入前端组件"
             v-model="form.component">
-            <template v-slot:suffix>
+            <template #suffix>
               <a-tooltip
                 title="输入组件名称或者组件路径地址，路径地址情况，默认已经带有'@/views/modules/'前缀"
               >
@@ -122,7 +122,7 @@
             :disabled="showable"
             placeholder="点击选择图标"
             v-model="form.icon">
-            <template v-slot:addonAfter>
+            <template #addonAfter>
               <a-icon
                 type="setting"
                 @click="selectIcons" />

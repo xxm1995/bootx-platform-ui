@@ -2,20 +2,36 @@
 <template>
   <div class="main">
     <div class="login-menu">
-      <user-login
-        @loginSuccess="loginSuccess"
-        v-if="activeName === 'user'"/>
-      <phone-login
-        @loginSuccess="loginSuccess"
-        v-if="activeName === 'phone'"/>
-      <div style="text-align:center; width: 100%;">
-        <a
-          @click.stop="activeName='user'"
-          href="javascript:">账号密码</a>
-        <a
-          @click.stop="activeName='phone'"
-          href="javascript:">手机号登录</a>
-      </div>
+      <a-tabs :activeKey="activeName" @change="handleTabClick">
+        <a-tab-pane key="user" tab="账号密码登录">
+          <user-login
+            @loginSuccess="loginSuccess"
+            v-if="activeName === 'user'"/>
+        </a-tab-pane>
+        <a-tab-pane key="phone" tab="手机登录">
+          <phone-login
+            @loginSuccess="loginSuccess"
+            v-if="activeName === 'phone'"/>
+        </a-tab-pane>
+        <a-tab-pane key="qrcode" tab="扫码登录">
+          <qr-code-login
+            @loginSuccess="loginSuccess"
+            v-if="activeName === 'qrcode'"/>
+        </a-tab-pane>
+      </a-tabs>
+      <a-row class="" style="display: flex; width: 100%;line-height: 22px;">
+        <a-col :span="16" style="justify-content:flex-start" >
+          <third-login/>
+        </a-col>
+        <a-col :span="8" style="justify-content:flex-end">
+          <router-link :to="{ name: 'register'}">
+            注册
+          </router-link>
+          <router-link :to="{ name: 'forget'}">
+            忘记密码
+          </router-link>
+        </a-col>
+      </a-row>
     </div>
   </div>
 </template>
@@ -23,12 +39,16 @@
 <script>
 import userLogin from './UserLogin'
 import phoneLogin from './PhoneLogin'
+import QrCodeLogin from './QrCodeLogin'
+import ThirdLogin from './third/ThirdLogin'
 import { timeFix } from '@/utils/util'
 export default {
   name: 'Index',
   components: {
     userLogin,
-    phoneLogin
+    phoneLogin,
+    QrCodeLogin,
+    ThirdLogin
   },
   data () {
     return {
@@ -37,6 +57,9 @@ export default {
     }
   },
   methods: {
+    handleTabClick (key) {
+      this.activeName = key
+    },
     loginSuccess () {
       // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
@@ -56,17 +79,15 @@ export default {
   margin-top: 40px;
   width: 100%;
   //text-align: left;
-
   a {
-    color: #999;
-    font-size: 12px;
-    margin: 0px 8px;
+    font-size: 14px;
+    margin: 0 8px;
   }
 }
 
 .login-select {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
   input {
     color: #333;

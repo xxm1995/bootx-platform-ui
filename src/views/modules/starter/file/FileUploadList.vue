@@ -5,7 +5,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="upload" @click="upload">上传</a-button>
       </template>
     </vxe-toolbar>

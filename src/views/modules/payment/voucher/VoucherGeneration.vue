@@ -70,7 +70,7 @@
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">提交</a-button>
     </template>

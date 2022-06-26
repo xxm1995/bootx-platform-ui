@@ -35,7 +35,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-space>
           <a-button type="primary" icon="plus" @click="add">新建</a-button>
           <a-button icon="sync" @click="syncJobStatus">状态同步</a-button>
@@ -70,7 +70,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item>
                   <a href="javascript:" @click="logPage(row)">执行日志</a>

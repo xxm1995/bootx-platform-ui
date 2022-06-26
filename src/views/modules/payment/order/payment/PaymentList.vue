@@ -32,7 +32,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <b-super-query
           :queryState="superQueryFlag"
           :fields="queryFields"
@@ -83,7 +83,7 @@
             <a class="ant-dropdown-link">
               更多 <a-icon type="down" />
             </a>
-            <template v-slot:overlay>
+            <template #overlay>
               <a-menu>
                 <a-menu-item v-if="row.asyncPayMode">
                   <a @click="sync(row)">刷新信息</a>

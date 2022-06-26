@@ -30,7 +30,7 @@
             placeholder="验证码"
             v-model="form.oldCaptcha"
           >
-            <template v-slot:addonAfter>
+            <template #addonAfter>
               <a :disabled="state.oldCaptcha" href="javascript:" @click="sendOldEmailCaptcha">
                 {{ !state.oldCaptcha && '获取验证码' || '请等待 ' +(state.oldCaptchaTime+' s') }}
               </a>
@@ -46,7 +46,7 @@
             placeholder="验证码"
             v-model="form.newCaptcha"
           >
-            <template v-slot:addonAfter>
+            <template #addonAfter>
               <a :disabled="state.newCaptcha" href="javascript:" @click="sendNewEmailCaptcha">
                 {{ !state.newCaptcha && '获取验证码' || '请等待 ' +(state.newCaptchaTime+' s') }}
               </a>
@@ -55,7 +55,7 @@
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template v-slot:footer>
+    <template #footer>
       <a-button v-show="currentTab === 0" :loading="confirmLoading" @click="handleCancel">取消</a-button>
       <a-button v-show="currentTab === 0" :loading="confirmLoading" type="primary" @click="nextStep">下一步</a-button>
       <a-button v-show="currentTab === 1" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>

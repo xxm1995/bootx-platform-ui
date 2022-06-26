@@ -32,7 +32,7 @@
         </a-form-model-item>
         <a-form-model-item label="默认支付超时配置" prop="expireTime" >
           <a-input :disabled="showable" v-model="form.expireTime">
-            <template v-slot:suffix>
+            <template #suffix>
               <a-tooltip
                 title="参照支付宝超时时间配置说明"
               >

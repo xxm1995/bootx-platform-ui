@@ -50,7 +50,7 @@
 
     </a-descriptions>
 
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
     </template>
   </a-modal>
@@ -58,7 +58,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { operateInfo } from '@/api/system/log'
+import { operateInfo } from '@/api/starter/log'
 
 export default {
   name: 'OperateLogInfo',

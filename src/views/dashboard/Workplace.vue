@@ -1,6 +1,6 @@
 <template>
   <page-header-wrapper>
-    <template v-slot:content>
+    <template #content>
       <div class="page-header-content">
         <div class="avatar">
           <a-avatar size="large" :src="currentUser.avatar"/>
@@ -13,7 +13,7 @@
         </div>
       </div>
     </template>
-    <template v-slot:extraContent>
+    <template #extraContent>
       <div class="extra-content">
         <div class="stat-item">
           <a-statistic title="项目数" :value="56" />

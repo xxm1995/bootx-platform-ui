@@ -17,7 +17,7 @@
             </a-form-model-item>
             <a-form-model-item label="订单编号" prop="businessId">
               <a-input-search v-model="form.businessId" @search="genOrderNo">
-                <template v-slot:enterButton>
+                <template #enterButton>
                   <a-button>
                     生成订单号
                   </a-button>

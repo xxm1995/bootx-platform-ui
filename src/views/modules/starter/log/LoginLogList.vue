@@ -73,7 +73,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { loginPage } from '@/api/system/log'
+import { loginPage } from '@/api/starter/log'
 import LoginLogInfo from './LoginLogInfo'
 
 export default {

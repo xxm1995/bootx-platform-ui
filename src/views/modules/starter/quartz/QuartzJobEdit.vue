@@ -34,7 +34,7 @@
         prop="cron"
       >
         <a-input v-model="form.cron" placeholder="请选择cron表达式" :disabled="true">
-          <template v-slot:addonAfter>
+          <template #addonAfter>
             <a @click="showCronModal" class="config-btn" :disabled="showable">
               <a-icon type="setting"></a-icon>
               选择
@@ -77,7 +77,7 @@
         style="width: 100%"
       />
     </a-modal>
-    <template v-slot:footer>
+    <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>

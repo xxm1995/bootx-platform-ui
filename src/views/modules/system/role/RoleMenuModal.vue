@@ -20,7 +20,7 @@
         @check="onCheck"
         @expand="onExpand"
       >
-        <template v-slot:title="{ title }">
+        <template #title="{ title }">
           <span v-if="title.toLowerCase().indexOf(searchName.toLowerCase()) > -1">
             {{ searchRenderStart(title,searchName) }}
             <span style="color: #f50">
@@ -37,7 +37,7 @@
         <a-select-option v-for="o in clientList" :key="o.code">{{ o.name }}</a-select-option>
       </a-select>
       <a-dropdown style="float: left;margin-left: 5px" :trigger="['click']" placement="topCenter">
-        <template v-slot:overlay>
+        <template #overlay>
           <a-menu>
             <a-menu-item key="1" @click="checkALL">全部勾选</a-menu-item>
             <a-menu-item key="2" @click="cancelCheckALL">取消全选</a-menu-item>

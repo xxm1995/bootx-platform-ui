@@ -217,7 +217,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      clientCode: '',
+      appCode: '',
       form: {
         id: '',
         parentId: '',
@@ -252,12 +252,12 @@ export default {
   },
   methods: {
     loadTree () {
-      menuTree(this.clientCode).then((res) => {
+      menuTree(this.appCode).then((res) => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    async edit (id, type, row, clientCode) {
-      this.clientCode = clientCode
+    async edit (id, type, row, appCode) {
+      this.appCode = appCode
       this.confirmLoading = true
       await this.loadTree()
       // 编辑或查看
@@ -301,7 +301,7 @@ export default {
           }
           that.confirmLoading = true
           if (['add', 'addChildren', 'copy'].includes(this.type)) {
-            this.form.clientCode = this.clientCode
+            this.form.appCode = this.appCode
             await add(this.form)
           } else {
             await update(this.form)

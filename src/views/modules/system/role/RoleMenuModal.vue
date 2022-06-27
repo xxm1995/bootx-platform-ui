@@ -33,7 +33,7 @@
       </a-tree>
     </a-spin>
     <div class="drawer-button">
-      <a-select style="float: left" @change="clientSwitch" v-model="clientCode">
+      <a-select style="float: left" @change="clientSwitch" v-model="appCode">
         <a-select-option v-for="o in clientList" :key="o.code">{{ o.name }}</a-select-option>
       </a-select>
       <a-dropdown style="float: left;margin-left: 5px" :trigger="['click']" placement="topCenter">
@@ -71,7 +71,7 @@ export default {
       roleId: '',
       searchName: '',
       clientList: [],
-      clientCode: 'admin',
+      appCode: 'admin',
       // 父子选项默认不受控
       checkStrictly: true,
       // 所有的key
@@ -107,12 +107,12 @@ export default {
       this.searchName = ''
       this.expandedKeys = []
       // 权限树
-      await allTree(this.clientCode).then(res => {
+      await allTree(this.appCode).then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
         this.generateTreeList(res.data)
       })
       // 当前角色已经选择的
-      await findPermissionIdsByRole(this.roleId, this.clientCode).then(res => {
+      await findPermissionIdsByRole(this.roleId, this.appCode).then(res => {
         this.checkedKeys = res.data
       })
       // 所有的key值
@@ -159,7 +159,7 @@ export default {
     },
     // 终端切换
     clientSwitch (item) {
-      this.clientCode = item
+      this.appCode = item
       this.initAssign()
     },
     // 提交
@@ -167,7 +167,7 @@ export default {
       this.loading = true
       save({
         roleId: this.roleId,
-        clientCode: this.clientCode,
+        appCode: this.appCode,
         permissionIds: this.checkedKeys
       }).then(() => {
         this.handleCancel()

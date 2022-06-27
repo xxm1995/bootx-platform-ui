@@ -58,11 +58,6 @@
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="alonePrem" title="类型" >
-        <template v-slot="{row}">
-          {{ row.alonePrem?'独立应用':'登录方式' }}
-        </template>
-      </vxe-table-column>
       <vxe-table-column field="description" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">

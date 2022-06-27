@@ -3,22 +3,22 @@ import { axios } from '@/utils/request'
 /**
  * 根据用户获取拥有的权限
  */
-export function findPermissionIdsByRole (roleId, clientCode) {
+export function findPermissionIdsByRole (roleId, appCode) {
   return axios({
     url: `/role/menu/findPermissionIdsByRole`,
     method: 'GET',
-    params: { roleId, clientCode }
+    params: { roleId, appCode }
   })
 }
 
 /**
  * 获取菜单权限id集合
  */
-export function findMenuIds (clientCode) {
+export function findMenuIds (appCode) {
   return axios({
     url: `/role/menu/findMenuIds`,
     method: 'GET',
-    params: { clientCode }
+    params: { appCode }
   })
 }
 

@@ -67,7 +67,7 @@ export default {
   data () {
     return {
       form: {
-        openIdType: 'phone',
+        application: '',
         client: 'phone',
         phone: '',
         smsCaptcha: ''
@@ -151,6 +151,9 @@ export default {
         }
       })
     }
+  },
+  created () {
+    this.form.application = process.env.VUE_APP_APPLICATION
   }
 }
 </script>

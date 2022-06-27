@@ -6,12 +6,12 @@
           <a-col :md="8" :sm="24">
             <a-form-item label="终端">
               <a-select
-                v-model="clientCode"
+                v-model="appCode"
                 @change="init"
-                :default-value="clientCode"
+                :default-value="appCode"
                 style="width: 100%"
               >
-                <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
+                <a-select-option v-for="o in applications" :key="o.code">{{ o.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -115,7 +115,7 @@ import MenuEdit from './MenuEdit'
 import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
-import { findAllByAlonePrem } from '@/api/system/client'
+import { findAll } from '@/api/system/application'
 
 export default {
   name: 'MenuList',
@@ -126,9 +126,9 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
-      // 终端编码
-      clientCode: 'admin',
-      clients: [],
+      // 应用编码
+      appCode: 'admin',
+      applications: [],
       searchName: '',
       // 默认树关闭
       treeExpand: false,
@@ -138,23 +138,23 @@ export default {
   methods: {
     init () {
       this.loading = true
-      menuTree(this.clientCode).then(res => {
+      menuTree(this.appCode).then(res => {
         this.remoteTableData = res.data
         this.search()
         this.loading = false
       })
     },
     add () {
-      this.$refs.menuEdit.init('', 'add',null,this.clientCode)
+      this.$refs.menuEdit.init('', 'add',null,this.appCode)
     },
     addChildren (row) {
-      this.$refs.menuEdit.init('', 'addChildren', row, this.clientCode)
+      this.$refs.menuEdit.init('', 'addChildren', row, this.appCode)
     },
     copy (id) {
-      this.$refs.menuEdit.init(id, 'copy', null, this.clientCode)
+      this.$refs.menuEdit.init(id, 'copy', null, this.appCode)
     },
     edit (id) {
-      this.$refs.menuEdit.init(id, 'edit', null, this.clientCode)
+      this.$refs.menuEdit.init(id, 'edit', null, this.appCode)
     },
     show (id) {
       this.$refs.menuEdit.init(id, 'show')
@@ -167,8 +167,8 @@ export default {
     },
     // 初始化终端列表
     async initClients () {
-      const { data } = await findAllByAlonePrem()
-      this.clients = data
+      const { data } = await findAll()
+      this.applications = data
     },
     /**
      * 资源列表

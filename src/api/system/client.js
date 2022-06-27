@@ -57,16 +57,6 @@ export function findAll () {
 }
 
 /**
- * 查询有独立菜单和权限的终端列表
- */
-export function findAllByAlonePrem () {
-  return axios({
-    url: '/client/findAllByAlonePrem',
-    method: 'GET'
-  })
-}
-
-/**
  * 根据code获取终端信息
  */
 export function findByCode (code) {

@@ -78,6 +78,7 @@ export default {
   data () {
     return {
       form: {
+        application: '',
         client: '',
         account: '',
         password: '123456',
@@ -147,19 +148,12 @@ export default {
           }, 600)
         }
       })
-    },
-    /* 登录失败 */
-    requestFailed (err) {
-      this.$notification['error']({
-        message: '错误',
-        description: err.msg || '请求出现错误，请稍后再试',
-        duration: 4
-      })
     }
   },
   created () {
     this.form.account = process.env.VUE_APP_USER_ACCOUNT
-    this.form.client = process.env.VUE_APP_ClIENT
+    this.form.application = process.env.VUE_APP_APPLICATION
+    this.form.client = 'password'
     this.init()
   }
 }

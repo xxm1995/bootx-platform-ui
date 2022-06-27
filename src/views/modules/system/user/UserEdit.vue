@@ -19,17 +19,17 @@
         <a-form-model-item label="用户名称" prop="name">
           <a-input placeholder="请输入用户名称" v-model="form.name"/>
         </a-form-model-item>
-        <a-form-model-item label="关联终端" prop="clientIdList">
+        <a-form-model-item label="关联终端" prop="appIdList">
           <a-select
             allowClear
             mode="multiple"
-            v-model="form.clientIdList"
-            :default-value="form.clientIdList"
+            v-model="form.appIdList"
+            :default-value="form.appIdList"
             :filter-option="search"
             style="width: 100%"
-            placeholder="选择关联的终端"
+            placeholder="选择关联的应用"
           >
-            <a-select-option v-for="o in clientList" :key="o.id">
+            <a-select-option v-for="o in applications" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -54,21 +54,21 @@ import { FormMixin } from '@/mixins/FormMixin'
 import { get, update } from '@/api/system/user'
 import { existsUsernameNotId, existsPhoneNotId, existsEmailNotId } from '@/api/system/userAssist'
 import { validateMobile, validateEmail } from '@/utils/validate'
-import { findAllByAlonePrem } from '@/api/system/client'
+import { findAll } from '@/api/system/application'
 
 export default {
   name: 'UserEdit',
   mixins: [FormMixin],
   data () {
     return {
-      clientList: [],
+      applications: [],
       form: {
         id: '',
         name: '',
         username: '',
         phone: '',
         email: '',
-        clientIdList: [],
+        appIdList: [],
         avatar: ''
       },
       rules: {
@@ -96,7 +96,7 @@ export default {
   methods: {
     edit (id) {
       this.confirmLoading = true
-      this.initClientList()
+      this.initApplications()
       get(id).then(res => {
         this.form = res.data
         delete this.form.password
@@ -123,9 +123,9 @@ export default {
       })
     },
     // 初始化终端列表
-    async initClientList () {
-      const { data } = await findAllByAlonePrem()
-      this.clientList = data.map(res => {
+    async initApplications () {
+      const { data } = await findAll()
+      this.applications = data.map(res => {
         return {
           id: res.id,
           name: res.name
@@ -147,7 +147,7 @@ export default {
       )
     },
     validatePhone (rule, value, callback) {
-      if (!value) {
+      if (!value || !this.diff.phone) {
         callback()
       } else {
         const { msg, result } = validateMobile(value)
@@ -165,7 +165,7 @@ export default {
       }
     },
     validateEmail (rule, value, callback) {
-      if (!value) {
+      if (!value || !this.diff.email) {
         callback()
       } else {
         if (validateEmail(value).result) {

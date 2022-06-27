@@ -31,22 +31,34 @@
           <a-input v-model="form.name" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="是否系统内置"
-          prop="system"
-        >
-          <a-input v-model="form.system" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="是否可用"
+          label="启用状态"
           prop="enable"
         >
-          <a-input v-model="form.enable" :disabled="showable"/>
+          <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
+        </a-form-model-item>
+        <a-form-model-item
+          label="系统内置"
+        >
+          <a-tag v-if="form.system" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
         </a-form-model-item>
         <a-form-model-item
           label="关联终端"
           prop="clientIds"
         >
-          <a-input v-model="form.clientIds" :disabled="showable"/>
+          <a-select
+            allowClear
+            mode="multiple"
+            v-model="form.clientIds"
+            :default-value="form.clientIds"
+            :filter-option="search"
+            style="width: 100%"
+            placeholder="选择关联的应用"
+          >
+            <a-select-option v-for="o in clients" :key="o.id">
+              {{ o.name }}
+            </a-select-option>
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
@@ -65,23 +77,38 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/system/application'
+import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/application'
+import { findAll } from '@/api/system/client'
 export default {
   name: 'ApplicationEdit',
   mixins: [FormMixin],
   data () {
     return {
+      clients: [],
       form: {
         id: null,
-        code: null,
-        name: null,
-        system: null,
-        enable: null,
-        clientIds: null,
-        description: null,
+        code: '',
+        name: '',
+        system: false,
+        enable: true,
+        clientIds: [],
+        description: ''
       },
       rules: {
-
+        code: [
+          { required: true, message: '请输入终端编码' },
+          { validator: this.validateCode, trigger: 'blur' }
+        ],
+        name: [
+          { required: true, message: '请输入终端名称' }
+        ],
+        enable: [
+          { required: true, message: '请选择启用状态' }
+        ],
+        timeout: [
+          { required: true, message: '请填写超时时间' },
+          { min: 1, message: '超时时间需要大于等于1' }
+        ]
       }
     }
   },
@@ -96,6 +123,16 @@ export default {
       } else {
         this.confirmLoading = false
       }
+    },
+    // 初始化终端列表
+    async initApplications () {
+      const { data } = await findAll()
+      this.clients = data.map(res => {
+        return {
+          id: res.id,
+          name: res.name
+        }
+      })
     },
     handleOk () {
       this.$refs.form.validate(async valid => {
@@ -120,6 +157,25 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
+    },
+    search (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     }
   }
 }

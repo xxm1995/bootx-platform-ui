@@ -29,9 +29,18 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="code" title="编码"/>
       <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="system" title="是否系统内置"/>
-      <vxe-table-column field="enable" title="是否可用"/>
-      <vxe-table-column field="clientIds" title="关联终端"/>
+      <vxe-table-column field="captcha" title="系统内置" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.system" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="enable" title="启用状态" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.enable" color="green">启用</a-tag>
+          <a-tag v-else color="red">停用</a-tag>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="description" title="描述"/>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">

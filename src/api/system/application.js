@@ -64,3 +64,21 @@ export function findAll () {
     method: 'GET'
   })
 }
+
+/**
+ * 编码是否被使用
+ */
+export function existsByCode (code) {
+  return axios({
+    url: '/application/existsByCode',
+    method: 'GET',
+    params: { code }
+  })
+}
+export function existsByCodeNotId (code, id) {
+  return axios({
+    url: '/application/existsByCodeNotId',
+    method: 'GET',
+    params: { code, id }
+  })
+}

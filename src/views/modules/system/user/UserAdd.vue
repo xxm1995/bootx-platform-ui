@@ -35,17 +35,17 @@
             placeholder="请重新输入登录密码"
             v-model="form.confirmPassword"/>
         </a-form-model-item>
-        <a-form-model-item label="关联终端" prop="clientIdList">
+        <a-form-model-item label="关联应用" prop="appIdList">
           <a-select
             allowClear
             mode="multiple"
-            v-model="form.clientIdList"
-            :default-value="form.clientIdList"
+            v-model="form.appIdList"
+            :default-value="form.appIdList"
             :filter-option="search"
             style="width: 100%"
-            placeholder="选择关联的终端"
+            placeholder="选择关联的应用"
           >
-            <a-select-option v-for="o in clientList" :key="o.id">
+            <a-select-option v-for="o in applications" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -71,25 +71,25 @@ import PasswordLevel from '@/components/PasswordLevel'
 import { add } from '@/api/system/user'
 import { existsUsername, existsPhone, existsEmail } from '@/api/system/userAssist'
 import { validateEmail, validateMobile } from '@/utils/validate'
-import { findAllByAlonePrem } from '@/api/system/client'
+import { findAll } from '@/api/system/application'
 
 export default {
   name: 'UserAdd',
   mixins: [FormMixin],
-  components:{
+  components: {
     PasswordLevel
   },
   data () {
     return {
       confirmDirty: false,
-      clientList: [],
+      applications: [],
       passwordLevelVisible: false,
       form: {
         name: '',
         username: '',
         phone: '',
         email: '',
-        clientIdList: [],
+        appIdList: [],
         avatar: '',
         password: '',
         confirmPassword: ''
@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     edit () {
-      this.initClientList()
+      this.initApplications()
       this.confirmLoading = false
       this.confirmDirty = false
       this.resetForm()
@@ -134,10 +134,10 @@ export default {
         }
       })
     },
-    // 初始化终端列表
-    async initClientList () {
-      const { data } = await findAllByAlonePrem()
-      this.clientList = data.map(res => {
+    // 初始化应用列表
+    async initApplications () {
+      const { data } = await findAll()
+      this.applications = data.map(res => {
         return {
           id: res.id,
           name: res.name

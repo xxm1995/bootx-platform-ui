@@ -33,8 +33,8 @@
         <a-form-model-item label="角色列表">
           <a-tag color="green" v-for="o in roles" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
-        <a-form-model-item label="终端列表">
-          <a-tag color="green" v-for="o in clients" :key="o.id">{{ o.name }}</a-tag>
+        <a-form-model-item label="应用列表">
+          <a-tag color="green" v-for="o in applications" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="数据权限">
           <a-tag color="green" v-for="o in dataScopes" :key="o.id">{{ o.name }}</a-tag>
@@ -51,7 +51,7 @@
 import { FormMixin } from '@/mixins/FormMixin'
 import { get } from '@/api/system/user'
 import { getRoles, getDataScopes, getDeptList } from '@/api/system/userAssign'
-import { findAllByAlonePrem } from '@/api/system/client'
+import { findAll } from '@/api/system/application'
 
 export default {
   name: 'UserShow',
@@ -62,8 +62,8 @@ export default {
       form: {
       },
       roles: [],
-      clientList: [],
-      clients: [],
+      applicationList: [],
+      applications: [],
       dataScopes: [],
       deptList: []
     }
@@ -73,7 +73,7 @@ export default {
       await get(id).then(res => {
         this.form = res.data
       })
-      this.clients = this.getClients()
+      this.applications = this.getApplications()
       await getRoles(id).then(res => {
         this.roles = res.data
       })
@@ -85,17 +85,17 @@ export default {
       })
       this.confirmLoading = false
     },
-    // 获取用户关联终端信息
-    getClients () {
-      const clientIds = this.form.clientIdList
+    // 获取用户关联应用信息
+    getApplications () {
+      const clientIds = this.form.appIdList
       return clientIds.map(clientId => {
-        return this.getClientById(clientId)
+        return this.getApplicationById(clientId)
       })
     },
-    // 根据终端id获取终端对象
-    getClientById (clientId) {
-      const item = this.clientList.filter(client => {
-        return clientId === client.id
+    // 根据应用id获取应用对象
+    getApplicationById (applicationId) {
+      const item = this.applicationList.filter(application => {
+        return applicationId === application.id
       })
       if (item && item.length > 0) {
         return item[0]
@@ -103,10 +103,10 @@ export default {
         return { }
       }
     },
-    // 初始化终端列表
+    // 初始化应用列表
     async initClientList () {
-      const { data } = await findAllByAlonePrem()
-      this.clientList = data.map(res => {
+      const { data } = await findAll()
+      this.applicationList = data.map(res => {
         return {
           id: res.id,
           name: res.name

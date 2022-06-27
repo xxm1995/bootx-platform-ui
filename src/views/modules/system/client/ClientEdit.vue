@@ -36,6 +36,40 @@
         <a-tag v-else color="red">否</a-tag>
       </a-form-model-item>
       <a-form-model-item
+        label="启用验证码"
+        prop="captcha"
+      >
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.captcha" :disabled="showable" />
+      </a-form-model-item>
+      <a-form-model-item
+        label="启用状态"
+        prop="enable"
+      >
+        <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
+      </a-form-model-item>
+      <a-form-model-item
+        label="超时时间(分钟)"
+        prop="timeout"
+      >
+        <a-input-number
+          v-model="form.timeout"
+          :disabled="showable"
+          :min="5"
+          :step="5"
+        />
+      </a-form-model-item>
+      <a-form-model-item
+        label="密码可错误次数"
+        prop="timeout"
+      >
+        <a-input-number
+          v-model="form.pwdErrNum"
+          :disabled="showable"
+          :min="-1"
+          :step="1"
+        />
+      </a-form-model-item>
+      <a-form-model-item
         label="描述"
         prop="description"
       >

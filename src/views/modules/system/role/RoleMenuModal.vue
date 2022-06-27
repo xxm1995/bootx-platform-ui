@@ -34,7 +34,7 @@
     </a-spin>
     <div class="drawer-button">
       <a-select style="float: left" @change="clientSwitch" v-model="appCode">
-        <a-select-option v-for="o in clientList" :key="o.code">{{ o.name }}</a-select-option>
+        <a-select-option v-for="o in applicationList" :key="o.code">{{ o.name }}</a-select-option>
       </a-select>
       <a-dropdown style="float: left;margin-left: 5px" :trigger="['click']" placement="topCenter">
         <template #overlay>
@@ -62,7 +62,7 @@ import { findPermissionIdsByRole, save } from '@/api/system/roleMenu'
 import { treeDataTranslate } from '@/utils/util'
 import { allTree } from '@/api/system/permMenu'
 import XEUtils from 'xe-utils'
-import { findAllByAlonePrem } from '@/api/system/client'
+import { findAll } from '@/api/system/application'
 
 export default {
   name: 'RoleMenuModal',
@@ -70,7 +70,7 @@ export default {
     return {
       roleId: '',
       searchName: '',
-      clientList: [],
+      applicationList: [],
       appCode: 'admin',
       // 父子选项默认不受控
       checkStrictly: true,
@@ -89,10 +89,10 @@ export default {
     }
   },
   methods: {
-    // 终端列表
-    initClientList () {
-      findAllByAlonePrem().then(({ data }) => {
-        this.clientList = data.map(res => {
+    // 应用列表
+    initApplicationList () {
+      findAll().then(({ data }) => {
+        this.applicationList = data.map(res => {
           return {
             code: res.code,
             name: res.name
@@ -121,7 +121,7 @@ export default {
     },
     init (roleId) {
       this.roleId = roleId
-      this.initClientList()
+      this.initApplicationList()
       this.initAssign()
     },
     // 展开/收起节点时触发

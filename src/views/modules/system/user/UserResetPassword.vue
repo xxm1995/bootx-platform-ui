@@ -20,16 +20,16 @@
       <a-form-model-item label="用户名称" prop="name">
         <a-input disabled="" v-model="form.name"/>
       </a-form-model-item>
-      <a-form-model-item label="登录密码" prop="password" >
-        <password-level :visible="passwordLevelVisible" :password="form.password">
+      <password-level :visible="passwordLevelVisible" :password="form.password">
+        <a-form-model-item label="登录密码" prop="password" >
           <a-input-password
             type="password"
             placeholder="请输入登录密码"
             @focus="passwordLevelVisible = true"
             @blur="passwordLevelVisible = false"
             v-model="form.password" />
-        </password-level>
-      </a-form-model-item>
+        </a-form-model-item>
+      </password-level>
       <a-form-model-item label="确认密码" prop="confirmPassword" >
         <a-input-password
           type="password"

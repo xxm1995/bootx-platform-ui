@@ -10,7 +10,6 @@ import { initWebSocket } from '@/websocket/userGlobalWebSocker'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const allowList = ['login', 'register', 'registerResult'] // no redirect allowList
 const loginRoutePath = '/user/login'
 const defaultRoutePath = '/dashboard/analysis'
 
@@ -63,9 +62,6 @@ router.beforeEach((to, from, next) => {
   } else {
     // 判断组件是否可以免登陆
     if (to.meta && to.meta.ignoreLogin) {
-      next()
-    } else if (allowList.includes(to.name)) {
-      // 在免登录名单，直接进入
       next()
     } else {
       next({ path: loginRoutePath, query: { redirect: to.fullPath } })

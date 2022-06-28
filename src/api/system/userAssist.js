@@ -161,3 +161,14 @@ export function validatePhoneForgetCaptcha (phone, captcha) {
     params: { phone, captcha }
   })
 }
+
+/**
+ * 根据手机验证码查询账号
+ */
+export function findUsernameByPhoneCaptcha (phone, captcha) {
+  return axios({
+    url: `/user/findUsernameByPhoneCaptcha`,
+    method: 'get',
+    params: { phone, captcha }
+  })
+}

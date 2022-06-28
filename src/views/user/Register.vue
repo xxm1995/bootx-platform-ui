@@ -160,7 +160,8 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid === true) {
           register(this.form).then((res) => {
-            this.$router.push({ name: 'registerResult', params: { ...res.data } })
+            this.$message.info('注册成功')
+            this.$router.push({ name: 'login' })
           })
         }
       })

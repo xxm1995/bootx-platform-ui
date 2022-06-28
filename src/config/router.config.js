@@ -83,12 +83,6 @@ export const constantRouterMap = [
         name: 'register',
         meta: { title: '注册', ignoreLogin: true },
         component: () => import(/* webpackChunkName: "user" */ '@/views/user/Register')
-      },
-      {
-        path: 'registerResult',
-        name: 'registerResult',
-        meta: { title: '注册成功信息', ignoreLogin: true },
-        component: () => import(/* webpackChunkName: "user" */ '@/views/user/RegisterResult')
       }
     ]
   },

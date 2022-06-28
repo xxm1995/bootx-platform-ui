@@ -18,20 +18,20 @@
         :wrapper-col="wrapperCol"
       >
         <a-form-model-item label="旧密码" prop="oldPassword">
-          <a-input-password v-model="form.oldPassword"/>
+          <a-input-password v-model="form.oldPassword" placeholder="请输入原密码"/>
         </a-form-model-item>
-        <a-form-model-item label="新密码" prop="newPassword">
-          <password-level :visible="passwordLevelVisible" :password="form.newPassword">
+        <password-level :visible="passwordLevelVisible" :password="form.newPassword">
+          <a-form-model-item label="新密码" prop="newPassword" :autoLink="false">
             <a-input-password
               type="password"
               placeholder="请输入登录密码"
               @focus="passwordLevelVisible = true"
               @blur="passwordLevelVisible = false"
               v-model="form.password" />
-          </password-level>
-        </a-form-model-item>
+          </a-form-model-item>
+        </password-level>
         <a-form-model-item label="重复密码" prop="confirmPassword">
-          <a-input-password v-model="form.confirmPassword"/>
+          <a-input-password v-model="form.confirmPassword" placeholder="请输入重复新密码"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>

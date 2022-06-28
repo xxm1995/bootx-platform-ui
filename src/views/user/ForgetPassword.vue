@@ -4,7 +4,6 @@
       <a-step title="手机验证"/>
       <a-step title="更改密码"/>
     </a-steps>
-
     <a-form-model
       class="form"
       ref="form"
@@ -52,63 +51,59 @@
       </a-form-model-item>
       <!--    重置密码    -->
       <a-form-model-item
-        label="密码"
         v-show="currentTab === 1"
-        prop="password"
-        :labelCol="{span: 5}"
-        :wrapperCol="{span: 19}">
-        <a-row >
-          <a-col :span="24">
-            <password-level :visible="passwordLevelVisible" :password="form.password">
-              <a-input-password
-                type="password"
-                placeholder="请输入新密码"
-                @focus="passwordLevelVisible = true"
-                @blur="passwordLevelVisible = false"
-                v-model="form.password" >
-                <template #prefix>
-                  <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)'}"/>
-                </template>
-              </a-input-password>
-            </password-level>
-          </a-col>
-        </a-row>
+        label="账号"
+        :labelCol="{span: 3}"
+        :wrapperCol="{span: 21}">
+        <a-input disabled size="large" v-model="username"/>
       </a-form-model-item>
+      <password-level :visible="passwordLevelVisible" :password="form.password">
+        <a-form-model-item
+          v-show="currentTab === 1"
+          prop="password">
+          <a-input-password
+            type="password"
+            size="large"
+            placeholder="请输入新密码"
+            @focus="passwordLevelVisible = true"
+            @blur="passwordLevelVisible = false"
+            v-model="form.password" >
+            <template #prefix>
+              <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)'}"/>
+            </template>
+          </a-input-password>
+        </a-form-model-item>
+      </password-level>
       <a-form-model-item
-        label="重复密码"
         v-show="currentTab === 1"
-        prop="confirmPassword"
-        :labelCol="{span: 5}"
-        :wrapperCol="{span: 19}">
-        <a-row >
-          <a-col :span="24">
-            <a-input-password
-              type="password"
-              placeholder="请重新输入新密码"
-              v-model="form.confirmPassword">
-              <template #prefix>
-                <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)'}"/>
-              </template>
-            </a-input-password>
-          </a-col>
-        </a-row>
+        prop="confirmPassword">
+        <a-input-password
+          type="password"
+          size="large"
+          placeholder="请重新输入新密码"
+          v-model="form.confirmPassword">
+          <template #prefix>
+            <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)'}"/>
+          </template>
+        </a-input-password>
       </a-form-model-item>
 
       <a-form-model-item :wrapperCol="{span: 24}">
-        <router-link style="float: left;" :to="{ name: 'login' }">
-          <a-button >返回</a-button>
-        </router-link>
-        <a-button v-show="currentTab === 0" type="primary" @click="nextStep" style="float: right">下一步</a-button>
-        <a-button v-show="currentTab === 1" type="primary" @click="nextStep" style="float: right">提交</a-button>
+        <a-button v-show="currentTab === 0" type="primary" @click="nextStep" style="width: 100%" :disabled="confirmLoading">下一步</a-button>
+        <a-button v-show="currentTab === 1" type="primary" @click="handleOk" style="width: 100%" :disabled="confirmLoading">提交</a-button>
       </a-form-model-item>
     </a-form-model>
+    <router-link style="float: right; margin-top: -20px" :to="{ name: 'login' }">
+      使用已有账户登录
+    </router-link>
   </div>
 </template>
 
 <script>
-import { sendPhoneForgetCaptcha, validatePhoneForgetCaptcha } from '@/api/system/userAssist'
+import { findUsernameByPhoneCaptcha, sendPhoneForgetCaptcha, validatePhoneForgetCaptcha } from '@/api/system/userAssist'
 import { validateMobile } from '@/utils/validate'
 import PasswordLevel from '@/components/PasswordLevel'
+import { forgetPasswordByPhone } from '@/api/login/login'
 
 export default {
   name: 'ForgetPassword',
@@ -119,18 +114,19 @@ export default {
     rules () {
       return {
         phone: [
-          { required: true, message: '请输入手机号!' },
           { validator: this.validatePhone }
         ],
         captcha: [
           { required: true, message: '请输入验证码!' },
           { validator: this.validatePhoneForgetCaptcha, trigger: 'blur' }
         ],
-        newPassword: [{ required: true, message: '请输入新密码!' },
-          { validator: this.validateNewPassword, trigger: 'change' }
+        password: [
+          { required: this.currentTab === 1, message: '请输入新密码!' },
+          { validator: this.validateToNextPassword, trigger: 'change' }
         ],
-        confirmPassword: [{ required: true, message: '请重新输入新密码!' },
-          { validator: this.validateConfirmPassword }
+        confirmPassword: [
+          { required: this.currentTab === 1, message: '请重新输入新密码!' },
+          { validator: this.compareToFirstPassword }
         ]
       }
     }
@@ -138,9 +134,11 @@ export default {
   data () {
     return {
       currentTab: 0,
+      confirmLoading: false,
       confirmDirty: false,
       passwordLevelVisible: false,
       forgetBtn: false,
+      username: '',
       form: {
         phone: '',
         captcha: '',
@@ -158,10 +156,13 @@ export default {
      * 下一步
      */
     nextStep () {
-      this.$refs.form.validateField(['phone', 'captcha'], async valid => {
-        if (!valid) {
+      this.confirmLoading = true
+      this.$refs.form.validate(async valid => {
+        if (valid) {
           this.currentTab = 1
+          this.getUsernameByCaptcha()
         }
+        this.confirmLoading = false
       })
     },
     /**
@@ -186,35 +187,70 @@ export default {
       })
     },
     /**
+     * 根据手机号和验证码获取用户
+     */
+    getUsernameByCaptcha () {
+      findUsernameByPhoneCaptcha(this.form.phone, this.form.captcha).then(({ data }) => {
+        this.username = data
+      })
+    },
+    /**
+     * 提交
+     */
+    handleOk () {
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          this.confirmLoading = true
+          forgetPasswordByPhone({
+            phone: this.form.phone,
+            captcha: this.form.captcha,
+            password: this.form.password
+          }).then(() => {
+            this.confirmLoading = false
+            this.$message.info('密码修改成功')
+            this.$router.push({ name: 'login' })
+          })
+        } else {
+          return false
+        }
+      })
+    },
+    /**
      * 校验验证码
      */
     async validatePhoneForgetCaptcha (rule, value, callback) {
-      console.log(value)
-      if (!(this.currentTab === 1 && value)) {
+      if (!this.form.phone) {
         callback()
         return
       }
       const { data } = await validatePhoneForgetCaptcha(this.form.phone, value)
+      console.log(data)
       data ? callback() : callback('验证码错误')
     },
     /**
      * 校验手机号
      */
     validatePhone (rule, value, callback) {
-      if (this.currentTab !== 0) {
-        callback()
-        return
-      }
       const { msg, result } = validateMobile(value)
       result ? callback() : callback(msg)
     },
+    /**
+     * 验证到下一个密码
+     */
     validateToNextPassword (rule, value, callback) {
       if (value && this.confirmDirty) {
         this.$refs.form.validateField(['confirmPassword'])
       }
       callback()
     },
+    /**
+     * 密码校验
+     */
     compareToFirstPassword (rule, value, callback) {
+      if (this.currentTab === 0) {
+        callback()
+        return
+      }
       if (value && value !== this.form.password) {
         this.confirmDirty = true
         callback('两次输入的密码不一样！')

@@ -139,3 +139,25 @@ export function validateEmailChangeCaptcha (email, captcha) {
     params: { email, captcha }
   })
 }
+
+/**
+ * 发送找回密码手机验证码
+ */
+export function sendPhoneForgetCaptcha (phone) {
+  return axios({
+    url: `/user/sendPhoneForgetCaptcha`,
+    method: 'post',
+    params: { phone }
+  })
+}
+
+/**
+ * 验证找回密码手机验证码
+ */
+export function validatePhoneForgetCaptcha (phone, captcha) {
+  return axios({
+    url: `/user/validatePhoneForgetCaptcha`,
+    method: 'get',
+    params: { phone, captcha }
+  })
+}

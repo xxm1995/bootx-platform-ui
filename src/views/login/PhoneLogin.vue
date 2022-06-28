@@ -12,7 +12,7 @@
         v-model="form.phone"
       >
         <template #prefix>
-          <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          <a-icon type="phone" :style="{ color: 'rgba(0,0,0,.25)' }"/>
         </template>
       </a-input>
     </a-form-model-item>
@@ -35,7 +35,6 @@
           <a-button
             style="margin-left: 10px"
             size="large"
-            class="getCaptcha"
             tabindex="-1"
             :disabled="state.smsSendBtn"
             @click.stop.prevent="getCaptcha"
@@ -44,7 +43,7 @@
         </a-col>
       </a-row>
     </a-form-model-item>
-    <a-form-model-item style="margin-top:24px">
+    <a-form-model-item>
       <a-button
         size="large"
         type="primary"
@@ -138,16 +137,13 @@ export default {
       this.$refs.form.validate(async valid => {
         const state = this.state
         if (valid) {
-          this.confirmLoading = true
+          state.loginBtn = true
+          this.state = true
           loginOpenId(this.form)
             .then(() => this.$emit('loginSuccess'))
             .finally(() => {
               state.loginBtn = false
             })
-        } else {
-          setTimeout(() => {
-            state.loginBtn = false
-          }, 600)
         }
       })
     }

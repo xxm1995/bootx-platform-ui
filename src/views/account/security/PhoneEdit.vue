@@ -11,7 +11,7 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-steps class="steps" :current="currentTab">
-        <a-step title="解绑旧手机"/>
+        <a-step title="验证手机"/>
         <a-step title="绑定新手机"/>
       </a-steps>
       <a-form-model
@@ -215,7 +215,6 @@ export default {
      */
     sendNewPhoneCaptcha () {
       this.$refs.form.validateField(['phone'], async valid => {
-        console.log(valid)
         if (!valid) {
           sendPhoneChangeCaptcha(this.form.phone).then(() => {
             this.$message.info('发送验证码成功')

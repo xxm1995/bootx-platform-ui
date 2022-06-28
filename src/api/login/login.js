@@ -73,3 +73,14 @@ export function register (obj) {
     data: obj
   })
 }
+
+/**
+ * 重置密码
+ */
+export function forgetPasswordByPhone (obj) {
+  return request({
+    url: `/user/forgetPasswordByPhone`,
+    method: 'post',
+    data: obj
+  })
+}

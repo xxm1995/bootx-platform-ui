@@ -6,7 +6,11 @@
       :model="form"
       :rules="rules">
       <a-form-model-item prop="username">
-        <a-input v-model="form.username" size="large" type="text" autocomplete="false" placeholder="请输入登录账号"/>
+        <a-input v-model="form.username" size="large" type="text" autocomplete="false" placeholder="请输入登录账号">
+          <template #prefix>
+            <a-icon type="user" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          </template>
+        </a-input>
       </a-form-model-item>
 
       <password-level :visible="passwordLevelVisible" :password="form.password">
@@ -19,12 +23,19 @@
             @blur="passwordLevelVisible = false"
             autocomplete="false"
             placeholder="请输入密码">
+            <template #prefix>
+              <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+            </template>
           </a-input>
         </a-form-model-item>
       </password-level>
 
       <a-form-model-item prop="confirmPassword">
-        <a-input v-model="form.confirmPassword" size="large" type="password" autocomplete="false" placeholder="确认密码"></a-input>
+        <a-input v-model="form.confirmPassword" size="large" type="password" autocomplete="false" placeholder="确认密码">
+          <template #prefix>
+            <a-icon type="lock" :style="{ color: 'rgba(0,0,0,.25)' }"/>
+          </template>
+        </a-input>
       </a-form-model-item>
       <a-row :span="24" >
         <a-col :span="16">
@@ -64,7 +75,6 @@
       </a-form-model-item>
 
     </a-form-model>
-
   </div>
 </template>
 

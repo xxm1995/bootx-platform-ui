@@ -21,7 +21,14 @@
           <a-input-password v-model="form.oldPassword"/>
         </a-form-model-item>
         <a-form-model-item label="新密码" prop="newPassword">
-          <a-input-password v-model="form.newPassword"/>
+          <password-level :visible="passwordLevelVisible" :password="form.newPassword">
+            <a-input-password
+              type="password"
+              placeholder="请输入登录密码"
+              @focus="passwordLevelVisible = true"
+              @blur="passwordLevelVisible = false"
+              v-model="form.password" />
+          </password-level>
         </a-form-model-item>
         <a-form-model-item label="重复密码" prop="confirmPassword">
           <a-input-password v-model="form.confirmPassword"/>
@@ -34,13 +41,18 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { updatePassword } from '@/api/system/user'
+import PasswordLevel from '@/components/PasswordLevel'
 
 export default {
   name: 'PasswordEdit',
   mixins: [FormMixin],
+  components: {
+    PasswordLevel
+  },
   data () {
     return {
       confirmDirty: false,
+      passwordLevelVisible: false,
       form: {
         oldPassword: '',
         newPassword: '',

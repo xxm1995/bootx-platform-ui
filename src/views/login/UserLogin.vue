@@ -132,6 +132,7 @@ export default {
       } = this
       this.$refs.formLogin.validate(err => {
         if (err) {
+          state.loginBtn = true
           Login(this.form)
             .then(() => this.$emit('loginSuccess'))
             .catch(() => {
@@ -142,10 +143,6 @@ export default {
             .finally(() => {
               state.loginBtn = false
             })
-        } else {
-          setTimeout(() => {
-            state.loginBtn = false
-          }, 600)
         }
       })
     }

@@ -86,7 +86,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loginOpenId', 'Logout']),
+    ...mapActions(['loginOpenId']),
     /**
      * 获取手机验证码
      */

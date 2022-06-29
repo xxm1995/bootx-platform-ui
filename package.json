@@ -29,7 +29,7 @@
     "lodash.pick": "^4.4.0",
     "md5": "^2.2.1",
     "mockjs2": "1.0.8",
-    "moment": "^2.29.3",
+    "moment": "^2.21.0",
     "nprogress": "^0.2.0",
     "prismjs": "^1.28.0",
     "screenfull": "^5.2.0",

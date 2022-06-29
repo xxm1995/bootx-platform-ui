@@ -22,13 +22,13 @@
           label="编码"
           prop="code"
         >
-          <a-input v-model="form.code" :disabled="showable"/>
+          <a-input v-model="form.code" :disabled="showable" placeholder="请输入编码"/>
         </a-form-model-item>
         <a-form-model-item
           label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable"/>
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="启用状态"
@@ -44,16 +44,17 @@
         </a-form-model-item>
         <a-form-model-item
           label="关联终端"
-          prop="clientIds"
+          prop="clientIdList"
         >
           <a-select
             allowClear
             mode="multiple"
-            v-model="form.clientIds"
-            :default-value="form.clientIds"
+            v-model="form.clientIdList"
+            :default-value="form.clientIdList"
             :filter-option="search"
+            :disabled="showable||form.system"
             style="width: 100%"
-            placeholder="选择关联的应用"
+            placeholder="选择关联的终端"
           >
             <a-select-option v-for="o in clients" :key="o.id">
               {{ o.name }}
@@ -64,7 +65,7 @@
           label="描述"
           prop="description"
         >
-          <a-input v-model="form.description" :disabled="showable"/>
+          <a-textarea v-model="form.description" :disabled="showable" placeholder="请输入描述"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -91,29 +92,26 @@ export default {
         name: '',
         system: false,
         enable: true,
-        clientIds: [],
+        clientIdList: [],
         description: ''
       },
       rules: {
         code: [
-          { required: true, message: '请输入终端编码' },
+          { required: true, message: '请输入应用编码' },
           { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入终端名称' }
+          { required: true, message: '请输入应用名称' }
         ],
         enable: [
           { required: true, message: '请选择启用状态' }
-        ],
-        timeout: [
-          { required: true, message: '请填写超时时间' },
-          { min: 1, message: '超时时间需要大于等于1' }
         ]
       }
     }
   },
   methods: {
     edit (id, type) {
+      this.initClients()
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -125,7 +123,7 @@ export default {
       }
     },
     // 初始化终端列表
-    async initApplications () {
+    async initClients () {
       const { data } = await findAll()
       this.clients = data.map(res => {
         return {

@@ -19,7 +19,7 @@
         <a-form-model-item label="用户名称" prop="name">
           <a-input placeholder="请输入用户名称" v-model="form.name"/>
         </a-form-model-item>
-        <a-form-model-item label="关联终端" prop="appIdList">
+        <a-form-model-item label="关联应用" prop="appIdList">
           <a-select
             allowClear
             mode="multiple"

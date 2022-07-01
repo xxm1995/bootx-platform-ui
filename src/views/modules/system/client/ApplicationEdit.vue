@@ -52,7 +52,7 @@
             v-model="form.clientIdList"
             :default-value="form.clientIdList"
             :filter-option="search"
-            :disabled="showable||form.system"
+            :disabled="showable"
             style="width: 100%"
             placeholder="选择关联的终端"
           >

@@ -3,13 +3,13 @@
     <div class="user-login-other">
       <span>其他登录方式</span>
       <a @click="onThirdLogin(DING_TALK)" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>
-      <a @click="onThirdLogin('WE_CHAT')" title="微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
+      <a @click="onThirdLogin(WE_COM)" title="微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
     </div>
   </div>
 </template>
 
 <script>
-import { WE_CHAT, DING_TALK } from './OpenIdLoginType'
+import { WE_CHAT, DING_TALK, WE_COM } from './OpenIdLoginType'
 import { mapActions } from 'vuex'
 export default {
   name: 'ThirdLogin',
@@ -17,6 +17,7 @@ export default {
     return {
       DING_TALK,
       WE_CHAT,
+      WE_COM,
       application: '',
       currentClientCode: null
     }
@@ -27,9 +28,10 @@ export default {
      * 调起登录
      */
     onThirdLogin (clientCode) {
+      console.log()
       this.currentClientCode = clientCode
       const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${clientCode}`
-      window.open(url, `login ${clientCode}`, 'height=500, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
+      window.open(url, `login ${clientCode}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
       const that = this
       that.thirdType = clientCode
       // 监听回调
@@ -39,7 +41,6 @@ export default {
      * 认证码回调
      */
     authCodeCallback (event) {
-      console.log(this)
       // 回调后就进行解绑事件, 防止重复接收消息
       window.removeEventListener('message', this.authCodeCallback)
       const data = event.data

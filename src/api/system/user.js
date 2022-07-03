@@ -120,6 +120,37 @@ export function getUserSecurityInfo () {
 }
 
 /**
+ * 获取用户三方绑定信息
+ */
+export function getSocialBindInfo () {
+  return axios({
+    url: `/user/social/getSocialBindInfo`,
+    method: 'get'
+  })
+}
+
+/**
+ * 用户绑定三方开放平台
+ */
+export function bindSocial (obj) {
+  return axios({
+    url: `/user/social/bind`,
+    method: 'post',
+    data: obj
+  })
+}
+/**
+ * 解除用户绑定三方开放平台
+ */
+export function unbindSocial (clientCode) {
+  return axios({
+    url: `/user/social/unbind`,
+    method: 'post',
+    params: { clientCode }
+  })
+}
+
+/**
  * 获取用户基础信息
  */
 export function getUserBaseInfo () {

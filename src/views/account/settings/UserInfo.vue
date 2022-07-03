@@ -11,7 +11,8 @@ export default {
   name: 'UserInfo',
   data () {
     return {
-      data: []
+      data: {
+      }
     }
   }
 }

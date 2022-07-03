@@ -6,7 +6,18 @@
       :refresh="{query: init}"
     >
       <template #buttons>
-        <a-button type="primary" icon="upload" @click="upload">上传</a-button>
+        <a-upload
+          name="file"
+          :multiple="false"
+          :action="uploadAction"
+          :headers="tokenHeader"
+          :showUploadList="false"
+          @change="handleChange">
+          <a-button type="primary">
+            <a-icon type="upload"/>
+            文件上传
+          </a-button>
+        </a-upload>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -18,11 +29,7 @@
       <vxe-table-column field="fileName" title="文件名称" />
       <vxe-table-column field="fileSuffix" title="文件后缀" />
       <vxe-table-column field="fileType" title="文件类型" />
-      <vxe-table-column field="fileSize" title="文件大小" >
-        <template v-slot="{row}">
-          {{ row.fileSize/1024 }}KB
-        </template>
-      </vxe-table-column>
+      <vxe-table-column field="fileSize" title="文件大小" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
@@ -39,25 +46,36 @@
       :total="pagination.total"
       @page-change="handleTableChange"
     />
-    <file-upload-edit ref="fileUploadEdit" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { page } from '@/api/starter/fileUpload'
-import FileUploadEdit from './FileUploadEdit'
 import { getFileDownloadUrl, getFilePreviewUrl } from '@/api/common/fileUpload'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 export default {
   name: 'FileUploadList',
   mixins: [TableMixin],
-  components: {
-    FileUploadEdit
-  },
   data () {
     return {
       queryParam: {
+      }
+    }
+  },
+  computed: {
+    // 上传地址
+    uploadAction () {
+      return process.env.VUE_APP_API_BASE_URL + '/file/upload'
+    },
+    // 请求头消息
+    tokenHeader () {
+      // 从 localstorage 获取 token
+      const token = storage.get(ACCESS_TOKEN)
+      return {
+        AccessToken: token
       }
     }
   },
@@ -74,10 +92,6 @@ export default {
         this.loading = false
       })
     },
-    // 上传
-    upload () {
-      this.$refs.fileUploadEdit.init()
-    },
     // 下载
     down (record) {
       getFileDownloadUrl(record.id).then(res => {
@@ -89,6 +103,19 @@ export default {
       getFilePreviewUrl(record.id).then(res => {
         window.open(res.data)
       })
+    },
+    handleChange (info) {
+      console.log(info)
+      if (info.file.status === 'done') {
+        if (!info.file.response.code) {
+          this.init()
+          this.$message.success(`${info.file.name} 上传成功!`)
+        } else {
+          this.$message.error(`${info.file.response.msg}`)
+        }
+      } else if (info.file.status === 'error') {
+        this.$message.error(`${info.file.response.msg}`)
+      }
     }
   },
   created () {

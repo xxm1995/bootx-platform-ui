@@ -11,7 +11,7 @@
             <a-list-item>
               <a-list-item-meta title="账户密码">
                 <template #description>
-                  <span class="security-list-description">账号登录密码</span>
+                  <span>账号登录密码</span>
                 </template>
               </a-list-item-meta>
               <template #actions>
@@ -21,25 +21,45 @@
             <a-list-item>
               <a-list-item-meta title="绑定手机号">
                 <template #description>
-                  <span>已绑定手机</span>
-                  <span> : </span>
-                  <span>{{ user.phone }}</span>
+                  <template v-if="user.phone">
+                    <span>已绑定手机</span>
+                    <span> : </span>
+                    <span>{{ user.phone }}</span>
+                  </template>
+                  <template v-else>
+                    <span>未绑定手机</span>
+                  </template>
                 </template>
               </a-list-item-meta>
               <template #actions>
-                <a @click="phoneEdit">修改</a>
+                <template v-if="user.phone">
+                  <a @click="phoneEdit">修改</a>
+                </template>
+                <template v-else>
+                  <a @click="phoneBind" style="color:red;">绑定</a>
+                </template>
               </template>
             </a-list-item>
             <a-list-item>
               <a-list-item-meta title="账号邮箱">
                 <template #description>
-                  <span>已绑定邮箱</span>
-                  <span> : </span>
-                  <span>{{ user.email }}</span>
+                  <template v-if="user.email">
+                    <span>已绑定邮箱</span>
+                    <span> : </span>
+                    <span>{{ user.email }}</span>
+                  </template>
+                  <template v-else>
+                    <span>未绑定邮箱</span>
+                  </template>
                 </template>
               </a-list-item-meta>
               <template #actions>
-                <a @click="emailEdit">修改</a>
+                <template v-if="user.email">
+                  <a @click="emailEdit">修改</a>
+                </template>
+                <template v-else>
+                  <a @click="bindEmail" style="color:red;">绑定</a>
+                </template>
               </template>
             </a-list-item>
           </a-list>
@@ -93,6 +113,14 @@ export default {
     // 修改绑定手机号
     phoneEdit () {
       this.$refs.phoneEdit.init('', 'edit')
+    },
+    // 绑定手机号
+    phoneBind () {
+      this.$message.info('稍等, 下个版本实装')
+    },
+    // 绑定邮箱
+    bindEmail () {
+      this.$message.info('稍等, 下个版本实装')
     }
   },
   mounted () {

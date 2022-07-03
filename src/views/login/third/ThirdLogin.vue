@@ -1,9 +1,10 @@
 <template>
   <div>
     <div class="user-login-other">
-      <span>其他登录方式</span>
+      <span>第三方登录:</span>
       <a @click="onThirdLogin(DING_TALK)" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>
-      <a @click="onThirdLogin(WE_COM)" title="微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
+      <a @click="onThirdLogin(WE_COM)" title="企业微信"><icon-font class="item-icon" type="wecom"></icon-font></a>
+      <a @click="onThirdLogin(WE_CHAT)" title="微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
     </div>
   </div>
 </template>
@@ -11,8 +12,16 @@
 <script>
 import { WE_CHAT, DING_TALK, WE_COM } from './OpenIdLoginType'
 import { mapActions } from 'vuex'
+import { Icon } from 'ant-design-vue'
+
+const IconFont = Icon.createFromIconfontCN({
+  scriptUrl: '/icons/weCom.js'
+})
 export default {
   name: 'ThirdLogin',
+  components: {
+    IconFont
+  },
   data () {
     return {
       DING_TALK,
@@ -28,12 +37,9 @@ export default {
      * 调起登录
      */
     onThirdLogin (clientCode) {
-      console.log()
       this.currentClientCode = clientCode
       const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${clientCode}`
       window.open(url, `login ${clientCode}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
-      const that = this
-      that.thirdType = clientCode
       // 监听回调
       window.addEventListener('message', this.authCodeCallback, false)
     },
@@ -57,7 +63,7 @@ export default {
         .finally(() => this.$emit('loginLoading', false))
     }
   },
-  created () {
+  mounted () {
     this.application = process.env.VUE_APP_APPLICATION
   }
 }

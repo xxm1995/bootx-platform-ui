@@ -22,10 +22,16 @@
       >
         <a-input v-model="template.name" disabled/>
       </a-form-model-item>
+
       <a-form-model-item
         label="测试数据"
       >
-        <a-textarea :rows="4" v-model="paramMap" placeholder="请输入json格式测试数据"/>
+        <a-textarea v-model="template.data" disabled/>
+      </a-form-model-item>
+      <a-form-model-item
+        label="测试数据"
+      >
+        <a-textarea :rows="4" v-model="paramMap" allowClear placeholder="请输入json格式测试数据"/>
       </a-form-model-item>
       <a-form-model-item
         label="内容"

@@ -20,7 +20,7 @@
         <a-form-model-item label="旧密码" prop="oldPassword">
           <a-input-password v-model="form.oldPassword" placeholder="请输入原密码"/>
         </a-form-model-item>
-        <password-level :visible="passwordLevelVisible" :password="form.newPassword">
+        <password-level :visible="passwordLevelVisible" :password="form.password">
           <a-form-model-item label="新密码" prop="newPassword" :autoLink="false">
             <a-input-password
               type="password"

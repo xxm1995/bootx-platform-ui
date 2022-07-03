@@ -54,6 +54,7 @@ export default {
     // 全局ws事件监听
     globalWsListener (data) {
       this.showMsg = '全局WS消息: ' + data
+      this.$message.info(`接到了全局WS消息: ${data}`)
     }
   },
   mounted () {

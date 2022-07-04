@@ -54,7 +54,7 @@ import { FormMixin } from '@/mixins/FormMixin'
 import { get, update } from '@/api/system/user'
 import { existsUsernameNotId, existsPhoneNotId, existsEmailNotId } from '@/api/system/userAssist'
 import { validateMobile, validateEmail } from '@/utils/validate'
-import { findAll } from '@/api/system/application'
+import { findAll } from '@/api/system/client'
 
 export default {
   name: 'UserEdit',

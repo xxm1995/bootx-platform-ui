@@ -71,7 +71,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { findByCode } from '@/api/system/client'
+import { findByCode } from '@/api/system/loginType'
 import { imgCaptcha } from '@/api/system/captcha'
 export default {
   name: 'UseLogin',

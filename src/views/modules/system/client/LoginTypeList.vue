@@ -3,7 +3,17 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="6" :sm="24">
+          <a-col :md="8" :sm="24">
+            <a-form-item label="终端代码">
+              <a-input v-model="queryParam.code" placeholder="请输入终端代码" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
+            <a-form-item label="终端名称">
+              <a-input v-model="queryParam.name" placeholder="请输入终端名称" />
+            </a-form-item>
+          </a-col>
+          <a-col :md="8" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
@@ -17,22 +27,29 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
       row-id="id"
+      size="medium"
       :loading="loading"
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编码"/>
-      <vxe-table-column field="name" title="名称"/>
+      <vxe-table-column field="code" title="代码" />
+      <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="captcha" title="系统内置" >
         <template v-slot="{row}">
           <a-tag v-if="row.system" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="captcha" title="启用验证码" >
+        <template v-slot="{row}">
+          <a-tag v-if="row.captcha" color="green">开启</a-tag>
+          <a-tag v-else color="red">关闭</a-tag>
         </template>
       </vxe-table-column>
       <vxe-table-column field="enable" title="启用状态" >
@@ -41,7 +58,7 @@
           <a-tag v-else color="red">停用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="description" title="描述"/>
+      <vxe-table-column field="description" title="描述" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
@@ -54,74 +71,79 @@
           </span>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除"
+            :disabled="row.system"
+            title="是否删除终端"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
+            <a href="javascript:" :disabled="row.system" :style="{color: row.system?'grey':'red'}">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
-      @page-change="handleTableChange"/>
-    <application-edit
-      ref="applicationEdit"
+      @page-change="handleTableChange">
+      />
+    </vxe-pager>
+    <login-type-edit
+      ref="loginTypeEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-  import { page, del } from '@/api/system/application'
-  import ApplicationEdit from './ApplicationEdit'
-  import { TableMixin } from '@/mixins/TableMixin'
-  export default {
-    name: 'ApplicationList',
-    components: {
-      ApplicationEdit
-    },
-    mixins: [TableMixin],
-    data () {
-      return {
-        queryParam: {
-        }
+
+import { page, del } from '@/api/system/loginType'
+import LoginTypeEdit from './LoginTypeEdit'
+import { TableMixin } from '@/mixins/TableMixin'
+export default {
+  name: 'ClientList',
+  components: {
+    LoginTypeEdit
+  },
+  mixins: [TableMixin],
+  data () {
+    return {
+      queryParam: {
+        code: '',
+        name: ''
       }
-    },
-    methods: {
-      init () {
-        this.loading = true
-        page({
-          ...this.queryParam,
-          ...this.pages
-        }).then(res => {
-          this.pageQueryResHandel(res, this)
-        })
-      },
-      add () {
-        this.$refs.applicationEdit.init('', 'add')
-      },
-      edit (record) {
-        this.$refs.applicationEdit.init(record.id, 'edit')
-      },
-      show (record) {
-        this.$refs.applicationEdit.init(record.id, 'show')
-      },
-      remove (record) {
-        del(record.id).then(_ => {
-          this.$message.info('删除成功')
-          this.init()
-        })
-      }
-    },
-    created () {
-      this.init()
     }
+  },
+  methods: {
+    init () {
+      this.loading = true
+      page({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
+    },
+    add () {
+      this.$refs.loginTypeEdit.init('', 'add')
+    },
+    edit (record) {
+      this.$refs.loginTypeEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.loginTypeEdit.init(record.id, 'show')
+    },
+    remove (record) {
+      del(record.id).then(_ => {
+        this.$message.info('删除成功')
+        this.init()
+      })
+    }
+  },
+  created () {
+    this.init()
   }
+}
 </script>
 
 <style scoped>

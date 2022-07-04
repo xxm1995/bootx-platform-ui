@@ -27,6 +27,7 @@ import { message } from 'ant-design-vue/es'
 import AvatarDropdown from './AvatarDropdown'
 import MenuSearch from './MenuSearch'
 import { mapActions } from 'vuex'
+import store from '@/store'
 
 export default {
   name: 'UserMenu',
@@ -58,6 +59,11 @@ export default {
         this.currentUser = res
         GetUserAvatarUrl(this.currentUser.avatar).then(res => {
           this.avatarUrl = res.data
+        })
+      }).catch(() => {
+        // 获取用户信息失败时，调用登出
+        store.dispatch('Logout').then(() => {
+          this.$router.push({ name: 'login' })
         })
       })
     },

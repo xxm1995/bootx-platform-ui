@@ -119,7 +119,7 @@ export function validateCurrentEmailChangeCaptcha (captcha) {
 }
 
 /**
- * 发送更改邮箱验证码
+ * 发送更改/绑定邮箱验证码
  */
 export function sendEmailChangeCaptcha (email) {
   return axios({
@@ -130,7 +130,7 @@ export function sendEmailChangeCaptcha (email) {
 }
 
 /**
- * 验证更改邮箱验证码
+ * 验证更改/绑定邮箱验证码
  */
 export function validateEmailChangeCaptcha (email, captcha) {
   return axios({

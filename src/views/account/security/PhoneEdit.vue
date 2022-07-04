@@ -104,7 +104,6 @@ export default {
   },
   data () {
     return {
-      confirmDirty: false,
       // 当前进度
       currentTab: 0,
       state: {
@@ -124,7 +123,6 @@ export default {
     edit () {
       this.visible = true
       this.currentTab = 0
-      this.confirmDirty = false
       this.confirmLoading = false
       this.resetForm()
     },

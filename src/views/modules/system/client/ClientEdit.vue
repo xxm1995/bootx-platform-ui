@@ -22,25 +22,13 @@
           label="编码"
           prop="code"
         >
-          <a-input v-model="form.code" :disabled="showable||form.system"/>
+          <a-input v-model="form.code" :disabled="showable" placeholder="请输入编码"/>
         </a-form-model-item>
         <a-form-model-item
           label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="系统内置"
-        >
-          <a-tag v-if="form.system" color="green">是</a-tag>
-          <a-tag v-else color="red">否</a-tag>
-        </a-form-model-item>
-        <a-form-model-item
-          label="启用验证码"
-          prop="captcha"
-        >
-          <a-switch checked-children="开" un-checked-children="关" v-model="form.captcha" :disabled="showable" />
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="启用状态"
@@ -49,36 +37,39 @@
           <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
         </a-form-model-item>
         <a-form-model-item
-          label="超时时间(分钟)"
-          prop="timeout"
+          label="系统内置"
         >
-          <a-input-number
-            v-model="form.timeout"
-            :disabled="showable"
-            :min="5"
-            :step="5"
-          />
+          <a-tag v-if="form.system" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
         </a-form-model-item>
         <a-form-model-item
-          label="密码可错误次数"
-          prop="pwdErrNum"
+          label="关联终端"
+          prop="clientIdList"
         >
-          <a-input-number
-            v-model="form.pwdErrNum"
+          <a-select
+            allowClear
+            mode="multiple"
+            v-model="form.clientIdList"
+            :default-value="form.clientIdList"
+            :filter-option="search"
             :disabled="showable"
-            :min="-1"
-            :step="1"
-          />
+            style="width: 100%"
+            placeholder="选择关联的终端"
+          >
+            <a-select-option v-for="o in clients" :key="o.id">
+              {{ o.name }}
+            </a-select-option>
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
           label="描述"
           prop="description"
         >
-          <a-textarea v-model="form.description" :disabled="showable"/>
+          <a-textarea v-model="form.description" :disabled="showable" placeholder="请输入描述"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template #footer>
+    <template v-slot:footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
@@ -88,37 +79,39 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update, existsByCode, existsByCodeNotId } from '@/api/system/client'
+import { findAll } from '@/api/system/loginType'
 export default {
   name: 'ClientEdit',
   mixins: [FormMixin],
   data () {
     return {
+      clients: [],
       form: {
+        id: null,
         code: '',
         name: '',
-        captcha: true,
         system: false,
         enable: true,
-        timeout: 5,
-        pwdErrNum: -1,
+        clientIdList: [],
         description: ''
       },
       rules: {
         code: [
-          { required: true, message: '请输入终端编码' },
+          { required: true, message: '请输入应用编码' },
           { validator: this.validateCode, trigger: 'blur' }
         ],
         name: [
-          { required: true, message: '请输入终端名称' }
+          { required: true, message: '请输入应用名称' }
         ],
         enable: [
           { required: true, message: '请选择启用状态' }
-        ],
+        ]
       }
     }
   },
   methods: {
     edit (id, type) {
+      this.initClients()
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -129,6 +122,16 @@ export default {
         this.confirmLoading = false
       }
     },
+    // 初始化终端列表
+    async initClients () {
+      const { data } = await findAll()
+      this.clients = data.map(res => {
+        return {
+          id: res.id,
+          name: res.name
+        }
+      })
+    },
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
@@ -138,9 +141,11 @@ export default {
           } else if (this.type === 'edit') {
             await update(this.form)
           }
-          this.confirmLoading = false
-          this.$emit('ok')
-          this.visible = false
+          setTimeout(() => {
+            this.confirmLoading = false
+            this.$emit('ok')
+            this.visible = false
+          }, 200)
         } else {
           return false
         }
@@ -164,6 +169,11 @@ export default {
       } else {
         callback('该编码已存在!')
       }
+    },
+    search (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
     }
   }
 }

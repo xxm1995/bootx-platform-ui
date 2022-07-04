@@ -71,7 +71,7 @@ import PasswordLevel from '@/components/PasswordLevel'
 import { add } from '@/api/system/user'
 import { existsUsername, existsPhone, existsEmail } from '@/api/system/userAssist'
 import { validateEmail, validateMobile } from '@/utils/validate'
-import { findAll } from '@/api/system/application'
+import { findAll } from '@/api/system/client'
 
 export default {
   name: 'UserAdd',

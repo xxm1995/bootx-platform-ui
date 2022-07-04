@@ -122,9 +122,9 @@ export function getUserSecurityInfo () {
 /**
  * 获取用户三方绑定信息
  */
-export function getSocialBindInfo () {
+export function getThirdBindInfo () {
   return axios({
-    url: `/user/social/getSocialBindInfo`,
+    url: `/user/third/getThirdBindInfo`,
     method: 'get'
   })
 }
@@ -132,9 +132,9 @@ export function getSocialBindInfo () {
 /**
  * 用户绑定三方开放平台
  */
-export function bindSocial (obj) {
+export function bindThird (obj) {
   return axios({
-    url: `/user/social/bind`,
+    url: `/user/third/bind`,
     method: 'post',
     data: obj
   })
@@ -142,9 +142,9 @@ export function bindSocial (obj) {
 /**
  * 解除用户绑定三方开放平台
  */
-export function unbindSocial (clientCode) {
+export function unbindThird (clientCode) {
   return axios({
-    url: `/user/social/unbind`,
+    url: `/user/third/unbind`,
     method: 'post',
     params: { clientCode }
   })
@@ -183,6 +183,17 @@ export function updatePassword (password, newPassword) {
 }
 
 /**
+ * 绑定手机
+ */
+export function bindPhone (phone, captcha) {
+  return axios({
+    url: '/user/bindPhone',
+    method: 'POST',
+    params: { phone, captcha }
+  })
+}
+
+/**
  * 更新手机号
  */
 export function updatePhone (obj) {
@@ -190,6 +201,17 @@ export function updatePhone (obj) {
     url: '/user/updatePhone',
     method: 'POST',
     data: obj
+  })
+}
+
+/**
+ * 绑定邮箱
+ */
+export function bindEmail (email, captcha) {
+  return axios({
+    url: '/user/bindEmail',
+    method: 'POST',
+    params: { email, captcha }
   })
 }
 

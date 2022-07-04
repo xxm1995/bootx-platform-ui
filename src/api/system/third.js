@@ -3,9 +3,9 @@ import { axios } from '@/utils/request'
 /**
  * 分页
  */
-export function page (params) {
+export function page(params) {
   return axios({
-    url: '/user/social/page',
+    url: '/user/third/page',
     method: 'GET',
     params: params
   })
@@ -14,9 +14,9 @@ export function page (params) {
 /**
  * 获取单条
  */
-export function get (id) {
+export function get(id) {
   return axios({
-    url: `/user/social/findById`,
+    url: `/user/third/findById`,
     method: 'GET',
     params: { id }
   })

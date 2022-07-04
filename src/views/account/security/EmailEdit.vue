@@ -99,7 +99,6 @@ export default {
   },
   data () {
     return {
-      confirmDirty: false,
       // 当前进度
       currentTab: 0,
       state: {
@@ -119,7 +118,6 @@ export default {
     edit () {
       this.visible = true
       this.currentTab = 0
-      this.confirmDirty = false
       this.confirmLoading = false
       this.resetForm()
     },
@@ -151,7 +149,6 @@ export default {
         return
       }
       const { msg, result } = validateEmail(value)
-      console.log(msg, result)
       result ? callback() : callback(msg)
     },
     /**
@@ -162,7 +159,6 @@ export default {
         callback()
         return
       }
-      console.log(111)
       const { msg, result } = validateEmail(value)
       result ? callback() : callback(msg)
       const { data } = existsEmail(value)

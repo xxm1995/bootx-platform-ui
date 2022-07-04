@@ -51,7 +51,7 @@
 import { FormMixin } from '@/mixins/FormMixin'
 import { get } from '@/api/system/user'
 import { getRoles, getDataScopes, getDeptList } from '@/api/system/userAssign'
-import { findAll } from '@/api/system/application'
+import { findAll } from '@/api/system/client'
 
 export default {
   name: 'UserShow',

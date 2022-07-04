@@ -59,7 +59,6 @@ export default {
     return {
       loading: false,
       loadingTip: '登录中...',
-      socialForm: {},
       activeName: 'user'
     }
   },

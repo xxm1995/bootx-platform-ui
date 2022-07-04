@@ -68,7 +68,9 @@
     </a-spin>
     <password-edit ref="passwordEdit" @ok="init"/>
     <phone-edit ref="phoneEdit" @ok="init" :phone="user.phone"/>
+    <phone-bind ref="phoneBind" @ok="init"/>
     <email-edit ref="emailEdit" @ok="init" :email="user.email"/>
+    <email-bind ref="emailBind" @ok="init"/>
   </div>
 </template>
 
@@ -77,13 +79,17 @@ import { getUserSecurityInfo } from '@/api/system/user'
 import PasswordEdit from './PasswordEdit'
 import PhoneEdit from './PhoneEdit'
 import EmailEdit from './EmailEdit'
+import PhoneBind from './PhoneBind'
+import EmailBind from './EmailBind'
 
 export default {
   name: 'Security',
   components: {
     PasswordEdit,
     PhoneEdit,
-    EmailEdit
+    EmailEdit,
+    PhoneBind,
+    EmailBind
   },
   data () {
     return {
@@ -104,23 +110,23 @@ export default {
     },
     // 显示密码修改
     passwordEdit () {
-      this.$refs.passwordEdit.init('', 'edit')
+      this.$refs.passwordEdit.init()
     },
     // 修改绑定邮箱
     emailEdit () {
-      this.$refs.emailEdit.init('', 'edit')
+      this.$refs.emailEdit.init()
     },
     // 修改绑定手机号
     phoneEdit () {
-      this.$refs.phoneEdit.init('', 'edit')
+      this.$refs.phoneEdit.init()
     },
     // 绑定手机号
     phoneBind () {
-      this.$message.info('稍等, 下个版本实装')
+      this.$refs.phoneBind.init()
     },
     // 绑定邮箱
     bindEmail () {
-      this.$message.info('稍等, 下个版本实装')
+      this.$refs.emailBind.init()
     }
   },
   mounted () {

@@ -1,48 +1,57 @@
 import { axios } from '@/utils/request'
 
+/**
+ * 分页
+ */
 export function page (params) {
   return axios({
-    url: '/client/page',
+    url: '/application/page',
     method: 'GET',
     params: params
   })
 }
 
 /**
- * 超级分页
+ * 获取单条
  */
-export function superPage (params, queryParams) {
-  return axios({
-    url: '/client/superPage',
-    method: 'POST',
-    params: params,
-    data: queryParams
-  })
-}
-
 export function get (id) {
   return axios({
-    url: '/client/findById',
+    url: '/application/findById',
     method: 'GET',
     params: { id }
   })
 }
 
 /**
- * 终端编码是否存在
+ * 添加
  */
-export function existsByCode (code) {
+export function add (obj) {
   return axios({
-    url: '/client/existsByCode',
-    method: 'GET',
-    params: { code }
+    url: '/application/add',
+    method: 'POST',
+    data: obj
   })
 }
-export function existsByCodeNotId (code, id) {
+
+/**
+ * 更新
+ */
+export function update (obj) {
   return axios({
-    url: '/client/existsByCodeNotId',
-    method: 'GET',
-    params: { code, id }
+    url: '/application/update',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 删除
+ */
+export function del (id) {
+  return axios({
+    url: '/application/delete',
+    params: { id },
+    method: 'DELETE'
   })
 }
 
@@ -51,42 +60,25 @@ export function existsByCodeNotId (code, id) {
  */
 export function findAll () {
   return axios({
-    url: '/client/findAll',
+    url: '/application/findAll',
     method: 'GET'
   })
 }
 
 /**
- * 根据code获取终端信息
+ * 编码是否被使用
  */
-export function findByCode (code) {
+export function existsByCode (code) {
   return axios({
-    url: '/client/findByCode',
+    url: '/application/existsByCode',
     method: 'GET',
     params: { code }
   })
 }
-
-export function add (obj) {
+export function existsByCodeNotId (code, id) {
   return axios({
-    url: '/client/add',
-    method: 'POST',
-    data: obj
-  })
-}
-
-export function update (obj) {
-  return axios({
-    url: '/client/update',
-    method: 'POST',
-    data: obj
-  })
-}
-
-export function del (id) {
-  return axios({
-    url: '/client/delete',
-    params: { id },
-    method: 'DELETE'
+    url: '/application/existsByCodeNotId',
+    method: 'GET',
+    params: { code, id }
   })
 }

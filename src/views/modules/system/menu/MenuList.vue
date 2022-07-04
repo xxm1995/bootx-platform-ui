@@ -115,7 +115,7 @@ import MenuEdit from './MenuEdit'
 import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
-import { findAll } from '@/api/system/application'
+import { findAll } from '@/api/system/client'
 
 export default {
   name: 'MenuList',

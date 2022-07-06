@@ -96,7 +96,6 @@ export default {
       form: {
         userName: '',
         password: '',
-        clientIdList: [],
         confirmPassword: '',
         captchaKey: '',
         captcha: ''

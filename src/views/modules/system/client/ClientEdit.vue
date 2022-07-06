@@ -43,20 +43,20 @@
           <a-tag v-else color="red">否</a-tag>
         </a-form-model-item>
         <a-form-model-item
-          label="关联终端"
-          prop="clientIdList"
+          label="关联登录方式"
+          prop="loginTypeIdList"
         >
           <a-select
             allowClear
             mode="multiple"
-            v-model="form.clientIdList"
-            :default-value="form.clientIdList"
+            v-model="form.loginTypeIdList"
+            :default-value="form.loginTypeIdList"
             :filter-option="search"
             :disabled="showable"
             style="width: 100%"
             placeholder="选择关联的终端"
           >
-            <a-select-option v-for="o in clients" :key="o.id">
+            <a-select-option v-for="o in loginTypes" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -87,14 +87,14 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      clients: [],
+      loginTypes: [],
       form: {
         id: null,
         code: '',
         name: '',
         system: false,
         enable: true,
-        clientIdList: [],
+        loginTypeIdList: [],
         description: ''
       },
       rules: {
@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.initClients()
+      this.initLoginTypes()
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -124,10 +124,10 @@ export default {
         this.confirmLoading = false
       }
     },
-    // 初始化终端列表
-    async initClients () {
+    // 初始化登录方式列表
+    async initLoginTypes () {
       const { data } = await findAll()
-      this.clients = data.map(res => {
+      this.loginTypes = data.map(res => {
         return {
           id: res.id,
           name: res.name

@@ -85,7 +85,7 @@ export default {
       })
       this.confirmLoading = false
     },
-    // 获取用户关联应用信息
+    // 获取用户关联终端信息
     getClientIds () {
       const clientIds = this.form.clientIdList
       return clientIds.map(clientId => {
@@ -103,7 +103,7 @@ export default {
         return { }
       }
     },
-    // 初始化应用列表
+    // 初始化终端列表
     async initClients () {
       const { data } = await findAll()
       this.clients = data.map(res => {

@@ -1,12 +1,11 @@
 <template>
-  <a-modal
+  <a-drawer
     :title="title"
     :width="modalWidth"
     :visible="visible"
-    :confirmLoading="confirmLoading"
-    :maskClosable="false"
-    @cancel="handleCancel"
-  >
+    :mask-closable="showable"
+    @close="handleCancel"
+    :confirmLoading="confirmLoading">
     <a-spin :spinning="confirmLoading">
       <a-form-model
         ref="form"
@@ -38,6 +37,7 @@
         </a-form-model-item>
         <a-form-model-item
           label="系统内置"
+          prop="system"
         >
           <a-tag v-if="form.system" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
@@ -69,11 +69,13 @@
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template v-slot:footer>
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-    </template>
-  </a-modal>
+    <div class="drawer-button" >
+      <a-space>
+        <a-button key="cancel" @click="handleCancel">取消</a-button>
+        <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      </a-space>
+    </div>
+  </a-drawer>
 </template>
 
 <script>

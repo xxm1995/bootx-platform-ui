@@ -20,11 +20,9 @@
           </template>
         </a-input>
       </a-form-model-item>
-      <a-form-model-item
-        prop="captcha"
-        v-show="currentTab === 0">
-        <a-row :span="24">
-          <a-col :span="16">
+      <a-row :span="24" v-show="currentTab === 0">
+        <a-col :span="16">
+          <a-form-model-item prop="captcha">
             <a-input
               size="large"
               type="text"
@@ -36,19 +34,19 @@
                 <a-icon type="safety-certificate" :style="{ color: 'rgba(0,0,0,.25)' }"/>
               </template>
             </a-input>
-          </a-col>
-          <a-col :span="8">
-            <a-button
-              style="margin-left: 10px"
-              size="large"
-              tabindex="-1"
-              :disabled="state.smsSendBtn"
-              @click.stop.prevent="getCaptcha"
-              v-text="!state.smsSendBtn && '获取验证码' || '请等待 ' +(state.time+' s')"
-            />
-          </a-col>
-        </a-row>
-      </a-form-model-item>
+          </a-form-model-item>
+        </a-col>
+        <a-col :span="8">
+          <a-button
+            style="margin-left: 10px"
+            size="large"
+            tabindex="-1"
+            :disabled="state.smsSendBtn"
+            @click.stop.prevent="getCaptcha"
+            v-text="!state.smsSendBtn && '获取验证码' || '请等待 ' +(state.time+' s')"
+          />
+        </a-col>
+      </a-row>
       <!--    重置密码    -->
       <a-form-model-item
         v-show="currentTab === 1"

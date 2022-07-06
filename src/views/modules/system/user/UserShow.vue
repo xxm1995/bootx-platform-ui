@@ -33,8 +33,8 @@
         <a-form-model-item label="角色列表">
           <a-tag color="green" v-for="o in roles" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
-        <a-form-model-item label="应用列表">
-          <a-tag color="green" v-for="o in applications" :key="o.id">{{ o.name }}</a-tag>
+        <a-form-model-item label="终端列表">
+          <a-tag color="green" v-for="o in clientIds" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="数据权限">
           <a-tag color="green" v-for="o in dataScopes" :key="o.id">{{ o.name }}</a-tag>
@@ -62,8 +62,8 @@ export default {
       form: {
       },
       roles: [],
-      applicationList: [],
-      applications: [],
+      clients: [],
+      clientIds: [],
       dataScopes: [],
       deptList: []
     }
@@ -73,7 +73,7 @@ export default {
       await get(id).then(res => {
         this.form = res.data
       })
-      this.applications = this.getApplications()
+      this.clientIds = this.getClientIds()
       await getRoles(id).then(res => {
         this.roles = res.data
       })
@@ -86,16 +86,16 @@ export default {
       this.confirmLoading = false
     },
     // 获取用户关联应用信息
-    getApplications () {
-      const clientIds = this.form.appIdList
+    getClientIds () {
+      const clientIds = this.form.clientIdList
       return clientIds.map(clientId => {
-        return this.getApplicationById(clientId)
+        return this.getClientById(clientId)
       })
     },
     // 根据应用id获取应用对象
-    getApplicationById (applicationId) {
-      const item = this.applicationList.filter(application => {
-        return applicationId === application.id
+    getClientById (clientId) {
+      const item = this.clients.filter(client => {
+        return clientId === client.id
       })
       if (item && item.length > 0) {
         return item[0]
@@ -104,9 +104,9 @@ export default {
       }
     },
     // 初始化应用列表
-    async initClientList () {
+    async initClients () {
       const { data } = await findAll()
-      this.applicationList = data.map(res => {
+      this.clients = data.map(res => {
         return {
           id: res.id,
           name: res.name
@@ -115,7 +115,7 @@ export default {
     }
   },
   created () {
-    this.initClientList()
+    this.initClients()
   }
 }
 </script>

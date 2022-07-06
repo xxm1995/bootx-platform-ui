@@ -45,7 +45,7 @@
             style="width: 100%"
             placeholder="选择关联的应用"
           >
-            <a-select-option v-for="o in applications" :key="o.id">
+            <a-select-option v-for="o in clients" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -82,7 +82,7 @@ export default {
   data () {
     return {
       confirmDirty: false,
-      applications: [],
+      clients: [],
       passwordLevelVisible: false,
       form: {
         name: '',
@@ -114,7 +114,7 @@ export default {
   },
   methods: {
     edit () {
-      this.initApplications()
+      this.initClients()
       this.confirmLoading = false
       this.confirmDirty = false
       this.resetForm()
@@ -135,9 +135,9 @@ export default {
       })
     },
     // 初始化应用列表
-    async initApplications () {
+    async initClients () {
       const { data } = await findAll()
-      this.applications = data.map(res => {
+      this.clients = data.map(res => {
         return {
           id: res.id,
           name: res.name

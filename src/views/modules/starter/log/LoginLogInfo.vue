@@ -18,7 +18,10 @@
         {{ form.login?"成功":"失败" }}
       </a-descriptions-item>
       <a-descriptions-item label="登录终端">
-        {{ form.client }}
+        {{ getClient(form.client) }}
+      </a-descriptions-item>
+      <a-descriptions-item label="登录类型">
+        {{ getLoginType(form.loginType) }}
       </a-descriptions-item>
       <a-descriptions-item label="登录IP地址">
         {{ form.ip }}
@@ -49,6 +52,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { loginInfo } from '@/api/starter/log'
+import { findOneByField } from '@/utils/entityUtil'
 
 export default {
   name: 'LoginLogInfo',
@@ -61,6 +65,7 @@ export default {
         account: '',
         login: '',
         client: '',
+        loginType: '',
         ip: '',
         loginLocation: '',
         browser: '',
@@ -70,11 +75,27 @@ export default {
       }
     }
   },
+  props: {
+    clients: {
+      type: Array,
+      required: true
+    },
+    loginTypes: {
+      type: Array,
+      required: true
+    }
+  },
   methods: {
     edit (id) {
       loginInfo(id).then(res => {
         this.form = res.data
       })
+    },
+    getClient (code) {
+      return findOneByField(this.clients, code, 'code')?.['name']
+    },
+    getLoginType (code) {
+      return findOneByField(this.loginTypes, code, 'code')?.['name']
     }
   }
 }

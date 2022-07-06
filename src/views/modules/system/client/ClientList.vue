@@ -4,6 +4,16 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
+            <a-form-item label="编码">
+              <a-input v-model="queryParam.code" placeholder="请输入编码"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="名称">
+              <a-input v-model="queryParam.name" placeholder="请输入名称"/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="restQuery">重置</a-button>
@@ -77,51 +87,53 @@
 </template>
 
 <script>
-  import { page, del } from '@/api/system/client'
-  import ClientEdit from './ClientEdit'
-  import { TableMixin } from '@/mixins/TableMixin'
-  export default {
-    name: 'ClientList',
-    components: {
-      ClientEdit
-    },
-    mixins: [TableMixin],
-    data () {
-      return {
-        queryParam: {
-        }
+import { page, del } from '@/api/system/client'
+import ClientEdit from './ClientEdit'
+import { TableMixin } from '@/mixins/TableMixin'
+export default {
+  name: 'ClientList',
+  components: {
+    ClientEdit
+  },
+  mixins: [TableMixin],
+  data () {
+    return {
+      queryParam: {
+        code: '',
+        name: ''
       }
-    },
-    methods: {
-      init () {
-        this.loading = true
-        page({
-          ...this.queryParam,
-          ...this.pages
-        }).then(res => {
-          this.pageQueryResHandel(res, this)
-        })
-      },
-      add () {
-        this.$refs.clientEdit.init('', 'add')
-      },
-      edit (record) {
-        this.$refs.clientEdit.init(record.id, 'edit')
-      },
-      show (record) {
-        this.$refs.clientEdit.init(record.id, 'show')
-      },
-      remove (record) {
-        del(record.id).then(_ => {
-          this.$message.info('删除成功')
-          this.init()
-        })
-      }
-    },
-    created () {
-      this.init()
     }
+  },
+  methods: {
+    init () {
+      this.loading = true
+      page({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
+    },
+    add () {
+      this.$refs.clientEdit.init('', 'add')
+    },
+    edit (record) {
+      this.$refs.clientEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.clientEdit.init(record.id, 'show')
+    },
+    remove (record) {
+      del(record.id).then(_ => {
+        this.$message.info('删除成功')
+        this.init()
+      })
+    }
+  },
+  created () {
+    this.init()
   }
+}
 </script>
 
 <style scoped>

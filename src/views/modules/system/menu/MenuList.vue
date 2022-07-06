@@ -6,12 +6,12 @@
           <a-col :md="8" :sm="24">
             <a-form-item label="终端">
               <a-select
-                v-model="appCode"
+                v-model="clientCode"
                 @change="init"
-                :default-value="appCode"
+                :default-value="clientCode"
                 style="width: 100%"
               >
-                <a-select-option v-for="o in applications" :key="o.code">{{ o.name }}</a-select-option>
+                <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -126,9 +126,10 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
-      // 应用编码
-      appCode: 'admin',
-      applications: [],
+      // 终端编码
+      clientCode: 'admin',
+      // 终端列表
+      clients: [],
       searchName: '',
       // 默认树关闭
       treeExpand: false,
@@ -138,26 +139,26 @@ export default {
   methods: {
     init () {
       this.loading = true
-      menuTree(this.appCode).then(res => {
+      menuTree(this.clientCode).then(res => {
         this.remoteTableData = res.data
         this.search()
         this.loading = false
       })
     },
     add () {
-      this.$refs.menuEdit.init('', 'add',null,this.appCode)
+      this.$refs.menuEdit.init('', 'add', null, this.clientCode)
     },
     addChildren (row) {
-      this.$refs.menuEdit.init('', 'addChildren', row, this.appCode)
+      this.$refs.menuEdit.init('', 'addChildren', row, this.clientCode)
     },
     copy (id) {
-      this.$refs.menuEdit.init(id, 'copy', null, this.appCode)
+      this.$refs.menuEdit.init(id, 'copy', null, this.clientCode)
     },
     edit (id) {
-      this.$refs.menuEdit.init(id, 'edit', null, this.appCode)
+      this.$refs.menuEdit.init(id, 'edit', null, this.clientCode)
     },
     show (id) {
-      this.$refs.menuEdit.init(id, 'show')
+      this.$refs.menuEdit.init(id, 'show', null, this.clientCode)
     },
     remove (record) {
       del(record.id).then(_ => {
@@ -168,7 +169,7 @@ export default {
     // 初始化终端列表
     async initClients () {
       const { data } = await findAll()
-      this.applications = data
+      this.clients = data
     },
     /**
      * 资源列表

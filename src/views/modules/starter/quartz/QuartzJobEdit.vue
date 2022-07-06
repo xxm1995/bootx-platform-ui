@@ -43,11 +43,11 @@
         </a-input>
       </a-form-model-item>
       <a-form-model-item
-        label="state"
+        label="状态"
         v-show="showable"
       >
-        <a-tag v-if="form.state===1">启动</a-tag>
-        <a-tag v-else>停止</a-tag>
+        <a-tag v-if="form.state===1" color="green">运行</a-tag>
+        <a-tag v-else color="red">停止</a-tag>
       </a-form-model-item>
       <a-form-model-item
         label="参数"

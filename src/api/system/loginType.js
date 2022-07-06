@@ -2,7 +2,7 @@ import { axios } from '@/utils/request'
 
 export function page (params) {
   return axios({
-    url: '/client/page',
+    url: '/loginType/page',
     method: 'GET',
     params: params
   })
@@ -13,16 +13,16 @@ export function page (params) {
  */
 export function superPage (params, queryParams) {
   return axios({
-    url: '/client/superPage',
+    url: '/loginType/superPage',
     method: 'POST',
     params: params,
     data: queryParams
   })
 }
 
-export function get (id) {
+export function findById (id) {
   return axios({
-    url: '/client/findById',
+    url: '/loginType/findById',
     method: 'GET',
     params: { id }
   })
@@ -33,14 +33,14 @@ export function get (id) {
  */
 export function existsByCode (code) {
   return axios({
-    url: '/client/existsByCode',
+    url: '/loginType/existsByCode',
     method: 'GET',
     params: { code }
   })
 }
 export function existsByCodeNotId (code, id) {
   return axios({
-    url: '/client/existsByCodeNotId',
+    url: '/loginType/existsByCodeNotId',
     method: 'GET',
     params: { code, id }
   })
@@ -51,7 +51,7 @@ export function existsByCodeNotId (code, id) {
  */
 export function findAll () {
   return axios({
-    url: '/client/findAll',
+    url: '/loginType/findAll',
     method: 'GET'
   })
 }
@@ -61,7 +61,7 @@ export function findAll () {
  */
 export function findByCode (code) {
   return axios({
-    url: '/client/findByCode',
+    url: '/loginType/findByCode',
     method: 'GET',
     params: { code }
   })
@@ -69,7 +69,7 @@ export function findByCode (code) {
 
 export function add (obj) {
   return axios({
-    url: '/client/add',
+    url: '/loginType/add',
     method: 'POST',
     data: obj
   })
@@ -77,7 +77,7 @@ export function add (obj) {
 
 export function update (obj) {
   return axios({
-    url: '/client/update',
+    url: '/loginType/update',
     method: 'POST',
     data: obj
   })
@@ -85,7 +85,7 @@ export function update (obj) {
 
 export function del (id) {
   return axios({
-    url: '/client/delete',
+    url: '/loginType/delete',
     params: { id },
     method: 'DELETE'
   })

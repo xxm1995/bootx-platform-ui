@@ -78,8 +78,8 @@ export default {
   data () {
     return {
       form: {
-        application: '',
         client: '',
+        loginType: '',
         account: '',
         password: '123456',
         captchaKey: '',
@@ -108,7 +108,7 @@ export default {
   methods: {
     ...mapActions(['Login', 'Logout']),
     init () {
-      findByCode(this.form.client).then(res => {
+      findByCode(this.form.loginType).then(res => {
         this.client = res.data || {}
         if (this.client && this.client.captcha && this.client.enable) {
           this.getCaptcha()
@@ -149,8 +149,8 @@ export default {
   },
   created () {
     this.form.account = process.env.VUE_APP_USER_ACCOUNT
-    this.form.application = process.env.VUE_APP_APPLICATION
-    this.form.client = 'password'
+    this.form.client = process.env.VUE_APP_CLIENT
+    this.form.loginType = 'password'
     this.init()
   }
 }

@@ -23,13 +23,13 @@
           <a-select
             allowClear
             mode="multiple"
-            v-model="form.appIdList"
-            :default-value="form.appIdList"
+            v-model="form.clientIdList"
+            :default-value="form.clientIdList"
             :filter-option="search"
             style="width: 100%"
             placeholder="选择关联的应用"
           >
-            <a-select-option v-for="o in applications" :key="o.id">
+            <a-select-option v-for="o in clients" :key="o.id">
               {{ o.name }}
             </a-select-option>
           </a-select>
@@ -61,14 +61,14 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      applications: [],
+      clients: [],
       form: {
         id: '',
         name: '',
         username: '',
         phone: '',
         email: '',
-        appIdList: [],
+        clientIdList: [],
         avatar: ''
       },
       rules: {
@@ -96,7 +96,7 @@ export default {
   methods: {
     edit (id) {
       this.confirmLoading = true
-      this.initApplications()
+      this.initClients()
       get(id).then(res => {
         this.form = res.data
         delete this.form.password
@@ -123,9 +123,9 @@ export default {
       })
     },
     // 初始化终端列表
-    async initApplications () {
+    async initClients () {
       const { data } = await findAll()
-      this.applications = data.map(res => {
+      this.clients = data.map(res => {
         return {
           id: res.id,
           name: res.name

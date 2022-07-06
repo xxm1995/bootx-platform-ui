@@ -66,7 +66,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, existsByPermCode, existsByPermCodeNotId, get, update } from '@/api/system/permMenu'
+import { add, existsByPermCode, existsByPermCodeNotId, findById, update } from '@/api/system/permMenu'
 
 export default {
   name: 'ResourcePermEdit',
@@ -99,7 +99,7 @@ export default {
     edit (record, type) {
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
-        get(record.id).then(res => {
+        findById(record.id).then(res => {
           this.form = res.data
           this.confirmLoading = false
         })

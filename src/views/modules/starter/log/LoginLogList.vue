@@ -3,17 +3,32 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="账号">
-              <a-input v-model="queryParam.account" placeholder="" />
+              <a-input v-model="queryParam.account" placeholder="请输入账号" />
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="终端">
-              <a-input v-model="queryParam.client" placeholder="" />
+              <a-select
+                allowClear
+                placeholder="请选择终端"
+                v-model="queryParam.client">
+                <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
+              </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item label="登录方式">
+              <a-select
+                allowClear
+                placeholder="请输入登录方式"
+                v-model="queryParam.loginType">
+                <a-select-option v-for="o in loginTypes" :key="o.code">{{ o.name }}</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
               <a-button @click="() => this.queryParam = {}">重置</a-button>
@@ -34,7 +49,6 @@
       :data="tableData"
     >
       <vxe-table-column field="id" title="ID"/>
-      <vxe-table-column field="userId" title="用户ID" />
       <vxe-table-column field="account" title="账号" />
       <vxe-table-column field="login" title="状态">
         <template v-slot="{row}">
@@ -43,12 +57,21 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="ip" title="IP" />
-      <vxe-table-column field="client" title="终端" />
+      <vxe-table-column field="client" title="终端">
+        <template v-slot="{row}">
+          {{ getClient(row.client) }}
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="loginType" title="登录方式">
+        <template v-slot="{row}">
+          {{ getLoginType(row.loginType) }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="browser" title="浏览器类型" />
       <vxe-table-column field="os" title="操作系统" />
       <vxe-table-column field="msg" title="提示消息" />
       <vxe-table-column field="loginTime" title="访问时间" />
-      <vxe-table-column title="操作" fixed="right" width="120">
+      <vxe-table-column title="操作" fixed="right" width="50">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -66,6 +89,8 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <login-log-info
+      :clients="clients"
+      :login-types="loginTypes"
       ref="loginLogInfo"
     />
   </a-card>
@@ -75,6 +100,9 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { loginPage } from '@/api/starter/log'
 import LoginLogInfo from './LoginLogInfo'
+import { findAll as findClients } from '@/api/system/client'
+import { findAll as findLoginTypes } from '@/api/system/loginType'
+import { findOneByField } from '@/utils/entityUtil'
 
 export default {
   name: 'LoginLogList',
@@ -84,30 +112,49 @@ export default {
   },
   data () {
     return {
+      clients: [],
+      loginTypes: [],
       queryParam: {
         account: '',
-        client: ''
+        client: undefined,
+        loginType: undefined
       }
     }
   },
   methods: {
+    /**
+     * 初始化 终端列表和登录方式列表
+     */
+    initClientAndLoginType () {
+      findClients().then(({ data }) => {
+        this.clients = data
+      })
+      findLoginTypes().then(({ data }) => {
+        this.loginTypes = data
+      })
+    },
     init () {
       this.loading = true
       loginPage({
         ...this.queryParam,
         ...this.pages
       }).then(res => {
-        this.tableData = res.data.records
-        this.pagination.current = Number(res.data.current)
-        this.pagination.total = Number(res.data.total)
-        this.loading = false
+        this.pageQueryResHandel(res, this)
       })
     },
     show (record) {
       this.$refs.loginLogInfo.init(record.id, 'show')
+    },
+    getClient (code) {
+      return findOneByField(this.clients, code, 'code')?.['name']
+    },
+    getLoginType (code) {
+      console.log(this.loginTypes)
+      return findOneByField(this.loginTypes, code, 'code')?.['name']
     }
   },
   created () {
+    this.initClientAndLoginType()
     this.init()
   }
 }

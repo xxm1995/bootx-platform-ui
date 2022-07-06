@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/application/page',
+    url: '/client/page',
     method: 'GET',
     params: params
   })
@@ -16,7 +16,7 @@ export function page (params) {
  */
 export function get (id) {
   return axios({
-    url: '/application/findById',
+    url: '/client/findById',
     method: 'GET',
     params: { id }
   })
@@ -27,7 +27,7 @@ export function get (id) {
  */
 export function add (obj) {
   return axios({
-    url: '/application/add',
+    url: '/client/add',
     method: 'POST',
     data: obj
   })
@@ -38,7 +38,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/application/update',
+    url: '/client/update',
     method: 'POST',
     data: obj
   })
@@ -49,7 +49,7 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: '/application/delete',
+    url: '/client/delete',
     params: { id },
     method: 'DELETE'
   })
@@ -60,7 +60,7 @@ export function del (id) {
  */
 export function findAll () {
   return axios({
-    url: '/application/findAll',
+    url: '/client/findAll',
     method: 'GET'
   })
 }
@@ -70,14 +70,14 @@ export function findAll () {
  */
 export function existsByCode (code) {
   return axios({
-    url: '/application/existsByCode',
+    url: '/client/existsByCode',
     method: 'GET',
     params: { code }
   })
 }
 export function existsByCodeNotId (code, id) {
   return axios({
-    url: '/application/existsByCodeNotId',
+    url: '/client/existsByCodeNotId',
     method: 'GET',
     params: { code, id }
   })

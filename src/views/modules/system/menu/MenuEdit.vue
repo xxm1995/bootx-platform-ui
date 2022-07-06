@@ -207,7 +207,7 @@
 </template>
 
 <script>
-import { add, update, get, menuTree } from '@/api/system/permMenu'
+import { add, update, findById, menuTree } from '@/api/system/permMenu'
 import { treeDataTranslate } from '@/utils/util'
 import { FormMixin } from '@/mixins/FormMixin'
 import IconSelector from '@/components/IconSelector'
@@ -217,7 +217,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      appCode: '',
+      clientCode: '',
       form: {
         id: '',
         parentId: '',
@@ -233,6 +233,7 @@ export default {
         keepAlive: true,
         hiddenHeaderContent: false,
         targetOutside: false,
+        // 0,一级菜单 1,子菜单
         menuType: 0
       },
       treeData: [],
@@ -252,18 +253,18 @@ export default {
   },
   methods: {
     loadTree () {
-      menuTree(this.appCode).then((res) => {
+      menuTree(this.clientCode).then((res) => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
       })
     },
-    async edit (id, type, row, appCode) {
-      this.appCode = appCode
+    async edit (id, type, row, clientCode) {
+      this.clientCode = clientCode
       this.confirmLoading = true
       await this.loadTree()
       // 编辑或查看
       if (type === 'edit' || type === 'show') {
         this.editable = true
-        const res = await get(id)
+        const res = await findById(id)
         this.form = res.data
         this.confirmLoading = false
       } else if (type === 'add') {
@@ -279,8 +280,7 @@ export default {
         this.confirmLoading = false
       } else if (type === 'copy') {
         // 复制
-        const { data } = await get(id)
-        console.log(data)
+        const { data } = await findById(id)
         delete data.id
         this.form = data
         this.confirmLoading = false
@@ -301,7 +301,7 @@ export default {
           }
           that.confirmLoading = true
           if (['add', 'addChildren', 'copy'].includes(this.type)) {
-            this.form.appCode = this.appCode
+            this.form.clientCode = this.clientCode
             await add(this.form)
           } else {
             await update(this.form)

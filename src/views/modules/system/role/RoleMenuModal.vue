@@ -33,8 +33,8 @@
       </a-tree>
     </a-spin>
     <div class="drawer-button">
-      <a-select style="float: left" @change="clientSwitch" v-model="appCode">
-        <a-select-option v-for="o in applicationList" :key="o.code">{{ o.name }}</a-select-option>
+      <a-select style="float: left" @change="clientSwitch" v-model="clientCode">
+        <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
       </a-select>
       <a-dropdown style="float: left;margin-left: 5px" :trigger="['click']" placement="topCenter">
         <template #overlay>
@@ -70,8 +70,9 @@ export default {
     return {
       roleId: '',
       searchName: '',
-      applicationList: [],
-      appCode: 'admin',
+      // 终端列表
+      clients: [],
+      clientCode: 'admin',
       // 父子选项默认不受控
       checkStrictly: true,
       // 所有的key
@@ -89,10 +90,10 @@ export default {
     }
   },
   methods: {
-    // 应用列表
-    initApplicationList () {
+    // 终端列表
+    initClients () {
       findAll().then(({ data }) => {
-        this.applicationList = data.map(res => {
+        this.clients = data.map(res => {
           return {
             code: res.code,
             name: res.name
@@ -107,12 +108,12 @@ export default {
       this.searchName = ''
       this.expandedKeys = []
       // 权限树
-      await allTree(this.appCode).then(res => {
+      await allTree(this.clientCode).then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'title')
         this.generateTreeList(res.data)
       })
       // 当前角色已经选择的
-      await findPermissionIdsByRole(this.roleId, this.appCode).then(res => {
+      await findPermissionIdsByRole(this.roleId, this.clientCode).then(res => {
         this.checkedKeys = res.data
       })
       // 所有的key值
@@ -121,7 +122,7 @@ export default {
     },
     init (roleId) {
       this.roleId = roleId
-      this.initApplicationList()
+      this.initClients()
       this.initAssign()
     },
     // 展开/收起节点时触发
@@ -159,7 +160,7 @@ export default {
     },
     // 终端切换
     clientSwitch (item) {
-      this.appCode = item
+      this.clientCode = item
       this.initAssign()
     },
     // 提交
@@ -167,7 +168,7 @@ export default {
       this.loading = true
       save({
         roleId: this.roleId,
-        appCode: this.appCode,
+        clientCode: this.clientCode,
         permissionIds: this.checkedKeys
       }).then(() => {
         this.handleCancel()

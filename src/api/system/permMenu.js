@@ -1,22 +1,22 @@
 import { axios } from '@/utils/request'
 
-export function menuTree (appCode) {
+export function menuTree (clientCode) {
   return axios({
     url: '/perm/menu/menuTree',
     method: 'GET',
-    params: { appCode }
+    params: { clientCode }
   })
 }
 
-export function allTree (appCode) {
+export function allTree (clientCode) {
   return axios({
     url: '/perm/menu/allTree',
     method: 'GET',
-    params: { appCode }
+    params: { clientCode }
   })
 }
 
-export function get (id) {
+export function findById (id) {
   return axios({
     url: '/perm/menu/findById',
     params: { id },

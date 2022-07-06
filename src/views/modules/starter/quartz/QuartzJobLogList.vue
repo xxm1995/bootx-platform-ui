@@ -110,9 +110,6 @@ export default {
         this.pageQueryResHandel(res, this)
       })
     },
-    show (record) {
-      this.$refs.quartzJobLogInfo.init(record, 'show')
-    },
     handleCancel () {
       this.visible = false
     }

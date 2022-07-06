@@ -176,7 +176,7 @@ export default {
       // 用户状态编码
       userStatusCode: 'UserStatusCode',
       // 终端列表
-      clientList: [],
+      clients: [],
       queryParam: {
         account: '',
         name: ''

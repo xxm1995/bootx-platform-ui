@@ -27,8 +27,8 @@ export default {
       DING_TALK,
       WE_CHAT,
       WE_COM,
-      application: '',
-      currentClientCode: null
+      client: '',
+      currentLoginType: null
     }
   },
   methods: {
@@ -36,10 +36,10 @@ export default {
     /**
      * 调起登录
      */
-    onThirdLogin (clientCode) {
-      this.currentClientCode = clientCode
-      const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${clientCode}`
-      window.open(url, `login ${clientCode}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
+    onThirdLogin (loginTpe) {
+      this.currentLoginType = loginTpe
+      const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${loginTpe}`
+      window.open(url, `login ${loginTpe}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
       // 监听回调
       window.addEventListener('message', this.authCodeCallback, false)
     },
@@ -56,15 +56,15 @@ export default {
       } = this
       this.$emit('loginLoading', true)
       loginOpenId({
-        application: this.application,
-        client: this.currentClientCode,
+        client: this.client,
+        loginType: this.currentLoginType,
         ...data
       }).then(() => this.$emit('loginSuccess'))
         .finally(() => this.$emit('loginLoading', false))
     }
   },
   mounted () {
-    this.application = process.env.VUE_APP_APPLICATION
+    this.client = process.env.VUE_APP_CLIENT
   }
 }
 </script>

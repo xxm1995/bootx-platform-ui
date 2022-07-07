@@ -87,7 +87,7 @@
             <a-select-option key="RSA2">RSA2秘钥</a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 1" label="公钥" prop="alipayPublicKey" >
+        <a-form-model-item v-show="form.authType === 1" label="支付宝公钥" prop="alipayPublicKey" >
           <a-textarea :disabled="showable" v-model="form.alipayPublicKey"/>
         </a-form-model-item>
         <a-form-model-item v-show="form.authType === 2 " label="应用公钥证书" prop="appCert" >
@@ -102,7 +102,7 @@
           <a-textarea :disabled="showable" v-model="form.alipayRootCert">
           </a-textarea>
         </a-form-model-item>
-        <a-form-model-item label="私钥" prop="privateKey" >
+        <a-form-model-item label="应用私钥" prop="privateKey" >
           <a-textarea :disabled="showable" v-model="form.privateKey"/>
         </a-form-model-item>
         <a-form-model-item label="备注" prop="remark" >

@@ -113,7 +113,7 @@
     </a-spin>
     <div class="drawer-button" >
       <a-button @click="handleCancel" style="margin-right: .8rem">取消</a-button>
-      <a-button @click="handleOk" type="primary" :loading="confirmLoading">提交</a-button>
+      <a-button @click="handleOk" v-show="!showable" type="primary" :loading="confirmLoading">提交</a-button>
     </div>
   </a-drawer>
 </template>

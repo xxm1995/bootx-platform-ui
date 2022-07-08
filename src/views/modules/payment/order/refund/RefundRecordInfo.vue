@@ -32,6 +32,9 @@
       <a-descriptions-item label="退款时间">
         {{ form.refundTime }}
       </a-descriptions-item>
+      <a-descriptions-item label="退款状态">
+        <a-tag>{{ form.refundStatus?'成功':'失败' }}</a-tag>
+      </a-descriptions-item>
       <a-descriptions-item label="退款终端ip">
         {{ form.clientIp }}
       </a-descriptions-item>
@@ -73,7 +76,7 @@
           refundTime: null,
           clientIp: null,
           errorCode: null,
-          errorMsg: null
+          errorMsg: null,
         }
       }
     },

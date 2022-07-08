@@ -45,6 +45,11 @@
       <vxe-table-column field="amount" title="退款金额"/>
       <vxe-table-column field="refundableBalance" title="剩余可退金额"/>
       <vxe-table-column field="refundTime" title="退款时间"/>
+      <vxe-table-column field="refundStatus" title="状态">
+        <template v-slot="{row}">
+          <a-tag>{{ row.refundStatus?'成功':'失败' }}</a-tag>
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="clientIp" title="客户ip"/>
       <vxe-table-column fixed="right" width="100" :showOverflow="false" title="操作">
         <template v-slot="{row}">

@@ -102,7 +102,6 @@ export default {
       })
     },
     handleChange (info) {
-      console.log(info)
       if (info.file.status === 'done') {
         if (!info.file.response.code) {
           this.init()
@@ -111,7 +110,7 @@ export default {
           this.$message.error(`${info.file.response.msg}`)
         }
       } else if (info.file.status === 'error') {
-        this.$message.error(`${info.file.response.msg}`)
+        this.$message.error('上传失败')
       }
     }
   },

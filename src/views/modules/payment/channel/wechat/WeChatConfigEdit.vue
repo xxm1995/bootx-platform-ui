@@ -24,18 +24,44 @@
         <a-form-model-item label="应用编号" prop="appId" >
           <a-input :disabled="showable" v-model="form.appId" placeholder="请输入应用编号"/>
         </a-form-model-item>
-<!--        <a-form-model-item label="API版本" prop="apiVersion">-->
-<!--          <a-select-->
-<!--            :disabled="showable"-->
-<!--            v-model="form.apiVersion"-->
-<!--            :default-value="form.apiVersion"-->
-<!--            style="width: 100%"-->
-<!--            placeholder="选择API版本"-->
-<!--          >-->
-<!--            <a-select-option key="api_v2">V2</a-select-option>-->
-<!--            <a-select-option key="api_v3">V3</a-select-option>-->
-<!--          </a-select>-->
-<!--        </a-form-model-item>-->
+        <!--        <a-form-model-item label="API版本" prop="apiVersion">-->
+        <!--          <a-select-->
+        <!--            :disabled="showable"-->
+        <!--            v-model="form.apiVersion"-->
+        <!--            :default-value="form.apiVersion"-->
+        <!--            style="width: 100%"-->
+        <!--            placeholder="选择API版本"-->
+        <!--          >-->
+        <!--            <a-select-option key="api_v2">V2</a-select-option>-->
+        <!--            <a-select-option key="api_v3">V3</a-select-option>-->
+        <!--          </a-select>-->
+        <!--        </a-form-model-item>-->
+        <a-form-model-item label="p12证书" prop="p12">
+          <a-upload
+            v-if="!form.p12"
+            :disabled="showable"
+            name="file"
+            :multiple="false"
+            :action="uploadAction"
+            :headers="tokenHeader"
+            :showUploadList="false"
+            @change="handleChange">
+            <a-button>
+              <a-icon type="upload"/>
+              p12证书上传
+            </a-button>
+          </a-upload>
+          <a-input v-else v-model="form.p12" disabled>
+            <template #addonAfter v-if="!showable">
+              <a-tooltip>
+                <template #title>
+                  删除上传的证书文件
+                </template>
+                <a-icon @click="removeP12" type="close-circle" />
+              </a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
         <a-form-model-item label="APIv2密钥" prop="apiKeyV2">
           <a-input :disabled="showable" v-model="form.apiKeyV2" placeholder="请输入APIv2密钥"/>
         </a-form-model-item>
@@ -86,7 +112,7 @@
     </a-spin>
     <div class="drawer-button" >
       <a-button @click="handleCancel" style="margin-right: .8rem">取消</a-button>
-      <a-button @click="handleOk" type="primary" :loading="confirmLoading">提交</a-button>
+      <a-button v-show="!showable" @click="handleOk" type="primary" :loading="confirmLoading">提交</a-button>
     </div>
   </a-drawer>
 </template>
@@ -94,6 +120,8 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, findPayWayList, get, update } from '@/api/payment/wechatPayConfig'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 
 export default {
   name: 'WeChatConfigEdit',
@@ -122,10 +150,20 @@ export default {
         appId: this.diffForm(this.form.appId, this.rawForm.appId),
         apiKeyV2: this.diffForm(this.form.apiKeyV2, this.rawForm.apiKeyV2),
         apiKeyV3: this.diffForm(this.form.apiKeyV3, this.rawForm.apiKeyV3),
-        appCert: this.diffForm(this.form.appCert, this.rawForm.appCert),
-        alipayCert: this.diffForm(this.form.alipayCert, this.rawForm.alipayCert),
-        alipayRootCert: this.diffForm(this.form.alipayRootCert, this.rawForm.alipayRootCert),
-        privateKey: this.diffForm(this.form.privateKey, this.rawForm.privateKey)
+        keyPem: this.diffForm(this.form.keyPem, this.rawForm.keyPem),
+        certPem: this.diffForm(this.form.certPem, this.rawForm.certPem)
+      }
+    },
+    // 上传地址
+    uploadAction () {
+      return process.env.VUE_APP_API_BASE_URL + '/file/upload'
+    },
+    // 请求头消息
+    tokenHeader () {
+      // 从 localstorage 获取 token
+      const token = storage.get(ACCESS_TOKEN)
+      return {
+        AccessToken: token
       }
     }
   },
@@ -133,16 +171,16 @@ export default {
   data () {
     return {
       payWayList: [],
+      fileList: [],
       form: {
         id: null,
         name: '',
         mchId: '',
         appId: '',
         apiVersion: 'api_v2',
+        p12: null,
         apiKeyV2: '',
         apiKeyV3: '',
-        appSecret: '',
-        p12: '',
         keyPem: '',
         certPem: '',
         domain: '',
@@ -181,6 +219,7 @@ export default {
               ...this.form,
               ...this.diff
             }
+            console.log(form)
             await update(form)
           }
           setTimeout(() => {
@@ -197,6 +236,29 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    /**
+     * 文件上传
+     */
+    handleChange (info) {
+      // 上传完毕
+      if (info.file.status === 'done') {
+        const res = info.file.response
+        if (!res.code) {
+          this.form.p12 = res.data.id
+          this.$message.success(`${info.file.name} 上传成功!`)
+        } else {
+          this.$message.error(`${res.msg}`)
+        }
+      } else if (info.file.status === 'error') {
+        this.$message.error('上传失败')
+      }
+    },
+    /**
+     * 清除上传的p12证书
+     */
+    removeP12 () {
+      this.form.p12 = null
     }
   }
 }

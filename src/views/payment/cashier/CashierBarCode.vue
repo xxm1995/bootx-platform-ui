@@ -49,7 +49,6 @@ export default {
       this.$emit('cancel')
     },
     handleClose () {
-
       this.visible = false
     }
   }

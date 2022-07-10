@@ -24,6 +24,9 @@
         <a-form-model-item label="应用编号" prop="appId" >
           <a-input :disabled="showable" v-model="form.appId" placeholder="请输入应用编号"/>
         </a-form-model-item>
+        <a-form-model-item label="AppSecret" prop="appSecret" >
+          <a-input :disabled="showable" v-model="form.appSecret" placeholder="请输入AppSecret"/>
+        </a-form-model-item>
         <!--        <a-form-model-item label="API版本" prop="apiVersion">-->
         <!--          <a-select-->
         <!--            :disabled="showable"-->
@@ -63,10 +66,10 @@
           </a-input>
         </a-form-model-item>
         <a-form-model-item label="APIv2密钥" prop="apiKeyV2">
-          <a-input :disabled="showable" v-model="form.apiKeyV2" placeholder="请输入APIv2密钥"/>
+          <a-textarea :disabled="showable" v-model="form.apiKeyV2" placeholder="请输入APIv2密钥"/>
         </a-form-model-item>
         <a-form-model-item label="APIv3密钥" prop="apiKeyV3">
-          <a-input :disabled="showable" v-model="form.apiKeyV3" placeholder="请输入APIv3密钥"/>
+          <a-textarea :disabled="showable" v-model="form.apiKeyV3" placeholder="请输入APIv3密钥"/>
         </a-form-model-item>
         <a-form-model-item label="证书(cert.pem)" prop="certPem">
           <a-textarea :disabled="showable" v-model="form.certPem" placeholder="请填入证书"/>
@@ -148,6 +151,7 @@ export default {
       return {
         mchId: this.diffForm(this.form.mchId, this.rawForm.mchId),
         appId: this.diffForm(this.form.appId, this.rawForm.appId),
+        appSecret: this.diffForm(this.form.appSecret, this.rawForm.appSecret),
         apiKeyV2: this.diffForm(this.form.apiKeyV2, this.rawForm.apiKeyV2),
         apiKeyV3: this.diffForm(this.form.apiKeyV3, this.rawForm.apiKeyV3),
         keyPem: this.diffForm(this.form.keyPem, this.rawForm.keyPem),
@@ -177,6 +181,7 @@ export default {
         name: '',
         mchId: '',
         appId: '',
+        appSecret: '',
         apiVersion: 'api_v2',
         p12: null,
         apiKeyV2: '',

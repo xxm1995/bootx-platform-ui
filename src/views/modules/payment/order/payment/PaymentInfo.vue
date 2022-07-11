@@ -58,43 +58,43 @@
 </template>
 
 <script>
-  import { FormMixin } from '@/mixins/FormMixin'
-  import { get } from '@/api/payment/payment'
-  export default {
-    name: 'PaymentInfo',
-    mixins: [FormMixin],
-    data () {
-      return {
-        form: {
-          id: '',
-          userId: '',
-          businessId: '',
-          amount: '',
-          refundableBalance: '',
-          payStatus: '',
-          title: '',
-          description: '',
-          errorCode: '',
-          asyncPayMode: '',
-          asyncPayChannel: '',
-          payChannelInfo: '',
-          refundableInfo: '',
-          payTime: '',
-          expiredTime: ''
-        }
-      }
-    },
-    methods: {
-      edit (id) {
-          this.confirmLoading = true
-          get(id).then(res => {
-            this.form = res.data
-            console.log(this.form)
-            this.confirmLoading = false
-          })
+import { FormMixin } from '@/mixins/FormMixin'
+import { get } from '@/api/payment/payment'
+export default {
+  name: 'PaymentInfo',
+  mixins: [FormMixin],
+  data () {
+    return {
+      form: {
+        id: '',
+        userId: '',
+        businessId: '',
+        amount: '',
+        refundableBalance: '',
+        payStatus: '',
+        title: '',
+        description: '',
+        errorCode: '',
+        asyncPayMode: '',
+        asyncPayChannel: '',
+        payChannelInfo: '',
+        refundableInfo: '',
+        payTime: '',
+        expiredTime: ''
       }
     }
+  },
+  methods: {
+    edit (id) {
+      this.confirmLoading = true
+      get(id).then(res => {
+        this.form = res.data
+        console.log(this.form)
+        this.confirmLoading = false
+      })
+    }
   }
+}
 </script>
 
 <style scoped>

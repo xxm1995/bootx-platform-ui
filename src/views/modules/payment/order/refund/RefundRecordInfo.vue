@@ -71,7 +71,6 @@
           title: null,
           amount: null,
           refundableInfo: null,
-          refundableInfoList: [],
           refundStatus: null,
           refundTime: null,
           clientIp: null,

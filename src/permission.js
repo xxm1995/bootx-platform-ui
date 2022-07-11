@@ -42,7 +42,10 @@ router.beforeEach((to, from, next) => {
                 // 跳转到目的路由
                 next({ path: redirect })
               }
-              initWebSocket().then()
+              // 不需要登录的页面不建立连接
+              if ((!to?.meta?.ignoreLogin === true)) {
+                initWebSocket().then()
+              }
             })
           })
           .catch(() => {

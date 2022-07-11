@@ -36,10 +36,10 @@
         {{ dictConvert('PayChannel',form.asyncPayChannel) }}
       </a-descriptions-item>
       <a-descriptions-item label="支付信息">
-        <a-tag v-for="o in form.payChannelInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
+        <a-tag v-for="o in form.payChannelInfo" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="可退款信息">
-        <a-tag v-for="o in form.refundableInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
+        <a-tag v-for="o in form.refundableInfo" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="描述">
         {{ form.description }}
@@ -78,9 +78,7 @@
           asyncPayMode: '',
           asyncPayChannel: '',
           payChannelInfo: '',
-          payChannelInfoList: [],
           refundableInfo: '',
-          refundableInfoList: [],
           payTime: '',
           expiredTime: ''
         }

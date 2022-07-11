@@ -39,7 +39,7 @@
         {{ form.clientIp }}
       </a-descriptions-item>
       <a-descriptions-item label="退款信息">
-        <a-tag v-for="o in form.refundableInfoList" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
+        <a-tag v-for="o in form.refundableInfo" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
       </a-descriptions-item>
       <a-descriptions-item label="错误码">
         {{ form.errorCode }}

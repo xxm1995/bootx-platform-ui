@@ -61,9 +61,9 @@ export default {
     edit (id) {
       this.confirmLoading = true
       get(id).then(({ data }) => {
-        const { businessId, refundableInfoList } = data
+        const { businessId, refundableInfo } = data
         this.form.businessId = businessId
-        this.form.refundModeParams = [...refundableInfoList]
+        this.form.refundModeParams = [...refundableInfo]
         this.confirmLoading = false
       })
     },

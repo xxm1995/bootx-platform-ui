@@ -84,8 +84,8 @@ export default {
       },
       payChannel: [
         { code: 1, name: '支付宝' },
-        { code: 2, name: '微信' },
-        { code: 3, name: '云闪付' }
+        { code: 2, name: '微信' }
+        // { code: 3, name: '云闪付' }
       ],
       wrapperCol: {
         sm: { span: 13 }

@@ -175,15 +175,11 @@ export default {
     queryPage () {
       this.superQueryFlag = false
       this.loading = true
-      this.getDictItemsByNumberAsync('PayStatus').then(res => {
-        this.payStatusList = res.map(item => {
-          return { name: item.name, value: item.code }
-        })
+      this.getDictDropDownAsync('PayStatus').then(res => {
+        this.payStatusList = res
       })
-      this.getDictItemsByNumberAsync('PayChannel').then(res => {
-        this.syncPayChannelList = res.map(item => {
-          return { name: item.name, value: item.code }
-        })
+      this.getDictDropDownAsync('PayChannel').then(res => {
+        this.syncPayChannelList = res
       })
       page({
         ...this.queryParam,

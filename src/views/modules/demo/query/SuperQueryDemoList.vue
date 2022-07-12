@@ -133,10 +133,8 @@ export default {
   methods: {
     init () {
       this.loading = true
-       this.getDictItemsByNumberAsync('Political').then(res => {
-         this.politicalList = res.map(item => {
-           return { name: item.name, value: item.code }
-         })
+       this.getDictDropDownAsync('Political').then(res => {
+         this.politicalList = res
       })
       page({
         ...this.queryParam,

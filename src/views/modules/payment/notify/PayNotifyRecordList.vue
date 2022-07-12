@@ -14,8 +14,8 @@
                 allowClear
                 v-model="queryParam.payChannel"
                 placeholder="选择支付通道"
+                :options="asyncPayChannel"
               >
-                <a-select-option v-for="o in asyncPayChannel" :key="o.code">{{ o.name }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col><a-col :md="6" :sm="24">
@@ -24,9 +24,8 @@
                 allowClear
                 v-model="queryParam.status"
                 placeholder="选择消息处理状态"
+                :options="payNotifyProcess"
               >
-                <a-select-option :key="1">成功</a-select-option>
-                <a-select-option :key="0">失败</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -60,7 +59,7 @@
       </vxe-table-column>
       <vxe-table-column field="status" title="处理状态">
         <template v-slot="{row}">
-          {{ row.status ? '成功':'失败' }}
+          {{ dictConvert('PayNotifyProcess',row.status) }}
         </template>
       </vxe-table-column>
       <vxe-table-column field="msg" title="提示信息" />
@@ -101,6 +100,7 @@ export default {
   data () {
     return {
       asyncPayChannel: [],
+      payNotifyProcess: [],
       queryParam: {
         paymentId: '',
         payChannel: undefined,
@@ -111,8 +111,13 @@ export default {
   methods: {
     init () {
       this.loading = true
-      this.getDictItemsByNumberAsync('AsyncPayChannel').then(res => {
+      // 异步支付方式
+      this.getDictDropDownAsync('AsyncPayChannel').then(res => {
         this.asyncPayChannel = res
+      })
+      // 回调状态
+      this.getDictDropDownAsync('PayNotifyProcess').then(res => {
+        this.payNotifyProcess = res
       })
       page({
         ...this.queryParam,

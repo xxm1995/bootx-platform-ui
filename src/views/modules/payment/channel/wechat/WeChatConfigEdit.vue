@@ -27,6 +27,35 @@
         <a-form-model-item label="AppSecret" prop="appSecret" >
           <a-input :disabled="showable" v-model="form.appSecret" placeholder="请输入AppSecret"/>
         </a-form-model-item>
+        <a-form-model-item label="默认支付超时配置(分钟)" prop="expireTime" >
+          <a-input-number
+            :min="1"
+            :max="12000"
+            :step="1"
+            :disabled="showable"
+            v-model="form.expireTime"/>
+        </a-form-model-item>
+        <a-form-model-item label="支持支付方式" prop="payWayList">
+          <a-select
+            allowClear
+            mode="multiple"
+            :disabled="showable"
+            v-model="form.payWayList"
+            :default-value="form.payWayList"
+            style="width: 100%"
+            placeholder="选择支付方式"
+          >
+            <a-select-option v-for="o in payWayList" :key="o.key">
+              {{ o.value }}
+            </a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item label="沙箱环境" prop="sandbox" >
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.sandbox" :disabled="showable" />
+        </a-form-model-item>
+        <a-form-model-item v-show="showable" label="是否启用" prop="activity" >
+          <a-tag>{{ form.activity?"启用":"未启用" }}</a-tag>
+        </a-form-model-item>
         <!--        <a-form-model-item label="API版本" prop="apiVersion">-->
         <!--          <a-select-->
         <!--            :disabled="showable"-->
@@ -72,10 +101,10 @@
           <a-textarea :disabled="showable" v-model="form.apiKeyV3" placeholder="请输入APIv3密钥"/>
         </a-form-model-item>
         <a-form-model-item label="证书(cert.pem)" prop="certPem">
-          <a-textarea :disabled="showable" v-model="form.certPem" placeholder="请填入证书"/>
+          <a-textarea :disabled="showable" v-model="form.certPem" placeholder="请填入证书内容"/>
         </a-form-model-item>
         <a-form-model-item label="私钥(key.pem)" prop="keyPem">
-          <a-textarea :disabled="showable" v-model="form.keyPem" placeholder="请填入私钥"/>
+          <a-textarea :disabled="showable" v-model="form.keyPem" placeholder="请填入私钥内容"/>
         </a-form-model-item>
         <a-form-model-item label="异步通知URL" prop="notifyUrl" >
           <a-input :disabled="showable" v-model="form.notifyUrl" placeholder="请输入备注"/>
@@ -85,27 +114,6 @@
         </a-form-model-item>
         <a-form-model-item label="应用域名" prop="domain" >
           <a-input :disabled="showable" v-model="form.domain" placeholder="请输入domain"/>
-        </a-form-model-item>
-        <a-form-model-item label="支持支付方式" prop="payWayList">
-          <a-select
-            allowClear
-            mode="multiple"
-            :disabled="showable"
-            v-model="form.payWayList"
-            :default-value="form.payWayList"
-            style="width: 100%"
-            placeholder="选择支付方式"
-          >
-            <a-select-option v-for="o in payWayList" :key="o.key">
-              {{ o.value }}
-            </a-select-option>
-          </a-select>
-        </a-form-model-item>
-        <a-form-model-item label="沙箱环境" prop="sandbox" >
-          <a-switch checked-children="是" un-checked-children="否" v-model="form.sandbox" :disabled="showable" />
-        </a-form-model-item>
-        <a-form-model-item v-show="showable" label="是否启用" prop="activity" >
-          <span>{{ form.activity?"启用":"未启用" }}</span>
         </a-form-model-item>
         <a-form-model-item label="备注" prop="remark" >
           <a-textarea :disabled="showable" v-model="form.remark" placeholder="请输入备注"/>
@@ -139,11 +147,12 @@ export default {
         returnUrl: [ { required: true, message: '请输入同步通知页面地址' } ],
         domain: [ { required: true, message: '请输入请求应用域名' } ],
         // apiVersion: [ { required: true, message: '请选择API版本' } ],
-        apiKeyV2: [ { required: this.form.apiVersion === 'api_v2', message: '请选择加密类型' } ],
-        apiKeyV3: [ { required: this.form.apiVersion === 'api_v3', message: '请输入支付宝公钥' } ],
+        apiKeyV2: [ { required: this.form.apiVersion === 'api_v2', message: '请输入V2秘钥' } ],
+        apiKeyV3: [ { required: this.form.apiVersion === 'api_v3', message: '请输入V3秘钥' } ],
         // keyPem: [ { required: true, message: '请填入私钥内容' } ],
         // certPem: [ { required: true, message: '请填入证书内容' } ],
         sandbox: [ { required: true, message: '请选择是否为沙箱环境' } ],
+        expireTime: [ { required: true, message: '请输入默认超时配置' } ],
         payWayList: [ { required: true, message: '请选择支持的支付类型' } ]
       }
     },
@@ -191,6 +200,7 @@ export default {
         domain: '',
         notifyUrl: '',
         returnUrl: '',
+        expireTime: 15,
         payWayList: [],
         sandbox: false,
         remark: ''

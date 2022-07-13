@@ -30,16 +30,13 @@
         <a-form-model-item label="支付网关URL" prop="serverUrl" >
           <a-input :disabled="showable" v-model="form.serverUrl"/>
         </a-form-model-item>
-        <a-form-model-item label="默认支付超时配置" prop="expireTime" >
-          <a-input :disabled="showable" v-model="form.expireTime">
-            <template #suffix>
-              <a-tooltip
-                title="参照支付宝超时时间配置说明"
-              >
-                <a-icon type="info-circle"/>
-              </a-tooltip>
-            </template>
-          </a-input>
+        <a-form-model-item label="默认支付超时配置(分钟)" prop="expireTime" >
+          <a-input-number
+            :min="1"
+            :max="12000"
+            :step="1"
+            :disabled="showable"
+            v-model="form.expireTime"/>
         </a-form-model-item>
         <a-form-model-item label="支持支付方式" prop="payWayList">
           <a-select
@@ -60,7 +57,7 @@
           <a-switch checked-children="是" un-checked-children="否" v-model="form.sandbox" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item v-show="showable" label="是否启用" prop="activity" >
-          <span>{{ form.activity?"启用":"未启用" }}</span>
+          <a-tag>{{ form.activity?"启用":"未启用" }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="认证方式" prop="authType" >
           <a-select
@@ -141,7 +138,7 @@ export default {
         alipayCert: '',
         alipayRootCert: '',
         privateKey: '',
-        expireTime: '',
+        expireTime: 15,
         payWayList: [],
         sandbox: false,
         activity: null,

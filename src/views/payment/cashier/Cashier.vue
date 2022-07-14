@@ -234,11 +234,11 @@ export default {
         title: this.title
       }
       // 获取聚合支付的地址
-      const { data: qrUrlPrefix } = await findByParamKey('CashierAggregateUrl')
+      const { data: cashierAggregateUrl } = await findByParamKey('CashierAggregateUrl')
       // 获取聚合支付的标识key
       const { data: qrKey } = await createAggregatePay(param)
       // 发起支付
-      const qrUrl = qrUrlPrefix + qrKey
+      const qrUrl = `${cashierAggregateUrl}/cashier/aggregatePay?key=${qrKey}`
       this.$refs.cashierQrCode.init(qrUrl, '请使用支付宝或微信"扫一扫"扫码支付')
       this.checkPayStatus()
     },

@@ -9,7 +9,7 @@
   >
     <a-descriptions
       title=""
-      :column="{md: 1, sm: 1, xs: 1}"
+      :column="{md: 2, sm: 1, xs: 1}"
     >
       <a-descriptions-item label="用户id">
         {{ form.userId }}
@@ -40,6 +40,9 @@
       </a-descriptions-item>
       <a-descriptions-item label="可退款信息">
         <a-tag v-for="o in form.refundableInfo" :key="o.payChannel">{{ dictConvert('PayChannel',o.payChannel) }}: {{ o.amount }}</a-tag>
+      </a-descriptions-item>
+      <a-descriptions-item label="客户IP">
+        {{ form.clientIp }}
       </a-descriptions-item>
       <a-descriptions-item label="描述">
         {{ form.description }}
@@ -73,6 +76,7 @@ export default {
         refundableBalance: '',
         payStatus: '',
         title: '',
+        clientIp: '',
         description: '',
         errorCode: '',
         asyncPayMode: '',

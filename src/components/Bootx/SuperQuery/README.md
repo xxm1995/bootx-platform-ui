@@ -46,9 +46,9 @@
     type: LIST,
     list:
       [
-        { name: '测试1', value: 'cs1' },
-        { name: '测试2', value: 'cs2' },
-        { name: '测试3', value: 'cs3' }
+        { lable: '测试1', value: 'cs1' },
+        { lable: '测试2', value: 'cs2' },
+        { lable: '测试3', value: 'cs3' }
       ] }
 ]
 ```
@@ -58,7 +58,7 @@
 - `type`：数据类型，根据传入不同的的数据类型，使用不同的组件进行查询，对应后端`ParamTypeEnum` 枚举
 - `underLine`：参数名称是否需要转换成下划线命名，默认转换
 - `list`：type数据类型为list的时候，通过这个字段传入
-  - `name`：显示名称
+  - `lable`：显示名称
   - `value`：查询的值，等同`field`
 
 **数据类型（type）**

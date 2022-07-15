@@ -166,6 +166,18 @@ export default {
     }
   },
   methods: {
+    // 初始化查询数据
+    initSelect () {
+      this.getDictDropDownAsync('PayStatus').then(res => {
+        console.log(res)
+        this.payStatusList = res
+      })
+      this.getDictDropDownAsync('PayChannel').then(res => {
+        console.log(res)
+        this.syncPayChannelList = res
+      })
+    },
+    // 初始化
     init () {
       if (this.superQueryFlag) {
         this.superQuery()
@@ -175,12 +187,6 @@ export default {
     queryPage () {
       this.superQueryFlag = false
       this.loading = true
-      this.getDictDropDownAsync('PayStatus').then(res => {
-        this.payStatusList = res
-      })
-      this.getDictDropDownAsync('PayChannel').then(res => {
-        this.syncPayChannelList = res
-      })
       page({
         ...this.queryParam,
         ...this.pages,
@@ -235,6 +241,7 @@ export default {
     }
   },
   created () {
+    this.initSelect()
     this.init()
   }
 }

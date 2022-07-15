@@ -33,39 +33,38 @@
         <!-- 判断条件是否是判空 -->
         <a-input disabled v-if="['is_null','not_null'].includes(queryParam.compareType)" value="空"/>
         <!-- 文本输入 -->
-        <a-input v-else-if="paramTypeJudge(index,'string')" placeholder="请输入查询值" v-model="queryParam.paramValue"/>
+        <a-input v-else-if="paramTypeJudge(index,STRING)" placeholder="请输入查询值" v-model="queryParam.paramValue"/>
         <!-- 数字输入 -->
         <a-input-number
           style="width: 100%"
-          v-else-if="paramTypeJudge(index,'number')"
+          v-else-if="paramTypeJudge(index,NUMBER)"
           placeholder="请输入查询值"
           :precision="queryParam.precision?queryParam.precision:0"
           v-model="queryParam.paramValue"/>
         <!-- 布尔 -->
-        <a-radio-group v-else-if="paramTypeJudge(index,'boolean')" v-model="queryParam.paramValue">
+        <a-radio-group v-else-if="paramTypeJudge(index,BOOLEAN)" v-model="queryParam.paramValue">
           <a-radio :value="true">是</a-radio>
           <a-radio :value="false">否</a-radio>
         </a-radio-group>
         <!-- 列表 -->
-        <a-select v-else-if="paramTypeJudge(index,'list')" placeholder="请选择查询值" v-model="queryParam.paramValue">
-          <a-select-option v-for="o in getSelectData(index)" :key="o.value" :value="o.value"> {{ o.name }}</a-select-option>
+        <a-select v-else-if="paramTypeJudge(index,LIST)" placeholder="请选择查询值" v-model="queryParam.paramValue" :options="getSelectData(index)">
         </a-select>
         <!-- 日期 -->
         <a-date-picker
-          v-else-if="paramTypeJudge(index,'date')"
+          v-else-if="paramTypeJudge(index,DATE)"
           placeholder="请选择日期"
           :valueFormat="queryParam.format?queryParam.format:'yyyy-MM-DD'"
           v-model="queryParam.paramValue"/>
         <!-- 时间 -->
         <a-time-picker
-          v-else-if="paramTypeJudge(index,'time')"
+          v-else-if="paramTypeJudge(index,TIME)"
           placeholder="请选择时间"
           :valueFormat="queryParam.format?queryParam.format:'HH:mm:ss'"
           v-model="queryParam.paramValue"/>
         <!-- 日期时间 -->
         <a-date-picker
           showTime
-          v-else-if="paramTypeJudge(index,'date_time')"
+          v-else-if="paramTypeJudge(index,DATE_TIME)"
           placeholder="请选择日期时间"
           :valueFormat="queryParam.format?queryParam.format:'yyyy-MM-DD HH:mm:ss'"
           v-model="queryParam.paramValue"/>
@@ -85,7 +84,7 @@
 </template>
 
 <script>
-
+import { NUMBER, LIST, BOOLEAN, DATE, DATE_TIME, TIME, STRING } from './superQueryCode'
 export default {
   name: 'SuperQueryItem',
   model: {
@@ -112,6 +111,13 @@ export default {
 
   data () {
     return {
+      NUMBER,
+      LIST,
+      BOOLEAN,
+      DATE,
+      DATE_TIME,
+      TIME,
+      STRING,
       // 查询类型
       compareTypeList: [
         { type: 'eq', name: '等于' },

@@ -18,7 +18,7 @@
         <a-input v-model="form.module"/>
       </a-form-model-item>
       <a-form-model-item
-        label="功能名称"
+        label="实体类名称"
         prop="method">
         <a-input v-model="form.method"/>
       </a-form-model-item>

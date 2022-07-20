@@ -102,8 +102,9 @@ export default {
         clientCode: this.currentClientCode
       }).then(() => {
         this.$message.success('绑定成功')
+      }).finally(() => {
+        this.init()
       })
-      this.init()
     },
     /**
      * 解绑账号

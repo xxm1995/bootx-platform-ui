@@ -4,20 +4,23 @@
       <a-form layout="inline">
         <a-row :gutter="10">
           <a-col :md="6" :sm="24">
-            <a-form-item label="编码">
-              <a-input v-model="queryParam.code" placeholder="请输入编码"/>
+            <a-form-item label="编号">
+              <a-input v-model="queryParam.code" placeholder="编号" allowClear/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="请输入名称"/>
+              <a-input v-model="queryParam.name" placeholder="名称" allowClear/>
             </a-form-item>
           </a-col>
           <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
-            </a-space>
+            <a-form-item label="AccessToken">
+              <a-input v-model="queryParam.accessToken" placeholder="AccessToken" allowClear/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-button type="primary" @click="query">查询</a-button>
+            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -27,7 +30,7 @@
       zoom
       :refresh="{query: init}"
     >
-      <template v-slot:buttons>
+      <template #buttons>
         <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
@@ -37,21 +40,17 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编码"/>
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="captcha" title="系统内置" >
+      <vxe-table-column field="code" title="编号" />
+      <vxe-table-column field="name" title="配置名称" />
+      <vxe-table-column field="accessToken" title="AccessToken" />
+      <vxe-table-column field="enableSignatureCheck" title="是否开启验签" >
         <template v-slot="{row}">
-          <a-tag v-if="row.system" color="green">是</a-tag>
-          <a-tag v-else color="red">否</a-tag>
+          <a-tag v-if="row.enableSignatureCheck" color="green">开启</a-tag>
+          <a-tag v-else color="red">关闭</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="enable" title="启用状态" >
-        <template v-slot="{row}">
-          <a-tag v-if="row.enable" color="green">启用</a-tag>
-          <a-tag v-else color="red">停用</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="description" title="描述"/>
+      <vxe-table-column field="signSecret" title="验签秘钥" />
+      <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
@@ -64,7 +63,7 @@
           </span>
           <a-divider type="vertical"/>
           <a-popconfirm
-            title="是否删除"
+            title="是否删除配置"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
@@ -74,33 +73,34 @@
       </vxe-table-column>
     </vxe-table>
     <vxe-pager
-      size="medium"
       :loading="loading"
       :current-page="pagination.current"
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <client-edit
-      ref="clientEdit"
+    <ding-robot-config-edit
+      ref="dingRobotConfigEdit"
       @ok="handleOk"/>
   </a-card>
 </template>
 
 <script>
-import { page, del } from '@/api/system/client'
-import ClientEdit from './ClientEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import { del, page } from '@/api/third/dingRobotConfig'
+import DingRobotConfigEdit from './DingRobotConfigEdit'
+
 export default {
-  name: 'ClientList',
+  name: 'DingRobotConfigList',
   components: {
-    ClientEdit
+    DingRobotConfigEdit
   },
   mixins: [TableMixin],
   data () {
     return {
       queryParam: {
         code: '',
-        name: ''
+        name: '',
+        accessToken: ''
       }
     }
   },
@@ -115,13 +115,13 @@ export default {
       })
     },
     add () {
-      this.$refs.clientEdit.init('', 'add')
+      this.$refs.dingRobotConfigEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.clientEdit.init(record.id, 'edit')
+      this.$refs.dingRobotConfigEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.clientEdit.init(record.id, 'show')
+      this.$refs.dingRobotConfigEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {
@@ -130,7 +130,7 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     this.init()
   }
 }

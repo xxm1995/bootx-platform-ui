@@ -1,19 +1,24 @@
 <template>
-  <a-card :bordered="false">
+  <a-card >
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="编号">
-              <a-input v-model="queryParam.code" placeholder="" />
+        <a-row :gutter="10">
+          <a-col :md="6" :sm="24">
+            <a-form-item>
+              <a-input v-model="queryParam.code" placeholder="编码" allowClear/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="" />
+          <a-col :md="6" :sm="24" >
+            <a-form-item>
+              <a-input v-model="queryParam.name" placeholder="名称" allowClear/>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
+            <a-form-item >
+              <a-input v-model="queryParam.accessToken" placeholder="AccessToken" allowClear/>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
             <a-button type="primary" @click="query">查询</a-button>
             <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
           </a-col>
@@ -37,14 +42,7 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="code" title="编号" />
       <vxe-table-column field="name" title="配置名称" />
-      <vxe-table-column field="accessToken" title="AccessToken" />
-      <vxe-table-column field="enableSignatureCheck" title="是否开启验签" >
-        <template v-slot="{row}">
-          <a-tag v-if="row.enableSignatureCheck" color="green">开启</a-tag>
-          <a-tag v-else color="red">关闭</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="signSecret" title="验签秘钥" />
+      <vxe-table-column field="webhookKey" title="WebhookKey" />
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
@@ -73,29 +71,25 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <ding-robot-config-edit
-      ref="dingRobotConfigEdit"
-      @ok="handleOk"/>
+    <wecom-robot-config-edit ref="wecomRobotConfigEdit" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page } from '@/api/notice/dingRobotConfig'
-import DingRobotConfigEdit from './DingRobotConfigEdit'
+import WecomRobotConfigEdit from './WecomRobotConfigEdit'
+import { del, page } from '@/api/third/weComRobotConfig'
 
 export default {
-  name: 'DingRobotConfigList',
-  components: {
-    DingRobotConfigEdit
-  },
+  name: 'WeComRobotConfigList',
+  components: { WecomRobotConfigEdit },
   mixins: [TableMixin],
   data () {
     return {
-      mailSecurityCode: 'MailSecurityCode',
       queryParam: {
         code: '',
-        name: ''
+        name: '',
+        accessToken: ''
       }
     }
   },
@@ -110,13 +104,13 @@ export default {
       })
     },
     add () {
-      this.$refs.dingRobotConfigEdit.init('', 'add')
+      this.$refs.wecomRobotConfigEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.dingRobotConfigEdit.init(record.id, 'edit')
+      this.$refs.wecomRobotConfigEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.dingRobotConfigEdit.init(record.id, 'show')
+      this.$refs.wecomRobotConfigEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {
@@ -125,7 +119,7 @@ export default {
       })
     }
   },
-  created () {
+  mounted () {
     this.init()
   }
 }

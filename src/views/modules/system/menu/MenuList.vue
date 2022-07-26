@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
+        <a-row :gutter="10">
           <a-col :md="8" :sm="24">
             <a-form-item label="终端">
               <a-select

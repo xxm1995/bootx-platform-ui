@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
-        <a-row :gutter="48">
+        <a-row :gutter="10">
           <a-col :md="6" :sm="24">
             <a-form-item label="终端代码">
               <a-input v-model="queryParam.code" placeholder="请输入终端代码" />

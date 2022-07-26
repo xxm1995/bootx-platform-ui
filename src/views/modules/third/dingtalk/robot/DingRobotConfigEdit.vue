@@ -18,13 +18,13 @@
         <a-input v-model="form.id" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="钉钉机器人编号"
+        label="机器人编号"
         prop="code"
       >
         <a-input v-model="form.code" :disabled="showable"/>
       </a-form-model-item>
       <a-form-model-item
-        label="钉钉机器人名称"
+        label="机器人名称"
         prop="name"
       >
         <a-input v-model="form.name" :disabled="showable"/>
@@ -67,14 +67,13 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/dingRobotConfig'
+import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/third/dingRobotConfig'
 
 export default {
   name: 'DingRobotConfigEdit',
   mixins: [FormMixin],
   data () {
     return {
-      mailSecurityCode: 'MailSecurityCode',
       securityTypeList: [],
       form: {
         code: '',
@@ -131,11 +130,9 @@ export default {
               ...this.diff
             })
           }
-          setTimeout(() => {
-            this.confirmLoading = false
-            this.$emit('ok')
-            this.visible = false
-          }, 200)
+          this.confirmLoading = false
+          this.$emit('ok')
+          this.visible = false
         } else {
           return false
         }

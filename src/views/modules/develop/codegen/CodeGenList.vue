@@ -59,7 +59,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { codeGenPreview, genCodeZip, page } from '@/api/starter/codeGen'
+import { codeGenPreview, genCodeZip, page } from '@/api/develop/codeGen'
 import CodeGenForm from './CodeGenForm'
 export default {
   name: 'CodeGenList',
@@ -70,6 +70,8 @@ export default {
   data () {
     return {
       queryParam: {
+        tableName: '',
+        tableComment: ''
       }
     }
   },

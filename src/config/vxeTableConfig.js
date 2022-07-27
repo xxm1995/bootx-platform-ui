@@ -34,10 +34,12 @@ VXETable.setup({
   // 弹窗
   modal: {
     showFooter: true,
-    showZoom: true,
+    // showZoom: true,
     resize: true,
     remember: true,
-    transfer: true,
+    position: { top: '9%', left: '35%' },
+    // transfer: true,
     escClosable: true
+
   }
 })

@@ -8,12 +8,16 @@ import { findByParamKey } from '@/api/system/param'
 export const FormMixin = {
   data () {
     return {
+      // 表单项标题文字
       labelCol: {
         sm: { span: 7 }
       },
+      // 表单项内容
       wrapperCol: {
         sm: { span: 13 }
       },
+      // vxe 弹窗窗口的默认位置
+      vxePosition: { top: '9%', left: '35%' },
       title: '新增',
       rawForm: {},
       modalWidth: 640,

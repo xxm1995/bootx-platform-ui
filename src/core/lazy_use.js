@@ -19,6 +19,8 @@ import {
   FormModel,
   Row,
   Col,
+  Collapse,
+  Slider,
   Modal,
   Table,
   Tabs,
@@ -63,7 +65,7 @@ import './directives/action'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VueBus from 'vue-bus'
-import KFormDesign from 'k-form-design/lib/k-form-design-mini.umd.min'
+import KFormDesign from 'k-form-design'
 import 'k-form-design/lib/k-form-design.css'
 
 Vue.use(ConfigProvider)
@@ -83,6 +85,8 @@ Vue.use(FormModel)
 Vue.use(Form)
 Vue.use(Row)
 Vue.use(Col)
+Vue.use(Collapse)
+Vue.use(Slider)
 Vue.use(Modal)
 Vue.use(Table)
 Vue.use(Tabs)

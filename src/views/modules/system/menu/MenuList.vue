@@ -116,6 +116,7 @@ import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
 import { findAll } from '@/api/system/client'
+import { debounce } from 'lodash'
 
 export default {
   name: 'MenuList',
@@ -189,7 +190,7 @@ export default {
     /**
      * 搜索
      */
-    search () {
+    search: debounce(function () {
       const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
       let treeExpand = this.treeExpand
       if (searchName) {
@@ -204,7 +205,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.xTree.setAllTreeExpand(treeExpand)
       })
-    }
+    }, 500)
   },
   created () {
     this.initClients()

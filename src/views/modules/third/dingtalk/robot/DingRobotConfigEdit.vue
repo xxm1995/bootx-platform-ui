@@ -3,58 +3,61 @@
     v-model="visible"
     :title="title"
     :width="modalWidth"
+    :position="vxePosition"
+    @close="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item label="主键" prop="id" hidden="true" >
-        <a-input v-model="form.id" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="机器人编号"
-        prop="code"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model="form.code" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="机器人名称"
-        prop="name"
-      >
-        <a-input v-model="form.name" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="AccessToken"
-        prop="accessToken"
-      >
-        <a-input v-model="form.accessToken" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="开启验签"
-      >
-        <a-switch
-          :disabled="showable"
-          checkedChildren="是"
-          unCheckedChildren="否"
-          v-model="form.enableSignatureCheck"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="验签秘钥"
-        prop="signSecret"
-      >
-        <a-input v-model="form.signSecret" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="备注"
-        prop="remark"
-      >
-        <a-input v-model="form.remark" :disabled="showable"/>
-      </a-form-model-item>
-    </a-form-model>
-
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="机器人编号"
+          prop="code"
+        >
+          <a-input v-model="form.code" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="机器人名称"
+          prop="name"
+        >
+          <a-input v-model="form.name" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="AccessToken"
+          prop="accessToken"
+        >
+          <a-input v-model="form.accessToken" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="开启验签"
+        >
+          <a-switch
+            :disabled="showable"
+            checkedChildren="是"
+            unCheckedChildren="否"
+            v-model="form.enableSignatureCheck"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="验签秘钥"
+          prop="signSecret"
+        >
+          <a-input v-model="form.signSecret" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="备注"
+          prop="remark"
+        >
+          <a-input v-model="form.remark" :disabled="showable"/>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
     <template #footer>
       <a-space>
         <a-button key="cancel" @click="handleCancel">取消</a-button>

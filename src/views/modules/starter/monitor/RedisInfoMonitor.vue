@@ -153,7 +153,6 @@ export default {
      * 图表自适应 防抖
      */
     chartReactive: debounce(function () {
-      console.log(123)
       this.commandStatsChart.resize()
       this.memoryUsedChart.resize()
     }, 300)

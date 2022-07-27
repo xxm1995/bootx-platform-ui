@@ -23,6 +23,7 @@
     "cron-parser": "^4.4.0",
     "echarts": "^5.3.3",
     "enquire.js": "^2.1.6",
+    "k-form-design": "^3.7.91",
     "lodash": "^4.17.21",
     "lodash.clonedeep": "^4.5.0",
     "lodash.get": "^4.4.2",

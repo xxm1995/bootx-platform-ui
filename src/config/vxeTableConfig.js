@@ -30,5 +30,14 @@ VXETable.setup({
   pager: {
     border: true,
     size: 'medium'
+  },
+  // 弹窗
+  modal: {
+    showFooter: true,
+    showZoom: true,
+    resize: true,
+    remember: true,
+    transfer: true,
+    escClosable: true
   }
 })

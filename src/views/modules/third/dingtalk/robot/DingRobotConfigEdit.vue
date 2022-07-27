@@ -1,11 +1,8 @@
 <template>
-  <a-modal
+  <vxe-modal
+    v-model="visible"
     :title="title"
     :width="modalWidth"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    :maskClosable="false"
-    @cancel="handleCancel"
   >
     <a-form-model
       ref="form"
@@ -59,10 +56,12 @@
     </a-form-model>
 
     <template #footer>
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      <a-space>
+        <a-button key="cancel" @click="handleCancel">取消</a-button>
+        <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      </a-space>
     </template>
-  </a-modal>
+  </vxe-modal>
 </template>
 
 <script>

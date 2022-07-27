@@ -63,6 +63,8 @@ import './directives/action'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VueBus from 'vue-bus'
+import KFormDesign from 'k-form-design/lib/k-form-design-mini.umd.min'
+import 'k-form-design/lib/k-form-design.css'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -110,7 +112,10 @@ Vue.use(Result)
 Vue.use(Statistic)
 Vue.use(Descriptions)
 Vue.use(Space)
+// vxe
 Vue.use(VXETable)
+// 动态表单
+Vue.use(KFormDesign)
 // 事件总线
 Vue.use(VueBus)
 

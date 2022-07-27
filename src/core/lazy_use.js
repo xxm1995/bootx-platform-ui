@@ -10,6 +10,7 @@ import {
   Empty,
   Switch,
   Radio,
+  Rate,
   Checkbox,
   Select,
   Tree,
@@ -58,15 +59,15 @@ import Viser from 'viser-vue'
 // ext library
 import VueCropper from 'vue-cropper'
 import Dialog from '@/components/Dialog'
-import MultiTab from '@/components/MultiTab'
 import PageLoading from '@/components/PageLoading'
 import PermissionHelper from '@/core/permission/permission'
 import './directives/action'
 import VXETable from 'vxe-table'
 import 'vxe-table/lib/style.css'
 import VueBus from 'vue-bus'
-import KFormDesign from 'k-form-design'
-import 'k-form-design/lib/k-form-design.css'
+import KFormDesign from '@/components/KFormDesign/packages'
+import '@/components/KFormDesign/styles/form-design.less'
+import vcolorpicker from 'vcolorpicker'
 
 Vue.use(ConfigProvider)
 Vue.use(Layout)
@@ -76,6 +77,7 @@ Vue.use(Button)
 Vue.use(Empty)
 Vue.use(Switch)
 Vue.use(Radio)
+Vue.use(Rate)
 Vue.use(Checkbox)
 Vue.use(Select)
 Vue.use(Tree)
@@ -118,10 +120,11 @@ Vue.use(Descriptions)
 Vue.use(Space)
 // vxe
 Vue.use(VXETable)
-// 动态表单
-Vue.use(KFormDesign)
 // 事件总线
 Vue.use(VueBus)
+// 动态表单
+Vue.use(KFormDesign)
+Vue.use(vcolorpicker)
 
 // vxe
 Vue.prototype.$XSaveFile = VXETable.saveFile
@@ -139,7 +142,6 @@ Vue.prototype.$warning = Modal.warning
 
 Vue.use(Viser)
 Vue.use(Dialog) // this.$dialog func
-Vue.use(MultiTab)
 Vue.use(PageLoading)
 Vue.use(PermissionHelper)
 Vue.use(VueCropper)

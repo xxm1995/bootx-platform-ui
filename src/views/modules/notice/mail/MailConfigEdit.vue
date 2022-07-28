@@ -91,8 +91,10 @@
     </a-form-model>
 
     <template #footer>
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      <a-space>
+        <a-button key="cancel" @click="handleCancel">取消</a-button>
+        <a-button v-if="!showable" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
+      </a-space>
     </template>
   </a-modal>
 </template>

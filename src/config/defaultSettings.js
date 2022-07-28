@@ -14,21 +14,23 @@
  */
 
 export default {
+  // 主题色
   navTheme: 'light', // theme for nav menu
+  // 默认主题色
   primaryColor: '#13C2C2', // primary color of ant design
+  // 内容区布局
   layout: 'sidemenu', // nav menu position: `sidemenu` or `topmenu`
   contentWidth: 'Fluid', // layout of content: `Fluid` or `Fixed`, only works when layout is topmenu
   // 菜单栏是否固定
   fixedHeader: true, // sticky header
   // 菜单栏是否固定
   fixSiderbar: true, // sticky siderbar
+  // 色弱模式(无效)
   colorWeak: false,
+  // 多页签
   multiTab: true,
-  menu: {
-    locale: true
-  },
+  // 标题
   title: 'Bootx Platform',
-  pwa: false,
   iconfontUrl: '',
   production: process.env.NODE_ENV === 'production' && process.env.VUE_APP_PREVIEW !== 'true'
 }

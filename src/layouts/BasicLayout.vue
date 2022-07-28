@@ -13,7 +13,7 @@
     -->
     <template #menuHeaderRender>
       <div class="menuHeaderRender">
-        <!--        <logo-svg />-->
+<!--                <logo-svg />-->
         <h1>{{ title }}</h1>
       </div>
     </template>
@@ -22,17 +22,12 @@
     -->
     <template #headerContentRender>
       <div>
-        <a-tooltip title="刷新字典缓存">
-          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="RefreshDictList" />
-        </a-tooltip>
+<!--        <a-tooltip title="刷新字典缓存">-->
+<!--          <a-icon type="reload" style="font-size: 18px;cursor: pointer;" @click="RefreshDictList" />-->
+<!--        </a-tooltip>-->
       </div>
     </template>
 
-    <setting-drawer v-if="isDev" :settings="settings" @change="handleSettingChange">
-      <div style="margin: 12px 0;">
-        This is SettingDrawer custom footer content.
-      </div>
-    </setting-drawer>
     <template #rightContentRender>
       <!-- 后期添加菜单搜索功能 -->
       <right-content :top-menu="settings.layout === 'topmenu'" :is-mobile="isMobile" :theme="settings.theme" />
@@ -44,7 +39,7 @@
     <!--  多页签  -->
     <multi-tab v-if="multiTab"/>
     <!--  页面  -->
-    <router-view/>
+    <router-view :style="{marginTop: settings.fixedHeader&&multiTab?'42px':'0px'}"/>
   </pro-layout>
 </template>
 

@@ -51,7 +51,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { page } from '@/api/starter/fileUpload'
+import { page } from '@/api/develop/fileUpload'
 import { getFileDownloadUrl, getFilePreviewUrl } from '@/api/common/fileUpload'
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'

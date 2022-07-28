@@ -2,7 +2,7 @@
 import events from './events'
 import { CACHE_MULTI_TAB_COMPONENTS } from '@/store/mutation-types'
 import storage from 'store'
-
+import DefaultSettings from '@/config/defaultSettings'
 export default {
   name: 'MultiTab',
   data () {
@@ -182,7 +182,8 @@ export default {
     })
 
     return (
-      <div class="ant-pro-multi-tab">
+      /* 是否随着顶栏活动 */
+      <div class={DefaultSettings.fixedHeader ? 'ant-pro-multi-tab' : null}>
         <div class="ant-pro-multi-tab-wrapper">
           <a-tabs
             hideAdd

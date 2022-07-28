@@ -149,7 +149,6 @@ export default {
       return findOneByField(this.clients, code, 'code')?.['name']
     },
     getLoginType (code) {
-      console.log(this.loginTypes)
       return findOneByField(this.loginTypes, code, 'code')?.['name']
     }
   },

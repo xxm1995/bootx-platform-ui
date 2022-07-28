@@ -1,67 +1,68 @@
 <template>
-  <a-modal
-    :title="title"
+  <vxe-modal
+    v-model="visible"
+    title="渲染测试"
     :width="modalWidth"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    :maskClosable="false"
-    @cancel="handleCancel"
+    :position="vxePosition"
+    @close="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item label="主键" prop="id" hidden="true" >
-        <a-input v-model="form.id" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="编号"
-        prop="code"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model="form.code" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="名称"
-        prop="name"
-      >
-        <a-input v-model="form.name" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="模板类型"
-        prop="type"
-      >
-        <a-select
-          :disabled="showable"
-          allowClear
-          v-model="form.type"
-          style="width: 100%"
-          placeholder="选择消息模板类型"
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="编号"
+          prop="code"
         >
-          <a-select-option v-for="item in messageTemplateCodeList" :key="item.code">{{ item.name }}</a-select-option>
-        </a-select>
-      </a-form-model-item>
-      <a-form-model-item
-        label="内容"
-        prop="data"
-      >
-        <a-textarea :rows="4" v-model="form.data" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="备注"
-        prop="remark"
-      >
-        <a-textarea v-model="form.remark" :disabled="showable"/>
-      </a-form-model-item>
-    </a-form-model>
+          <a-input v-model="form.code" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="名称"
+          prop="name"
+        >
+          <a-input v-model="form.name" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="模板类型"
+          prop="type"
+        >
+          <a-select
+            :disabled="showable"
+            allowClear
+            v-model="form.type"
+            style="width: 100%"
+            placeholder="选择消息模板类型"
+          >
+            <a-select-option v-for="item in messageTemplateCodeList" :key="item.code">{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-model-item>
+        <a-form-model-item
+          label="内容"
+          prop="data"
+        >
+          <a-textarea :rows="4" v-model="form.data" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="备注"
+          prop="remark"
+        >
+          <a-textarea v-model="form.remark" :disabled="showable"/>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
 
     <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
-  </a-modal>
+  </vxe-modal>
 </template>
 
 <script>

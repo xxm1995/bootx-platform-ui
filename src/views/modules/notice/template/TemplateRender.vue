@@ -1,49 +1,52 @@
 <template>
-  <a-modal
+  <vxe-modal
+    v-model="visible"
     title="渲染测试"
     :width="modalWidth"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    :maskClosable="false"
-    @cancel="handleCancel"
+    :position="vxePosition"
+    @close="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item
-        label="编号"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model="template.code" disabled/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="名称"
-      >
-        <a-input v-model="template.name" disabled/>
-      </a-form-model-item>
+        <a-form-model-item
+          label="编号"
+        >
+          <a-input v-model="template.code" disabled/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="名称"
+        >
+          <a-input v-model="template.name" disabled/>
+        </a-form-model-item>
 
-      <a-form-model-item
-        label="测试数据"
-      >
-        <a-textarea v-model="template.data" disabled/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="测试数据"
-      >
-        <a-textarea :rows="4" v-model="paramMap" allowClear placeholder="请输入json格式测试数据"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="内容"
-      >
-        <a-textarea v-model="renderContent" disabled/>
-      </a-form-model-item>
-    </a-form-model>
+        <a-form-model-item
+          label="测试数据"
+        >
+          <a-textarea v-model="template.data" disabled/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="测试数据"
+        >
+          <a-textarea :rows="4" v-model="paramMap" allowClear placeholder="请输入json格式测试数据"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="内容"
+        >
+          <a-textarea v-model="renderContent" disabled/>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
     <template #footer>
-      <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">渲染</a-button>
+      <a-space>
+        <a-button key="cancel" @click="handleCancel">取消</a-button>
+        <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">渲染</a-button>
+      </a-space>
     </template>
-  </a-modal>
+  </vxe-modal>
 </template>
 <script>
 import { FormMixin } from '@/mixins/FormMixin'

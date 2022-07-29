@@ -41,10 +41,8 @@
       </a-form-model>
     </a-spin>
     <template #footer>
-      <a-space>
-        <a-button key="cancel" @click="handleCancel">取消</a-button>
-        <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">渲染</a-button>
-      </a-space>
+      <a-button key="cancel" @click="handleCancel">取消</a-button>
+      <a-button key="forward" :loading="confirmLoading" type="primary" @click="handleOk">渲染</a-button>
     </template>
   </vxe-modal>
 </template>

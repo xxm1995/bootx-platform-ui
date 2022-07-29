@@ -61,6 +61,9 @@
             <template #overlay>
               <a-menu>
                 <a-menu-item>
+                  <a href="javascript:" @click="preview(row.id)">预览表单</a>
+                </a-menu-item>
+                <a-menu-item>
                   <a href="javascript:">配置地址</a>
                 </a-menu-item>
                 <a-menu-item>
@@ -87,6 +90,7 @@
       @page-change="handleTableChange"/>
     <dynamic-design ref="dynamicDesign" />
     <dynamic-form-edit ref="dynamicFormEdit" @ok="handleOk"/>
+    <dynamic-preview ref="dynamicPreview"/>
   </a-card>
 </template>
 
@@ -94,11 +98,12 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import DynamicDesign from './DynamicDesign'
 import DynamicFormEdit from './DynamicFormEdit'
+import DynamicPreview from './DynamicPreview'
 import { page, del } from '@/api/develop/dynamicForm'
 export default {
   name: 'KFormList',
   mixins: [TableMixin],
-  components: { DynamicDesign, DynamicFormEdit },
+  components: { DynamicDesign, DynamicFormEdit, DynamicPreview },
   data () {
     return {
       queryParam: {
@@ -128,6 +133,12 @@ export default {
     },
     show (record) {
       this.$refs.dynamicFormEdit.init(record.id, 'show')
+    },
+    /**
+     * 表单预览
+     */
+    preview (id) {
+      this.$refs.dynamicPreview.init(id)
     },
     /**
      * 表单设计

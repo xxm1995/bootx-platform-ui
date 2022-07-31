@@ -86,7 +86,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loginOpenId']),
+    ...mapActions(['Login']),
     /**
      * 获取手机验证码
      */
@@ -131,14 +131,12 @@ export default {
      */
     handleSubmit (e) {
       e.preventDefault()
-      const {
-        loginOpenId
-      } = this
+      const { Login } = this
       this.$refs.form.validate(async valid => {
         const state = this.state
         if (valid) {
           state.loginBtn = true
-          loginOpenId(this.form)
+          Login(this.form)
             .then(() => this.$emit('loginSuccess'))
             .finally(() => {
               state.loginBtn = false

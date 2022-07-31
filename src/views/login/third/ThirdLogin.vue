@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['loginOpenId']),
+    ...mapActions(['Login']),
     /**
      * 调起登录
      */
@@ -51,11 +51,9 @@ export default {
       window.removeEventListener('message', this.authCodeCallback)
       const data = event.data
       // 登录
-      const {
-        loginOpenId
-      } = this
+      const { Login } = this
       this.$emit('loginLoading', true)
-      loginOpenId({
+      Login({
         client: this.client,
         loginType: this.currentLoginType,
         ...data

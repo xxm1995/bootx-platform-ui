@@ -1,7 +1,7 @@
 <template>
-  <a-modal
+  <a-drawer
     title="代码生成参数配置"
-    :width="420"
+    width="50%"
     :visible="visible"
     :maskClosable="false"
     @cancel="handleCancel">
@@ -12,11 +12,14 @@
       :label-col="labelCol"
       :wrapper-col="wrapperCol"
     >
-      <a-form-model-item
-        label="模块名称"
-        prop="module">
-        <a-input v-model="form.module"/>
+      <a-form-model-item label="基础包名称" prop="basePack">
+        <a-input v-model="form.basePack">
+          <template #suffix>
+            <a-tooltip title="提示文本"><a-icon type="info-circle"/></a-tooltip>
+          </template>
+        </a-input>
       </a-form-model-item>
+
       <a-form-model-item
         label="实体类名称"
         prop="method">
@@ -28,11 +31,11 @@
         <a-input v-model="form.author"/>
       </a-form-model-item>
     </a-form-model>
-    <template #footer>
+    <div class="drawer-button" >
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button key="forward" type="primary" @click="handleOk">生成</a-button>
-    </template>
-  </a-modal>
+    </div>
+  </a-drawer>
 </template>
 
 <script>
@@ -42,23 +45,25 @@ export default {
     return {
       visible: false,
       type: 'preview',
-      labelCol: {
-        xs: { span: 24 },
-        sm: { span: 5 }
-      },
-      wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 17 }
-      },
+      labelCol: { xs: { span: 24 }, sm: { span: 5 } },
+      wrapperCol: { xs: { span: 24 }, sm: { span: 17 } },
+      genParamFlag: false,
       form: {
-        tableName: '',
+        basePack: '',
         module: '',
-        method: '',
-        author: 'bootx'
+        author: '',
+        tableName: '',
+        entityName: '',
+        baseEntity: '',
+        corePack: '',
+        paramPack: '',
+        dtoPack: '',
+        controllerPack: '',
+        requestPath: '',
+        vueApiPath: ''
       },
       rules: {
-        module: [{ required: true, message: '请输入模块名称' }],
-        method: [{ required: true, message: '请输入功能名称' }],
+        module: [{ required: true, message: '请输入功能模块名称' }],
         author: [{ required: true, message: '请输入创建人' }]
       }
     }

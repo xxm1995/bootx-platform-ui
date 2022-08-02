@@ -3,8 +3,9 @@
     title="代码生成参数配置"
     width="50%"
     :visible="visible"
+    :destroyOnClose="true"
     :maskClosable="false"
-    @cancel="handleCancel">
+    @close="handleCancel">
     <a-form-model
       ref="form"
       :model="form"
@@ -17,13 +18,13 @@
         <a-row>
           <a-col :span="18">
             <a-input v-model="form.module">
-              <template #suffix>
-                <a-tooltip title="提示文本"><a-icon type="info-circle"/></a-tooltip>
-              </template>
+<!--              <template #suffix>-->
+<!--                <a-tooltip title="提示文本"><a-icon type="info-circle"/></a-tooltip>-->
+<!--              </template>-->
             </a-input>
           </a-col>
           <a-col :span="6">
-            <a-button style="width: 100%" @click="genParams">生成包参数</a-button>
+            <a-button style="width: 100%" @click="genParams">生成其他参数</a-button>
           </a-col>
         </a-row>
       </a-form-model-item>
@@ -53,26 +54,41 @@
         </a-select>
       </a-form-model-item>
       <a-form-model-item
-        label="请求地址"
-        prop="baseEntity">
-        <a-input v-model="form.requestPath"/>
-
-      </a-form-model-item>
-      <a-form-model-item
-        label="前端接口文件所在目录"
-        prop="vueApiPath">
-        <a-input v-model="form.vueApiPath"/>
-
-      </a-form-model-item>
-      <a-form-model-item
         label="创建人"
         prop="author">
         <a-input v-model="form.author"/>
       </a-form-model-item>
+      <template v-if="genPackFlag">
+        <a-form-model-item
+          label="请求地址"
+          prop="baseEntity">
+          <a-input v-model="form.requestPath"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="接口文件目录"
+          prop="vueApiPath">
+          <a-input v-model="form.vueApiPath"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="core包路径"
+          prop="corePack">
+          <a-input v-model="form.corePack"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="dto包路径"
+          prop="dtoPack">
+          <a-input v-model="form.dtoPack"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="参数包路径"
+          prop="paramPack">
+          <a-input v-model="form.paramPack"/>
+        </a-form-model-item>
+      </template>
     </a-form-model>
     <div class="drawer-button" >
       <a-button key="cancel" @click="handleCancel">取消</a-button>
-      <a-button key="forward" type="primary" :disabled="!genParamFlag" @click="handleOk">生成</a-button>
+      <a-button key="forward" type="primary" :disabled="!genPackFlag" @click="handleOk">生成</a-button>
     </div>
   </a-drawer>
 </template>
@@ -88,11 +104,10 @@ export default {
       type: 'preview',
       labelCol: { xs: { span: 24 }, sm: { span: 5 } },
       wrapperCol: { xs: { span: 24 }, sm: { span: 17 } },
-      genParamFlag: false,
+      genPackFlag: false,
       form: {
-        basePack: '',
+        basePack: 'cn.bootx',
         module: '',
-        author: '',
         tableName: '',
         entityName: '',
         baseEntity: 'MpBaseEntity',
@@ -101,11 +116,12 @@ export default {
         dtoPack: '',
         controllerPack: '',
         requestPath: '',
-        vueApiPath: ''
+        vueApiPath: '',
+        author: 'xxm'
       },
       rules: {
-        module: [{ required: true, message: '请输入功能模块名称' }],
-        author: [{ required: true, message: '请输入创建人' }]
+        // module: [{ required: true, message: '请输入功能模块名称' }],
+        // author: [{ required: true, message: '请输入创建人' }]
       }
     }
   },
@@ -115,6 +131,8 @@ export default {
       this.visible = true
       this.form.tableName = tableName
       this.type = type
+      this.genPackFlag = false
+      console.log(this.form)
       this.getGenConfigParam()
     },
     // 确定
@@ -139,8 +157,6 @@ export default {
       const module = tableGenParam.data.module
       this.form.entityName = entityName
       this.form.module = module
-      this.form.requestPath = `/${module}`
-      this.form.vueApiPath = `/api/${module}/`
       // 获取生成配置
     },
     /**
@@ -154,13 +170,21 @@ export default {
       this.form.dtoPack = `${basePack}.dto.${module}`
       this.form.controllerPack = `${basePack}.controller`
 
-      this.genParamFlag = true
-      console.log(this.form)
+      this.form.requestPath = `/${module}`
+      this.form.vueApiPath = `/api/${module}/`
+      this.genPackFlag = true
     },
     handleCancel () {
+      this.resetForm()
       this.visible = false
+    },
+    resetForm () {
+      this.$nextTick(() => {
+        this.$refs.form.resetFields()
+      })
     }
   }
+
 }
 </script>
 

@@ -10,14 +10,12 @@ const constantRouterComponents = {
   RouteView: () => import(/* webpackChunkName: "RouteView" */ '@/layouts/RouteView'),
   PageView: () => import(/* webpackChunkName: "PageView" */ '@/layouts/PageView'),
   IframeView: () => import(/* webpackChunkName: "IframeView" */ '@/layouts/IframeView'),
-  '403': () => import(/* webpackChunkName: "403" */ '@/views/exception/403'),
-  '404': () => import(/* webpackChunkName: "404" */ '@/views/exception/404'),
-  '500': () => import(/* webpackChunkName: "500" */ '@/views/exception/500'),
-  'Dev': () => import(/* webpackChunkName: "Dev" */ '@/views/exception/Dev'),
+  '403': () => import(/* webpackChunkName: "error" */ '@/views/exception/403'),
+  '404': () => import(/* webpackChunkName: "error" */ '@/views/exception/404'),
+  '500': () => import(/* webpackChunkName: "error" */ '@/views/exception/500'),
+  'Dev': () => import(/* webpackChunkName: "error" */ '@/views/exception/Dev'),
 
   // 你需要动态引入的页面组件
-  'Workplace': () => import('@/views/dashboard/Workplace'),
-  'Analysis': () => import('@/views/dashboard/Analysis'),
 
   // account
   'AccountCenter': () => import('@/views/account/center'),
@@ -100,7 +98,7 @@ export const generator = (routerMap, parent) => {
       componentName = name.substring(name.lastIndexOf('/') + 1)
     }
     const currentRouter = {
-      // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/workplace
+      // 如果路由设置了 path，则作为默认 path，否则 路由地址 动态拼接生成如 /dashboard/welcome
       path: item.path || `${parent && parent.path || ''}/${item.key}`,
       // 路由名称，建议唯一
       name: item.name || item.key || '',

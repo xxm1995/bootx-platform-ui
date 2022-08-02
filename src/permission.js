@@ -11,7 +11,7 @@ import { initWebSocket } from '@/websocket/userGlobalWebSocker'
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const loginRoutePath = '/user/login'
-const defaultRoutePath = '/dashboard/analysis'
+const defaultRoutePath = '/dashboard'
 
 router.beforeEach((to, from, next) => {
   NProgress.start() // start progress bar

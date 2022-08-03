@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { idempotent } from '@/api/demo/idempotent'
+import { idempotentDemo } from '@/api/demo/idempotentDemo'
 
 export default {
   name: 'Idempotent',
@@ -29,7 +29,7 @@ export default {
     },
     // 发起请求
     req () {
-      idempotent(this.idempotentToken).then(res => {
+      idempotentDemo(this.idempotentToken).then(res => {
         this.$message.info(res.data)
       })
     }

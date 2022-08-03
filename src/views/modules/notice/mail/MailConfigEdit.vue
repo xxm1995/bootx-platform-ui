@@ -7,89 +7,102 @@
     :maskClosable="false"
     @cancel="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item label="主键" prop="id" hidden="true" >
-        <a-input v-model="form.id" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="编号"
-        prop="code"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model="form.code" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="名称"
-        prop="name"
-      >
-        <a-input v-model="form.name" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="服务器地址"
-        prop="host"
-      >
-        <a-input v-model="form.host" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="端口"
-        prop="port"
-      >
-        <a-input-number
-          v-model="form.port"
-          :disabled="showable"
-          :min="0"
-          :max="65535"
-          :step="1"
-        />
-      </a-form-model-item>
-      <a-form-model-item
-        label="发送人账号"
-        prop="username"
-      >
-        <a-input v-model="form.username" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="发送人密码"
-        prop="password"
-      >
-        <a-input-password
-          v-model="form.password"
-          :placeholder="addable?'请输入密码':'为空不修改密码'"
-          :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="发送人sender"
-        prop="sender"
-      >
-        <a-input v-model="form.sender" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="邮箱from"
-        prop="from"
-      >
-        <a-input v-model="form.from" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="安全方式"
-        prop="securityType"
-      >
-        <a-select
-          :disabled="showable"
-          allowClear
-          v-model="form.securityType"
-          style="width: 100%"
-          placeholder="选择安全方式"
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="编号"
+          prop="code"
         >
-          <a-select-option v-for="item in securityTypeList" :key="item.code">{{ item.name }}</a-select-option>
-        </a-select>
-      </a-form-model-item>
-    </a-form-model>
-
+          <a-input v-model="form.code" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="名称"
+          prop="name"
+        >
+          <a-input v-model="form.name" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="服务器地址"
+          prop="host"
+        >
+          <a-input v-model="form.host" :disabled="showable">
+            <template #suffix>
+              <a-tooltip title="邮件服务器地址"><a-icon type="info-circle"/></a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          label="端口"
+          prop="port"
+        >
+          <a-input-number
+            v-model="form.port"
+            :disabled="showable"
+            :min="0"
+            :max="65535"
+            :step="1"
+          />
+        </a-form-model-item>
+        <a-form-model-item
+          label="发送人账号"
+          prop="username"
+        >
+          <a-input v-model="form.username" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="发送人密码"
+          prop="password"
+        >
+          <a-input-password
+            v-model="form.password"
+            :placeholder="addable?'请输入密码':'为空不修改密码'"
+            :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="发送人sender"
+          prop="sender"
+        >
+          <a-input v-model="form.sender" :disabled="showable">
+            <template #suffix>
+              <a-tooltip title="发送时发送人的名称"><a-icon type="info-circle"/></a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          label="邮箱from"
+          prop="from"
+        >
+          <a-input v-model="form.from" :disabled="showable">
+            <template #suffix>
+              <a-tooltip title="发送时发送人邮箱账号"><a-icon type="info-circle"/></a-tooltip>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          label="安全方式"
+          prop="securityType"
+        >
+          <a-select
+            :disabled="showable"
+            allowClear
+            v-model="form.securityType"
+            style="width: 100%"
+            placeholder="选择安全方式"
+          >
+            <a-select-option v-for="item in securityTypeList" :key="item.code">{{ item.name }}</a-select-option>
+          </a-select>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
     <template #footer>
       <a-space>
         <a-button key="cancel" @click="handleCancel">取消</a-button>
@@ -156,6 +169,7 @@ export default {
   computed: {
     diff () {
       return {
+        username: this.diffForm(this.form.username, this.rawForm.username),
         password: this.diffForm(this.form.password, this.rawForm.password)
       }
     }

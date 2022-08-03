@@ -18,7 +18,8 @@ import './core/lazy_use' // use lazy load components
 import './config/vxeTableConfig'
 import './permission' // permission control
 import './utils/filter' // global filter
-import './global.less' // global style
+import './css/global.less' // global style
+import './css/components.less' // 组件样式 style
 
 Vue.config.productionTip = false
 

@@ -72,8 +72,7 @@ export default {
         avatar: ''
       },
       rules: {
-        name: [{ required: true, message: '请输入名称' }
-        ],
+        name: [{ required: true, message: '请输入名称' }],
         username: [
           { required: true, message: '请输入账号' },
           { validator: this.validateUsername, trigger: 'blur' }

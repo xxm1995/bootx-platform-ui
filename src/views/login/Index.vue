@@ -14,7 +14,7 @@
               @loginSuccess="loginSuccess"
               v-if="activeName === 'phone'"/>
           </a-tab-pane>
-          <a-tab-pane key="qrcode" tab="扫码登录">
+          <a-tab-pane key="qrcode" tab="微信扫码">
             <qr-code-login
               @loginSuccess="loginSuccess"
               v-if="activeName === 'qrcode'"/>

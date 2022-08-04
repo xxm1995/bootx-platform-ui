@@ -4,13 +4,13 @@
       <span>第三方登录:</span>
       <a @click="onThirdLogin(DING_TALK)" title="钉钉"><a-icon class="item-icon" type="dingding"></a-icon></a>
       <a @click="onThirdLogin(WE_COM)" title="企业微信"><icon-font class="item-icon" type="wecom"></icon-font></a>
-      <a @click="onThirdLogin(WE_CHAT)" title="微信"><a-icon class="item-icon" type="wechat"></a-icon></a>
+      <a @click="onThirdLogin(WE_CHAT)" title="微信开放平台"><a-icon class="item-icon" type="wechat"></a-icon></a>
     </div>
   </div>
 </template>
 
 <script>
-import { WE_CHAT, DING_TALK, WE_COM } from './OpenIdLoginType'
+import { WE_CHAT_OPEN, DING_TALK, WE_COM } from './OpenIdLoginType'
 import { mapActions } from 'vuex'
 import { Icon } from 'ant-design-vue'
 
@@ -25,7 +25,7 @@ export default {
   data () {
     return {
       DING_TALK,
-      WE_CHAT,
+      WE_CHAT: WE_CHAT_OPEN,
       WE_COM,
       client: '',
       currentLoginType: null

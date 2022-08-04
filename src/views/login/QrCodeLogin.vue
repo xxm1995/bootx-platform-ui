@@ -7,7 +7,7 @@
       :dot-scale="1"
       :text="'尽请期待'" />
     <div style="padding-top: 24px; font-size: 18px;  display: flex; flex-direction: row;align-items: center;justify-content: center">
-      请使用手机APP/小程序扫码
+      请使用微信扫码
     </div>
   </div>
 

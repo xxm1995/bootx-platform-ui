@@ -64,7 +64,6 @@ export default {
           if (res.data === 'ok') {
             this.bindWeChat()
           } else if (res.data === 'expired') {
-            this.getQrFlag = true
             clearInterval(this.interval)
             this.interval = null
             this.applyQrCode()
@@ -76,15 +75,12 @@ export default {
      * 绑定
      */
     bindWeChat () {
-      bindThird({
+      const form = {
         authCode: this.form.authCode,
         clientCode: this.form.loginType
-      }).then(() => {
-        this.$message.success('绑定成功')
-        this.$emit('bindSuccess')
-      }).finally(() => {
-        this.handleCancel()
-      })
+      }
+      this.$emit('bind', form)
+      this.handleCancel()
     },
     /**
      * 关闭

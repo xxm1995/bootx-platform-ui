@@ -60,7 +60,7 @@
         </a-col>
       </a-row>
     </a-spin>
-    <we-chat-qr-bind ref="weChatQrBind" @bindSuccess="init"/>
+    <we-chat-qr-bind ref="weChatQrBind" @bind="bindWeChatCallback"/>
   </div>
 </template>
 
@@ -130,6 +130,17 @@ export default {
      */
     bindWeChat () {
       this.$refs.weChatQrBind.init()
+    },
+    /**
+     * 微信绑定回调
+     */
+    bindWeChatCallback (from) {
+      this.loading = true
+      bindThird(from).then(() => {
+        this.$message.success('绑定成功')
+      }).finally(() => {
+        this.init()
+      })
     },
     /**
      * 解绑账号

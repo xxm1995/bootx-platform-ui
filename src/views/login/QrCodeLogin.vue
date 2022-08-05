@@ -73,9 +73,12 @@ export default {
         getQrStatus(this.form.authCode).then(res => {
           // 成功 进行登录
           if (res.data === 'ok') {
-            this.$emit('loginLoading')
+            this.$emit('loginLoading', true)
             Login(this.form)
-              .then(() => this.$emit('loginSuccess'))
+              .then(() => {
+                this.$emit('loginLoading', false)
+                this.$emit('loginSuccess')
+              })
               .finally(() => {
                 clearInterval(this.interval)
               })

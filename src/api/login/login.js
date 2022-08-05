@@ -12,13 +12,23 @@ export function login (parameter) {
 }
 
 /**
- * 登录
+ * 获取微信扫码登录二维码
  */
-export function loginOpenId (parameter) {
+export function applyQrCode () {
   return request({
-    url: `/token/loginOpenId`,
-    method: 'post',
-    params: parameter
+    url: `/token/wechat/qr/applyQrCode`,
+    method: 'post'
+  })
+}
+
+/**
+ * 获取扫码状态
+ */
+export function getQrStatus (qrCodeKey) {
+  return request({
+    url: `/token/wechat/qr/getStatus`,
+    method: 'get',
+    params: { qrCodeKey }
   })
 }
 

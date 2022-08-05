@@ -147,7 +147,6 @@ export default {
           this.loading = true
           const { data } = await singlePay(this.form)
           this.loading = false
-          console.log(data)
           // 是否异步支付
           if (data.asyncPayMode) {
             this.payUrl = data.asyncPayInfo.payBody
@@ -199,6 +198,9 @@ export default {
   },
   created () {
     this.init()
+  },
+  destroyed () {
+    this.handleCancel()
   }
 }
 </script>

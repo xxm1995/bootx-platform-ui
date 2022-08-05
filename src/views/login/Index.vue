@@ -4,20 +4,19 @@
     <div class="login-menu">
       <a-spin :spinning="loading" :tip="loadingTip">
         <a-tabs :activeKey="activeName" @change="handleTabClick">
-          <a-tab-pane key="user" tab="账号密码登录">
+          <a-tab-pane key="user" tab="账号密码登录" force-render>
             <user-login
-              @loginSuccess="loginSuccess"
-              v-if="activeName === 'user'"/>
+              @loginSuccess="loginSuccess"/>
           </a-tab-pane>
-          <a-tab-pane key="phone" tab="手机登录">
+          <a-tab-pane key="phone" tab="手机登录" force-render>
             <phone-login
-              @loginSuccess="loginSuccess"
-              v-if="activeName === 'phone'"/>
+              @loginSuccess="loginSuccess"/>
           </a-tab-pane>
-          <a-tab-pane key="qrcode" tab="微信扫码">
+          <a-tab-pane key="qrcode" tab="微信扫码" force-render>
             <qr-code-login
               @loginSuccess="loginSuccess"
-              v-if="activeName === 'qrcode'"/>
+              @loginLoading="loginLoading"
+              :init-qr-code="activeName === 'qrcode'"/>
           </a-tab-pane>
         </a-tabs>
         <a-row class="" style="display: flex; width: 100%;line-height: 22px;">

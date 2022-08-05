@@ -185,6 +185,9 @@ export default {
   },
   created () {
     this.init()
+  },
+  destroyed () {
+    this.handleCancel()
   }
 }
 </script>

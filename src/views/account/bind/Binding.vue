@@ -60,14 +60,17 @@
         </a-col>
       </a-row>
     </a-spin>
+    <we-chat-qr-bind ref="weChatQrBind" @bindSuccess="init"/>
   </div>
 </template>
 
 <script>
 import { bindThird, getThirdBindInfo, unbindThird } from '@/api/system/user'
 import { DING_TALK, WE_CHAT, WE_CHAT_OPEN, WE_COM } from '@/views/login/third/OpenIdLoginType'
+import WeChatQrBind from '@/views/account/bind/WeChatQrBind'
 
 export default {
+  components: { WeChatQrBind },
   data () {
     return {
       DING_TALK,
@@ -126,7 +129,7 @@ export default {
      * 微信公众平台绑定
      */
     bindWeChat () {
-
+      this.$refs.weChatQrBind.init()
     },
     /**
      * 解绑账号

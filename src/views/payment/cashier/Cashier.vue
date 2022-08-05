@@ -292,6 +292,9 @@ export default {
   },
   created () {
     this.refreshBusinessId()
+  },
+  destroyed () {
+    this.handleCancel()
   }
 }
 </script>

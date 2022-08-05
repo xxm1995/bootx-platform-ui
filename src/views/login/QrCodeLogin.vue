@@ -76,11 +76,13 @@ export default {
             this.$emit('loginLoading', true)
             Login(this.form)
               .then(() => {
-                this.$emit('loginLoading', false)
                 this.$emit('loginSuccess')
               })
               .finally(() => {
                 clearInterval(this.interval)
+                setTimeout(() => {
+                  this.$emit('loginLoading', false)
+                }, 1000)
               })
           } else if (res.data === 'expired') {
             this.getQrFlag = true
@@ -88,7 +90,7 @@ export default {
             clearInterval(this.interval)
           }
         })
-      }, 1000 * 3)
+      }, 1000)
     }
   },
   created () {

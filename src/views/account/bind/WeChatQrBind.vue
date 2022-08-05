@@ -69,7 +69,7 @@ export default {
             this.applyQrCode()
           }
         })
-      }, 1000 * 3)
+      }, 1000)
     },
     /**
      * 绑定

@@ -46,7 +46,7 @@ import { sentSimpleMail } from '@/api/demo/emailSenderDemo'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css'
 import { validateEmail } from '@/utils/validate'
-import { renderHtml } from '@/components/WangEditor/WangEditorCss'
+import { renderHtml } from '@/components/WangEditor/WangEditorUtils'
 export default {
   name: 'SimpleEmailSender',
   components: { Editor, Toolbar },

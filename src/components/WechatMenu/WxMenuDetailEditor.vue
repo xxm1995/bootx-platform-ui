@@ -1,197 +1,62 @@
 <template>
   <div>
     <!-- 主菜单 -->
-    <div class="weixin-menu-detail" v-if="[MenuTypeMainSubject,MenuTypeMain].includes(menuDetailType)">
+    <div class="weixin-menu-detail" v-if="menuDetailType">
       <div class="menu-input-group" style="border-bottom: 2px #e8e8e8 solid;">
         <div class="menu-name">{{ menuDetail.name }}</div>
-        <div class="menu-del" @click="delMenu">删除菜单</div>
+        <div class="menu-del" v-show="!showable" @click="delMenu">{{ '删除'+title }}</div>
       </div>
-      <!--    主菜单内容  -->
+      <!--    单内容  -->
       <div class="menu-input-group">
-
-        <a-form-model>
-          <a-form-model-item label="菜单名称" prop="name">
-            <a-input
-              type="text"
-              name="name"
-              placeholder="请输入菜单名称"
-              class="menu-input-text"
-              v-model="menuDetail.name"
-            />
+        <a-form-model
+          :label-col="labelCol"
+          :wrapper-col="wrapperCol"
+        >
+          <a-form-model-item :label="`${title}名称`" prop="name">
+            <a-input :placeholder="`请输入${title}名称`" :disabled="showable" v-model="menuDetail.name"/>
           </a-form-model-item>
-
+          <a-form-model-item :label="`${title}类型`" v-if="menuDetailType !== MenuTypeMainSubject">
+            <a-select
+              :disabled="showable"
+              :options="menuTypeOptions"
+              :placeholder="`请选择${title}类型`"
+              @change="menuTypeChange"
+              v-model="menuDetail.type"/>
+          </a-form-model-item>
+          <a-form-model-item label="菜单KEY值" prop="key" v-if="editKeyFlag">
+            <a-input placeholder="用于消息接口推送，不超过128字节" :disabled="showable" v-model="menuDetail.key"/>
+          </a-form-model-item>
+          <a-form-model-item label="页面地址" prop="url" v-if="editViewFlag">
+            <a-input placeholder="订阅者点击该子菜单会跳到以下链接" :disabled="showable" v-model="menuDetail.url">
+              <template #suffix>
+                <a href="javascript:" :disabled="showable">选择图文</a>
+              </template>
+            </a-input>
+          </a-form-model-item>
+          <a-form-model-item label="小程序APPID" prop="appId" v-if="editMiniAppFlag">
+            <a-input placeholder="小程序的appid（仅认证公众号可配置）" :disabled="showable" v-model="menuDetail.appId"/>
+          </a-form-model-item>
+          <a-form-model-item label="小程序页面路径" prop="pagePath" v-if="editMiniAppFlag">
+            <a-input placeholder="小程序的页面路径" :disabled="showable" v-model="menuDetail.pagePath"/>
+          </a-form-model-item>
+          <a-form-model-item label="备用网页" prop="url" v-if="editMiniAppFlag">
+            <a-input placeholder="旧版微信无法支持小程序时将会打开备用网页。" :disabled="showable" v-model="menuDetail.url"/>
+          </a-form-model-item>
+          <a-form-model-item label="图文消息" prop="url" v-if="editMediaFlag">
+            <a-input placeholder="下发消息，（除文本消息）从素材库中选择" disabled v-model="menuDetail.url">
+              <template #suffix>
+                <a href="javascript:" :disabled="showable">选择图文</a>
+              </template>
+            </a-input>
+          </a-form-model-item><a-form-model-item label="公众号图文" prop="url" disabled v-if="editArticleFlag">
+            <a-input placeholder="下发消息（除文本消息）从素材库中选择" disabled="" v-model="menuDetail.articleId">
+              <template #suffix>
+                <a href="javascript:" :disabled="showable">选择图文</a>
+              </template>
+            </a-input>
+          </a-form-model-item>
         </a-form-model>
       </div>
-      <!--    主菜单内容(不包含子菜单)  -->
-      <!--      <template v-if="['main'].includes(menuDetailType)">-->
-      <!--        <div class="menu-input-group">-->
-      <!--          <div class="menu-label">菜单内容</div>-->
-      <!--          <div class="menu-input">-->
-      <!--            <select v-model="menu.button[selectedMenuIndex].type" name="type" class="menu-input-text">-->
-      <!--              <option value="view">跳转网页(view)</option>-->
-      <!--              <option value="media_id">发送消息(media_id)</option>-->
-      <!--              &lt;!&ndash;<option value="view_limited">跳转公众号图文消息链接(view_limited)</option>&ndash;&gt;-->
-      <!--              <option value="miniprogram">打开指定小程序(miniprogram)</option>-->
-      <!--              <option value="click">自定义点击事件(click)</option>-->
-      <!--              <option value="scancode_push">扫码上传消息(scancode_push)</option>-->
-      <!--              <option value="scancode_waitmsg">扫码提示下发(scancode_waitmsg)</option>-->
-      <!--              <option value="pic_sysphoto">系统相机拍照(pic_sysphoto)</option>-->
-      <!--              <option value="pic_photo_or_album">弹出拍照或者相册(pic_photo_or_album)</option>-->
-      <!--              <option value="pic_weixin">弹出微信相册(pic_weixin)</option>-->
-      <!--              <option value="location_select">弹出地理位置选择器(location_select)</option>-->
-      <!--            </select>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="menu-content" v-if="selectedMenuType()==1">-->
-      <!--          <div class="menu-input-group">-->
-      <!--            <p class="menu-tips">订阅者点击该子菜单会跳到以下链接</p>-->
-      <!--            <div class="menu-label">页面地址</div>-->
-      <!--            <div class="menu-input">-->
-      <!--              <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].url">-->
-      <!--              <p class="menu-tips cursor" @click="selectNewsUrl">从公众号图文消息中选择</p>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="menu-msg-content" v-else-if="selectedMenuType()==2" v-loading="materialLoading">-->
-      <!--          <div class="menu-msg-head"><i class="icon_msg_sender"></i>图文消息</div>-->
-      <!--          <div class="menu-msg-panel">-->
-      <!--            <div class="menu-msg-select" v-if="!menu.button[selectedMenuIndex].media_id" @click="selectMaterialId">-->
-      <!--              <i class="icon36_common add_gray"></i>-->
-      <!--              <strong>从素材库中选择</strong>-->
-      <!--            </div>-->
-      <!--            <div class="menu-msg-select" v-else>-->
-      <!--              <div class="menu-msg-title"><i class="icon_msg_sender"></i>{{ material.title }}</div>-->
-      <!--              <a :href="material.url" target="_blank" class="el-button el-button&#45;&#45;mini">查看</a>-->
-      <!--              <el-button size="mini" type="danger" @click="delMaterialId">删除</el-button>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="menu-content" v-else-if="selectedMenuType()==3">-->
-      <!--          <div class="menu-input-group">-->
-      <!--            <p class="menu-tips">用于消息接口推送，不超过128字节</p>-->
-      <!--            <div class="menu-label">菜单KEY值</div>-->
-      <!--            <div class="menu-input">-->
-      <!--              <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].key">-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <div class="menu-content" v-else-if="selectedMenuType()==4">-->
-      <!--          <div class="menu-input-group">-->
-      <!--            <p class="menu-tips">订阅者点击该子菜单会跳到以下小程序</p>-->
-      <!--            <div class="menu-label">小程序APPID</div>-->
-      <!--            <div class="menu-input">-->
-      <!--              <input type="text" placeholder="小程序的appid（仅认证公众号可配置）" class="menu-input-text" v-model="menu.button[selectedMenuIndex].appid">-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          <div class="menu-input-group">-->
-      <!--            <div class="menu-label">小程序路径</div>-->
-      <!--            <div class="menu-input">-->
-      <!--              <input type="text" placeholder="小程序的页面路径 pages/Index/index" class="menu-input-text" v-model="menu.button[selectedMenuIndex].pagepath">-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--          <div class="menu-input-group">-->
-      <!--            <div class="menu-label">备用网页</div>-->
-      <!--            <div class="menu-input">-->
-      <!--              <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].url">-->
-      <!--              <p class="menu-tips">旧版微信客户端无法支持小程序，用户点击菜单时将会打开备用网页。</p>-->
-      <!--            </div>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--      </template>-->
-    </div>
-    <!-- 子菜单 -->
-    <div class="weixin-menu-detail" v-if="menuDetailType === MenuTypeSubject">
-      <div class="menu-input-group" style="border-bottom: 2px #e8e8e8 solid;">
-        <div class="menu-name">{{ menuDetail.name }}</div>
-        <div class="menu-del" @click="delMenu">删除子菜单</div>
-      </div>
-      <div class="menu-input-group">
-        <a-form-model>
-          <a-form-model-item label="子菜单名称" prop="name">
-            <a-input
-              type="text"
-              name="name"
-              placeholder="请输入菜单名称"
-              class="menu-input-text"
-              v-model="menuDetail.name"
-            />
-          </a-form-model-item>
-
-        </a-form-model>
-      </div>
-    <!--      <div class="menu-input-group">-->
-    <!--        <div class="menu-label">子菜单内容</div>-->
-    <!--        <div class="menu-input">-->
-    <!--          <select v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].type" name="type" class="menu-input-text">-->
-    <!--            <option value="view">跳转网页(view)</option>-->
-    <!--            <option value="media_id">发送消息(media_id)</option>-->
-    <!--            &lt;!&ndash;<option value="view_limited">跳转公众号图文消息链接(view_limited)</option>&ndash;&gt;-->
-    <!--            <option value="miniprogram">打开指定小程序(miniprogram)</option>-->
-    <!--            <option value="click">自定义点击事件(click)</option>-->
-    <!--            <option value="scancode_push">扫码上传消息(scancode_push)</option>-->
-    <!--            <option value="scancode_waitmsg">扫码提示下发(scancode_waitmsg)</option>-->
-    <!--            <option value="pic_sysphoto">系统相机拍照(pic_sysphoto)</option>-->
-    <!--            <option value="pic_photo_or_album">弹出拍照或者相册(pic_photo_or_album)</option>-->
-    <!--            <option value="pic_weixin">弹出微信相册(pic_weixin)</option>-->
-    <!--            <option value="location_select">弹出地理位置选择器(location_select)</option>-->
-    <!--          </select>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="menu-content" v-if="selectedMenuType()==1">-->
-    <!--        <div class="menu-input-group">-->
-    <!--          <p class="menu-tips">订阅者点击该子菜单会跳到以下链接</p>-->
-    <!--          <div class="menu-label">页面地址</div>-->
-    <!--          <div class="menu-input">-->
-    <!--            <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].url">-->
-    <!--            <p class="menu-tips cursor" @click="selectNewsUrl">从公众号图文消息中选择</p>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="menu-msg-content" v-else-if="selectedMenuType()==2" v-loading="materialLoading">-->
-    <!--        <div class="menu-msg-head"><i class="icon_msg_sender"></i>图文消息</div>-->
-    <!--        <div class="menu-msg-panel">-->
-    <!--          <div class="menu-msg-select" v-if="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].media_id==''||menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].media_id==undefined" @click="selectMaterialId">-->
-    <!--            <i class="icon36_common add_gray"></i>-->
-    <!--            <strong>从素材库中选择</strong>-->
-    <!--          </div>-->
-    <!--          <div class="menu-msg-select" v-else>-->
-    <!--            <i class="icon_msg_sender"></i>{{ material.title }}-->
-    <!--            <a :href="material.url" target="_blank" class="el-button el-button&#45;&#45;mini">查看</a>-->
-    <!--            <el-button size="mini" type="danger" @click="delMaterialId">删除</el-button>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="menu-content" v-else-if="selectedMenuType()==3">-->
-    <!--        <div class="menu-input-group">-->
-    <!--          <p class="menu-tips">用于消息接口推送，不超过128字节</p>-->
-    <!--          <div class="menu-label">菜单KEY值</div>-->
-    <!--          <div class="menu-input">-->
-    <!--            <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].key">-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--      <div class="menu-content" v-else-if="selectedMenuType()==4">-->
-    <!--        <div class="menu-input-group">-->
-    <!--          <p class="menu-tips">订阅者点击该子菜单会跳到以下小程序</p>-->
-    <!--          <div class="menu-label">小程序APPID</div>-->
-    <!--          <div class="menu-input">-->
-    <!--            <input type="text" placeholder="小程序的appid（仅认证公众号可配置）" class="menu-input-text" v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].appid">-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--        <div class="menu-input-group">-->
-    <!--          <div class="menu-label">小程序路径</div>-->
-    <!--          <div class="menu-input">-->
-    <!--            <input type="text" placeholder="小程序的页面路径 pages/Index/index" class="menu-input-text" v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].pagepath">-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--        <div class="menu-input-group">-->
-    <!--          <div class="menu-label">备用网页</div>-->
-    <!--          <div class="menu-input">-->
-    <!--            <input type="text" placeholder="" class="menu-input-text" v-model="menu.button[selectedMenuIndex].sub_button[selectedSubMenuIndex].url">-->
-    <!--            <p class="menu-tips">旧版微信客户端无法支持小程序，用户点击菜单时将会打开备用网页。</p>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
     </div>
   </div>
 
@@ -206,9 +71,7 @@ export default {
     prop: 'menuDetail'
   },
   props: {
-    /**
-     * '' 不显示, main 主菜单, mainSubject 主菜单下包含子菜单, subject 子菜单
-     */
+    // '' 不显示, main 主菜单, mainSubject 主菜单下包含子菜单, subject 子菜单
     menuDetailType: {
       type: String,
       default: ''
@@ -220,13 +83,59 @@ export default {
           name: ''
         }
       }
+    },
+    // 是否是查询看状态
+    showable: {
+      type: Boolean,
+      default: false
+    }
+  },
+  watch: {
+    menuDetailType (newValue) {
+      if ([MenuTypeMainSubject, MenuTypeMain].includes(newValue)) {
+        this.title = '菜单'
+      } else {
+        this.title = '子菜单'
+      }
+    },
+    // 监听菜单类型
+    'menuDetail.type': {
+      handler (newV) {
+        this.menuTypeChange(newV)
+      },
+      immediate: true
+
     }
   },
   data () {
     return {
       MenuTypeMain,
       MenuTypeMainSubject,
-      MenuTypeSubject
+      MenuTypeSubject,
+      labelCol: { span: 6 },
+      wrapperCol: { span: 16 },
+      title: '',
+      // 菜单编辑项标识
+      editKeyFlag: true,
+      editViewFlag: false,
+      editMiniAppFlag: false,
+      editMediaFlag: false,
+      editArticleFlag: false,
+
+      // 菜单内容类型
+      menuTypeOptions: [
+        { value: 'view', label: '跳转网页(view)' },
+        { value: 'click', label: '自定义点击事件(click)' },
+        { value: 'media_id', label: '发送消息(media_id)' },
+        { value: 'article_view_limited', label: '跳转公众号图文消息链接(article_view_limited)' },
+        { value: 'miniprogram', label: '打开指定小程序(miniprogram)' },
+        { value: 'scancode_push', label: '扫码上传消息(scancode_push)' },
+        { value: 'scancode_waitmsg', label: '扫码提示下发(scancode_waitmsg)' },
+        { value: 'pic_sysphoto', label: '系统相机拍照(pic_sysphoto)' },
+        { value: 'pic_photo_or_album', label: '弹出拍照或者相册(pic_photo_or_album)' },
+        { value: 'pic_weixin', label: '弹出微信相册(pic_weixin)' },
+        { value: 'location_select', label: '弹出地理位置选择器(location_select)' }
+      ]
     }
   },
   methods: {
@@ -235,6 +144,28 @@ export default {
      */
     delMenu () {
       this.$emit('delete')
+    },
+    /**
+     * 菜单类型变动
+     */
+    menuTypeChange (value) {
+      this.editKeyFlag = false
+      this.editViewFlag = false
+      this.editMiniAppFlag = false
+      this.editMediaFlag = false
+      this.editArticleFlag = false
+      if (['view'].includes(value)) {
+        this.editViewFlag = true
+      } else if (['miniprogram'].includes(value)) {
+        this.editMiniAppFlag = true
+      } else if (['media_id'].includes(value)) {
+        this.editMediaFlag = true
+      } else if (['article_view_limited'].includes(value)) {
+        this.editArticleFlag = true
+      } else if (!value) {
+      } else {
+        this.editKeyFlag = true
+      }
     }
   }
 }

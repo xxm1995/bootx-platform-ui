@@ -98,7 +98,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import DingTalkConfigEdit from './DingTalkConfigEdit'
-import { page, del, setEnable, clearEnable } from '@/api/social/dingTalkConfig'
+import { page, del, setEnable, clearEnable } from '@/api/third/dingTalkConfig'
 
 export default {
   name: 'DingTalkConfigList',

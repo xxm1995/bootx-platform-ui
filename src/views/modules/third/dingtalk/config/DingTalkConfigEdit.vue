@@ -60,7 +60,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/social/dingTalkConfig'
+import { get, add, update } from '@/api/third/dingTalkConfig'
 export default {
   name: 'ConfigEdit',
   mixins: [FormMixin],

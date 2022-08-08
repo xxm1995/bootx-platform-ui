@@ -2,6 +2,7 @@ import storage from 'store'
 import { login, getPermissions, getLoginAfterUserInfo, logout } from '@/api/login/login'
 import { ACCESS_TOKEN, CACHE_MULTI_TAB_COMPONENTS, USERINFO } from '@/store/mutation-types'
 import { getFilePreviewUrl } from '@/api/common/fileUpload'
+import { closeWebSocket } from '@/websocket/userGlobalWebSocker'
 
 const user = {
   state: {
@@ -101,6 +102,8 @@ const user = {
         commit('SET_TOKEN', '')
         commit('SET_PERMISSION', [])
         commit('SET_INFO', {})
+        // 关闭ws
+        closeWebSocket()
         storage.remove(ACCESS_TOKEN)
         storage.remove(USERINFO)
       })

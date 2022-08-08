@@ -167,6 +167,8 @@ export default {
         this.editKeyFlag = true
       }
     }
+  },
+  mounted() {
   }
 }
 </script>

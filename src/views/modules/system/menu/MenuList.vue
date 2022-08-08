@@ -17,7 +17,7 @@
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item label="查询">
-              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入菜单名称、路由名称、请求路径或组件名称" />
+              <a-input-search v-model="searchName" @search="search" @keyup.enter="search" allow-clear placeholder="请输入菜单名称、路由名称、请求路径或组件名称"/>
             </a-form-item>
           </a-col>
         </a-row>
@@ -67,9 +67,11 @@
           </div>
         </template>
       </vxe-table-column>
-      <vxe-table-column title="操作" fixed="right" width="210" :showOverflow="false" >
+      <vxe-table-column title="操作" fixed="right" width="240" :showOverflow="false" >
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row.id)">查看</a>
+          <a-divider type="vertical" />
+          <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
           <a-divider type="vertical" />
           <a href="javascript:" @click="resourceList(row)">权限资源</a>
           <a-divider type="vertical" />
@@ -84,9 +86,6 @@
                 </a-menu-item>
                 <a-menu-item>
                   <a @click="copy(row.id)">复制</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
                 </a-menu-item>
                 <a-menu-item>
                   <a-popconfirm
@@ -116,7 +115,6 @@ import ResourcePermList from './ResourcePermList'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
 import { findAll } from '@/api/system/client'
-import { debounce } from 'lodash'
 
 export default {
   name: 'MenuList',
@@ -190,7 +188,7 @@ export default {
     /**
      * 搜索
      */
-    search: debounce(function () {
+    search () {
       const searchName = XEUtils.toValueString(this.searchName).trim().toLowerCase()
       let treeExpand = this.treeExpand
       if (searchName) {
@@ -205,7 +203,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.xTree.setAllTreeExpand(treeExpand)
       })
-    }, 500)
+    }
   },
   created () {
     this.initClients()

@@ -9,8 +9,8 @@
         <ul class="weixin-menu" id="weixin-menu" >
           <li
             v-for="(mainMenu,mainIndex) in menu.buttons"
-            :key="mainIndex"
             class="menu-item"
+            :key="mainIndex"
             :class="{current:currentMenu===mainMenu}"
             @click="selectedMainMenu(mainIndex,mainMenu)">
             <div class="menu-item-title">
@@ -20,15 +20,15 @@
             <ul class="weixin-sub-menu" v-show="currentMenuIndex===mainIndex">
               <li
                 v-for="(subMenu,subjectIndex) in mainMenu.subButtons"
-                :key="subjectIndex"
                 class="menu-sub-item"
+                :key="subjectIndex"
                 :class="{current:currentMenu===subMenu}"
                 @click.stop="selectedSubMenu(subjectIndex,subMenu)">
                 <div class="menu-item-title">
                   <span>{{ subMenu.name }}</span>
                 </div>
               </li>
-              <li v-if="mainMenu.subButtons.length<5" class="menu-sub-item" @click.stop="addSubMenu(mainMenu)">
+              <li v-if="mainMenu.subButtons.length<5" class="menu-sub-item" @click.stop="addSubMenuConfirm(mainMenu)">
                 <div class="menu-item-title">
                   <i class="icon14_menu_add"></i>
                 </div>
@@ -45,6 +45,7 @@
     <wx-menu-detail-editor
       v-model="currentMenu"
       :menu-detail-type="currentMenuTyp"
+      :showable="showable"
       @delete="delMenu"
     ></wx-menu-detail-editor>
   </div>
@@ -139,13 +140,13 @@ export default {
     selectedSubMenu (i, menu) {
       this.currentMenuTyp = MenuTypeSubject
       this.currentSubMenuIndex = i
-      // this.currentMenuIndex = null
       this.currentMenu = menu
     },
     /**
      *  添加主菜单
      */
     addMainMenu () {
+      if (this.showable) { return }
       const buttons = this.menu.buttons
       // 主菜单添加
       if (buttons.length < 3) {
@@ -163,10 +164,11 @@ export default {
       }
     },
     /**
-     * 添加子菜单
+     * 添加子菜单 确认
      * @param mainMenu 子菜单所属的主菜单
      */
-    addSubMenu (mainMenu) {
+    addSubMenuConfirm (mainMenu) {
+      if (this.showable) { return }
       if (mainMenu.subButtons.length < 5) {
         // 判断所属的主菜单是否有内容
         if (!mainMenu.subButtons.length) {
@@ -174,22 +176,28 @@ export default {
             title: '提示',
             content: '添加子菜单将会清空菜单信息',
             onOk: () => {
-              delete mainMenu.type
-              delete mainMenu.url
-              mainMenu.subButtons.push({
-                type: 'view',
-                name: '子菜单名称',
-                url: ''
-              })
-              // 当前选中菜单类型变为子菜单
-              this.currentMenuTyp = MenuTypeSubject
-              // 子菜单索引
-              this.currentSubMenuIndex = mainMenu.subButtons.length - 1
-              this.currentMenu = mainMenu.subButtons[mainMenu.subButtons.length - 1]
+              this.addSubMenu(mainMenu)
             }
           })
+        } else {
+          this.addSubMenu(mainMenu)
         }
       }
+    },
+    /**
+     * 添加子菜单
+     */
+    addSubMenu (mainMenu) {
+      mainMenu.subButtons.push({
+        type: 'view',
+        name: '子菜单名称',
+        url: ''
+      })
+      // 当前选中菜单类型变为子菜单
+      this.currentMenuTyp = MenuTypeSubject
+      // 子菜单索引
+      this.currentSubMenuIndex = mainMenu.subButtons.length - 1
+      this.currentMenu = mainMenu.subButtons[mainMenu.subButtons.length - 1]
     },
     /**
      * 删除菜单
@@ -365,7 +373,6 @@ export default {
      */
     async onMenuSubmit () {
       try {
-        console.log(this.menu)
         await this.$confirm('确定后发布当前自定义菜单', '提示')
         // TODO submitAPI
         this.$message.success('发布成功')
@@ -391,7 +398,7 @@ export default {
     }
   },
   mounted () {
-    console.log(this.menu)
+    console.log(this.showable)
   }
 }
 </script>

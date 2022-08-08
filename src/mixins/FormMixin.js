@@ -46,6 +46,7 @@ export const FormMixin = {
         this.showable = true
         this.title = '查看'
       }
+
       // 初始化表单和去除校验
       this.resetForm()
       this.edit(record, type, ...vars)
@@ -55,11 +56,9 @@ export const FormMixin = {
     // 关闭
     handleCancel () {
       this.visible = false
-      setTimeout(() => {
-        this.addable = false
-        this.editable = false
-        this.showable = false
-      }, 200)
+      this.addable = false
+      this.editable = false
+      this.showable = false
     },
     // 默认空方法
     resetForm () {

@@ -10,6 +10,8 @@ let wsUrl
 let websocket = {}
 // 重连标识
 let lockReconnect
+// 手动关闭标识
+let close = true
 
 /**
  * 连接成功
@@ -30,7 +32,9 @@ function websocketOnerror (e) {
  */
 function websocketOnclose (e) {
   console.log('用户全局WebSocket连接被关闭')
-  reconnect()
+  if (close) {
+    reconnect()
+  }
 }
 
 /**
@@ -76,10 +80,20 @@ export async function initWebSocket () {
   }
   const websocketUrl = wsUrl + '/ws/user?AccessToken=' + token
   websocket = new WebSocket(websocketUrl)
+  close = false
   websocket.onopen = websocketOnopen
   websocket.onerror = websocketOnerror
   websocket.onmessage = websocketOnmessage
   websocket.onclose = websocketOnclose
+}
+
+/**
+ * 关闭ws连接
+ */
+export function closeWebSocket () {
+  console.log('关闭ws连接')
+  close = false
+  websocket.close()
 }
 
 /**

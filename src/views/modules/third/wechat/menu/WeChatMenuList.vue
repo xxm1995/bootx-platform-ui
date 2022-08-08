@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { page, del } from '@/api/third/weChatMenu'
+import { page, del, importMenu, publish } from '@/api/third/weChatMenu'
 import WeChatMenuEdit from './WeChatMenuEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import WeChatMenuDesign from '@/views/modules/third/wechat/menu/WeChatMenuDesign'
@@ -148,8 +148,11 @@ export default {
       this.$confirm({
         title: '通知',
         content: '是否导入当前微信自定义菜单到系统中',
-        onOk () {
-          console.log('导入')
+        onOk: () => {
+          importMenu().then(() => {
+            this.$message.success('导入成功')
+            this.init()
+          })
         }
       })
     },
@@ -157,8 +160,11 @@ export default {
       this.$confirm({
         title: '通知',
         content: '是否将当前微信自定义菜单进行发布',
-        onOk () {
-          console.log('发布')
+        onOk: () => {
+          publish(record.id).then(() => {
+            this.$message.success('菜单发布成功')
+            this.init()
+          })
         }
       })
     }

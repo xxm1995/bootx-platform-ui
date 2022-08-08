@@ -7,7 +7,7 @@ import Vue from '@/main'
 // wsUrl
 let wsUrl
 // websocket 连接对象
-let websocket = {}
+let websocket = null
 // 重连标识
 let lockReconnect
 // 手动关闭标识
@@ -91,9 +91,11 @@ export async function initWebSocket () {
  * 关闭ws连接
  */
 export function closeWebSocket () {
-  console.log('关闭ws连接')
   close = false
-  websocket.close()
+  if (websocket) {
+    console.log('关闭ws连接')
+    websocket.close()
+  }
 }
 
 /**

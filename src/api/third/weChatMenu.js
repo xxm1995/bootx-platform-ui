@@ -73,13 +73,24 @@ export function getMenus () {
     method: 'GET'
   })
 }
+
 /**
  * 发布菜单
  */
-export function publish (obj) {
+export function publish (id) {
   return axios({
     url: '/wechat/menu/publish',
     method: 'POST',
-    data: obj
+    params: { id }
+  })
+}
+
+/**
+ * 发布菜单
+ */
+export function importMenu () {
+  return axios({
+    url: '/wechat/menu/importMenu',
+    method: 'POST'
   })
 }

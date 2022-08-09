@@ -65,12 +65,12 @@ export function del (id) {
 }
 
 /**
- * 获取当前菜单
+ * 清空微信菜单
  */
-export function getMenus () {
+export function clearMenu () {
   return axios({
-    url: '/wechat/menu/getMenus',
-    method: 'GET'
+    url: '/wechat/menu/clearMenu',
+    method: 'POST'
   })
 }
 

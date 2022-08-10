@@ -27,8 +27,7 @@ export function pageNews (params) {
 export function deleteFile (mediaId) {
   return axios({
     url: '/wechat/media/deleteFile',
-    method: 'GET',
+    method: 'DELETE',
     params: { mediaId }
   })
 }
-

@@ -127,17 +127,18 @@ export default {
 
       // 菜单内容类型
       menuTypeOptions: [
-        { value: 'view', label: '跳转网页(view)' },
-        { value: 'click', label: '自定义点击事件(click)' },
-        { value: 'media_id', label: '点击回复(media_id)' },
-        { value: 'article_view_limited', label: '跳转公众号图文消息链接(article_view_limited)' },
-        { value: 'miniprogram', label: '打开指定小程序(miniprogram)' },
-        { value: 'scancode_push', label: '扫码上传消息(scancode_push)' },
-        { value: 'scancode_waitmsg', label: '扫码提示下发(scancode_waitmsg)' },
-        { value: 'pic_sysphoto', label: '系统相机拍照(pic_sysphoto)' },
-        { value: 'pic_photo_or_album', label: '弹出拍照或者相册(pic_photo_or_album)' },
-        { value: 'pic_weixin', label: '弹出微信相册(pic_weixin)' },
-        { value: 'location_select', label: '弹出地理位置选择器(location_select)' }
+        { value: 'view', label: '跳转网页' },
+        { value: 'click', label: '自定义点击事件' },
+        { value: 'media_id', label: '点击回复' },
+        { value: 'article_view_limited', label: '跳转图文消息链接' },
+        { value: 'article_id', label: '图文卡片消息' },
+        { value: 'miniprogram', label: '打开指定小程序' },
+        { value: 'scancode_push', label: '扫码上传消息' },
+        { value: 'scancode_waitmsg', label: '扫码提示下发' },
+        { value: 'pic_sysphoto', label: '系统相机拍照' },
+        { value: 'pic_photo_or_album', label: '弹出拍照或者相册' },
+        { value: 'pic_weixin', label: '弹出微信相册' },
+        { value: 'location_select', label: '弹出地理位置选择器' }
       ]
     }
   },
@@ -162,7 +163,7 @@ export default {
         this.editMiniAppFlag = true
       } else if (['media_id'].includes(value)) {
         this.editMediaFlag = true
-      } else if (['article_view_limited'].includes(value)) {
+      } else if (['article_view_limited', 'article_id'].includes(value)) {
         this.editArticleFlag = true
       } else {
       }

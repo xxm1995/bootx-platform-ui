@@ -31,6 +31,7 @@
           <a-upload
             name="file"
             :multiple="false"
+            :accept="acceptType"
             :action="uploadAction"
             :headers="tokenHeader"
             :data="uploadData"
@@ -108,6 +109,23 @@ export default {
       return {
         mediaType: this.queryParam.type
       }
+    },
+    // 上传类型限定
+    acceptType () {
+      switch (this.queryParam.type) {
+        case 'image': {
+          return 'image/*'
+        }
+        case 'voice': {
+          return 'audio/*'
+        }
+        case 'video': {
+          return 'video/*'
+        }
+        default: {
+          return null
+        }
+      }
     }
   },
   data () {
@@ -124,21 +142,12 @@ export default {
       this.getDictDropDownAsync('WeChatMediaType').then(res => {
         this.mediaTypes = res
       })
-      if (this.queryParam.type === 'news') {
-        pageNews({
-          ...this.queryParam,
-          ...this.pages
-        }).then(res => {
-          this.pageQueryResHandel(res, this)
-        })
-      } else {
-        pageFile({
-          ...this.queryParam,
-          ...this.pages
-        }).then(res => {
-          this.pageQueryResHandel(res, this)
-        })
-      }
+      pageFile({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
     },
     show (record) {
       this.$info({

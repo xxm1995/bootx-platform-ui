@@ -16,14 +16,14 @@
       />
     </a-spin>
     <template #footer>
-      <a-button @click="handleCancel">取消</a-button>
+      <a-button @click="handleClose">取消</a-button>
       <a-button v-if="!showable" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
   </vxe-modal>
 </template>
 
 <script>
-import WxMenuEditor from '@/components/WechatMenu/WxMenuEditor'
+import WxMenuEditor from '@/views/modules/third/wechat/menu/edit/WxMenuDesign'
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, update } from '@/api/third/weChatMenu'
 

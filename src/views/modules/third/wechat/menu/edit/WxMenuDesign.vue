@@ -3,7 +3,7 @@
     <!-- 预览窗 -->
     <div class="weixin-preview">
       <div class="weixin-hd">
-        <div class="weixin-title">{{ weixinTitle }}</div>
+        <div class="weixin-title">{{ title }}</div>
       </div>
       <div class="weixin-bd">
         <ul class="weixin-menu" id="weixin-menu" >
@@ -56,9 +56,6 @@
 import './menu.less'
 import WxMenuDetailEditor from '@/views/modules/third/wechat/menu/edit/WxMenuDetailEditor'
 import { MenuTypeMain, MenuTypeMainSubject, MenuTypeSubject } from './MenuType'
-const getMaterialAPI = 'https://hopex.github.io/vue-menu/test_material_detail.json'
-const getMaterialListAPI = 'https://hopex.github.io/vue-menu/test_material.json'
-const getNewsListAPI = 'https://hopex.github.io/vue-menu/test_news.json'
 
 export default {
   name: 'WxMenuEdit',
@@ -98,24 +95,7 @@ export default {
       // 当前选中子菜单索引
       currentSubMenuIndex: -1,
       // 标题
-      weixinTitle: '',
-      // 菜单长度是否过长 (详情用)
-      menuNameBounds: false,
-      material: {
-        title: '',
-        url: '',
-        thumb_url: ''
-      },
-      materialLoading: false,
-      materialDialog: false,
-      materialList: [],
-      materialListOffset: 0,
-      materialListTotal: 0,
-      newsDialog: false,
-      newsList: [],
-      newsListOffset: 0,
-      newsListTotal: 0
-
+      title: ''
     }
   },
   methods: {
@@ -130,6 +110,7 @@ export default {
       } else {
         this.currentMenuTyp = MenuTypeMain
       }
+      console.log(menu)
       this.currentMenu = menu
       this.currentSubMenuIndex = -1
       this.currentMenuIndex = i
@@ -176,6 +157,9 @@ export default {
             title: '提示',
             content: '添加子菜单将会清空菜单信息',
             onOk: () => {
+              console.log(mainMenu)
+              // 清空其他数据
+              delete mainMenu.type
               this.addSubMenu(mainMenu)
             }
           })

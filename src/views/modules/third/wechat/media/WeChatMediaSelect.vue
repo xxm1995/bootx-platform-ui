@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="x选择素材"
+    title="选择素材"
     :width="750"
     :visible="visible"
     :maskClosable="false"

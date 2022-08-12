@@ -27,11 +27,7 @@
               v-model="menuDetail.type"/>
           </a-form-model-item>
           <a-form-model-item label="页面地址" prop="url" v-if="editViewFlag">
-            <a-input placeholder="订阅者点击该子菜单会跳到以下链接" :disabled="showable" v-model="menuDetail.url">
-              <template #addonAfter>
-                <a href="javascript:" :disabled="showable">选择图文</a>
-              </template>
-            </a-input>
+            <a-input placeholder="订阅者点击该子菜单会跳到以下链接" :disabled="showable" v-model="menuDetail.url"/>
           </a-form-model-item>
           <a-form-model-item label="小程序APPID" prop="appId" v-if="editMiniAppFlag">
             <a-input placeholder="小程序的appid（仅认证公众号可配置）" :disabled="showable" v-model="menuDetail.appId"/>
@@ -49,10 +45,12 @@
                 <a href="javascript:" v-else :disabled="showable" @click="menuDetail.mediaId=''" style="color:red;">清除</a>
               </template>
             </a-input>
-          </a-form-model-item><a-form-model-item label="公众号图文" prop="url" disabled v-if="editArticleFlag">
-            <a-input placeholder="下发消息（除文本消息）从素材库中选择" disabled="" v-model="menuDetail.articleId">
+          </a-form-model-item>
+          <a-form-model-item label="图文文章" prop="url" disabled v-if="editArticleFlag">
+            <a-input placeholder="从已发表文章列表中选择" disabled="" v-model="menuDetail.articleId">
               <template #addonAfter>
-                <a href="javascript:" :disabled="showable">选择图文</a>
+                <a href="javascript:" v-if="!menuDetail.articleId" @click="selectArticle" :disabled="showable">选择文章</a>
+                <a href="javascript:" v-else :disabled="showable" @click="menuDetail.articleId=''" style="color:red;">清除</a>
               </template>
             </a-input>
           </a-form-model-item>
@@ -60,6 +58,7 @@
       </div>
     </div>
     <we-chat-media-select ref="weChatMediaSelect" @ok="selectMediaCallback"/>
+    <we-chat-article-select ref="weChatArticleSelect" @ok="selectArticleCallback"/>
   </div>
 
 </template>
@@ -67,10 +66,11 @@
 <script>
 import { MenuTypeMain, MenuTypeMainSubject, MenuTypeSubject } from './MenuType'
 import WeChatMediaSelect from '@/views/modules/third/wechat/media/WeChatMediaSelect'
+import WeChatArticleSelect from '@/views/modules/third/wechat/article/WeChatArticleSelect'
 
 export default {
   name: 'WxMenuDetailEditor',
-  components: { WeChatMediaSelect },
+  components: { WeChatArticleSelect, WeChatMediaSelect },
   model: {
     prop: 'menuDetail'
   },
@@ -175,7 +175,18 @@ export default {
       this.$refs.weChatMediaSelect.show()
     },
     selectMediaCallback (mediaId) {
-      this.menuDetail.mediaId = mediaId
+      // this.menuDetail.mediaId = mediaId
+      this.$set(this.menuDetail, 'mediaId', mediaId)
+    },
+    /**
+     * 选择文章
+     */
+    selectArticle () {
+      this.$refs.weChatArticleSelect.init()
+    },
+    selectArticleCallback (articleId) {
+      // this.menuDetail.articleId = articleId
+      this.$set(this.menuDetail, 'articleId', articleId)
     }
   },
   mounted () {

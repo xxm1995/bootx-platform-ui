@@ -4,7 +4,7 @@
       <template #title>
         <span>查询条件生效</span>
         <a-divider type="vertical"/>
-        <a href="javascript:" @click="supperQueryRest">清空</a>
+        <a href="javascript:" @click="supperQueryReset">清空</a>
       </template>
       <a-button style="margin-left: 8px" @click="supperQueryShow">
         <a-icon type="appstore" theme="twoTone" spin/>
@@ -64,9 +64,9 @@ export default {
       this.$refs.superQueryModal.show()
     },
     // 重置
-    supperQueryRest () {
+    supperQueryReset () {
       this.$refs.superQueryModal.handleReset()
-      this.$emit('rest')
+      this.$emit('reset')
     },
     // 查询
     handleOk (queryParams) {

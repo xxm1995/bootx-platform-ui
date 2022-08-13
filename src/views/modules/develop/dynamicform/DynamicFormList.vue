@@ -1,25 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form-model layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-model-item label="名称">
-              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-model-item label="编码">
-              <a-input placeholder="请输入表单编码" v-model="queryParam.code"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -34,7 +21,6 @@
       :loading="loading"
       :data="tableData"
     >
-
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="名称"/>
       <vxe-table-column field="code" title="编码"/>
@@ -100,12 +86,17 @@ import DynamicDesign from './DynamicDesign'
 import DynamicFormEdit from './DynamicFormEdit'
 import DynamicPreview from './DynamicPreview'
 import { page, del } from '@/api/develop/dynamicForm'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'KFormList',
   mixins: [TableMixin],
   components: { DynamicDesign, DynamicFormEdit, DynamicPreview },
   data () {
     return {
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入表单名称' },
+        { field: 'code', type: STRING, name: '编码', placeholder: '请输入表单编码' }
+      ],
       queryParam: {
         name: '',
         code: ''

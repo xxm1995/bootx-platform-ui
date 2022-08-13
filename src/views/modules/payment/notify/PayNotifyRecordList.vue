@@ -32,7 +32,7 @@
           <a-col :md="6" :sm="24">
             <a-space>
               <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
+              <a-button @click="resetQuery">重置</a-button>
             </a-space>
           </a-col>
         </a-row>

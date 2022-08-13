@@ -4,11 +4,12 @@ import {
   getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
+import BQuery from '@/components/Bootx/SuperQuery/BQuery'
 import { findByParamKey } from '@/api/system/param'
 
 export const TableMixin = {
   components: {
-    BSuperQuery
+    BSuperQuery, BQuery
   },
   data () {
     return {
@@ -63,7 +64,7 @@ export const TableMixin = {
       that.loading = false
     },
     // 重置查询
-    restQuery () {
+    resetQuery () {
       this.superQueryFlag = false
       this.queryParam = {}
       this.init()

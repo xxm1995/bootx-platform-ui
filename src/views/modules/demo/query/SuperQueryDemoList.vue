@@ -1,27 +1,13 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="请输入名称" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="备注">
-              <a-input v-model="queryParam.remark" placeholder="请输入备注" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-space>
-              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      :query-param="queryParam"
+      :default-item-md="8"
+      :disabled-query="superQueryFlag"
+      :fields="fields"
+      @query="query"
+      @reset="resetQuery"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -36,7 +22,7 @@
           button-title="超级查询"
           model-title="超级查询器"
           @query="superQuery"
-          @rest="restQuery"
+          @reset="resetQuery"
         />
       </template>
     </vxe-toolbar>
@@ -125,7 +111,12 @@ export default {
   },
   data () {
     return {
+      // 政治面貌
       politicalList: [],
+      fields: [
+        { field: 'name', name: '姓名', type: STRING },
+        { field: 'remark', name: '姓名', type: STRING }
+      ],
       queryParam: {
       }
     }
@@ -133,8 +124,8 @@ export default {
   methods: {
     init () {
       this.loading = true
-       this.getDictDropDownAsync('Political').then(res => {
-         this.politicalList = res
+      this.getDictDropDownAsync('Political').then(res => {
+        this.politicalList = res
       })
       page({
         ...this.queryParam,

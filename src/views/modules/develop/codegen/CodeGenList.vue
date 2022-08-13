@@ -1,27 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="表名称">
-              <a-input v-model="queryParam.tableName" placeholder="请输入表名称" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="表描述">
-              <a-input v-model="queryParam.tableComment" placeholder="请输入表描述" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="() => this.queryParam = {}">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -61,6 +46,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { codeGenPreview, genCodeZip, page } from '@/api/develop/codeGen'
 import CodeGenForm from './CodeGenForm'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'CodeGenList',
   mixins: [TableMixin],
@@ -69,6 +55,10 @@ export default {
   },
   data () {
     return {
+      fields: [
+        { field: 'tableName', type: STRING, name: '名称', placeholder: '请输入表名称' },
+        { field: 'tableComment', type: STRING, name: '描述', placeholder: '请输入表描述' }
+      ],
       queryParam: {
         tableName: '',
         tableComment: ''

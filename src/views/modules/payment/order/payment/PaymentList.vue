@@ -21,7 +21,7 @@
           <a-col :md="6" :sm="24">
             <a-space>
               <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
-              <a-button @click="restQuery">重置</a-button>
+              <a-button @click="resetQuery">重置</a-button>
             </a-space>
           </a-col>
         </a-row>
@@ -40,7 +40,7 @@
           button-title="超级查询器"
           model-title="超级查询器"
           @query="changeSuperQuery"
-          @rest="restQuery"
+          @reset="resetQuery"
         />
       </template>
     </vxe-toolbar>

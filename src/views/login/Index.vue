@@ -102,6 +102,9 @@ export default {
     font-size: 14px;
     margin: 0 8px;
   }
+  .ant-form-item{
+    margin-bottom: 24px;
+  }
 }
 
 .login-select {

@@ -1,11 +1,11 @@
 <template>
   <a-modal
-    :title="title"
+    `:title="title"
     :width="modalWidth"
     :visible="visible"
     :confirmLoading="confirmLoading"
     :maskClosable="false"
-    @cancel="handleCancel"
+    @cancel="handleCancel"`
   >
     <a-descriptions
       title=""

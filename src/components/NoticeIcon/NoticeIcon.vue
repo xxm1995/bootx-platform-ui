@@ -4,61 +4,32 @@
     trigger="click"
     placement="bottomRight"
     overlayClassName="header-notice-wrapper"
-    :getPopupContainer="() => $refs.noticeRef.parentElement"
-    :autoAdjustOverflow="true"
-    :arrowPointAtCenter="true"
+    :autoAdjustOverflow="false"
+    :arrowPointAtCenter="false"
     :overlayStyle="{ width: '300px', top: '50px' }"
   >
     <template #content>
       <a-spin :spinning="loading">
-        <a-tabs >
-          <a-tab-pane tab="通知消息" key="1">
-            <a-list>
-              <a-list-item>
-                <a-list-item-meta title="你收到了 14 份新周报" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-            <div style="margin-top: 5px;text-align: center">
-              <a-button @click="toSiteMessage" type="dashed" block>查看更多</a-button>
-            </div>
-          </a-tab-pane>
-          <a-tab-pane tab="待办消息" key="2">
-            <a-list>
-              <a-list-item>
-                <a-list-item-meta title="你收到了 14 份新周报" description="">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/ThXAXghbEsBCCSDihZxY.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="你推荐的 曲妮妮 已通过第三轮面试" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/OKJXDXrmkNshAMvwtvhu.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-              <a-list-item>
-                <a-list-item-meta title="这种模板可以区分多种通知类型" description="一年前">
-                  <a-avatar style="background-color: white" slot="avatar" src="https://gw.alipayobjects.com/zos/rmsportal/kISTdvpyTAhtGxpovNWd.png"/>
-                </a-list-item-meta>
-              </a-list-item>
-            </a-list>
-            <a-button @click="toSiteMessage" type="dashed" block>查看更多</a-button>
-          </a-tab-pane>
-        </a-tabs>
+        <a-list>
+          <a-list-item v-for="o in notReadMsgList" :key="o.id">
+            <a href="javascript:" @click="showMessage(o)">
+              <a-list-item-meta :description="o.senderTime">
+                <template #title>
+                  <a-tag color="red">未读</a-tag>
+                  {{ o.title }}
+                </template>
+              </a-list-item-meta>
+            </a>
+            <span>{{ o.senderName }}</span>
+          </a-list-item>
+        </a-list>
+        <div style="margin-top: 5px;text-align: center">
+          <a-button @click="toSiteMessage" type="dashed" block>查看更多</a-button>
+        </div>
       </a-spin>
     </template>
     <span @click="fetchNotice" class="header-notice" ref="noticeRef">
-      <a-badge :count="333">
+      <a-badge :count="notReadMsgCount">
         <a-icon style="font-size: 16px;" type="bell" />
       </a-badge>
     </span>
@@ -67,29 +38,59 @@
 
 <script>
 
+import { countByReceiveNotRead, pageByReceive, read } from '@/api/notice/siteMessage'
+
 export default {
   name: 'HeaderNotice',
   data () {
     return {
       // 事件标示
       loading: false,
-      visible: false
+      visible: false,
+      // 未读消息数量
+      notReadMsgCount: 0,
+      // 消息内容
+      notReadMsgList: [
+        {
+          haveRead: false,
+          sendState: null,
+          senderName: 'bootx',
+          senderTime: '2021-08-08 11:34:11',
+          title: '测试消息'
+        }
+      ]
     }
   },
   methods: {
-    // 打开列表页
+    /**
+     * 打开列表页
+     */
     fetchNotice () {
-      this.visible = true
-      this.loading = true
-      setTimeout(() => {
+      if (this.visible) {
+        this.visible = false
         this.loading = false
-      }, 250)
+      } else {
+        this.visible = true
+        this.loading = true
+        // 消息列表
+        pageByReceive({
+          current: 1,
+          size: 3,
+          haveRead: false
+        }).then(res => {
+          this.notReadMsgList = res.data.records
+          this.loading = false
+        })
+      }
     },
     /**
-     * 接到推送的消息
+     * 未读的消息数量
      */
-    receivedNewMsg () {
+    receivedCount () {
       // 查询当前用户消息数量
+      countByReceiveNotRead().then(res => {
+        this.notReadMsgCount = res.data
+      })
     },
     /**
      * 跳转到站内信界面
@@ -98,28 +99,31 @@ export default {
       this.$router.push({
         path: '/person/siteMessage'
       })
+      this.visible = false
     },
     /**
-     * 跳转到我的代办任务
+     * 查看我的消息
      */
-    toTaskList () {
-      this.$router.push({
-        path: '/person/taskList'
-      })
+    showMessage (message) {
+      if (!message.haveRead) {
+        read(message.id).then(() => {
+          this.receivedCount()
+        })
+      }
+      this.$bus.emit('show_site_message', message)
+      this.visible = false
     }
   },
   mounted () {
-    this.receivedNewMsg()
-    this.$bus.on('event_message_update', this.receivedNewMsg)
+    this.receivedCount()
+    this.$bus.on('event_message_update', this.receivedCount)
   },
   destroyed () {
-    this.$bus.off()
+    this.$bus.off('event_message_update')
   }
 }
 </script>
 
-<style lang="css">
-</style>
 <style lang="less" scoped>
 .header-notice{
   display: inline-block;

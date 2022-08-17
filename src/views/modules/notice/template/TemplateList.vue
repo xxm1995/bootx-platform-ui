@@ -1,25 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="编码">
-              <a-input v-model="queryParam.code" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      :query-param="queryParam"
+      :default-item-md="8"
+      :disabled-query="superQueryFlag"
+      :fields="fields"
+      @query="query"
+      @reset="resetQuery"/>
     <vxe-toolbar
       custom
       zoom
@@ -91,7 +78,6 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange">
-      />
     </vxe-pager>
     <template-edit ref="templateEdit" @ok="handleOk"/>
     <template-render ref="templateRender"/>
@@ -103,6 +89,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import TemplateEdit from './TemplateEdit'
 import TemplateRender from './TemplateRender'
 import { del, page } from '@/api/notice/messageTemplate'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'TemplateList',
@@ -114,6 +101,10 @@ export default {
   data () {
     return {
       MessageTemplateCode: 'MessageTemplateCode',
+      fields: [
+        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' }
+      ],
       queryParam: {
         code: '',
         name: ''

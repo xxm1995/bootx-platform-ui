@@ -6,7 +6,7 @@
       :disabled-query="superQueryFlag"
       :fields="fields"
       @query="query"
-      @reset="resetQuery"/>
+      @reset="() => queryParam = {}"/>
     <vxe-toolbar
       custom
       zoom
@@ -30,7 +30,7 @@
         </template>
       </vxe-table-column>
       <vxe-table-column field="senderTime" title="发送时间" />
-      <vxe-table-column field="type" title="是否已读">
+      <vxe-table-column field="haveRead" title="是否已读">
         <template v-slot="{row}">
           <a-tag color="green" v-if="row.haveRead">已读</a-tag>
           <a-tag v-else color="red">未读</a-tag>
@@ -58,8 +58,9 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { STRING, LIST } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { pageByReceive, read } from '@/api/notice/siteMessage'
+import { NOTICE_MESSAGE_UPDATE, NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
 
 export default {
   name: 'SiteMessageList',
@@ -67,12 +68,18 @@ export default {
   data () {
     return {
       fields: [
-        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
-        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' }
+        { field: 'title', type: STRING, name: '标题', placeholder: '请输入标题' },
+        {
+          field: 'haveRead',
+          type: LIST,
+          name: '是否已读',
+          placeholder: '请选择是否已读',
+          list: [{ label: '已读', value: 'true' }, { label: '未读', value: 'false' }]
+        }
       ],
       queryParam: {
-        code: '',
-        name: ''
+        title: '',
+        haveRead: undefined
       }
     }
   },
@@ -90,10 +97,10 @@ export default {
       if (!record.haveRead) {
         read(record.id).then(() => {
           record.haveRead = true
-          this.$bus.emit('received_count')
+          this.$bus.emit(NOTICE_MESSAGE_UPDATE)
         })
       }
-      this.$bus.emit('show_site_message', record)
+      this.$bus.emit(NOTICE_SHOW_MESSAGE, record)
     }
   },
   created () {

@@ -39,6 +39,7 @@
 <script>
 
 import { countByReceiveNotRead, pageByReceive, read } from '@/api/notice/siteMessage'
+import { NOTICE_MESSAGE_UPDATE, NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
 
 export default {
   name: 'HeaderNotice',
@@ -87,7 +88,7 @@ export default {
      * 未读的消息数量
      */
     receivedCount () {
-      // 查询当前用户消息数量
+      // 查询当前用户的未读消息数量
       countByReceiveNotRead().then(res => {
         this.notReadMsgCount = res.data
       })
@@ -110,16 +111,16 @@ export default {
           this.receivedCount()
         })
       }
-      this.$bus.emit('show_site_message', message)
+      this.$bus.emit(NOTICE_SHOW_MESSAGE, message)
       this.visible = false
     }
   },
   mounted () {
     this.receivedCount()
-    this.$bus.on('event_message_update', this.receivedCount)
+    this.$bus.on(NOTICE_MESSAGE_UPDATE, this.receivedCount)
   },
   destroyed () {
-    this.$bus.off('event_message_update')
+    this.$bus.off(NOTICE_MESSAGE_UPDATE)
   }
 }
 </script>

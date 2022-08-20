@@ -26,7 +26,7 @@
         v-else-if="field.type === LIST"
         :placeholder="field.placeholder?field.placeholder:'请选择查询值'"
         v-model="queryParam[field.field]"
-        :options="getSelectData(index)">
+        :options="field.list">
       </a-select>
       <!-- 日期 -->
       <a-date-picker
@@ -89,10 +89,6 @@ export default {
     }
   },
   methods: {
-    // 获取下拉选择的数据
-    getSelectData () {
-      return this.field.list || []
-    }
   }
 }
 </script>

@@ -7,7 +7,7 @@
         <div class="top">
           <div class="header">
             <a href="/">
-              <img src="~@/assets/logo.svg" class="logo" alt="logo">
+              <img src="~@/assets/img/logo.svg" class="logo" alt="logo">
               <span class="title">Bootx Platform</span>
             </a>
           </div>
@@ -64,7 +64,7 @@ export default {
   .container {
     width: 100%;
     min-height: 100%;
-    background: #f0f2f5 url(~@/assets/background.svg) no-repeat 50%;
+    background: #f0f2f5 url(~@/assets/img/background.svg) no-repeat 50%;
     background-size: 100%;
     //padding: 50px 0 84px;
     position: relative;

@@ -23,6 +23,7 @@
 
 <script>
 import { findById } from '@/api/notice/siteMessage'
+import { NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
 
 export default {
   name: 'SiteMessageReader',
@@ -40,7 +41,6 @@ export default {
         padding: '0',
         maxHeight: (window.innerHeight * 0.6) + 'px',
         'overflow-y': 'auto'
-
       },
       modelStyle: {
         width: '60%',
@@ -71,10 +71,10 @@ export default {
   },
   mounted () {
     // 绑定查看站内信消息事件
-    this.$bus.on('show_site_message', this.show)
+    this.$bus.on(NOTICE_SHOW_MESSAGE, this.show)
   },
   destroyed () {
-    this.$bus.off('show_site_message')
+    this.$bus.off(NOTICE_SHOW_MESSAGE)
   }
 }
 </script>

@@ -12,6 +12,17 @@ export function pageByReceive (params) {
 }
 
 /**
+ * 发送站内信消息分页查询
+ */
+export function pageBySender (params) {
+  return axios({
+    url: '/site/message/pageBySender',
+    method: 'GET',
+    params: params
+  })
+}
+
+/**
  * 未读消息数量
  */
 export function countByReceiveNotRead () {
@@ -40,5 +51,27 @@ export function read (id) {
     url: '/site/message/read',
     method: 'POST',
     params: { id }
+  })
+}
+
+/**
+ * 删除
+ */
+export function del (id) {
+  return axios({
+    url: '/site/message/delete',
+    params: { id },
+    method: 'DELETE'
+  })
+}
+
+/**
+ * 撤回
+ */
+export function cancel (id) {
+  return axios({
+    url: '/site/message/cancel',
+    params: { id },
+    method: 'DELETE'
   })
 }

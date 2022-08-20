@@ -6,7 +6,7 @@
       :disabled-query="superQueryFlag"
       :fields="fields"
       @query="query"
-      @reset="resetQuery"/>
+      @reset="() => queryParam = {}"/>
     <vxe-toolbar
       custom
       zoom

@@ -137,11 +137,13 @@ export default {
     }
   },
   methods: {
-    init () {
-      this.loading = true
+    initData () {
       this.getDictDropDownAsync('WeChatMediaType').then(res => {
         this.mediaTypes = res
       })
+    },
+    init () {
+      this.loading = true
       pageFile({
         ...this.queryParam,
         ...this.pages
@@ -175,6 +177,7 @@ export default {
     }
   },
   created () {
+    this.initData()
     this.init()
   }
 }

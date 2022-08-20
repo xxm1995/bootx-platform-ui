@@ -11,7 +11,7 @@
       <!--   消息通知   -->
       <notice-icon class="action"/>
       <!-- 消息查看组件 -->
-      <site-message-reader ref="siteMessageReader"/>
+      <notice-icon-reader ref="noticeIconReader"/>
       <!--   头像   -->
       <avatar-dropdown
         :menu="showMenu"
@@ -30,12 +30,12 @@ import AvatarDropdown from './AvatarDropdown'
 import MenuSearch from './MenuSearch'
 import { mapActions } from 'vuex'
 import store from '@/store'
-import SiteMessageReader from '@/components/NoticeIcon/SiteMessageReader'
+import NoticeIconReader from '@/components/NoticeIcon/NoticeIconReader'
 
 export default {
   name: 'UserMenu',
   components: {
-    SiteMessageReader,
+    NoticeIconReader,
     NoticeIcon,
     MenuSearch,
     AvatarDropdown,

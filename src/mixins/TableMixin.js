@@ -31,7 +31,9 @@ export const TableMixin = {
         current: 1
       },
       // 列表数据
-      tableData: []
+      tableData: [],
+      // 查询参数
+      queryParam: {}
     }
   },
   methods: {

@@ -15,6 +15,7 @@ import { WebsocketMixin } from '@/mixins/WebsocketMixin'
 import storage from 'store'
 import { USERINFO, WEBSOCKET_SERVER_URL } from '@/store/mutation-types'
 import { axios } from '@/utils/request'
+import { EVENT_TEST_WEBSOCKET } from '@/assets/code/VueBusCode'
 
 export default {
   name: 'WebsocketDemo',
@@ -59,11 +60,11 @@ export default {
   },
   mounted () {
     this.initWs()
-    this.$bus.on('event_test_websocket', this.globalWsListener)
+    this.$bus.on(EVENT_TEST_WEBSOCKET, this.globalWsListener)
   },
   destroyed () {
     // 解绑事件监听
-    this.$bus.off('event_test_websocket')
+    this.$bus.off(EVENT_TEST_WEBSOCKET)
     this.websocketOnclose()
   }
 }

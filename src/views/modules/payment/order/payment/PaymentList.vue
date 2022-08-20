@@ -167,13 +167,11 @@ export default {
   },
   methods: {
     // 初始化查询数据
-    initSelect () {
+    initData () {
       this.getDictDropDownAsync('PayStatus').then(res => {
-        console.log(res)
         this.payStatusList = res
       })
       this.getDictDropDownAsync('PayChannel').then(res => {
-        console.log(res)
         this.syncPayChannelList = res
       })
     },
@@ -241,7 +239,7 @@ export default {
     }
   },
   created () {
-    this.initSelect()
+    this.initData()
     this.init()
   }
 }

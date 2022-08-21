@@ -46,8 +46,7 @@
     </a-spin>
     <template #footer>
       <a-space>
-        <a-button :loading="confirmLoading" type="primary" @click="handleOk(false)">保存为草稿</a-button>
-        <a-button :loading="confirmLoading" type="primary" @click="publish(false)">发布</a-button>
+        <a-button :loading="confirmLoading" type="primary" @click="handleOk(false)">保存</a-button>
         <a-button key="cancel" @click="handleCancel">取消</a-button>
       </a-space>
     </template>
@@ -57,7 +56,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { findById } from '@/api/notice/siteMessage'
+import { save, findById } from '@/api/notice/siteMessage'
 import '@wangeditor/editor/dist/css/style.css'
 import XEUtils from 'xe-utils'
 
@@ -98,21 +97,18 @@ export default {
           this.confirmLoading = false
         })
       } else {
+        this.form.efficientTime = this.efficientTime
         this.confirmLoading = false
       }
     },
     /**
      * 保存为草稿
      */
-    handleOk (publish) {
+    handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          if (publish) {
-
-          } else {
-
-          }
+          await save(this.form)
           this.confirmLoading = false
           this.$emit('ok')
           this.visible = false

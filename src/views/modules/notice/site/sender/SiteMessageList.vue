@@ -44,7 +44,7 @@
       </vxe-table-column>
       <vxe-table-column field="senderTime" title="发送时间" />
       <vxe-table-column field="efficientTime" title="截至有效期" />
-      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -54,8 +54,16 @@
             <span>
               <a href="javascript:" @click="edit(row)">编辑</a>
             </span>
+            <a-divider type="vertical"/>
+            <a-popconfirm
+              title="是否发送消息"
+              @confirm="send(row)"
+              okText="是"
+              cancelText="否">
+              <a href="javascript:">发送</a>
+            </a-popconfirm>
           </template>
-          <template v-if="row.cancel === 'sent'">
+          <template v-if="row.sendState === 'sent'">
             <a-divider type="vertical"/>
             <a-popconfirm
               title="是否撤回消息"
@@ -65,14 +73,16 @@
               <a href="javascript:" style="color: red">撤回</a>
             </a-popconfirm>
           </template>
-          <a-popconfirm
-            title="是否删除消息"
-            v-if="['cancel','draft'].includes(row.cancel)"
-            @confirm="remove(row)"
-            okText="是"
-            cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
-          </a-popconfirm>
+          <template v-if="['draft'].includes(row.sendState)">
+            <a-divider type="vertical"/>
+            <a-popconfirm
+              title="是否删除消息"
+              @confirm="remove(row)"
+              okText="是"
+              cancelText="否">
+              <a href="javascript:" style="color: red">删除</a>
+            </a-popconfirm>
+          </template>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -86,20 +96,19 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <site-message-edit ref="siteMessageEdit" @ok="init"/>
-    <site-message-show ref="siteMessageShow"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { pageBySender, del, cancel } from '@/api/notice/siteMessage'
-import SiteMessageEdit from '@/views/modules/notice/site/sender/SiteMessageEdit'
-import SiteMessageShow from '@/views/modules/notice/site/sender/SiteMessageShow'
+import { pageBySender, del, cancel, send } from '@/api/notice/siteMessage'
+import SiteMessageEdit from './SiteMessageEdit'
+import { NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
 
 export default {
   name: 'SiteMessageList',
-  components: { SiteMessageShow, SiteMessageEdit },
+  components: { SiteMessageEdit },
   mixins: [TableMixin],
   computed: {
     fields () {
@@ -144,13 +153,22 @@ export default {
       this.$refs.siteMessageEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.siteMessageShow.init(record.id, 'show')
+      this.$bus.emit(NOTICE_SHOW_MESSAGE, record)
+    },
+    /**
+     * 发送
+     */
+    send (record) {
+      send(record.id).then(() => {
+        this.$message.info('发送成功')
+        this.init()
+      })
     },
     /**
      * 撤回消息
      */
     cancel (record) {
-      cancel(record.id).then(res => {
+      cancel(record.id).then(() => {
         this.$message.info('撤回成功')
         this.init()
       })

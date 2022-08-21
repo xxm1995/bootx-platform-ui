@@ -60,8 +60,8 @@ export function read (id) {
 export function del (id) {
   return axios({
     url: '/site/message/delete',
-    params: { id },
-    method: 'DELETE'
+    method: 'DELETE',
+    params: { id }
   })
 }
 
@@ -71,7 +71,29 @@ export function del (id) {
 export function cancel (id) {
   return axios({
     url: '/site/message/cancel',
-    params: { id },
-    method: 'DELETE'
+    method: 'POST',
+    params: { id }
+  })
+}
+
+/**
+ * 发送
+ */
+export function send (id) {
+  return axios({
+    url: '/site/message/send',
+    method: 'POST',
+    params: { id }
+  })
+}
+
+/**
+ * 保存草稿
+ */
+export function save (obj) {
+  return axios({
+    url: '/site/message/save',
+    method: 'POST',
+    data: obj
   })
 }

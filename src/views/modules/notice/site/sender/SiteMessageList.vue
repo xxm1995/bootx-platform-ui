@@ -49,22 +49,25 @@
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
-          <a-divider type="vertical"/>
-          <span>
-            <a href="javascript:" @click="edit(row)">编辑</a>
-          </span>
-          <a-divider type="vertical"/>
-          <a-popconfirm
-            title="是否撤回消息"
-            v-if="row.cancel === 'cancel'"
-            @confirm="cancel(row)"
-            okText="是"
-            cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
-          </a-popconfirm>
+          <template v-if="row.sendState === 'draft'">
+            <a-divider type="vertical"/>
+            <span>
+              <a href="javascript:" @click="edit(row)">编辑</a>
+            </span>
+          </template>
+          <template v-if="row.cancel === 'sent'">
+            <a-divider type="vertical"/>
+            <a-popconfirm
+              title="是否撤回消息"
+              @confirm="cancel(row)"
+              okText="是"
+              cancelText="否">
+              <a href="javascript:" style="color: red">撤回</a>
+            </a-popconfirm>
+          </template>
           <a-popconfirm
             title="是否删除消息"
-            v-else
+            v-if="['cancel','draft'].includes(row.cancel)"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">

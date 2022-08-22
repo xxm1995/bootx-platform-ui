@@ -55,9 +55,9 @@ export default {
         {
           haveRead: false,
           sendState: null,
-          senderName: 'bootx',
-          senderTime: '2021-08-08 11:34:11',
-          title: '测试消息'
+          senderName: '',
+          senderTime: '',
+          title: ''
         }
       ]
     }

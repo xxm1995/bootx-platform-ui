@@ -36,7 +36,7 @@
             :headers="tokenHeader"
             :data="uploadData"
             :showUploadList="false"
-            @change="handleChange">
+            @change="uploadChange">
             <a-button type="primary">
               <a-icon type="upload"/>
               {{ `素材上传(${dictConvert('WeChatMediaType', queryParam.type)})` }}
@@ -84,7 +84,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { pageNews, pageFile, deleteFile } from '@/api/third/weChatMedia'
+import { pageFile, deleteFile } from '@/api/third/weChatMedia'
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 
@@ -163,7 +163,10 @@ export default {
         this.init()
       })
     },
-    handleChange (info) {
+    /**
+     * 上传变动
+     */
+    uploadChange (info) {
       if (info.file.status === 'done') {
         if (!info.file.response.code) {
           this.init()

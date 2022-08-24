@@ -79,7 +79,6 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange">
-      />
     </vxe-pager>
     <pay-notify-record-edit
       ref="payNotifyRecordEdit"

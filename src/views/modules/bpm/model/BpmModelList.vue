@@ -24,30 +24,45 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编号" />
       <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="host" title="地址" />
-      <vxe-table-column field="port" title="端口" />
-      <vxe-table-column field="username" title="账号" />
-      <vxe-table-column field="sender" title="发送人" />
-      <vxe-table-column field="from" title="from" />
+      <vxe-table-column field="modelType" title="流程类型" />
+      <vxe-table-column field="publish" title="发布状态" />
       <vxe-table-column field="enable" title="启用状态" >
         <template v-slot="{row}">
-          <a-tag v-if="row.activity" color="green">启用</a-tag>
+          <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">未启用</a-tag>
         </template>
       </vxe-table-column>
-      <vxe-table-column field="securityType" title="安全方式" >
+      <vxe-table-column field="mainProcess" title="是否主流程">
         <template v-slot="{row}">
-          {{ dictConvert(mailSecurityCode,row.securityType) }}
+          <a-tag v-if="row.mainProcess" color="green">是</a-tag>
+          <a-tag v-else color="red">否</a-tag>
         </template>
       </vxe-table-column>
+      <vxe-table-column field="processVersion" title="流程版本号">
+        <template v-slot="{row}">
+          <a-tag>{{ row.processVersion||'无' }}</a-tag>
+        </template>
+      </vxe-table-column>
+      <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="250" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">编辑</a>
+          <a-divider type="vertical"/>
+          <a-upload
+            name="file"
+            :multiple="false"
+            :accept="acceptType"
+            :action="uploadAction"
+            :headers="tokenHeader"
+            :data="{id: row.id}"
+            :showUploadList="false"
+            @change="uploadChange">
+            <a href="javascript:">上传BPMN</a>
+          </a-upload>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -88,34 +103,43 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
-    <mail-config-edit
-      ref="mailConfigEdit"
-      @ok="handleOk"/>
+    <bpm-model-edit ref="bpmModelEdit" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page, setUpActivity } from '@/api/notice/mailConfig'
-import MailConfigEdit from './MailConfigEdit'
+import { del, page } from '@/api/bpm/model'
+import BpmModelEdit from './BpmModelEdit'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+
 export default {
-  name: 'EmailConfigList',
+  name: 'BpmModelList',
   mixins: [TableMixin],
-  components: {
-    MailConfigEdit
+  components: { BpmModelEdit },
+  computed: {
+    // 上传地址
+    uploadAction () {
+      return process.env.VUE_APP_API_BASE_URL + '/bpm/model/uploadBpmn'
+    },
+    // 请求头消息
+    tokenHeader () {
+      // 从 localstorage 获取 token
+      const token = storage.get(ACCESS_TOKEN)
+      return {
+        AccessToken: token
+      }
+    }
   },
   data () {
     return {
-      mailSecurityCode: 'MailSecurityCode',
+      // 上传文件类型限定
+      acceptType: '',
       fields: [
-        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
-        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' }
-      ],
-      queryParam: {
-        code: '',
-        name: ''
-      }
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入流程模型名称' }
+      ]
     }
   },
   methods: {
@@ -128,27 +152,43 @@ export default {
         this.pageQueryResHandel(res, this)
       })
     },
-    // 设置默认配置
-    setUpActivity (record) {
-      setUpActivity(record.id).then(_ => {
-        this.$message.info('设置成功')
-        this.init()
-      })
-    },
     add () {
-      this.$refs.mailConfigEdit.init('', 'add')
+      this.$refs.bpmModelEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.mailConfigEdit.init(record.id, 'edit')
+      this.$refs.bpmModelEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.mailConfigEdit.init(record.id, 'show')
+      this.$refs.bpmModelEdit.init(record.id, 'show')
     },
     remove (record) {
       del(record.id).then(_ => {
         this.$message.info('删除成功')
         this.init()
       })
+    },
+    /**
+     * 表单信息
+     */
+    uploadData (id) {
+      return {
+        id
+      }
+    },
+    /**
+     * 上传变动
+     */
+    uploadChange (info) {
+      if (info.file.status === 'done') {
+        if (!info.file.response.code) {
+          this.init()
+          this.$message.success(`${info.file.name} 上传成功!`)
+        } else {
+          this.$message.error(`${info.file.response.msg}`)
+        }
+      } else if (info.file.status === 'error') {
+        this.$message.error('上传失败')
+      }
     }
   },
   created () {

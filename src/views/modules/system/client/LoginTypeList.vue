@@ -87,7 +87,6 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange">
-      />
     </vxe-pager>
     <login-type-edit
       ref="loginTypeEdit"

@@ -69,7 +69,7 @@
             <a :disabled="row.publish === PUBLISHED" href="javascript:">上传BPMN</a>
           </a-upload>
           <a-divider type="vertical"/>
-          <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="taskSetting(row)">节点配置</a>
+          <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="taskNodeShow(row)">节点配置</a>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -149,12 +149,15 @@ export default {
     show (record) {
       this.$refs.bpmModelEdit.init(record.id, 'show')
     },
-    taskSetting (record) {
-      this.$refs.bpmModelTaskList.show(record.id)
+    /**
+     * 任务节点列表
+     */
+    taskNodeShow (record) {
+      this.$refs.bpmModelTaskList.list(record)
     },
     remove (record) {
       this.$confirm({
-        title: '警告',
+        title: '删除',
         content: '是否删除流程模型',
         onOk: () => {
           this.loading = true

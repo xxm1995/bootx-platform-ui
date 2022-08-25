@@ -8,6 +8,18 @@
     :closable="true"
     @close="handleCancel"
   >
+    <vxe-toolbar
+      custom
+      zoom
+      :refresh="{query: init}"
+    >
+      <template v-slot:buttons>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add">添加</a-button>
+          <a-button icon="sync" :disabled="loading" @click="sync">同步任务节点</a-button>
+        </a-space>
+      </template>
+    </vxe-toolbar>
     <vxe-table
       row-id="id"
       size="medium"
@@ -15,32 +27,35 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="modelType" title="流程类型" />
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="320" :showOverflow="false" title="操作">
+      <vxe-table-column field="taskId" title="任务节点id"/>
+      <vxe-table-column field="taskName" title="任务节点名称"/>
+      <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
-          <a-divider type="vertical"/>
-          <a href="javascript:" @click="taskSetting(row)">流程配置</a>
-          <a-divider type="vertical"/>
+          <a href="javascript:" @click="remove(row)" style="color: red">删除</a>
         </template>
       </vxe-table-column>
     </vxe-table>
+    <bpm-model-task-edit
+      ref="bpmModelTaskEdit"
+      @ok="handleOk"/>
   </a-drawer>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { itemPage } from '@/api/system/dict'
+import { listByModelId, del, sync } from '@/api/bpm/modelTask'
+import BpmModelTaskEdit from './BpmModelTaskEdit'
 
 export default {
   name: 'BpmModelTaskList',
   mixins: [TableMixin],
+  components: {
+    BpmModelTaskEdit
+  },
   data () {
     return {
       title: '',
@@ -52,26 +67,60 @@ export default {
     /**
      * 展示列表
      */
-    show (modelId) {
-      this.modelId = modelId
-      this.modelId = modelId
+    list (record) {
+      this.modelId = record.id
+      this.title = record.name
+      this.visible = true
       this.init()
     },
     init () {
-      this.visible = true
-      this.queryPage()
-    },
-    queryPage () {
       this.loading = true
-      itemPage({
-        modelId: this.modelId,
-        ...this.pages
-      }).then(res => {
-        this.pageQueryResHandel(res, this)
+      listByModelId(this.modelId).then(res => {
+        this.tableData = res.data
+        this.loading = false
       })
     },
     handleCancel () {
       this.visible = false
+    },
+    add () {
+      this.$refs.bpmModelTaskEdit.init('', 'add')
+    },
+    edit (record) {
+      this.$refs.bpmModelTaskEdit.init(record.id, 'edit')
+    },
+    show (record) {
+      this.$refs.bpmModelTaskEdit.init(record.id, 'show')
+    },
+    remove (record) {
+      this.$confirm({
+        title: '删除',
+        content: '是否删除流程模型',
+        onOk: () => {
+          this.loading = true
+          del(record.id).then(_ => {
+            this.$message.info('删除成功')
+            this.init()
+          })
+        }
+      })
+    },
+    /**
+     * 同步任务节点
+     */
+    sync () {
+      console.log(this.modelId)
+      this.$confirm({
+        title: '同步',
+        content: '是否同步流程业务节点',
+        onOk: () => {
+          this.loading = true
+          sync(this.modelId).then(() => {
+            this.$message.success('同步任务节点成功')
+            this.init()
+          })
+        }
+      })
     }
   }
 }

@@ -58,4 +58,10 @@ export function del (id) {
 /**
  * 上传bpmn文件
  */
-
+export function publish (id) {
+  return axios({
+    url: '/bpm/model/publish',
+    method: 'POST',
+    params: { id }
+  })
+}

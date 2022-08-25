@@ -60,7 +60,7 @@
           label="描述"
           prop="remark"
         >
-          <a-input
+          <a-textarea
             :disabled="showable"
             v-model="form.remark"
           />

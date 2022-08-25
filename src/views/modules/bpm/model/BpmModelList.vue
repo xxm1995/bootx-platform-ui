@@ -26,13 +26,17 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="modelType" title="流程类型" />
-      <vxe-table-column field="publish" title="发布状态" />
-      <vxe-table-column field="enable" title="启用状态" >
+      <vxe-table-column field="publish" title="发布状态">
         <template v-slot="{row}">
-          <a-tag v-if="row.enable" color="green">启用</a-tag>
-          <a-tag v-else color="red">未启用</a-tag>
+          <a-tag>{{ dictConvert('BpmModelPublish',row.publish) }}</a-tag>
         </template>
       </vxe-table-column>
+      <!--      <vxe-table-column field="enable" title="启用状态" >-->
+      <!--        <template v-slot="{row}">-->
+      <!--          <a-tag v-if="row.enable" color="green">启用</a-tag>-->
+      <!--          <a-tag v-else color="red">未启用</a-tag>-->
+      <!--        </template>-->
+      <!--      </vxe-table-column>-->
       <vxe-table-column field="mainProcess" title="是否主流程">
         <template v-slot="{row}">
           <a-tag v-if="row.mainProcess" color="green">是</a-tag>
@@ -46,14 +50,15 @@
       </vxe-table-column>
       <vxe-table-column field="remark" title="备注" />
       <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="250" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="320" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a :disabled="row.publish === PUBLISHED" href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
           <a-upload
             name="file"
+            :disabled="row.publish === PUBLISHED"
             :multiple="false"
             :accept="acceptType"
             :action="uploadAction"
@@ -61,8 +66,10 @@
             :data="{id: row.id}"
             :showUploadList="false"
             @change="uploadChange">
-            <a href="javascript:">上传BPMN</a>
+            <a :disabled="row.publish === PUBLISHED" href="javascript:">上传BPMN</a>
           </a-upload>
+          <a-divider type="vertical"/>
+          <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="taskSetting(row)">节点配置</a>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -71,22 +78,10 @@
             <template #overlay>
               <a-menu>
                 <a-menu-item>
-                  <a-popconfirm
-                    title="是否设为默认配置"
-                    @confirm="setUpActivity(row)"
-                    okText="是"
-                    cancelText="否">
-                    <a href="javascript:">设为默认</a>
-                  </a-popconfirm>
+                  <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="publish(row)">发布</a>
                 </a-menu-item>
                 <a-menu-item>
-                  <a-popconfirm
-                    title="是否删除配置"
-                    @confirm="remove(row)"
-                    okText="是"
-                    cancelText="否">
-                    <a href="javascript:" style="color: red">删除</a>
-                  </a-popconfirm>
+                  <a :disabled="row.publish === PUBLISHED" href="javascript:" @click="remove(row)" :style="{color: row.publish === PUBLISHED?'':'red'}">删除</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -104,37 +99,30 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <bpm-model-edit ref="bpmModelEdit" @ok="init"/>
+    <bpm-model-task-list ref="bpmModelTaskList"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page } from '@/api/bpm/model'
+import { del, page, publish } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
-import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { UploadMixin } from '@/mixins/UploadMixin'
+import BpmModelTaskList from './BpmModelTaskList'
 
 export default {
   name: 'BpmModelList',
-  mixins: [TableMixin],
-  components: { BpmModelEdit },
-  computed: {
-    // 上传地址
-    uploadAction () {
-      return process.env.VUE_APP_API_BASE_URL + '/bpm/model/uploadBpmn'
-    },
-    // 请求头消息
-    tokenHeader () {
-      // 从 localstorage 获取 token
-      const token = storage.get(ACCESS_TOKEN)
-      return {
-        AccessToken: token
-      }
-    }
-  },
+  mixins: [TableMixin, UploadMixin],
+  components: { BpmModelTaskList, BpmModelEdit },
   data () {
     return {
+      // 流程定义已发布
+      PUBLISHED: 'published',
+      // 未发布, 已经上传bpmn文件
+      UNPUBLISHED_XML: 'unpublishedXml',
+      // 上传地址
+      uploadUrl: '/bpm/model/uploadBpmn',
       // 上传文件类型限定
       acceptType: '',
       fields: [
@@ -161,35 +149,39 @@ export default {
     show (record) {
       this.$refs.bpmModelEdit.init(record.id, 'show')
     },
+    taskSetting (record) {
+      this.$refs.bpmModelTaskList.show(record.id)
+    },
     remove (record) {
-      del(record.id).then(_ => {
-        this.$message.info('删除成功')
-        this.init()
+      this.$confirm({
+        title: '警告',
+        content: '是否删除流程模型',
+        onOk: () => {
+          this.loading = true
+          del(record.id).then(_ => {
+            this.$message.info('删除成功')
+            this.init()
+          })
+        }
       })
     },
     /**
-     * 表单信息
+     * 发布
      */
-    uploadData (id) {
-      return {
-        id
-      }
-    },
-    /**
-     * 上传变动
-     */
-    uploadChange (info) {
-      if (info.file.status === 'done') {
-        if (!info.file.response.code) {
-          this.init()
-          this.$message.success(`${info.file.name} 上传成功!`)
-        } else {
-          this.$message.error(`${info.file.response.msg}`)
+    publish (record) {
+      this.$confirm({
+        title: '警告',
+        content: '是否发布当前流程模型',
+        onOk: () => {
+          this.loading = true
+          publish(record.id).then(() => {
+            this.$message.success('发布流程成功')
+            this.init()
+          })
         }
-      } else if (info.file.status === 'error') {
-        this.$message.error('上传失败')
-      }
+      })
     }
+
   },
   created () {
     this.init()

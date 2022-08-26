@@ -75,6 +75,12 @@ export const TableMixin = {
     handleOk () {
       this.init()
     },
+    // 下拉列表搜索
+    selectSearch (input, option) {
+      return (
+        option.componentOptions.children[0].text.toLowerCase().indexOf(input.toLowerCase()) >= 0
+      )
+    },
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, String(code))

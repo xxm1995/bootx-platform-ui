@@ -37,7 +37,7 @@
           <a-select
             :disabled="showable"
             allowClear
-            v-model="form.type"
+            v-model="form.formId"
             :filter-option="selectSearch"
             :options="dynamicFormList"
             style="width: 100%"
@@ -103,6 +103,10 @@ export default {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          delete this.form.modelEditorXml
+          if (!this.form.formId) {
+            this.form.formId = undefined
+          }
           this.confirmLoading = false
         })
       } else {

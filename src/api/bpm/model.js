@@ -12,6 +12,17 @@ export function page (params) {
 }
 
 /**
+ * 获取生效并部署的主流程列表
+ */
+export function findMainProcess () {
+  return axios({
+    url: '/bpm/model/findMainProcess',
+    method: 'GET'
+  })
+}
+
+
+/**
  * 获取单条
  */
 export function get (id) {

@@ -27,8 +27,13 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="taskId" title="任务节点id"/>
       <vxe-table-column field="taskName" title="任务节点名称"/>
+      <vxe-table-column field="taskId" title="任务节点id"/>
+      <vxe-table-column field="assignType" title="人员分配类型">
+        <template v-slot="{row}">
+          {{ dictConvert('BpmTaskAssignType',row.assignType) }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>

@@ -19,24 +19,6 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="关联模型id"
-          prop="modelId"
-        >
-          <a-input v-model="form.modelId" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="流程定义id"
-          prop="defId"
-        >
-          <a-input v-model="form.defId" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="流程key"
-          prop="defKey"
-        >
-          <a-input v-model="form.defKey" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item
           label="任务节点id"
           prop="taskId"
         >
@@ -52,7 +34,15 @@
           label="分配类型"
           prop="assignType"
         >
-          <a-input v-model="form.assignType" :disabled="showable"/>
+          <a-select
+            allowClear
+            v-model="form.assignType"
+            :disabled="showable"
+            :filter-option="selectSearch"
+            :options="assignTypeList"
+            style="width: 100%"
+            placeholder="选择处理人分配类型"
+          />
         </a-form-model-item>
         <a-form-model-item
           label="分配的用户(固定人)"
@@ -77,28 +67,26 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
+      assignTypeList: [],
       form: {
         id: null,
-        modelId: null,
-        defId: null,
-        defKey: null,
-        taskId: null,
-        taskName: null,
-        assignType: null,
-        userId: null,
+        taskId: '',
+        taskName: '',
+        assignType: undefined,
+        userId: ''
       },
       rules: {
-        modelId: [],
-        defId: [],
-        defKey: [],
-        taskId: [],
-        taskName: [],
-        assignType: [],
-        userId: [],
+        taskId: [{ required: true, message: '请输入任务节点ID!' }],
+        taskName: [{ required: true, message: '请输入任务节点名称!' }],
+        assignType: [{ required: true, message: '请选择处理人分配类型!' }],
+        userId: []
       }
     }
   },
   methods: {
+    async initData () {
+      this.assignTypeList = await this.getDictDropDownAsync('BpmTaskAssignType')
+    },
     /**
      * 编辑
      */
@@ -107,9 +95,13 @@ export default {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          if (!this.form.assignType) {
+            this.form.assignType = undefined
+          }
           this.confirmLoading = false
         })
       } else {
+        this.form = {}
         this.confirmLoading = false
       }
     },
@@ -141,6 +133,9 @@ export default {
         this.$refs.form.resetFields()
       })
     }
+  },
+  mounted () {
+    this.initData()
   }
 }
 </script>

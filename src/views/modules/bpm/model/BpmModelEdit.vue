@@ -22,19 +22,33 @@
           label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable"/>
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="流程类型"
           prop="modelType"
         >
-          <a-input v-model="form.modelType" :disabled="showable"/>
+          <a-input v-model="form.modelType" :disabled="showable" placeholder="请输入流程类型"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="关联表单"
+          prop="formKey"
+        >
+          <a-select
+            :disabled="showable"
+            allowClear
+            v-model="form.type"
+            :filter-option="selectSearch"
+            :options="dynamicFormList"
+            style="width: 100%"
+            placeholder="选择关联表单"
+          />
         </a-form-model-item>
         <a-form-model-item
           label="备注"
           prop="remark"
         >
-          <a-textarea v-model="form.remark" :disabled="showable"/>
+          <a-textarea v-model="form.remark" :disabled="showable" placeholder="请输入流程备注"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -48,15 +62,19 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update } from '@/api/bpm/model'
+import { list } from '@/api/develop/dynamicForm'
 export default {
   name: 'ModelEdit',
   mixins: [FormMixin],
   data () {
     return {
+      // 动态表单列表
+      dynamicFormList: [],
       form: {
         id: null,
         name: '',
         modelType: '',
+        formId: undefined,
         remark: ''
       },
       rules: {
@@ -66,6 +84,17 @@ export default {
     }
   },
   methods: {
+    /**
+     * 初始化数据
+     */
+    initData () {
+      // 动态表单列表
+      list().then(res => {
+        this.dynamicFormList = res.data.map(o => {
+          return { label: o.name, value: o.id }
+        })
+      })
+    },
     /**
      * 编辑
      */
@@ -108,6 +137,9 @@ export default {
         this.$refs.form.resetFields()
       })
     }
+  },
+  mounted () {
+    this.initData()
   }
 }
 </script>

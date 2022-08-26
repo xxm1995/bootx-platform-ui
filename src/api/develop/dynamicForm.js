@@ -16,12 +16,18 @@ export function update (obj) {
   })
 }
 
-
 export function page (params) {
   return axios({
     url: '/dynamic/form/page',
     method: 'GET',
     params: params
+  })
+}
+
+export function list () {
+  return axios({
+    url: '/dynamic/form/findAll',
+    method: 'GET'
   })
 }
 

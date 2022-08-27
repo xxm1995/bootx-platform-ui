@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="数据范围权限管理"
+    :title="title"
     destroyOnClose
     :width="640"
     :visible="visible"
@@ -15,12 +15,12 @@
             <a-row :gutter="12">
               <a-col :md="8" :sm="12">
                 <a-form-item label="名称">
-                  <a-input v-model="queryParam.name" placeholder="" />
+                  <a-input v-model="queryParam.name" placeholder="输入用户名称" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="12">
                 <a-form-item label="账号">
-                  <a-input v-model="queryParam.username" placeholder="" />
+                  <a-input v-model="queryParam.username" placeholder="输入用户账号" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="24">
@@ -36,11 +36,12 @@
       :height="350"
       row-id="id"
       ref="table"
-      :checkbox-config="{reserve: true,checkMethod: banCheckbox}"
+      :checkbox-config="checkboxConfig"
+      :radio-config="radioConfig"
       :loading="loading"
-      :data="tableData"
-    >
-      <vxe-table-column type="checkbox" width="40"/>
+      :data="tableData">
+      <vxe-table-column v-if="checkbox" type="checkbox" width="40"/>
+      <vxe-table-column v-if="!checkbox" type="radio" width="40"/>
       <vxe-table-column field="name" title="用户名称" />
       <vxe-table-column field="username" title="用户账号" />
     </vxe-table>
@@ -65,12 +66,40 @@ import { page } from '@/api/system/user'
 import { TableMixin } from '@/mixins/TableMixin'
 
 export default {
-  name: 'UserSelectModal',
+  name: 'BUserSelectModal',
   mixins: [TableMixin],
+  props: {
+    title: {
+      type: String,
+      default: '选择用户'
+    },
+    // 是否是多选
+    checkbox: {
+      type: Boolean,
+      default () {
+        return true
+      }
+    }
+  },
+  computed: {
+    checkboxConfig () {
+      return this.checkbox ? {
+        reserve: true,
+        checkMethod: this.banCheckbox
+      } : {}
+    },
+    radioConfig () {
+      return !this.checkbox ? {
+        reserve: true,
+        checkRowKey: this.selectUserId
+      } : {}
+    }
+  },
   data () {
     return {
       // 已经被选择的用户
       selectUserIds: [],
+      selectUserId: null,
       visible: false,
       queryParam: {
         code: '',
@@ -79,11 +108,22 @@ export default {
     }
   },
   methods: {
-    init (selectUserIds) {
+    /**
+     * 调用 初始化
+     * @param param 已经选中的用户ID或ID集合
+     */
+    init (param) {
       this.visible = true
-      this.selectUserIds = selectUserIds
+      if (this.checkbox) {
+        this.selectUserIds = param
+      } else {
+        this.selectUserId = param
+      }
       this.queryPage()
     },
+    /**
+     * 查询
+     */
     queryPage () {
       this.loading = true
       page({
@@ -93,21 +133,61 @@ export default {
         this.pageQueryResHandel(res, this)
       })
     },
+    /**
+     * 选中确定回调
+     */
     handleOk () {
+      if (this.checkbox) {
+        this.checkboxCallback()
+      } else {
+        this.radioCallback()
+      }
+      this.visible = false
+    },
+
+    /**
+     * 复选回调
+     * @return userIds 选中的用户id集合
+     * @return users 选中的用户集合
+     */
+    checkboxCallback () {
       // 非本页选中的
       const reserveUsers = this.$refs.table.getCheckboxReserveRecords()
       // 本页选中的
       const checkUsers = this.$refs.table.getCheckboxRecords()
-      const userIds = reserveUsers.concat(checkUsers).map(res => res.id)
-      this.visible = false
-      this.$emit('ok', userIds)
+      const users = reserveUsers.concat(checkUsers)
+      const userIds = users.map(res => res.id)
+      this.$emit('ok', userIds, users)
     },
+
+    /**
+     * 单选回调
+     * @return userId 选中的用户id
+     * @return user 选中的用户
+     */
+    radioCallback () {
+      const user = this.$refs.table.getRadioRecord()
+      console.log(user)
+      const userId = user.id
+      this.$emit('ok', userId, user)
+    },
+    /**
+     * 关闭
+     */
     handleCancel () {
       this.visible = false
     },
-    // 禁止选中的行
+    /**
+     * 禁止选中的行 复选
+     */
     banCheckbox ({ row }) {
       return !this.selectUserIds.includes(row.id)
+    },
+    /**
+     * 默认选中的行 单选
+     */
+    selectedRadio () {
+
     }
   }
 }

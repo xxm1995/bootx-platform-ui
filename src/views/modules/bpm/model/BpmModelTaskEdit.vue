@@ -46,9 +46,13 @@
         </a-form-model-item>
         <a-form-model-item
           label="分配的用户(固定人)"
-          prop="userId"
+          prop="userName"
         >
-          <a-input v-model="form.userId" :disabled="showable"/>
+          <a-input v-model="form.userName" placeholder="请选择用户" disabled>
+            <template #addonAfter>
+              <a href="javascript:" :disabled="showable" @click="selectUserShow" >选择用户</a>
+            </template>
+          </a-input>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -56,14 +60,17 @@
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
+    <b-user-select-modal ref="userSelectModal" @ok="selectUser" title="选择指定用户" :checkbox="false"/>
   </a-modal>
 </template>
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update } from '@/api/bpm/modelTask'
+import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 export default {
   name: 'BpmModelTaskEdit',
+  components: { BUserSelectModal },
   mixins: [FormMixin],
   data () {
     return {
@@ -73,13 +80,14 @@ export default {
         taskId: '',
         taskName: '',
         assignType: undefined,
-        userId: ''
+        userId: '',
+        userName: ''
       },
       rules: {
         taskId: [{ required: true, message: '请输入任务节点ID!' }],
         taskName: [{ required: true, message: '请输入任务节点名称!' }],
         assignType: [{ required: true, message: '请选择处理人分配类型!' }],
-        userId: []
+        userName: [{ required: true, message: '请选择处理人!' }]
       }
     }
   },
@@ -132,6 +140,19 @@ export default {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
+    },
+    /**
+     * 开启选择界面
+     */
+    selectUserShow () {
+      this.$refs.userSelectModal.init(this.form.userId)
+    },
+    /**
+     * 选中用户回调
+     */
+    selectUser (userId, user) {
+      this.$set(this.form, 'userId', userId)
+      this.$set(this.form, 'userName', user.name)
     }
   },
   mounted () {

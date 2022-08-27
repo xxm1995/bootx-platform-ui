@@ -35,21 +35,21 @@
       <vxe-table-column field="name" title="用户名称" />
       <vxe-table-column field="username" title="用户账号" />
     </vxe-table>
-    <user-select-modal ref="userSelectModal" @ok="selectUser"/>
+    <b-user-select-modal ref="userSelectModal" @ok="selectUser" title="选择指定用户" :checkbox="true"/>
   </a-drawer>
 </template>
 
 <script>
 
 import { TableMixin } from '@/mixins/TableMixin'
-import UserSelectModal from './UserSelectModal'
 import { deleteBatchUserAssign, findUsersByDataScopeId, saveUserAssign } from '@/api/system/dataScope'
+import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 
 export default {
   name: 'UserScopeModal',
   mixins: [TableMixin],
   components: {
-    UserSelectModal
+    BUserSelectModal
   },
   data () {
     return {
@@ -84,6 +84,7 @@ export default {
     },
     // 选中用户, 进行保存
     selectUser (userIds) {
+      console.log(userIds)
       this.loading = true
       saveUserAssign({
         dataScopeId: this.dataScopeId,

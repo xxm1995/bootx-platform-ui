@@ -26,17 +26,13 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="name" title="名称" />
       <vxe-table-column field="modelType" title="流程类型" />
+      <vxe-table-column field="defName" title="流程名称" />
+      <vxe-table-column field="defId" title="流程ID" />
       <vxe-table-column field="publish" title="发布状态">
         <template v-slot="{row}">
           <a-tag>{{ dictConvert('BpmModelPublish',row.publish) }}</a-tag>
         </template>
       </vxe-table-column>
-      <!--      <vxe-table-column field="enable" title="启用状态" >-->
-      <!--        <template v-slot="{row}">-->
-      <!--          <a-tag v-if="row.enable" color="green">启用</a-tag>-->
-      <!--          <a-tag v-else color="red">未启用</a-tag>-->
-      <!--        </template>-->
-      <!--      </vxe-table-column>-->
       <vxe-table-column field="mainProcess" title="是否主流程">
         <template v-slot="{row}">
           <a-tag v-if="row.mainProcess" color="green">是</a-tag>

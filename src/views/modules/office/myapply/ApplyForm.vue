@@ -25,6 +25,7 @@ import { FormMixin } from '@/mixins/FormMixin'
 import { get as getModel } from '@/api/bpm/model'
 import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
+import { start } from '@/api/bpm/instance'
 
 export default {
   name: 'ApplyForm',
@@ -40,6 +41,7 @@ export default {
   methods: {
     async edit (id) {
       this.visible = true
+      this.confirmLoading = true
       // 获取消息模板
       await getModel(id).then(res => {
         this.bpmModel = res.data
@@ -55,16 +57,21 @@ export default {
       this.confirmLoading = false
     },
     /**
-     * 提交
+     * 发起流程
      */
     async handleOk () {
       this.$refs.kfb.getData().then(dynamicForm => {
+        this.confirmLoading = true
         const form = {
           modelId: this.bpmModel.id,
           name: dynamicForm.name,
           formVariables: dynamicForm
         }
-        console.log(form)
+        start(form).then(() => {
+          this.$emit('ok')
+          this.confirmLoading = false
+          this.handleClose()
+        })
       })
     },
     /**

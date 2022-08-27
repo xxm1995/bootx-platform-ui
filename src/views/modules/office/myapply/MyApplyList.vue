@@ -24,10 +24,12 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="modelType" title="流程类型" />
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
+      <vxe-table-column field="name" title="标题" />
+      <vxe-table-column field="defMame" title="流程名称" />
+      <vxe-table-column field="instanceId" title="实例ID" />
+      <vxe-table-column field="startUserName" title="发起人" />
+      <vxe-table-column field="startTime" title="开始时间" />
+      <vxe-table-column field="endTime" title="结束时间" />
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
@@ -66,7 +68,7 @@
         <a-button :disabled="!currentBpmModelId" type="primary" @click="apply">开始申请</a-button>
       </template>
     </a-modal>
-    <apply-form ref="applyForm"/>
+    <apply-form ref="applyForm" @ok="init"/>
   </a-card>
 </template>
 
@@ -75,6 +77,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { findMainProcess } from '@/api/bpm/model'
 import ApplyForm from '@/views/modules/office/myapply/ApplyForm'
+import { pageMyApply } from '@/api/bpm/instance'
 
 export default {
   name: 'MyApplyList',
@@ -87,7 +90,7 @@ export default {
       currentBpmModelId: undefined,
       fields: [
         { field: 'code', type: STRING, name: '流程编号', placeholder: '请输入流程编号' },
-        { field: 'code', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
+        { field: 'name', type: STRING, name: '流程名称', placeholder: '请输入流程名称' },
       ]
     }
   },
@@ -96,18 +99,24 @@ export default {
      * 初始化基础数据
      */
     async initData () {
-       findMainProcess().then(res => {
-         this.bpmModelList = res.data
-         if (this.bpmModelList) {
-           this.currentBpmModelId = this.bpmModelList[0].value
-         }
-       })
+      findMainProcess().then(res => {
+        this.bpmModelList = res.data
+        if (this.bpmModelList) {
+          this.currentBpmModelId = this.bpmModelList[0].value
+        }
+      })
     },
     /**
      * 初始化
      */
     init () {
-
+      this.loading = true
+      pageMyApply({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
     },
     /**
      * 发起申请

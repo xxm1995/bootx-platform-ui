@@ -22,7 +22,7 @@
           label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称,推荐与BPMN名称一致"/>
         </a-form-model-item>
         <a-form-model-item
           label="流程类型"

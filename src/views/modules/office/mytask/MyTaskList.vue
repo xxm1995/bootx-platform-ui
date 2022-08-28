@@ -14,39 +14,25 @@
       :refresh="{query: init}"
     >
       <template #buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
-      row-id="id"
+      row-id="taskId"
       size="medium"
       :loading="loading"
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="modelType" title="流程类型" />
-      <vxe-table-column field="publish" title="发布状态">
+      <vxe-table-column field="instanceName" title="业务标题" />
+      <vxe-table-column field="defName" title="流程名称" />
+      <vxe-table-column field="taskName" title="环节" />
+      <vxe-table-column field="taskId" title="任务id"/>
+      <vxe-table-column field="instanceId" title="流程id"/>
+      <vxe-table-column field="startUserName" title="发起人" />
+      <vxe-table-column field="startTime" title="任务开始时间" />
+      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <a-tag>{{ dictConvert('BpmModelPublish',row.publish) }}</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="mainProcess" title="是否主流程">
-        <template v-slot="{row}">
-          <a-tag v-if="row.mainProcess" color="green">是</a-tag>
-          <a-tag v-else color="red">否</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="processVersion" title="流程版本号">
-        <template v-slot="{row}">
-          <a-tag>{{ row.processVersion||'无' }}</a-tag>
-        </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="320" :showOverflow="false" title="操作">
-        <template v-slot="{row}">
-          <a href="javascript:" @click="show(row)">办理</a>
+          <a href="javascript:" @click="pass(row)">办理</a>
           <a-divider type="vertical"/>
           <a href="javascript:" @click="show(row)">委派</a>
         </template>
@@ -67,6 +53,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { pageMyTodo, pass } from '@/api/bpm/task'
 
 export default {
   name: 'MyTaskList',
@@ -80,9 +67,36 @@ export default {
     }
   },
   methods: {
-
+    init () {
+      this.loading = true
+      pageMyTodo({
+        ...this.queryParam,
+        ...this.pages
+      }).then(res => {
+        this.pageQueryResHandel(res, this)
+      })
+    },
+    /**
+     * 完成任务
+     */
+    pass (record) {
+      this.$confirm({
+        title: '警告',
+        content: '确实要完成当前任务!',
+        onOk: () => {
+          this.loading = true
+          pass({
+            taskId: record.taskId,
+            reason: '意见'
+          }).then(() => {
+            this.$message.success('任务已完成')
+            this.init()
+          })
+        }
+      })
+    }
   },
-  mounted() {
+  mounted () {
     this.init()
   }
 

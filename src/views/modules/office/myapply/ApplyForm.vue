@@ -32,7 +32,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
-      // 表单数据
+      // 表单结构
       dynamicFormStatic: {},
       // 模型
       bpmModel: {}

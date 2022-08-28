@@ -33,6 +33,17 @@ export function get (id) {
 }
 
 /**
+ * 根据流程定义id获取模型信息
+ */
+export function findByDefId (defId) {
+  return axios({
+    url: '/bpm/model/findByDefId',
+    method: 'GET',
+    params: { defId }
+  })
+}
+
+/**
  * 添加
  */
 export function add (obj) {

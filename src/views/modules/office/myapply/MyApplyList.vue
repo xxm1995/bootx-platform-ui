@@ -18,7 +18,7 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      row-id="id"
+      row-id="instanceId"
       size="medium"
       :loading="loading"
       :data="tableData"
@@ -34,7 +34,7 @@
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="edit(row)">取回</a>
+          <a href="javascript:" @click="invalid(row)">作废</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -47,6 +47,7 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
+    <!--  流程类型选择弹窗  -->
     <a-modal
       title="选择要发起的流程"
       :visible="modelVisible"
@@ -69,6 +70,7 @@
       </template>
     </a-modal>
     <apply-form ref="applyForm" @ok="init"/>
+    <apply-form-show ref="applyFormShow"/>
   </a-card>
 </template>
 
@@ -78,10 +80,11 @@ import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { findMainProcess } from '@/api/bpm/model'
 import ApplyForm from '@/views/modules/office/myapply/ApplyForm'
 import { pageMyApply } from '@/api/bpm/instance'
+import ApplyFormShow from '@/views/modules/office/myapply/ApplyFormShow'
 
 export default {
   name: 'MyApplyList',
-  components: { ApplyForm },
+  components: { ApplyFormShow, ApplyForm },
   mixins: [TableMixin],
   data () {
     return {
@@ -90,7 +93,7 @@ export default {
       currentBpmModelId: undefined,
       fields: [
         { field: 'code', type: STRING, name: '流程编号', placeholder: '请输入流程编号' },
-        { field: 'name', type: STRING, name: '流程名称', placeholder: '请输入流程名称' },
+        { field: 'name', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
       ]
     }
   },
@@ -124,6 +127,18 @@ export default {
     apply () {
       this.modelCancel()
       this.$refs.applyForm.init(this.currentBpmModelId)
+    },
+    /**
+     * 查看详情
+     */
+    show (record) {
+      this.$refs.applyFormShow.init(record.instanceId)
+    },
+    /**
+     * 作废流程
+     */
+    invalid (record) {
+
     },
     /**
      * 显示小弹窗

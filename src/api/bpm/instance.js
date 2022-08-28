@@ -21,3 +21,14 @@ export function pageMyApply (params) {
     params: params
   })
 }
+
+/**
+ * 获取流程详情
+ */
+export function findByInstanceId (instanceId) {
+  return axios({
+    url: '/bpm/instance/findByInstanceId',
+    method: 'GET',
+    params: { instanceId }
+  })
+}

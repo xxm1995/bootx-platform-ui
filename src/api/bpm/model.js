@@ -64,6 +64,19 @@ export function update (obj) {
     data: obj
   })
 }
+/**
+ * 上传bpmn文件
+ */
+export function uploadBpmn (id, modelEditorXml) {
+  return axios({
+    url: '/bpm/model/uploadBpmn',
+    method: 'POST',
+    data: {
+      id,
+      modelEditorXml
+    }
+  })
+}
 
 /**
  * 删除

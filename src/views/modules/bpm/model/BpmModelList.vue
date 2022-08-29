@@ -52,20 +52,9 @@
           <a-divider type="vertical"/>
           <a :disabled="row.publish === PUBLISHED" href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
-          <a-upload
-            name="file"
-            :disabled="row.publish === PUBLISHED"
-            :multiple="false"
-            :accept="acceptType"
-            :action="uploadAction"
-            :headers="tokenHeader"
-            :data="{id: row.id}"
-            :showUploadList="false"
-            @change="uploadChange">
-            <a :disabled="row.publish === PUBLISHED" href="javascript:">上传BPMN</a>
-          </a-upload>
+          <a href="javascript:" @click="bpmnEdit(row,false)">设计流程</a>
           <a-divider type="vertical"/>
-          <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="taskNodeShow(row)">节点配置</a>
+          <a href="javascript:" @click="taskNodeShow(row)">节点配置</a>
           <a-divider type="vertical"/>
           <a-dropdown>
             <a class="ant-dropdown-link">
@@ -74,7 +63,10 @@
             <template #overlay>
               <a-menu>
                 <a-menu-item>
-                  <a :disabled="row.publish !== UNPUBLISHED_XML" href="javascript:" @click="publish(row)">发布</a>
+                  <a href="javascript:" @click="bpmnEdit(row,true)">查看流程</a>
+                </a-menu-item>
+                <a-menu-item>
+                  <a :disabled="row.publish !== UNPUBLISHED" href="javascript:" @click="publish(row)">发布</a>
                 </a-menu-item>
                 <a-menu-item>
                   <a :disabled="row.publish === PUBLISHED" href="javascript:" @click="remove(row)" :style="{color: row.publish === PUBLISHED?'':'red'}">删除</a>
@@ -96,6 +88,7 @@
     </vxe-pager>
     <bpm-model-edit ref="bpmModelEdit" @ok="init"/>
     <bpm-model-task-list ref="bpmModelTaskList"/>
+    <bpm-modeler ref="bpmModeler"/>
   </a-card>
 </template>
 
@@ -104,21 +97,19 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { del, page, publish } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { UploadMixin } from '@/mixins/UploadMixin'
 import BpmModelTaskList from './BpmModelTaskList'
+import BpmModeler from './BpmModeler'
 
 export default {
   name: 'BpmModelList',
-  mixins: [TableMixin, UploadMixin],
-  components: { BpmModelTaskList, BpmModelEdit },
+  mixins: [TableMixin],
+  components: { BpmModeler, BpmModelTaskList, BpmModelEdit },
   data () {
     return {
       // 流程定义已发布
       PUBLISHED: 'published',
-      // 未发布, 已经上传bpmn文件
-      UNPUBLISHED_XML: 'unpublishedXml',
-      // 上传地址
-      uploadUrl: '/bpm/model/uploadBpmn',
+      // 未发布
+      UNPUBLISHED: 'unpublished',
       // 上传文件类型限定
       acceptType: '',
       fields: [
@@ -145,11 +136,14 @@ export default {
     show (record) {
       this.$refs.bpmModelEdit.init(record.id, 'show')
     },
+    bpmnEdit (record, isView) {
+      this.$refs.bpmModeler.init(record.id, isView)
+    },
     /**
      * 任务节点列表
      */
-    taskNodeShow (record) {
-      this.$refs.bpmModelTaskList.list(record)
+    taskNodeShow (record, edit) {
+      this.$refs.bpmModelTaskList.list(record,edit)
     },
     remove (record) {
       this.$confirm({

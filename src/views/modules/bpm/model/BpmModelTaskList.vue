@@ -64,6 +64,7 @@ export default {
   data () {
     return {
       title: '',
+      isEdit: true,
       visible: false,
       modelId: null
     }
@@ -72,7 +73,8 @@ export default {
     /**
      * 展示列表
      */
-    list (record) {
+    list (record, edit) {
+      this.isEdit = edit
       this.modelId = record.id
       this.title = record.name
       this.visible = true

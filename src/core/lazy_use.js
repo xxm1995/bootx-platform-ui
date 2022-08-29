@@ -9,6 +9,7 @@ import {
   Button,
   Empty,
   Switch,
+  AutoComplete,
   Radio,
   Rate,
   Checkbox,
@@ -75,6 +76,7 @@ Vue.use(InputNumber)
 Vue.use(Button)
 Vue.use(Empty)
 Vue.use(Switch)
+Vue.use(AutoComplete)
 Vue.use(Radio)
 Vue.use(Rate)
 Vue.use(Checkbox)

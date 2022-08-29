@@ -9,7 +9,7 @@
   >
     <a-spin :spinning="confirmLoading">
       <!--  动态表单  -->
-      <k-form-build ref="kfb" :value="dynamicFormStatic" />
+      <k-form-build v-if="bpmModel.formId" ref="kfb" :value="dynamicFormStatic" />
     </a-spin>
     <template #footer>
       <a-space>
@@ -60,27 +60,31 @@ export default {
      * 发起流程
      */
     async handleOk () {
-      this.$refs.kfb.getData().then(dynamicForm => {
-        this.confirmLoading = true
-        const form = {
-          modelId: this.bpmModel.id,
-          name: dynamicForm.name,
-          formVariables: dynamicForm
-        }
-        start(form).then(() => {
-          this.$emit('ok')
-          this.confirmLoading = false
-          this.handleClose()
-        })
+      let dynamicForm
+      this.confirmLoading = true
+      if (this.bpmModel.formId) {
+        dynamicForm = await this.$refs.kfb.getData()
+      }
+      const form = {
+        modelId: this.bpmModel.id,
+        name: dynamicForm?.name,
+        formVariables: dynamicForm
+      }
+      start(form).then(() => {
+        this.$emit('ok')
+        this.confirmLoading = false
+        this.handleClose()
       })
     },
     /**
      * 关闭处理
      */
     handleClose () {
+      if (this.bpmModel.formId) {
+        this.$refs.kfb.reset()
+      }
       this.bpmModel = {}
       this.dynamicFormStatic = {}
-      this.$refs.kfb.reset()
       this.handleCancel()
     }
   }

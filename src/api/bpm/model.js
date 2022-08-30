@@ -90,11 +90,22 @@ export function del (id) {
 }
 
 /**
- * 上传bpmn文件
+ * 发布
  */
 export function publish (id) {
   return axios({
     url: '/bpm/model/publish',
+    method: 'POST',
+    params: { id }
+  })
+}
+
+/**
+ * 复制
+ */
+export function copy (id) {
+  return axios({
+    url: '/bpm/model/copy',
     method: 'POST',
     params: { id }
   })

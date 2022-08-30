@@ -32,3 +32,36 @@ export function pass (obj) {
     data: obj
   })
 }
+
+/**
+ * 驳回任务
+ */
+export function reject (obj) {
+  return axios({
+    url: '/bpm/task/reject',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 任务回退
+ */
+export function flowReturn (obj) {
+  return axios({
+    url: '/bpm/task/flowReturn',
+    method: 'POST',
+    data: obj
+  })
+}
+
+/**
+ * 重新分配人员
+ */
+export function assignee (taskId, userId) {
+  return axios({
+    url: '/bpm/task/assignee',
+    method: 'POST',
+    params: { taskId, userId }
+  })
+}

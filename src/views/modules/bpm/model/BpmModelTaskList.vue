@@ -54,6 +54,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { listByModelId, del, sync } from '@/api/bpm/modelTask'
 import BpmModelTaskEdit from './BpmModelTaskEdit'
+import { copy } from '@/api/bpm/model'
 
 export default {
   name: 'BpmModelTaskList',
@@ -116,7 +117,6 @@ export default {
      * 同步任务节点
      */
     sync () {
-      console.log(this.modelId)
       this.$confirm({
         title: '同步',
         content: '是否同步流程业务节点',

@@ -12,6 +12,28 @@ export function start (obj) {
 }
 
 /**
+ * 挂起实例
+ */
+export function suspend (instanceId) {
+  return axios({
+    url: '/bpm/instance/suspend',
+    method: 'GET',
+    params: { instanceId }
+  })
+}
+
+/**
+ * 激活流程
+ */
+export function activate (instanceId) {
+  return axios({
+    url: '/bpm/instance/activate',
+    method: 'GET',
+    params: { instanceId }
+  })
+}
+
+/**
  * 分页 我的发起的流程
  */
 export function pageMyApply (params) {

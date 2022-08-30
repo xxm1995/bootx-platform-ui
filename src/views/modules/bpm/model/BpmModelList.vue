@@ -69,6 +69,9 @@
                   <a :disabled="row.publish !== UNPUBLISHED" href="javascript:" @click="publish(row)">发布</a>
                 </a-menu-item>
                 <a-menu-item>
+                  <a href="javascript:" @click="copy(row)">复制</a>
+                </a-menu-item>
+                <a-menu-item>
                   <a :disabled="row.publish === PUBLISHED" href="javascript:" @click="remove(row)" :style="{color: row.publish === PUBLISHED?'':'red'}">删除</a>
                 </a-menu-item>
               </a-menu>
@@ -94,7 +97,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { del, page, publish } from '@/api/bpm/model'
+import { copy, del, page, publish } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import BpmModelTaskList from './BpmModelTaskList'
@@ -136,6 +139,9 @@ export default {
     show (record) {
       this.$refs.bpmModelEdit.init(record.id, 'show')
     },
+    /**
+     * 流程图设计
+     */
     bpmnEdit (record, isView) {
       this.$refs.bpmModeler.init(record.id, isView)
     },
@@ -173,8 +179,23 @@ export default {
           })
         }
       })
+    },
+    /**
+     * 复制
+     */
+    copy (record) {
+      this.$confirm({
+        title: '复制',
+        content: '是否要复制该流程模型',
+        onOk: () => {
+          this.loading = true
+          copy(record.id).then(_ => {
+            this.$message.info('复制成功')
+            this.init()
+          })
+        }
+      })
     }
-
   },
   created () {
     this.init()

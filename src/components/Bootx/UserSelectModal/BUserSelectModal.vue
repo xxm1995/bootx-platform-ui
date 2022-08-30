@@ -40,8 +40,8 @@
       :radio-config="radioConfig"
       :loading="loading"
       :data="tableData">
-      <vxe-table-column v-if="checkbox" type="checkbox" width="40"/>
-      <vxe-table-column v-if="!checkbox" type="radio" width="40"/>
+      <vxe-table-column v-if="multiple" type="checkbox" width="40"/>
+      <vxe-table-column v-if="!multiple" type="radio" width="40"/>
       <vxe-table-column field="name" title="用户名称" />
       <vxe-table-column field="username" title="用户账号" />
     </vxe-table>
@@ -74,7 +74,7 @@ export default {
       default: '选择用户'
     },
     // 是否是多选
-    checkbox: {
+    multiple: {
       type: Boolean,
       default () {
         return true
@@ -83,13 +83,13 @@ export default {
   },
   computed: {
     checkboxConfig () {
-      return this.checkbox ? {
+      return this.multiple ? {
         reserve: true,
         checkMethod: this.banCheckbox
       } : {}
     },
     radioConfig () {
-      return !this.checkbox ? {
+      return !this.multiple ? {
         reserve: true,
         checkRowKey: this.selectUserId
       } : {}
@@ -114,10 +114,10 @@ export default {
      */
     init (param) {
       this.visible = true
-      if (this.checkbox) {
-        this.selectUserIds = param
+      if (this.multiple) {
+        this.selectUserIds = param || this.selectUserIds
       } else {
-        this.selectUserId = param
+        this.selectUserId = param || this.selectUserId
       }
       this.queryPage()
     },
@@ -137,7 +137,7 @@ export default {
      * 选中确定回调
      */
     handleOk () {
-      if (this.checkbox) {
+      if (this.multiple) {
         this.checkboxCallback()
       } else {
         this.radioCallback()
@@ -167,7 +167,6 @@ export default {
      */
     radioCallback () {
       const user = this.$refs.table.getRadioRecord()
-      console.log(user)
       const userId = user.id
       this.$emit('ok', userId, user)
     },

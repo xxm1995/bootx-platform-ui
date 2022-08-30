@@ -33,8 +33,8 @@
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
-          <a-divider type="vertical"/>
-          <a href="javascript:" @click="invalid(row)">作废</a>
+<!--          <a-divider type="vertical"/>-->
+<!--          <a href="javascript:" @click="invalid(row)">作废</a>-->
         </template>
       </vxe-table-column>
     </vxe-table>

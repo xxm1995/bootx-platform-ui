@@ -95,12 +95,5 @@ export const constantRouterMap = [
   {
     path: '/404',
     component: () => import(/* webpackChunkName: "fail" */ '@/views/exception/404')
-  },
-  {
-    path: '/bpmn',
-    name: 'bpmn',
-    meta: { title: 'BPMN设计器', ignoreLogin: true },
-    component: () => import('@/views/modules/bpm/modeler/SimpleDemo')
-    // component: () => import('@/views/modules/bpm/modeler/Demo')
   }
 ]

@@ -54,7 +54,6 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { listByModelId, del, sync } from '@/api/bpm/modelTask'
 import BpmModelTaskEdit from './BpmModelTaskEdit'
-import { copy } from '@/api/bpm/model'
 
 export default {
   name: 'BpmModelTaskList',

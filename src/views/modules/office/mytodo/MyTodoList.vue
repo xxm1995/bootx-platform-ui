@@ -30,11 +30,13 @@
       <vxe-table-column field="instanceId" title="流程id"/>
       <vxe-table-column field="startUserName" title="发起人" />
       <vxe-table-column field="startTime" title="任务开始时间" />
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="pass(row)">办理</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="show(row)">委派</a>
+          <a href="javascript:" @click="reject(row)">驳回</a>
+          <a-divider type="vertical"/>
+          <a href="javascript:" @click="assignee(row)">委派</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -47,19 +49,24 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
+    <b-user-select-modal ref="userSelectModal" @ok="assigneeCallback" title="选择委派的用户" :multiple="false"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { pageMyTodo, pass } from '@/api/bpm/task'
+import { assignee, pageMyTodo, pass, reject } from '@/api/bpm/task'
+import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 
 export default {
-  name: 'MyTaskList',
+  name: 'MyTodoList',
+  components: { BUserSelectModal },
   mixins: [TableMixin],
   data () {
     return {
+      // 要被委派新用户的任务id
+      assigneeTaskId: '',
       fields: [
         { field: 'code', type: STRING, name: '流程编号', placeholder: '请输入流程编号' },
         { field: 'code', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
@@ -93,6 +100,42 @@ export default {
             this.init()
           })
         }
+      })
+    },
+    /**
+     * 驳回
+     */
+    reject (record) {
+      this.$confirm({
+        title: '警告',
+        content: '确实要驳回当前任务!',
+        onOk: () => {
+          this.loading = true
+          reject({
+            taskId: record.taskId,
+            reason: '意见'
+          }).then(() => {
+            this.$message.success('任务已驳回')
+            this.init()
+          })
+        }
+      })
+    },
+    /**
+     * 委派
+     */
+    assignee (record) {
+      this.assigneeTaskId = record.taskId
+      this.$refs.userSelectModal.init()
+    },
+    /**
+     * 委派 选择用户后回调
+     */
+    assigneeCallback (userId, user) {
+      this.loading = true
+      assignee(this.assigneeTaskId, userId).then(() => {
+        this.$message.success(`任务以委派给 [${user.name}] 处理`)
+        this.init()
       })
     }
   },

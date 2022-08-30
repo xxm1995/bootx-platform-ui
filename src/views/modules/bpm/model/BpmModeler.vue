@@ -9,7 +9,6 @@
     @close="handleCancel"
   >
     <workflow-bpmn-modeler
-      ref="refNode"
       :xml="modelEditorXml"
       :is-edit="isEdit"
       :is-view="isView"

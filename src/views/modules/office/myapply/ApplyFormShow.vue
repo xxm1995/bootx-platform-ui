@@ -6,15 +6,21 @@
     :show-footer="false"
     @close="handleClose"
   >
-    <a-tabs default-active-key="form" >
+    <a-tabs v-model="currentActiveKey" @change="handleTabChange">
       <a-tab-pane key="form" tab="流程表单" force-render>
         <k-form-build ref="kfb" :value="dynamicFormStatic" disabled/>
       </a-tab-pane>
       <a-tab-pane key="handler" tab="任务处理" force-render>
         任务处理
       </a-tab-pane>
-      <a-tab-pane key="info" tab="流程信息" force-render>
-        显示流程图和流程历史
+      <a-tab-pane key="history" tab="历史信息" force-render>
+        显示和流程历史
+      </a-tab-pane>
+      <a-tab-pane key="flowChart" tab="流程图" force-render>
+        <div style="min-height: 550px">
+<!--          <process-viewer :xml="bpmModel.modelEditorXml"/>-->
+          <workflow-bpmn-modeler :is-view="true" :task-list="taskList" :xml="bpmModel.modelEditorXml"/>
+        </div>
       </a-tab-pane>
     </a-tabs>
   </vxe-modal>
@@ -26,14 +32,25 @@ import { findByInstanceId } from '@/api/bpm/instance'
 import { findByDefId } from '@/api/bpm/model'
 import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
+import WorkflowBpmnModeler from '@/components/Bpmn'
+import ProcessViewer from '@/components/Bpmn/ProcessViewer'
 
 export default {
   name: 'ApplyFormShow',
   mixins: [FormMixin],
+  components: { ProcessViewer, WorkflowBpmnModeler },
   data () {
     return {
+      currentActiveKey: 'form',
       // 流程id
       instanceId: '',
+
+      taskList: [
+        {
+          key: 'task1564480905805',
+          completed: true
+        }
+      ],
       // 表单结构
       dynamicFormStatic: {},
       // 流程模型
@@ -44,6 +61,7 @@ export default {
   },
   methods: {
     async edit (instanceId) {
+      this.currentActiveKey = 'form'
       this.instanceId = instanceId
       // 获取流程信息
       await findByInstanceId(instanceId).then(res => {
@@ -71,11 +89,17 @@ export default {
       this.dynamicFormStatic = {}
       this.$refs.kfb.reset()
       this.handleCancel()
+    },
+    handleTabChange (activeKey) {
+      this.currentActiveKey = activeKey
     }
   }
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 
+/deep/ .canvas{
+  min-height: 750px;
+}
 </style>

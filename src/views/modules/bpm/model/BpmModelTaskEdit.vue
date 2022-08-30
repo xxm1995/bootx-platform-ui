@@ -60,7 +60,7 @@
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
-    <b-user-select-modal ref="userSelectModal" @ok="selectUser" title="选择指定用户" :checkbox="false"/>
+    <b-user-select-modal ref="userSelectModal" @ok="selectUser" title="选择指定用户" :multiple="false"/>
   </a-modal>
 </template>
 

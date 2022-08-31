@@ -10742,7 +10742,7 @@ tiny-emitter@^2.0.0:
   resolved "https://registry.npmmirror.com/tiny-emitter/download/tiny-emitter-2.1.0.tgz#1d1a56edfc51c43e863cbb5382a72330e3555423"
   integrity sha1-HRpW7fxRxD6GPLtTgqcjMONVVCM=
 
-tiny-svg@^2.2.1, tiny-svg@^2.2.2:
+tiny-svg@^2.2.1, tiny-svg@^2.2.2, tiny-svg@^2.2.4:
   version "2.2.4"
   resolved "https://registry.npmmirror.com/tiny-svg/-/tiny-svg-2.2.4.tgz#8d4a16bd2c4644c8444fd3c2ece91db7631cfb35"
   integrity sha512-NOi39lBknf4UdDEahNkbEAJnzhu1ZcN2j75IS2vLRmIhsfxdZpTChfLKBcN1ShplVmPIXJAIafk6YY5/Aa80lQ==

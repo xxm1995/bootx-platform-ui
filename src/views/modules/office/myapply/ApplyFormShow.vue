@@ -18,8 +18,7 @@
       </a-tab-pane>
       <a-tab-pane key="flowChart" tab="流程图" force-render>
         <div style="min-height: 550px">
-<!--          <process-viewer :xml="bpmModel.modelEditorXml"/>-->
-          <workflow-bpmn-modeler :is-view="true" :task-list="taskList" :xml="bpmModel.modelEditorXml"/>
+          <process-viewer :height="750" :task-list="taskList" :xml="bpmModel.modelEditorXml"/>
         </div>
       </a-tab-pane>
     </a-tabs>
@@ -44,11 +43,15 @@ export default {
       currentActiveKey: 'form',
       // 流程id
       instanceId: '',
-
+      // 任务列表
       taskList: [
         {
           key: 'task1564480905805',
-          completed: true
+          state: 'finish'
+        },
+        {
+          key: 'task1564480942367',
+          state: 'run'
         }
       ],
       // 表单结构
@@ -61,7 +64,7 @@ export default {
   },
   methods: {
     async edit (instanceId) {
-      this.currentActiveKey = 'form'
+      this.currentActiveKey = 'flowChart'
       this.instanceId = instanceId
       // 获取流程信息
       await findByInstanceId(instanceId).then(res => {
@@ -99,7 +102,4 @@ export default {
 
 <style lang="less" scoped>
 
-/deep/ .canvas{
-  min-height: 750px;
-}
 </style>

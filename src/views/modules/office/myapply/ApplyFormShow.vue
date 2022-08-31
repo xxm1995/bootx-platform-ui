@@ -17,9 +17,7 @@
         显示和流程历史
       </a-tab-pane>
       <a-tab-pane key="flowChart" tab="流程图" force-render>
-        <div style="min-height: 550px">
-          <process-viewer :height="750" :task-list="taskList" :xml="bpmModel.modelEditorXml"/>
-        </div>
+        <process-viewer ref="processViewer" :height="750" :flow-node-list="flowNodeList" :xml="bpmModel.modelEditorXml"/>
       </a-tab-pane>
     </a-tabs>
   </vxe-modal>
@@ -27,7 +25,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { findByInstanceId } from '@/api/bpm/instance'
+import { findByInstanceId, getFlowNodes } from '@/api/bpm/instance'
 import { findByDefId } from '@/api/bpm/model'
 import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
@@ -43,17 +41,8 @@ export default {
       currentActiveKey: 'form',
       // 流程id
       instanceId: '',
-      // 任务列表
-      taskList: [
-        {
-          key: 'task1564480905805',
-          state: 'finish'
-        },
-        {
-          key: 'task1564480942367',
-          state: 'run'
-        }
-      ],
+      // 流程节点, 染色用
+      flowNodeList: [],
       // 表单结构
       dynamicFormStatic: {},
       // 流程模型
@@ -71,11 +60,15 @@ export default {
         this.instance = res.data
         this.title = `查看 ${this.instance.instanceName} 流程`
       })
+
       // 获取流程模型
       await findByDefId(this.instance.defId).then(res => {
         this.bpmModel = res.data
       })
-
+      // 流程图节点染色
+      await getFlowNodes(instanceId).then(res => {
+        this.flowNodeList = res.data
+      })
       if (this.bpmModel.formId) {
         // 获取关联动态表单
         await getDynamicForm(this.bpmModel.formId).then(res => {
@@ -90,6 +83,7 @@ export default {
     handleClose () {
       this.bpmModel = {}
       this.dynamicFormStatic = {}
+      this.flowNodeList = []
       this.$refs.kfb.reset()
       this.handleCancel()
     },

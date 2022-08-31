@@ -19,47 +19,37 @@ import Modeler from 'bpmn-js/lib/Modeler'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
 import { addArrow } from '@/components/Bpmn/processViewerUtils'
+import { debounce } from 'lodash'
+
+const RUNNING = 'running'
+const FINISH = 'finish'
 export default {
   name: 'WorkflowBpmnModeler',
   props: {
-    xml: {
-      type: String,
-      default: ''
-    },
-    taskList: {
-      type: Array,
-      default: () => []
-    },
-    height: {
-      type: Number,
-      default: 650
-    }
+    // bpmn流程图
+    xml: { type: String, default: '' },
+    // 执行流程节点
+    flowNodeList: { type: Array, default: () => [] },
+    // 画布高度
+    height: { type: Number, default: 650 }
   },
   data () {
     return {
       modeler: null,
       zoom: 1,
-      // 默认配置
-      options: {
-        tabSize: 2, // 缩进格式
-        theme: 'rubyblue', // 指定主题，对应主题库 JS 需要提前引入
-        lineNumbers: true, // 是否显示行号
-        // 指定语言类型,如果需要编辑和显示其他语言,需要import语言js然后修改此配置
-        mode: 'xml',
-        line: true,
-        styleActiveLine: true, // 高亮选中行
-        // 是否为只读,如果为"nocursor" 不仅仅为只读 连光标都无法在区域聚焦
-        readOnly: true,
-        hintOptions: {
-          completeSingle: true // 当匹配只有一项的时候是否自动补全
-        }
-      }
+      // 鼠标光标所在的用户任务节点
+      currentElement: null
     }
   },
   watch: {
     xml: function (val) {
       if (val) {
-        this.createNewDiagram(val)
+        this.createDiagram(val)
+      }
+    },
+    flowNodeList: function (val) {
+      if (val) {
+        this.fillColor()
       }
     }
   },
@@ -83,10 +73,118 @@ export default {
         flowable: flowableModdle
       }
     })
-    this.createNewDiagram(this.xml)
   },
   methods: {
-    // 让图能自适应屏幕
+    /**
+     * 创建流程图
+     */
+    async createDiagram (data) {
+      if (!data) {
+        return
+      }
+      // 将字符串转换成图显示出来
+      data = data.replace(/<!\[CDATA\[(.+?)]]>/g, function (match, str) {
+        return str.replace(/</g, '&lt;')
+      })
+      await this.modeler.importXML(data)
+      this.initShowInfo()
+      this.initSvg()
+      this.fillColor()
+      this.fitViewport()
+    },
+
+    /**
+     * 信息显示处理, 给节点绑定时间
+     */
+    initShowInfo () {
+      this.modeler.on('element.hover', debounce(e => {
+          const { element } = e
+        const types = ['bpmn:UserTask', 'bpmn:StartEvent', 'bpmn:EndEvent']
+          if (types.includes(element.type)) {
+            console.log(element)
+            this.currentElement = element
+          } else {
+            this.currentElement = null
+          }
+        }, 300)
+      )
+    },
+    /**
+     * 处理SVG元素
+     */
+    initSvg () {
+      // 添加完成箭头
+      addArrow()
+    },
+
+    /**
+     * 染色
+     */
+    fillColor () {
+      const canvas = this.modeler.get('canvas')
+      this.modeler._definitions.rootElements[0].flowElements.forEach(n => {
+        const flowNode = this.flowNodeList.find(m => m.activityId === n.id) || {}
+        if (flowNode.state === RUNNING) {
+          canvas.addMarker(n.id, 'highlight-todo')
+        }
+
+        if (flowNode.state === FINISH) {
+          canvas.addMarker(n.id, 'highlight')
+        }
+
+        // 开始节点
+        // if (n.$type === 'bpmn:StartEvent') {
+        //   canvas.addMarker(n.id, 'highlight')
+        // } else if (n.$type === 'bpmn:UserTask') { // 用户任务
+        //   const task = this.taskList.find(m => m.key === n.id) || {}
+        //   // 已完成的任务
+        //   if (task.state === FINISH) {
+        //     canvas.addMarker(n.id, 'highlight')
+        //   } else if (task.state === RUNNING) { // 执行中的任务
+        //     canvas.addMarker(n.id, 'highlight-todo')
+        //   } else { // 未执行的任务
+        //   }
+        // } else if (n.$type === 'bpmn:SequenceFlow') { // 连接线
+        //   const sourceRef = n.sourceRef
+        //   const sourceRefTask = this.taskList.find(m => m.key === sourceRef.id) || {}
+        //   const targetRef = n.targetRef
+        //   const targetTask = this.taskList.find(m => m.key === targetRef.id) || {}
+        //   // 开始侧是开始节点
+        //   if (sourceRef.$type === 'bpmn:StartEvent') {
+        //     // 目标节点完成
+        //     if (targetTask.state === FINISH) {
+        //       canvas.addMarker(n.id, 'highlight')
+        //     }
+        //     // 执行中节点
+        //     if (targetTask.state === RUNNING) {
+        //       canvas.addMarker(n.id, 'highlight-todo')
+        //     }
+        //   }
+        //   // 两侧都是任务节点 且 开始端任务完成
+        //   if (sourceRef.$type === 'bpmn:UserTask' && targetRef.$type === 'bpmn:UserTask' &&
+        //     sourceRefTask.state === FINISH) {
+        //     // 目标节点完成
+        //     if (targetTask.state === FINISH) {
+        //       canvas.addMarker(n.id, 'highlight')
+        //     }
+        //     console.log(targetTask.state)
+        //     // 执行中节点
+        //     if (targetTask.state === RUNNING) {
+        //       canvas.addMarker(n.id, 'highlight-todo')
+        //     }
+        //   }
+        //   // 开始端任务已完成, 结束端是结束节点
+        //   if (sourceRefTask.state === FINISH && targetRef.$type === 'bpmn:EndEvent') {
+        //     canvas.addMarker(n.id, 'highlight')
+        //     // 结束节点
+        //     canvas.addMarker(targetRef.id, 'highlight')
+        //   }
+        // }
+      })
+    },
+    /**
+     * 让图能自适应屏幕
+     */
     fitViewport () {
       this.zoom = this.modeler.get('canvas').zoom('fit-viewport')
       const bbox = document.querySelector('.flow-containers .viewport').getBBox()
@@ -102,152 +200,6 @@ export default {
         height: currentViewbox.height
       })
       this.zoom = bbox.width / currentViewbox.width * 1.8
-    },
-    // 创建流程图
-    async createNewDiagram (data) {
-      // 将字符串转换成图显示出来
-      data = data.replace(/<!\[CDATA\[(.+?)]]>/g, function (match, str) {
-        return str.replace(/</g, '&lt;')
-      })
-      await this.modeler.importXML(data)
-      this.fillColor()
-      this.initSvg()
-      this.fitViewport()
-    },
-    // 处理SVG元素
-    initSvg () {
-      // 添加完成箭头
-      addArrow()
-    },
-
-    // 染色
-    fillColor () {
-      const canvas = this.modeler.get('canvas')
-      // canvas.addMarker('start1', 'highlight-reject')
-      // canvas.addMarker('task1564480905805', 'highlight')
-      // canvas.addMarker('flow1564481082309', 'highlight-cancel')
-      // canvas.addMarker('task1564480942367', 'highlight-todo')
-      this.modeler._definitions.rootElements[0].flowElements.forEach(n => {
-        // console.log(n.$type, n.id, n.name)
-        // 开始节点
-        if (n.$type === 'bpmn:StartEvent') {
-          // this.getActivityOutgoing(n).forEach(f => {
-          //   const completeTask = this.taskList.find(m => m.key === f.targetRef.id)
-          //   if (completeTask) {
-          // 开始节点默认完成
-          canvas.addMarker(n.id, 'highlight')
-          // }
-          // })
-        } else if (n.$type === 'bpmn:UserTask') { // 用户任务
-          const task = this.taskList.find(m => m.key === n.id) || {}
-          // 已完成的任务
-          if (task.state === 'finish') {
-            canvas.addMarker(n.id, 'highlight')
-          } else if (task.state === 'run') { // 执行中的任务
-            canvas.addMarker(n.id, 'highlight-todo')
-          } else { // 未执行的任务
-          }
-        } else if (n.$type === 'bpmn:SequenceFlow') { // 连接线
-          const sourceRef = n.sourceRef
-          const sourceRefTask = this.taskList.find(m => m.key === sourceRef.id) || {}
-          const targetRef = n.targetRef
-          const targetTask = this.taskList.find(m => m.key === targetRef.id) || {}
-          // 开始侧是开始节点
-          if (sourceRef.$type === 'bpmn:StartEvent') {
-            // 目标节点完成
-            if (targetTask.state === 'finish') {
-              canvas.addMarker(n.id, 'highlight')
-            }
-            // 执行中节点
-            if (targetTask.state === 'run') {
-              canvas.addMarker(n.id, 'highlight-todo')
-            }
-          }
-          // 两侧都是任务节点 且 开始端任务完成
-          if (sourceRef.$type === 'bpmn:UserTask' && targetRef.$type === 'bpmn:UserTask' &&
-            sourceRefTask.state === 'finish') {
-            // 目标节点完成
-            if (targetTask.state === 'finish') {
-              canvas.addMarker(n.id, 'highlight')
-            }
-            console.log(targetTask.state)
-            // 执行中节点
-            if (targetTask.state === 'run') {
-              canvas.addMarker(n.id, 'highlight-todo')
-            }
-            // 办理中
-          }
-        }
-        // console.log(n.name, n.id, n.$type)
-      })
-    },
-    x () {
-      this.modeler._definitions.rootElements[0].flowElements.forEach(n => {
-        if (n.$type === 'bpmn:UserTask') {
-          const completeTask = this.taskList.find(m => m.key === n.id) || { completed: true }
-          const todoTask = this.taskList.find(m => !m.completed)
-          const endTask = this.taskList[this.taskList.length - 1]
-          if (completeTask) {
-            canvas.addMarker(n.id, completeTask.completed ? 'highlight' : 'highlight-todo')
-            n.outgoing?.forEach(nn => {
-              const targetTask = this.taskList.find(m => m.key === nn.targetRef.id)
-              if (targetTask) {
-                canvas.addMarker(nn.id, targetTask.completed ? 'highlight' : 'highlight-todo')
-              } else if (nn.targetRef.$type === 'bpmn:ExclusiveGateway') {
-                // canvas.addMarker(nn.id, 'highlight');
-                canvas.addMarker(nn.id, completeTask.completed ? 'highlight' : 'highlight-todo')
-                canvas.addMarker(nn.targetRef.id, completeTask.completed ? 'highlight' : 'highlight-todo')
-              } else if (nn.targetRef.$type === 'bpmn:EndEvent') {
-                if (!todoTask && endTask.key === n.id) {
-                  canvas.addMarker(nn.id, 'highlight')
-                  canvas.addMarker(nn.targetRef.id, 'highlight')
-                }
-                if (!completeTask.completed) {
-                  canvas.addMarker(nn.id, 'highlight-todo')
-                  canvas.addMarker(nn.targetRef.id, 'highlight-todo')
-                }
-              }
-            })
-          }
-        } else if (n.$type === 'bpmn:ExclusiveGateway') {
-          n.outgoing.forEach(nn => {
-            const targetTask = this.taskList.find(m => m.key === nn.targetRef.id)
-            if (targetTask) {
-              canvas.addMarker(nn.id, targetTask.completed ? 'highlight' : 'highlight-todo')
-            }
-          })
-        }
-        if (n.$type === 'bpmn:StartEvent') {
-          console.log(this.getActivityOutgoing(n))
-          this.getActivityOutgoing(n).forEach(nn => {
-            const completeTask = this.taskList.find(m => m.key === nn.targetRef.id)
-            if (completeTask) {
-              canvas.addMarker(nn.id, 'highlight')
-              canvas.addMarker(n.id, 'highlight')
-            }
-          })
-        }
-      })
-    },
-    // 节点出去的线
-    getActivityOutgoing (activity) {
-      // 如果有 outgoing，则直接使用它
-      if (activity.outgoing && activity.outgoing.length > 0) {
-        return activity.outgoing
-      }
-      // 如果没有，则遍历获得起点为它的【bpmn:SequenceFlow】节点们。原因是：bpmn-js 的 UserTask 拿不到 outgoing
-      const flowElements = this.modeler.getDefinitions().rootElements[0].flowElements
-      const outgoing = []
-      flowElements.forEach(item => {
-        if (item.$type !== 'bpmn:SequenceFlow') {
-          return
-        }
-        // 出口的ID是否一致
-        if (item.sourceRef.id === activity.id) {
-          outgoing.push(item)
-        }
-      })
-      return outgoing
     }
   }
 }

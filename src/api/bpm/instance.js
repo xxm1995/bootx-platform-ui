@@ -54,3 +54,14 @@ export function findByInstanceId (instanceId) {
     params: { instanceId }
   })
 }
+
+/**
+ * 获取流程执行的节点, 用于绘制流程图
+ */
+export function getFlowNodes (instanceId) {
+  return axios({
+    url: '/bpm/instance/getFlowNodes',
+    method: 'GET',
+    params: { instanceId }
+  })
+}

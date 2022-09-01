@@ -43,6 +43,7 @@ import {
   Divider,
   DatePicker,
   TimePicker,
+  Timeline,
   Upload,
   Progress,
   Skeleton,
@@ -110,6 +111,7 @@ Vue.use(Tag)
 Vue.use(Divider)
 Vue.use(DatePicker)
 Vue.use(TimePicker)
+Vue.use(Timeline)
 Vue.use(Upload)
 Vue.use(Progress)
 Vue.use(Skeleton)

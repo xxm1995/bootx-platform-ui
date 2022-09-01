@@ -80,7 +80,7 @@ import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { findMainProcess } from '@/api/bpm/model'
 import ApplyForm from '@/views/modules/office/myapply/ApplyForm'
 import { pageMyApply } from '@/api/bpm/instance'
-import ApplyFormShow from '@/views/modules/office/myapply/ApplyFormShow'
+import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 
 export default {
   name: 'MyApplyList',

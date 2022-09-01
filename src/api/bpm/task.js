@@ -23,6 +23,17 @@ export function pageMyDone (params) {
 }
 
 /**
+ * 根据任务实例ID查询任务列表
+ */
+export function findAllByInstanceId (instanceId) {
+  return axios({
+    url: '/bpm/task/findAllByInstanceId',
+    method: 'GET',
+    params: { instanceId }
+  })
+}
+
+/**
  * 通过任务
  */
 export function pass (obj) {

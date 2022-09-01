@@ -10,11 +10,15 @@
       <a-tab-pane key="form" tab="流程表单" force-render>
         <k-form-build ref="kfb" :value="dynamicFormStatic" disabled/>
       </a-tab-pane>
-      <a-tab-pane key="handler" tab="任务处理" force-render>
-        任务处理
-      </a-tab-pane>
       <a-tab-pane key="history" tab="历史信息" force-render>
-        显示和流程历史
+        <a-timeline>
+          <a-timeline-item v-for="o in taskList" :key="o.id">
+            <p>开始时间: {{o.startTime}}</p>
+            <p>环节: {{o.taskName}}</p>
+            <p>处理人: {{o.userName}}</p>
+            <p>结束时间: {{o.endTime}}</p>
+          </a-timeline-item>
+        </a-timeline>
       </a-tab-pane>
       <a-tab-pane key="flowChart" tab="流程图" force-render>
         <process-viewer ref="processViewer" :height="750" :flow-node-list="flowNodeList" :xml="bpmModel.modelEditorXml"/>
@@ -31,6 +35,7 @@ import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
 import WorkflowBpmnModeler from '@/components/Bpmn'
 import ProcessViewer from '@/components/Bpmn/ProcessViewer'
+import { findAllByInstanceId } from '@/api/bpm/task'
 
 export default {
   name: 'ApplyFormShow',
@@ -43,6 +48,8 @@ export default {
       instanceId: '',
       // 流程节点, 染色用
       flowNodeList: [],
+      // 任务列表
+      taskList: [],
       // 表单结构
       dynamicFormStatic: {},
       // 流程模型
@@ -66,8 +73,13 @@ export default {
         this.bpmModel = res.data
       })
       // 流程图节点染色
-      await getFlowNodes(instanceId).then(res => {
+      getFlowNodes(instanceId).then(res => {
         this.flowNodeList = res.data
+      })
+      // 任务列表
+      findAllByInstanceId(instanceId).then(res => {
+        this.taskList = res.data
+        console.log(this.taskList)
       })
       if (this.bpmModel.formId) {
         // 获取关联动态表单

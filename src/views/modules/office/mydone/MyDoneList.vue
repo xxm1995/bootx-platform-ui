@@ -34,7 +34,7 @@
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="retrieve(row)">取回</a>
+          <a disabled href="javascript:" @click="retrieve(row)">取回</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -47,18 +47,20 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
+    <apply-form-show ref="applyFormShow"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { assignee, pageMyDone } from '@/api/bpm/task'
+import { pageMyDone } from '@/api/bpm/task'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
+import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 
 export default {
   name: 'MyDoneList',
-  components: { BUserSelectModal },
+  components: { ApplyFormShow, BUserSelectModal },
   mixins: [TableMixin],
   data () {
     return {
@@ -98,6 +100,7 @@ export default {
      * 查看详情
      */
     show (record) {
+      this.$refs.applyFormShow.init(record.instanceId)
     }
   },
   mounted () {

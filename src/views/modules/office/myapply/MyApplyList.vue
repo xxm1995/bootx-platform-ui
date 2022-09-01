@@ -70,7 +70,7 @@
       </template>
     </a-modal>
     <apply-form ref="applyForm" @ok="init"/>
-    <apply-form-show ref="applyFormShow"/>
+    <apply-form-show is-view ref="applyFormShow"/>
   </a-card>
 </template>
 

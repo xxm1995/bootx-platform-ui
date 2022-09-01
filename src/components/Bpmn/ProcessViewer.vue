@@ -19,7 +19,6 @@ import Modeler from 'bpmn-js/lib/Modeler'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
 import { addArrow } from '@/components/Bpmn/processViewerUtils'
-import { debounce } from 'lodash'
 
 const RUNNING = 'running'
 const FINISH = 'finish'
@@ -28,8 +27,12 @@ export default {
   props: {
     // bpmn流程图
     xml: { type: String, default: '' },
+    // 实例
+    instance: { type: Object, default: () => {} },
     // 执行流程节点
     flowNodeList: { type: Array, default: () => [] },
+    // 流程任务
+    taskList: { type: Array, default: () => [] },
     // 画布高度
     height: { type: Number, default: 650 }
   },
@@ -37,8 +40,7 @@ export default {
     return {
       modeler: null,
       zoom: 1,
-      // 鼠标光标所在的用户任务节点
-      currentElement: null
+      element: null
     }
   },
   watch: {
@@ -97,17 +99,62 @@ export default {
      * 信息显示处理, 给节点绑定时间
      */
     initShowInfo () {
-      this.modeler.on('element.hover', debounce(e => {
-          const { element } = e
-        const types = ['bpmn:UserTask', 'bpmn:StartEvent', 'bpmn:EndEvent']
-          if (types.includes(element.type)) {
-            console.log(element)
-            this.currentElement = element
-          } else {
-            this.currentElement = null
-          }
-        }, 300)
-      )
+      const eventBus = this.modeler.get('eventBus')
+      // 注册需要的监听事件
+      const types = ['bpmn:UserTask', 'bpmn:StartEvent', 'bpmn:EndEvent']
+      eventBus.on('element.hover', (eventObj) => {
+        const element = eventObj ? eventObj.element : null
+        if (types.includes(element.type)) {
+          this.elementHover(element)
+        }
+      })
+      eventBus.on('element.out', (eventObj) => {
+        const element = eventObj ? eventObj.element : null
+        if (types.includes(element.type)) {
+          this.elementOut(element)
+        }
+      })
+    },
+    /**
+     *  流程图的元素被 hover
+     */
+    elementHover (element) {
+      this.element = element
+      !this.elementOverlayIds && (this.elementOverlayIds = {})
+      !this.overlays && (this.overlays = this.modeler.get('overlays'))
+
+      let html = ''
+      if (element.type === 'bpmn:StartEvent') {
+        html = `<span>发起人：${this.instance.startUserName}</span>
+                  <span>发起时间：${this.instance.startTime}</span>`
+      }
+      if (element.type === 'bpmn:UserTask') {
+        // 区分已完成/执行中/未开始
+        html = `<span>执行人：123</span>
+                  <span>结果：231</span>
+                  <span>开始时间：231</span>
+                  <span>结束时间：231</span>
+                  <span>耗时：231</span>
+                  <span>审批意见：3222</span>`
+      }
+      if (element.type === 'bpmn:EndEvent') {
+        // 判断节点是否结束
+        if (!this.instance.endTime) {
+          return
+        }
+        html = `<span>结束时间：${ this.instance.endTime }</span>`
+      }
+      this.elementOverlayIds[element.id] = this.overlays.add(element, {
+        position: { left: -50, bottom: -10 },
+        html: `<div class="element-overlays">${html}</div>`
+      })
+    },
+    /**
+     * 流程图的元素被 out
+     */
+    elementOut (element) {
+      this.overlays.remove({ element })
+      this.elementOverlayIds[element.id] = null
     },
     /**
      * 处理SVG元素
@@ -219,6 +266,15 @@ export default {
   .ant-layout-header, .ant-layout-sider, /deep/.djs-palette, /deep/.bjs-powered-by {
     display: none;
   }
+}
+// 信息显示框
+/deep/.element-overlays {
+  box-sizing: border-box;
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  color: #fafafa;
+  width: 230px;
 }
 
 html,body,#app{

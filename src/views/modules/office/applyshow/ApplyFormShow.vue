@@ -10,18 +10,27 @@
       <a-tab-pane key="form" tab="流程表单" force-render>
         <k-form-build ref="kfb" :value="dynamicFormStatic" disabled/>
       </a-tab-pane>
+      <a-tab-pane key="handler" tab="任务处理" v-if="!isView" force-render>
+        任务处理
+      </a-tab-pane>
       <a-tab-pane key="history" tab="历史信息" force-render>
         <a-timeline>
           <a-timeline-item v-for="o in taskList" :key="o.id">
-            <p>开始时间: {{o.startTime}}</p>
-            <p>环节: {{o.taskName}}</p>
-            <p>处理人: {{o.userName}}</p>
-            <p>结束时间: {{o.endTime}}</p>
+            <p>开始时间: {{ o.startTime }}</p>
+            <p>环节: {{ o.taskName }}</p>
+            <p>处理人: {{ o.userName }}</p>
+            <p>结束时间: {{ o.endTime }}</p>
           </a-timeline-item>
         </a-timeline>
       </a-tab-pane>
       <a-tab-pane key="flowChart" tab="流程图" force-render>
-        <process-viewer ref="processViewer" :height="750" :flow-node-list="flowNodeList" :xml="bpmModel.modelEditorXml"/>
+        <process-viewer
+          ref="processViewer"
+          :height="750"
+          :instance="instance"
+          :task-list="taskList"
+          :flow-node-list="flowNodeList"
+          :xml="bpmModel.modelEditorXml"/>
       </a-tab-pane>
     </a-tabs>
   </vxe-modal>
@@ -41,6 +50,9 @@ export default {
   name: 'ApplyFormShow',
   mixins: [FormMixin],
   components: { ProcessViewer, WorkflowBpmnModeler },
+  props: {
+    isView: { type: Boolean, default: false }
+  },
   data () {
     return {
       currentActiveKey: 'form',
@@ -79,7 +91,6 @@ export default {
       // 任务列表
       findAllByInstanceId(instanceId).then(res => {
         this.taskList = res.data
-        console.log(this.taskList)
       })
       if (this.bpmModel.formId) {
         // 获取关联动态表单

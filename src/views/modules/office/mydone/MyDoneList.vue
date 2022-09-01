@@ -47,7 +47,7 @@
       :total="pagination.total"
       @page-change="handleTableChange">
     </vxe-pager>
-    <apply-form-show ref="applyFormShow"/>
+    <apply-form-show is-view ref="applyFormShow"/>
   </a-card>
 </template>
 

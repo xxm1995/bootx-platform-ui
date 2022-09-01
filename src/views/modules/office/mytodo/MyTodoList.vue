@@ -32,9 +32,9 @@
       <vxe-table-column field="startTime" title="任务开始时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
-          <a href="javascript:" @click="pass(row)">办理</a>
-          <a-divider type="vertical"/>
-          <a href="javascript:" @click="reject(row)">驳回</a>
+          <a href="javascript:" @click="handle(row)">办理</a>
+          <!--          <a-divider type="vertical"/>-->
+          <!--          <a href="javascript:" @click="reject(row)">驳回</a>-->
           <a-divider type="vertical"/>
           <a href="javascript:" @click="assignee(row)">委派</a>
         </template>
@@ -50,6 +50,7 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <b-user-select-modal ref="userSelectModal" @ok="assigneeCallback" title="选择委派的用户" :multiple="false"/>
+    <apply-form-show ref="applyFormShow"/>
   </a-card>
 </template>
 
@@ -58,10 +59,11 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { assignee, pageMyTodo, pass, reject } from '@/api/bpm/task'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
+import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 
 export default {
   name: 'MyTodoList',
-  components: { BUserSelectModal },
+  components: { ApplyFormShow, BUserSelectModal },
   mixins: [TableMixin],
   data () {
     return {
@@ -82,6 +84,12 @@ export default {
       }).then(res => {
         this.pageQueryResHandel(res, this)
       })
+    },
+    /**
+     * 处理任务
+     */
+    handle (record) {
+      this.$refs.applyFormShow.init(record.instanceId)
     },
     /**
      * 完成任务

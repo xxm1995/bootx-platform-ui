@@ -51,7 +51,7 @@
           ref="processViewer"
           :height="750"
           :instance="instance"
-          :task-list="taskList"
+          :node-task-list="nodeTaskList"
           :flow-node-list="flowNodeList"
           :xml="bpmModel.modelEditorXml"/>
       </a-tab-pane>
@@ -67,7 +67,7 @@ import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
 import WorkflowBpmnModeler from '@/components/Bpmn'
 import ProcessViewer from '@/components/Bpmn/ProcessViewer'
-import { findAllByInstanceId, pass, reject } from '@/api/bpm/task'
+import { findAllByInstanceId, getNodeTasks, pass, reject } from '@/api/bpm/task'
 
 export default {
   name: 'ApplyFormShow',
@@ -86,8 +86,10 @@ export default {
       instanceId: '',
       // 流程节点, 染色用
       flowNodeList: [],
-      // 任务列表
+      // 任务列表组
       taskList: [],
+      // 节点任务列表
+      nodeTaskList: null,
       // 表单结构
       dynamicFormStatic: {},
       // 流程模型
@@ -123,16 +125,20 @@ export default {
       getFlowNodes(instanceId).then(res => {
         this.flowNodeList = res.data
       })
-      // 任务列表
+      // 任务列表 历史
       findAllByInstanceId(instanceId).then(res => {
         this.taskList = res.data
+      })
+      // 获取流程节点的分组任务信息 节点显示
+      getNodeTasks(instanceId).then(res => {
+        this.nodeTaskList = res.data
       })
       if (this.bpmModel.formId) {
         // 获取关联动态表单
         await getDynamicForm(this.bpmModel.formId).then(res => {
           this.dynamicFormStatic = toStringJSON(res.data.value)
+          this.$refs.kfb.setData(this.instance.formVariables)
         })
-        this.$refs.kfb.setData(this.instance.formVariables)
       }
     },
     /**

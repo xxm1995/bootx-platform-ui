@@ -19,6 +19,7 @@ import Modeler from 'bpmn-js/lib/Modeler'
 // 引入flowable的节点文件
 import flowableModdle from './flowable/flowable.json'
 import { addArrow } from '@/components/Bpmn/processViewerUtils'
+import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
 
 const RUNNING = 'running'
 const FINISH = 'finish'
@@ -31,8 +32,8 @@ export default {
     instance: { type: Object, default: () => {} },
     // 执行流程节点
     flowNodeList: { type: Array, default: () => [] },
-    // 流程任务
-    taskList: { type: Array, default: () => [] },
+    // 节点流程任务组
+    nodeTaskList: { type: Object, default: () => {} },
     // 画布高度
     height: { type: Number, default: 650 }
   },
@@ -55,28 +56,30 @@ export default {
       }
     }
   },
-  mounted () {
-    // 生成实例
-    this.modeler = new Modeler({
-      container: this.$refs.canvas,
-      additionalModules: [
-        {
-          translate: ['value', customTranslate],
-          paletteProvider: ['value', ''], // 禁用/清空左侧工具栏
-          labelEditingProvider: ['value', ''], // 禁用节点编辑
-          contextPadProvider: ['value', ''], // 禁用图形菜单
-          bendpoints: ['value', {}], // 禁用连线拖动
-          // zoomScroll: ['value', ''], // 禁用滚动
-          // moveCanvas: ['value', ''], // 禁用拖动整个流程图
-          move: ['value', '']// 禁用单个图形拖动
-        }
-      ],
-      moddleExtensions: {
-        flowable: flowableModdle
-      }
-    })
-  },
   methods: {
+    /**
+     * 生成实例
+     */
+    initModeler () {
+      this.modeler = new Modeler({
+        container: this.$refs.canvas,
+        additionalModules: [
+          {
+            translate: ['value', customTranslate],
+            paletteProvider: ['value', ''], // 禁用/清空左侧工具栏
+            labelEditingProvider: ['value', ''], // 禁用节点编辑
+            contextPadProvider: ['value', ''], // 禁用图形菜单
+            bendpoints: ['value', {}], // 禁用连线拖动
+            // zoomScroll: ['value', ''], // 禁用滚动
+            // moveCanvas: ['value', ''], // 禁用拖动整个流程图
+            move: ['value', '']// 禁用单个图形拖动
+          }
+        ],
+        moddleExtensions: {
+          flowable: flowableModdle
+        }
+      })
+    },
     /**
      * 创建流程图
      */
@@ -89,7 +92,6 @@ export default {
         return str.replace(/</g, '&lt;')
       })
       await this.modeler.importXML(data)
-      this.initShowInfo()
       this.initSvg()
       this.fillColor()
       this.fitViewport()
@@ -129,13 +131,19 @@ export default {
                   <span>发起时间：${this.instance.startTime}</span>`
       }
       if (element.type === 'bpmn:UserTask') {
-        // 区分已完成/执行中/未开始
-        html = `<span>执行人：123</span>
-                  <span>结果：231</span>
-                  <span>开始时间：231</span>
-                  <span>结束时间：231</span>
-                  <span>耗时：231</span>
-                  <span>审批意见：3222</span>`
+        const tasks = this.nodeTaskList[element.id]
+        if (tasks) {
+          for (const task of tasks) {
+            const taskState = dictConvert('BpmTaskState', task.state)
+            html += `<span>执行人：${task.userName}</span>
+                  <span>结果：${taskState}</span>
+                  <span>开始时间：${task.startTime}</span>
+                  <span>结束时间：${task.endTime}</span>
+<!--                  <span>耗时：231</span>-->
+                  <span>审批意见：${task.reason}</span>
+                  </br>`
+          }
+        }
       }
       if (element.type === 'bpmn:EndEvent') {
         // 判断节点是否结束
@@ -248,6 +256,10 @@ export default {
       })
       this.zoom = bbox.width / currentViewbox.width * 1.8
     }
+  },
+  mounted () {
+    this.initModeler()
+    this.initShowInfo()
   }
 }
 </script>

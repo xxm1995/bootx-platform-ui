@@ -34,6 +34,17 @@ export function findAllByInstanceId (instanceId) {
 }
 
 /**
+ * 获取流程节点的分组任务信息
+ */
+export function getNodeTasks (instanceId) {
+  return axios({
+    url: '/bpm/task/getNodeTasks',
+    method: 'GET',
+    params: { instanceId }
+  })
+}
+
+/**
  * 通过任务
  */
 export function pass (obj) {

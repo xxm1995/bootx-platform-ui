@@ -11,7 +11,30 @@
         <k-form-build ref="kfb" :value="dynamicFormStatic" disabled/>
       </a-tab-pane>
       <a-tab-pane key="handler" tab="任务处理" v-if="!isView" force-render>
-        任务处理
+        <a-card :bordered="false">
+          <div style="display: flex;justify-content: center">
+            <a-form-model
+              ref="form"
+              :model="form"
+              :rules="rules"
+            >
+              <a-form-model-item label="处理方式" prop="type">
+                <a-radio-group v-model="form.type" :default-value="1" button-style="solid">
+                  <a-radio-button value="pass">通过</a-radio-button>
+                  <a-radio-button value="reject">驳回</a-radio-button>
+                </a-radio-group>
+              </a-form-model-item>
+              <a-form-model-item label="审批意见" prop="reason">
+                <a-textarea v-model="form.reason"/>
+              </a-form-model-item>
+            </a-form-model>
+          </div>
+          <div style="display: flex;justify-content: center">
+            <a-button type="primary" @click="handleOk">
+              确定
+            </a-button>
+          </div>
+        </a-card>
       </a-tab-pane>
       <a-tab-pane key="history" tab="历史信息" force-render>
         <a-timeline>
@@ -44,7 +67,7 @@ import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
 import WorkflowBpmnModeler from '@/components/Bpmn'
 import ProcessViewer from '@/components/Bpmn/ProcessViewer'
-import { findAllByInstanceId } from '@/api/bpm/task'
+import { findAllByInstanceId, pass, reject } from '@/api/bpm/task'
 
 export default {
   name: 'ApplyFormShow',
@@ -56,6 +79,9 @@ export default {
   data () {
     return {
       currentActiveKey: 'form',
+      confirmLoading: false,
+      // 任务id
+      taskId: '',
       // 流程id
       instanceId: '',
       // 流程节点, 染色用
@@ -67,13 +93,22 @@ export default {
       // 流程模型
       bpmModel: {},
       // 流程实例
-      instance: {}
+      instance: {},
+      form: {
+        type: 'pass',
+        reason: ''
+      },
+      rules: {
+        type: [{ required: true, message: '请选择类型!' }],
+        reason: [{ required: true, message: '请输入审批意见!' }]
+      }
     }
   },
   methods: {
-    async edit (instanceId) {
+    async edit (instanceId, type, taskId) {
       this.currentActiveKey = 'flowChart'
       this.instanceId = instanceId
+      this.taskId = taskId
       // 获取流程信息
       await findByInstanceId(instanceId).then(res => {
         this.instance = res.data
@@ -99,6 +134,38 @@ export default {
         })
         this.$refs.kfb.setData(this.instance.formVariables)
       }
+    },
+    /**
+     * 提交处理
+     */
+    handleOk () {
+      this.$refs.form.validate(async valid => {
+        if (valid) {
+          const form = {
+            taskId: this.taskId,
+            reason: this.form.reason
+          }
+          this.$confirm({
+            title: '警告',
+            content: '确实确定处理当前任务!',
+            onOk: () => {
+              this.confirmLoading = true
+              if (this.form.type === 'pass') {
+                pass(form)
+                this.$message.success('任务已通过')
+              } else {
+                reject(form)
+                this.$message.success('任务已驳回')
+              }
+              this.confirmLoading = false
+              this.$emit('ok')
+              this.handleClose()
+            }
+          })
+        } else {
+          return false
+        }
+      })
     },
     /**
      * 关闭处理

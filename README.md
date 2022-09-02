@@ -1,7 +1,7 @@
 # Bootx-Platform-UI 
 <p>
  <img src='https://gitee.com/bootx/bootx-platform/badge/star.svg?theme=dark' alt='star'/>
- <img src="https://img.shields.io/badge/Boot%20Platform-1.1.0-success.svg" alt="Build Status">
+ <img src="https://img.shields.io/badge/Boot%20Platform-1.1.1-success.svg" alt="Build Status">
  <img src="https://img.shields.io/badge/Author-Bootx-orange.svg" alt="Build Status">
  <img src="https://img.shields.io/badge/Vue-2.6-blue.svg" alt="Downloads">
  <img src="https://img.shields.io/badge/license-Apache%20License%202.0-green.svg"/>
@@ -36,7 +36,8 @@ yarn build
 
 ### 混入组件
 
-[Vue混入概念介绍](https://cn.vuejs.org/v2/guide/mixins.html)，默认提供两种混入组件: `TableMixin`(列表Mixin)、`FormMixin`(表单Mixin)
+[Vue混入概念介绍](https://cn.vuejs.org/v2/guide/mixins.html)，混入组件在`src/mixins`目录下，现有以下组件: `TableMixin`(列表Mixin)、
+`FormMixin`(表单Mixin)、`UploadMixin`(文件上传Mixin)、`WebsocketMixin`(WebsocketMixin)等几种
 
 > 1. 当组件和混入对象含有同名选项时，这些选项将以恰当的方式进行“合并”。 比如，数据对象在内部会进行递归合并，并在发生冲突时以组件数据优先。
 > 2. 同名钩子函数将合并为一个数组，因此都将被调用。另外，混入对象的钩子将在组件自身钩子之前调用。值为对象的选项，例如 methods、components 和 directives，将被合并为同一个对象。

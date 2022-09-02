@@ -50,14 +50,14 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <b-user-select-modal ref="userSelectModal" @ok="assigneeCallback" title="选择委派的用户" :multiple="false"/>
-    <apply-form-show ref="applyFormShow"/>
+    <apply-form-show ref="applyFormShow" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { assignee, pageMyTodo, pass, reject } from '@/api/bpm/task'
+import { assignee, pageMyTodo } from '@/api/bpm/task'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 
@@ -89,45 +89,7 @@ export default {
      * 处理任务
      */
     handle (record) {
-      this.$refs.applyFormShow.init(record.instanceId)
-    },
-    /**
-     * 完成任务
-     */
-    pass (record) {
-      this.$confirm({
-        title: '警告',
-        content: '确实要完成当前任务!',
-        onOk: () => {
-          this.loading = true
-          pass({
-            taskId: record.taskId,
-            reason: '意见'
-          }).then(() => {
-            this.$message.success('任务已完成')
-            this.init()
-          })
-        }
-      })
-    },
-    /**
-     * 驳回
-     */
-    reject (record) {
-      this.$confirm({
-        title: '警告',
-        content: '确实要驳回当前任务!',
-        onOk: () => {
-          this.loading = true
-          reject({
-            taskId: record.taskId,
-            reason: '意见'
-          }).then(() => {
-            this.$message.success('任务已驳回')
-            this.init()
-          })
-        }
-      })
+      this.$refs.applyFormShow.init(record.instanceId, null, record.taskId)
     },
     /**
      * 委派

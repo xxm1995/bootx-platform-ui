@@ -4,6 +4,24 @@
       <a-layout style="align-items: stretch;">
         <a-layout-content style="padding: 0;margin-top: 10px;">
           <div ref="canvas" class="canvas" :style="{minHeight:height+'px'}"/>
+          <a-drawer
+            :visible="drawerVisible"
+            title="流程信息"
+            :width="450"
+            placement="right"
+            :closable="true"
+            @close="drawerVisible = false"
+          >
+            <a-timeline>
+              <a-timeline-item v-for="o in currentTaskList" :key="o.id">
+                <p>开始时间: {{ o.startTime }}</p>
+                <p>环节: {{ o.taskName }}</p>
+                <p>处理人: {{ o.userName }}</p>
+                <p>结束时间: {{ o.endTime }}</p>
+                <p>审批意见：{{ o.reason ? o.reason : ''}}</p>
+              </a-timeline-item>
+            </a-timeline>
+          </a-drawer>
         </a-layout-content>
         <a-layout-sider class="sider" style="background: #fff; min-width: 40px; width: 40px;max-width: 40px;border-left: 1px solid #eeeeee;box-shadow: 0 0 8px #cccccc;">
         </a-layout-sider>
@@ -41,7 +59,9 @@ export default {
     return {
       modeler: null,
       zoom: 1,
-      element: null
+      element: null,
+      drawerVisible: false,
+      currentTaskList: []
     }
   },
   watch: {
@@ -98,9 +118,9 @@ export default {
     },
 
     /**
-     * 信息显示处理, 给节点绑定时间
+     * 给节点绑定事件 信息显示处理,
      */
-    initShowInfo () {
+    initEventBind () {
       const eventBus = this.modeler.get('eventBus')
       // 注册需要的监听事件
       const types = ['bpmn:UserTask', 'bpmn:StartEvent', 'bpmn:EndEvent']
@@ -114,6 +134,12 @@ export default {
         const element = eventObj ? eventObj.element : null
         if (types.includes(element.type)) {
           this.elementOut(element)
+        }
+      })
+      eventBus.on('element.click', (eventObj) => {
+        const element = eventObj ? eventObj.element : null
+        if (element.type === 'bpmn:UserTask') {
+          this.elementClick(element)
         }
       })
     },
@@ -133,16 +159,21 @@ export default {
       if (element.type === 'bpmn:UserTask') {
         const tasks = this.nodeTaskList[element.id]
         if (tasks) {
-          for (const task of tasks) {
+          const task = tasks[0]
+          if (task) {
             const taskState = dictConvert('BpmTaskState', task.state)
             html += `<span>执行人：${task.userName}</span>
-                  <span>结果：${taskState}</span>
+                  <span>状态：${taskState}</span>
                   <span>开始时间：${task.startTime}</span>
                   <span>结束时间：${task.endTime}</span>
-<!--                  <span>耗时：231</span>-->
-                  <span>审批意见：${task.reason}</span>
-                  </br>`
+                  <span>审批意见：${task.reason ? task.reason : ''}</span>`
           }
+          if (tasks[1]) {
+            html += `</br>
+            <span>点击查看更多...</span>`
+          }
+        } else {
+          return
         }
       }
       if (element.type === 'bpmn:EndEvent') {
@@ -153,7 +184,7 @@ export default {
         html = `<span>结束时间：${ this.instance.endTime }</span>`
       }
       this.elementOverlayIds[element.id] = this.overlays.add(element, {
-        position: { left: -50, bottom: -10 },
+        position: { left: -50, bottom: 10 },
         html: `<div class="element-overlays">${html}</div>`
       })
     },
@@ -163,6 +194,15 @@ export default {
     elementOut (element) {
       this.overlays.remove({ element })
       this.elementOverlayIds[element.id] = null
+    },
+    /**
+     * 点击事件
+     */
+    elementClick (element) {
+      this.currentTaskList = this.nodeTaskList[element.id]
+      if (this.currentTaskList) {
+        this.drawerVisible = true
+      }
     },
     /**
      * 处理SVG元素
@@ -259,7 +299,7 @@ export default {
   },
   mounted () {
     this.initModeler()
-    this.initShowInfo()
+    this.initEventBind()
   }
 }
 </script>

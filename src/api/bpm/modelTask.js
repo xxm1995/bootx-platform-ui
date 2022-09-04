@@ -5,7 +5,7 @@ import { axios } from '@/utils/request'
  */
 export function page (params) {
   return axios({
-    url: '/bpm/model/task/page',
+    url: '/bpm/model/node/page',
     method: 'GET',
     params: params
   })
@@ -16,7 +16,7 @@ export function page (params) {
  */
 export function listByModelId (modelId) {
   return axios({
-    url: '/bpm/model/task/findAllByModelId',
+    url: '/bpm/model/node/findAllByModelId',
     method: 'GET',
     params: { modelId }
   })
@@ -27,7 +27,7 @@ export function listByModelId (modelId) {
  */
 export function get (id) {
   return axios({
-    url: '/bpm/model/task/findById',
+    url: '/bpm/model/node/findById',
     method: 'GET',
     params: { id }
   })
@@ -38,7 +38,7 @@ export function get (id) {
  */
 export function add (obj) {
   return axios({
-    url: '/bpm/model/task/add',
+    url: '/bpm/model/node/add',
     method: 'POST',
     data: obj
   })
@@ -49,7 +49,7 @@ export function add (obj) {
  */
 export function update (obj) {
   return axios({
-    url: '/bpm/model/task/update',
+    url: '/bpm/model/node/update',
     method: 'POST',
     data: obj
   })
@@ -60,7 +60,7 @@ export function update (obj) {
  */
 export function del (id) {
   return axios({
-    url: '/bpm/model/task/delete',
+    url: '/bpm/model/node/delete',
     params: { id },
     method: 'DELETE'
   })
@@ -71,7 +71,7 @@ export function del (id) {
  */
 export function sync (modelId) {
   return axios({
-    url: '/bpm/model/task/sync',
+    url: '/bpm/model/node/sync',
     method: 'POST',
     params: { modelId }
   })

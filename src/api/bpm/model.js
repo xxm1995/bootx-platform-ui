@@ -99,6 +99,16 @@ export function publish (id) {
     params: { id }
   })
 }
+/**
+ * 校验流程
+ */
+export function verifyModel (id) {
+  return axios({
+    url: '/bpm/model/verifyModel',
+    method: 'GET',
+    params: { id }
+  })
+}
 
 /**
  * 复制

@@ -66,6 +66,9 @@
                   <a href="javascript:" @click="bpmnEdit(row,true)">查看流程</a>
                 </a-menu-item>
                 <a-menu-item>
+                  <a :disabled="row.publish !== UNPUBLISHED" href="javascript:" @click="verifyModel(row)">校验模型</a>
+                </a-menu-item>
+                <a-menu-item>
                   <a :disabled="row.publish !== UNPUBLISHED" href="javascript:" @click="publish(row)">发布</a>
                 </a-menu-item>
                 <a-menu-item>
@@ -97,7 +100,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { copy, del, page, publish } from '@/api/bpm/model'
+import { copy, del, page, publish, verifyModel } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import BpmModelTaskList from './BpmModelTaskList'
@@ -149,7 +152,7 @@ export default {
      * 任务节点列表
      */
     taskNodeShow (record, edit) {
-      this.$refs.bpmModelTaskList.list(record,edit)
+      this.$refs.bpmModelTaskList.list(record, edit)
     },
     remove (record) {
       this.$confirm({
@@ -190,10 +193,15 @@ export default {
         onOk: () => {
           this.loading = true
           copy(record.id).then(_ => {
-            this.$message.info('复制成功')
+            this.$message.success('复制成功')
             this.init()
           })
         }
+      })
+    },
+    verifyModel (record) {
+      verifyModel(record.id).then(_ => {
+        this.$message.success('校验通过')
       })
     }
   },

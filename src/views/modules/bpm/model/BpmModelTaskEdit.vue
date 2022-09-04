@@ -16,13 +16,19 @@
         :wrapper-col="wrapperCol"
       >
         <a-form-model-item label="主键" prop="id" hidden="true" >
-          <a-input v-model="form.id" :disabled="showable"/>
+          <a-input v-model="form.id" disabled/>
         </a-form-model-item>
         <a-form-model-item
           label="任务节点id"
           prop="taskId"
         >
-          <a-input v-model="form.taskId" :disabled="showable"/>
+          <a-input v-model="form.nodeId" disabled/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="跳过节点"
+          prop="skip"
+        >
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.skip" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
           label="任务节点名称"
@@ -77,17 +83,23 @@ export default {
       assignTypeList: [],
       form: {
         id: null,
-        taskId: '',
+        nodeId: '',
         taskName: '',
+        skip: false,
         assignType: undefined,
         userId: '',
         userName: ''
-      },
-      rules: {
-        taskId: [{ required: true, message: '请输入任务节点ID!' }],
+      }
+    }
+  },
+  computed: {
+    rules () {
+      return {
+        nodeId: [{ required: true, message: '请输入任务节点ID!' }],
         taskName: [{ required: true, message: '请输入任务节点名称!' }],
         assignType: [{ required: true, message: '请选择处理人分配类型!' }],
-        userName: [{ required: true, message: '请选择处理人!' }]
+        userName: [{ required: true, message: '请选择处理人!' }],
+        skip: [{ required: true, message: '' }]
       }
     }
   },

@@ -18,7 +18,7 @@
                 <p>环节: {{ o.taskName }}</p>
                 <p>处理人: {{ o.userName }}</p>
                 <p>结束时间: {{ o.endTime }}</p>
-                <p>审批意见：{{ o.reason ? o.reason : ''}}</p>
+                <p>审批意见：{{ o.reason ? o.reason : '' }}</p>
               </a-timeline-item>
             </a-timeline>
           </a-drawer>
@@ -71,6 +71,11 @@ export default {
       }
     },
     flowNodeList: function (val) {
+      if (val) {
+        this.fillColor()
+      }
+    },
+    nodeTaskList: function (val) {
       if (val) {
         this.fillColor()
       }
@@ -218,15 +223,17 @@ export default {
     fillColor () {
       const canvas = this.modeler.get('canvas')
       this.modeler._definitions.rootElements[0].flowElements.forEach(n => {
-        const flowNode = this.flowNodeList.find(m => m.activityId === n.id) || {}
-        if (flowNode.state === RUNNING) {
-          canvas.addMarker(n.id, 'highlight-todo')
-        }
-
-        if (flowNode.state === FINISH) {
+        const state = this.getNodeTaskState(n)
+        if (state === 'pass') {
           canvas.addMarker(n.id, 'highlight')
+        } else if (state === 'running') {
+          canvas.addMarker(n.id, 'highlight-todo')
+        } else if (state === 'reject') {
+          canvas.addMarker(n.id, 'highlight-reject')
+        } else if (['back', 'retrieve'].includes(state)) {
+          canvas.addMarker(n.id, 'highlight-cancel')
+        } else {
         }
-
         // 开始节点
         // if (n.$type === 'bpmn:StartEvent') {
         //   canvas.addMarker(n.id, 'highlight')
@@ -295,6 +302,19 @@ export default {
         height: currentViewbox.height
       })
       this.zoom = bbox.width / currentViewbox.width * 1.8
+    },
+    /**
+     * 获取节点的任务状态
+     */
+    getNodeTaskState (node) {
+      if (this.nodeTaskList) {
+        const tasks = this.nodeTaskList[node.id]
+        if (!tasks) {
+          // 处理非用户任务节点
+          return this.flowNodeList.find(m => m.activityId === node.id) ? 'pass' : ''
+        }
+        return tasks[0].state
+      }
     }
   },
   mounted () {

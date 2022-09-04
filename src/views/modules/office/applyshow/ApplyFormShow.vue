@@ -170,7 +170,9 @@ export default {
         // 获取关联动态表单
         await getDynamicForm(this.bpmModel.formId).then(res => {
           this.dynamicFormStatic = toStringJSON(res.data.value)
-          this.$refs.kfb.setData(this.instance.formVariables)
+          this.$nextTick(() => {
+            this.$refs.kfb.setData(this.instance.formVariables)
+          })
         })
       }
     },

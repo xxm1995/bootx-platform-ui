@@ -3,7 +3,7 @@
     :visible="visible"
     :title="title"
     :maskClosable="true"
-    :width="1000"
+    width="85%"
     placement="right"
     :closable="true"
     @close="handleCancel"
@@ -15,8 +15,8 @@
     >
       <template v-slot:buttons>
         <a-space>
-          <a-button type="primary" icon="plus" @click="add">添加</a-button>
-          <a-button icon="sync" :disabled="loading" @click="sync">同步任务节点</a-button>
+          <a-button :disabled="modelPublish" type="primary" icon="plus" :loading="loading" @click="add">添加</a-button>
+          <a-button :disabled="modelPublish" icon="sync" :loading="loading" @click="sync">同步任务节点</a-button>
         </a-space>
       </template>
     </vxe-toolbar>
@@ -28,19 +28,32 @@
     >
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="taskName" title="任务节点名称"/>
-      <vxe-table-column field="taskId" title="任务节点id"/>
+      <vxe-table-column field="nodeId" title="任务节点id"/>
+      <vxe-table-column field="assignType" title="多实例">
+        <template v-slot="{row}">{{ row.multi? '是':'否' }}</template>
+      </vxe-table-column>
+      <vxe-table-column field="assignType" title="跳过">
+        <template v-slot="{row}">{{ row.skip? '是':'否' }}</template>
+      </vxe-table-column>
+<!--      <vxe-table-column field="reject" title="允许驳回">-->
+<!--        <template v-slot="{row}">{{ row.reject? '是':'否' }}</template>-->
+<!--      </vxe-table-column>-->
+<!--      <vxe-table-column field="back" title="允许回退">-->
+<!--        <template v-slot="{row}">{{ row.back? '是':'否' }}</template>-->
+<!--      </vxe-table-column>-->
+<!--      <vxe-table-column field="retrieve" title="允许取回">-->
+<!--        <template v-slot="{row}">{{ row.retrieve? '是':'否' }}</template>-->
+<!--      </vxe-table-column>-->
       <vxe-table-column field="assignType" title="人员分配类型">
-        <template v-slot="{row}">
-          {{ dictConvert('BpmTaskAssignType',row.assignType) }}
-        </template>
+        <template v-slot="{row}">{{ dictConvert('BpmTaskAssignType',row.assignType) }}</template>
       </vxe-table-column>
       <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="edit(row)">编辑</a>
+          <a href="javascript:" :disabled="modelPublish" @click="edit(row)">编辑</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="remove(row)" style="color: red">删除</a>
+          <a href="javascript:" :disabled="modelPublish" @click="remove(row)" :style="{color: modelPublish?'':'red'}">删除</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -63,6 +76,8 @@ export default {
   },
   data () {
     return {
+      model: {},
+      modelPublish: false,
       title: '',
       isEdit: true,
       visible: false,
@@ -74,6 +89,8 @@ export default {
      * 展示列表
      */
     list (record, edit) {
+      this.model = record
+      this.modelPublish = record.publish === 'published'
       this.isEdit = edit
       this.modelId = record.id
       this.title = record.name

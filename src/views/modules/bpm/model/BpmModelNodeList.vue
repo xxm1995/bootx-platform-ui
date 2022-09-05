@@ -27,9 +27,9 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="taskName" title="任务节点名称"/>
+      <vxe-table-column field="nodeName" title="任务节点名称"/>
       <vxe-table-column field="nodeId" title="任务节点id"/>
-      <vxe-table-column field="assignType" title="多实例">
+      <vxe-table-column field="multi" title="多实例">
         <template v-slot="{row}">{{ row.multi? '是':'否' }}</template>
       </vxe-table-column>
       <vxe-table-column field="assignType" title="跳过">
@@ -57,8 +57,8 @@
         </template>
       </vxe-table-column>
     </vxe-table>
-    <bpm-model-task-edit
-      ref="bpmModelTaskEdit"
+    <bpm-model-node-edit
+      ref="bpmModelNodeEdit"
       @ok="handleOk"/>
   </a-drawer>
 </template>
@@ -66,13 +66,13 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { listByModelId, del, sync } from '@/api/bpm/modelTask'
-import BpmModelTaskEdit from './BpmModelTaskEdit'
+import BpmModelNodeEdit from './BpmModelNodeEdit'
 
 export default {
-  name: 'BpmModelTaskList',
+  name: 'BpmModelNodeList',
   mixins: [TableMixin],
   components: {
-    BpmModelTaskEdit
+    BpmModelNodeEdit
   },
   data () {
     return {
@@ -108,13 +108,13 @@ export default {
       this.visible = false
     },
     add () {
-      this.$refs.bpmModelTaskEdit.init('', 'add')
+      this.$refs.bpmModelNodeEdit.init('', 'add')
     },
     edit (record) {
-      this.$refs.bpmModelTaskEdit.init(record.id, 'edit')
+      this.$refs.bpmModelNodeEdit.init(record.id, 'edit')
     },
     show (record) {
-      this.$refs.bpmModelTaskEdit.init(record.id, 'show')
+      this.$refs.bpmModelNodeEdit.init(record.id, 'show')
     },
     remove (record) {
       this.$confirm({

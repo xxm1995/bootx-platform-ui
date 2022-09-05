@@ -31,10 +31,16 @@
           <a-switch checked-children="是" un-checked-children="否" v-model="form.skip" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
-          label="任务节点名称"
-          prop="taskName"
+          label="多任务"
+          prop="multi"
         >
-          <a-input v-model="form.taskName" :disabled="showable"/>
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
+        </a-form-model-item>
+        <a-form-model-item
+          label="任务节点名称"
+          prop="nodeName"
+        >
+          <a-input v-model="form.nodeName" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
           label="分配类型"
@@ -75,7 +81,7 @@ import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update } from '@/api/bpm/modelTask'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 export default {
-  name: 'BpmModelTaskEdit',
+  name: 'BpmModelNodeEdit',
   components: { BUserSelectModal },
   mixins: [FormMixin],
   data () {
@@ -84,8 +90,9 @@ export default {
       form: {
         id: null,
         nodeId: '',
-        taskName: '',
+        nodeName: '',
         skip: false,
+        multi: false,
         assignType: undefined,
         userId: '',
         userName: ''
@@ -96,7 +103,7 @@ export default {
     rules () {
       return {
         nodeId: [{ required: true, message: '请输入任务节点ID!' }],
-        taskName: [{ required: true, message: '请输入任务节点名称!' }],
+        nodeName: [{ required: true, message: '请输入任务节点名称!' }],
         assignType: [{ required: true, message: '请选择处理人分配类型!' }],
         userName: [{ required: true, message: '请选择处理人!' }],
         skip: [{ required: true, message: '' }]

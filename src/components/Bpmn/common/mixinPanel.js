@@ -63,7 +63,7 @@ export default {
       modeling.updateProperties(this.element, properties)
     },
     getSignalElements () {
-      var signals = []
+      const signals = []
       this.rootElements = this.modeler.getDefinitions().rootElements
       if (this.rootElements.length > 0) {
         this.rootElements.forEach(item => {

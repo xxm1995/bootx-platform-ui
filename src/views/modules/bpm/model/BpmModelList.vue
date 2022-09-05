@@ -93,7 +93,7 @@
       @page-change="handleTableChange">
     </vxe-pager>
     <bpm-model-edit ref="bpmModelEdit" @ok="init"/>
-    <bpm-model-task-list ref="bpmModelTaskList"/>
+    <bpm-model-node-list ref="bpmModelNodeList"/>
     <bpm-modeler ref="bpmModeler"/>
   </a-card>
 </template>
@@ -103,13 +103,13 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { copy, del, page, publish, verifyModel } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import BpmModelTaskList from './BpmModelTaskList'
+import BpmModelNodeList from './BpmModelNodeList'
 import BpmModeler from './BpmModeler'
 
 export default {
   name: 'BpmModelList',
   mixins: [TableMixin],
-  components: { BpmModeler, BpmModelTaskList, BpmModelEdit },
+  components: { BpmModeler, BpmModelNodeList, BpmModelEdit },
   data () {
     return {
       // 流程定义已发布
@@ -152,7 +152,7 @@ export default {
      * 任务节点列表
      */
     taskNodeShow (record, edit) {
-      this.$refs.bpmModelTaskList.list(record, edit)
+      this.$refs.bpmModelNodeList.list(record, edit)
     },
     remove (record) {
       this.$confirm({

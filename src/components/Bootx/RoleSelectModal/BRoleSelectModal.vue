@@ -15,12 +15,12 @@
             <a-row :gutter="12">
               <a-col :md="8" :sm="12">
                 <a-form-item label="名称">
-                  <a-input v-model="queryParam.name" placeholder="输入用户名称" />
+                  <a-input v-model="queryParam.name" placeholder="输入角色名称" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="12">
                 <a-form-item label="账号">
-                  <a-input v-model="queryParam.username" placeholder="输入用户账号" />
+                  <a-input v-model="queryParam.code" placeholder="输入角色编码" />
                 </a-form-item>
               </a-col>
               <a-col :md="8" :sm="24">
@@ -42,8 +42,8 @@
       :data="tableData">
       <vxe-table-column v-if="multiple" type="checkbox" width="40"/>
       <vxe-table-column v-if="!multiple" type="radio" width="40"/>
-      <vxe-table-column field="name" title="用户名称" />
-      <vxe-table-column field="username" title="用户账号" />
+      <vxe-table-column field="name" title="角色名称" />
+      <vxe-table-column field="code" title="角色编码" />
     </vxe-table>
     <vxe-pager
       border
@@ -62,16 +62,16 @@
 </template>
 
 <script>
-import { page } from '@/api/system/user'
 import { TableMixin } from '@/mixins/TableMixin'
+import { page } from '@/api/system/role'
 
 export default {
-  name: 'BUserSelectModal',
+  name: 'RoleSelectModel',
   mixins: [TableMixin],
   props: {
     title: {
       type: String,
-      default: '选择用户'
+      default: '选择角色'
     },
     // 是否是多选
     multiple: {
@@ -91,19 +91,19 @@ export default {
     radioConfig () {
       return !this.multiple ? {
         reserve: true,
-        checkRowKey: this.selectUserId
+        checkRowKey: this.selectRoleId
       } : {}
     }
   },
   data () {
     return {
       // 已经被选择的用户
-      selectUserIds: [],
-      selectUserId: null,
+      selectRoleIds: [],
+      selectRoleId: null,
       visible: false,
       queryParam: {
-        name: '',
-        username: ''
+        code: '',
+        name: ''
       }
     }
   },
@@ -115,9 +115,9 @@ export default {
     init (param) {
       this.visible = true
       if (this.multiple) {
-        this.selectUserIds = param || this.selectUserIds
+        this.selectRoleIds = param || this.selectRoleIds
       } else {
-        this.selectUserId = param || this.selectUserId
+        this.selectRoleId = param || this.selectRoleId
       }
       this.queryPage()
     },
@@ -155,9 +155,9 @@ export default {
       const reserveUsers = this.$refs.table.getCheckboxReserveRecords()
       // 本页选中的
       const checkUsers = this.$refs.table.getCheckboxRecords()
-      const users = reserveUsers.concat(checkUsers)
-      const userIds = users.map(res => res.id)
-      this.$emit('ok', userIds, users)
+      const roles = reserveUsers.concat(checkUsers)
+      const roleIds = roles.map(res => res.id)
+      this.$emit('ok', roleIds, roles)
     },
 
     /**
@@ -166,9 +166,9 @@ export default {
      * @return user 选中的用户
      */
     radioCallback () {
-      const user = this.$refs.table.getRadioRecord()
-      const userId = user?.id
-      this.$emit('ok', userId, user)
+      const role = this.$refs.table.getRadioRecord()
+      const roleId = role?.id
+      this.$emit('ok', roleId, role)
     },
     /**
      * 关闭
@@ -180,7 +180,7 @@ export default {
      * 禁止选中的行 复选
      */
     banCheckbox ({ row }) {
-      return !this.selectUserIds.includes(row.id)
+      return !this.selectRoleIds.includes(row.id)
     },
     /**
      * 默认选中的行 单选

@@ -15,6 +15,9 @@
           <div style="display: flex;justify-content: center">
             <a-form-model
               ref="form"
+              style="width: 50%"
+              :label-col="labelCol"
+              :wrapper-col="wrapperCol"
               :model="form"
               :rules="rules"
             >
@@ -43,7 +46,8 @@
               <a-timeline>
                 <a-timeline-item v-for="o in taskList" :key="o.id">
                   <p>开始时间: {{ o.startTime }}</p>
-                  <p>环节: {{ o.taskName }}</p>
+                  <p>环节: {{ o.nodeName }}</p>
+                  <p>状态：{{ stateNameConvert(o.state) }}</p>
                   <p>处理人: {{ o.userName }}</p>
                   <p>结束时间: {{ o.endTime }}</p>
                 </a-timeline-item>
@@ -101,6 +105,7 @@ import { toStringJSON } from 'xe-utils'
 import WorkflowBpmnModeler from '@/components/Bpmn'
 import ProcessViewer from '@/components/Bpmn/ProcessViewer'
 import { findAllByInstanceId, getNodeTasks, pass, reject } from '@/api/bpm/task'
+import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'ApplyFormShow',
@@ -189,13 +194,14 @@ export default {
           this.$confirm({
             title: '警告',
             content: '确实确定处理当前任务!',
-            onOk: () => {
+            okText: '确定',
+            onOk: async () => {
               this.confirmLoading = true
               if (this.form.type === 'pass') {
-                pass(form)
+                await pass(form)
                 this.$message.success('任务已通过')
               } else {
-                reject(form)
+                await reject(form)
                 this.$message.success('任务已驳回')
               }
               this.confirmLoading = false
@@ -220,6 +226,17 @@ export default {
     },
     handleTabChange (activeKey) {
       this.currentActiveKey = activeKey
+    },
+    resetForm () {
+      this.$nextTick(() => {
+        this.$refs.form.resetFields()
+      })
+    },
+    /**
+     * 任务状态翻译
+     */
+    stateNameConvert (state) {
+      return dictConvert('BpmTaskState', state)
     }
   }
 }

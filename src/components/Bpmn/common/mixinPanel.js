@@ -110,6 +110,11 @@ export default {
       }
       return signals
     },
+    /**
+     * 判断当前节点是否是执行类型的节点
+     * @param name
+     * @returns {boolean}
+     */
     filter (name) {
       return this.filters.indexOf(name) !== -1
     },

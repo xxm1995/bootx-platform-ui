@@ -33,7 +33,7 @@
       </a-form-model-item>
       <a-form-model-item>
         <a-space>
-          <a-button @click="restForm">重置</a-button>
+          <a-button @click="resetForm">重置</a-button>
           <a-button :loading="confirmLoading" type="primary" @click="send">发送</a-button>
         </a-space>
       </a-form-model-item>
@@ -91,7 +91,7 @@ export default {
               message
             }).then(() => {
               this.$message.success('发送成功')
-              this.restForm()
+              this.resetForm()
             }).catch(() => {
               this.confirmLoading = false
             })
@@ -99,7 +99,7 @@ export default {
         }
       )
     },
-    restForm () {
+    resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
         this.confirmLoading = false

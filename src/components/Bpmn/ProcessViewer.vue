@@ -15,9 +15,10 @@
             <a-timeline>
               <a-timeline-item v-for="o in currentTaskList" :key="o.id">
                 <p>开始时间: {{ o.startTime }}</p>
-                <p>环节: {{ o.taskName }}</p>
+                <p>环节: {{ o.nodeName }}</p>
+                <p>状态：{{ stateNameConvert(o.state) }}</p>
                 <p>处理人: {{ o.userName }}</p>
-                <p>结束时间: {{ o.endTime }}</p>
+                <p>结束时间: {{ o.endTime? o.endTime : '' }}</p>
                 <p>审批意见：{{ o.reason ? o.reason : '' }}</p>
               </a-timeline-item>
             </a-timeline>
@@ -39,8 +40,6 @@ import flowableModdle from './flowable/flowable.json'
 import { addArrow } from '@/components/Bpmn/processViewerUtils'
 import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
 
-const RUNNING = 'running'
-const FINISH = 'finish'
 export default {
   name: 'WorkflowBpmnModeler',
   props: {
@@ -166,11 +165,11 @@ export default {
         if (tasks) {
           const task = tasks[0]
           if (task) {
-            const taskState = dictConvert('BpmTaskState', task.state)
+            const taskState = this.stateNameConvert(task.state)
             html += `<span>执行人：${task.userName}</span>
                   <span>状态：${taskState}</span>
                   <span>开始时间：${task.startTime}</span>
-                  <span>结束时间：${task.endTime}</span>
+                  <span>结束时间：${task.endTime ? task.endTime : '' }</span>
                   <span>审批意见：${task.reason ? task.reason : ''}</span>`
           }
           if (tasks[1]) {
@@ -224,7 +223,7 @@ export default {
       const canvas = this.modeler.get('canvas')
       this.modeler._definitions.rootElements[0].flowElements.forEach(n => {
         const state = this.getNodeTaskState(n)
-        if (state === 'pass') {
+        if (['pass', 'skip'].includes(state)) {
           canvas.addMarker(n.id, 'highlight')
         } else if (state === 'running') {
           canvas.addMarker(n.id, 'highlight-todo')
@@ -233,55 +232,8 @@ export default {
         } else if (['back', 'retrieve'].includes(state)) {
           canvas.addMarker(n.id, 'highlight-cancel')
         } else {
+          // 其他状态不进行处理
         }
-        // 开始节点
-        // if (n.$type === 'bpmn:StartEvent') {
-        //   canvas.addMarker(n.id, 'highlight')
-        // } else if (n.$type === 'bpmn:UserTask') { // 用户任务
-        //   const task = this.taskList.find(m => m.key === n.id) || {}
-        //   // 已完成的任务
-        //   if (task.state === FINISH) {
-        //     canvas.addMarker(n.id, 'highlight')
-        //   } else if (task.state === RUNNING) { // 执行中的任务
-        //     canvas.addMarker(n.id, 'highlight-todo')
-        //   } else { // 未执行的任务
-        //   }
-        // } else if (n.$type === 'bpmn:SequenceFlow') { // 连接线
-        //   const sourceRef = n.sourceRef
-        //   const sourceRefTask = this.taskList.find(m => m.key === sourceRef.id) || {}
-        //   const targetRef = n.targetRef
-        //   const targetTask = this.taskList.find(m => m.key === targetRef.id) || {}
-        //   // 开始侧是开始节点
-        //   if (sourceRef.$type === 'bpmn:StartEvent') {
-        //     // 目标节点完成
-        //     if (targetTask.state === FINISH) {
-        //       canvas.addMarker(n.id, 'highlight')
-        //     }
-        //     // 执行中节点
-        //     if (targetTask.state === RUNNING) {
-        //       canvas.addMarker(n.id, 'highlight-todo')
-        //     }
-        //   }
-        //   // 两侧都是任务节点 且 开始端任务完成
-        //   if (sourceRef.$type === 'bpmn:UserTask' && targetRef.$type === 'bpmn:UserTask' &&
-        //     sourceRefTask.state === FINISH) {
-        //     // 目标节点完成
-        //     if (targetTask.state === FINISH) {
-        //       canvas.addMarker(n.id, 'highlight')
-        //     }
-        //     console.log(targetTask.state)
-        //     // 执行中节点
-        //     if (targetTask.state === RUNNING) {
-        //       canvas.addMarker(n.id, 'highlight-todo')
-        //     }
-        //   }
-        //   // 开始端任务已完成, 结束端是结束节点
-        //   if (sourceRefTask.state === FINISH && targetRef.$type === 'bpmn:EndEvent') {
-        //     canvas.addMarker(n.id, 'highlight')
-        //     // 结束节点
-        //     canvas.addMarker(targetRef.id, 'highlight')
-        //   }
-        // }
       })
     },
     /**
@@ -315,6 +267,12 @@ export default {
         }
         return tasks[0].state
       }
+    },
+    /**
+     * 任务状态翻译
+     */
+    stateNameConvert (state) {
+      return dictConvert('BpmTaskState', state)
     }
   },
   mounted () {

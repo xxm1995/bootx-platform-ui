@@ -25,7 +25,7 @@
       <vxe-table-column type="seq" title="序号" width="60" />
       <vxe-table-column field="instanceName" title="业务标题" />
       <vxe-table-column field="defName" title="流程名称" />
-      <vxe-table-column field="taskName" title="环节" />
+      <vxe-table-column field="nodeName" title="环节" />
       <vxe-table-column field="taskId" title="任务id"/>
       <vxe-table-column field="instanceId" title="流程id"/>
       <vxe-table-column field="startUserName" title="发起人" />

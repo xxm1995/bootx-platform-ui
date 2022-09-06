@@ -1,4 +1,4 @@
-export function commonParse(element) {
+export function commonParse (element) {
   const result = {
     ...element.businessObject,
     ...element.businessObject.$attrs
@@ -6,7 +6,7 @@ export function commonParse(element) {
   return formatJsonKeyValue(result)
 }
 
-export function formatJsonKeyValue(result) {
+export function formatJsonKeyValue (result) {
   // 移除flowable前缀，格式化数组
   for (const key in result) {
     if (key.indexOf('flowable:') === 0) {
@@ -19,7 +19,7 @@ export function formatJsonKeyValue(result) {
   return result
 }
 
-export function documentationParse(obj) {
+export function documentationParse (obj) {
   if ('documentation' in obj) {
     let str = ''
     obj.documentation.forEach(item => {
@@ -30,14 +30,14 @@ export function documentationParse(obj) {
   return obj
 }
 
-export function conditionExpressionParse(obj) {
+export function conditionExpressionParse (obj) {
   if ('conditionExpression' in obj) {
     obj.conditionExpression = obj.conditionExpression.body
   }
   return obj
 }
 
-export function userTaskParse(obj) {
+export function userTaskParse (obj) {
   for (const key in obj) {
     if (key === 'candidateUsers') {
       obj.userType = 'candidateUsers'

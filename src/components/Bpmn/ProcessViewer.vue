@@ -66,17 +66,17 @@ export default {
   watch: {
     xml: function (val) {
       if (val) {
-        this.createDiagram(val)
+        this.createDiagram()
       }
     },
     flowNodeList: function (val) {
       if (val) {
-        this.fillColor()
+        this.createDiagram()
       }
     },
     nodeTaskList: function (val) {
       if (val) {
-        this.fillColor()
+        this.createDiagram()
       }
     }
   },
@@ -107,12 +107,12 @@ export default {
     /**
      * 创建流程图
      */
-    async createDiagram (data) {
-      if (!data) {
+    async createDiagram () {
+      if (!this.xml) {
         return
       }
       // 将字符串转换成图显示出来
-      data = data.replace(/<!\[CDATA\[(.+?)]]>/g, function (match, str) {
+      const data = this.xml.replace(/<!\[CDATA\[(.+?)]]>/g, function (match, str) {
         return str.replace(/</g, '&lt;')
       })
       await this.modeler.importXML(data)
@@ -265,7 +265,13 @@ export default {
           // 处理非用户任务节点
           return this.flowNodeList.find(m => m.activityId === node.id) ? 'pass' : ''
         }
-        return tasks[0].state
+        // 是否是多个
+        if (tasks?.length > 1) {
+          // 判断是否有执行中状态
+          return tasks.find(t => t.state === 'running') ? 'running' : tasks[0].state
+        } else {
+          return tasks[0].state
+        }
       }
     },
     /**

@@ -228,9 +228,11 @@ export default {
       this.currentActiveKey = activeKey
     },
     resetForm () {
-      this.$nextTick(() => {
-        this.$refs.form.resetFields()
-      })
+      if (!this.isView) {
+        this.$nextTick(() => {
+          this.$refs.form.resetFields()
+        })
+      }
     },
     /**
      * 任务状态翻译

@@ -37,6 +37,13 @@
           <a-switch checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
         </a-form-model-item>
         <a-form-model-item
+          label="是否串行"
+          prop="sequential"
+          v-if="form.multi"
+        >
+          <a-switch checked-children="串行" un-checked-children="并行" v-model="form.sequential" disabled />
+        </a-form-model-item>
+        <a-form-model-item
           label="任务节点名称"
           prop="nodeName"
         >
@@ -68,13 +75,40 @@
           </a-input>
         </a-form-model-item>
         <a-form-model-item
-          label="分配角色"
           prop="assignShow"
           v-if="[ROLE_GROUP, ROLE].includes(form.assignType)"
         >
+          <template #label>
+            <apan>
+              分配角色
+              <a-tooltip v-if="!form.multi">
+                <template #title>如果角色关联多个用户只会从中随机抽选一个</template>
+                <a-icon type="question-circle" />
+              </a-tooltip>
+            </apan>
+          </template>
           <a-input v-model="form.assignShow" placeholder="请选择角色" disabled>
             <template #addonAfter>
               <a href="javascript:" :disabled="showable" @click="selectRoleShow" >选择角色</a>
+            </template>
+          </a-input>
+        </a-form-model-item>
+        <a-form-model-item
+          prop="assignShow"
+          v-if="[DEPT_LEADER, DEPT_MEMBER].includes(form.assignType)"
+        >
+          <template #label>
+            <apan>
+              分配部门
+              <a-tooltip v-if="!form.multi">
+                <template #title>如果部门关联多个用户只会从中随机抽选一个</template>
+                <a-icon type="question-circle" />
+              </a-tooltip>
+            </apan>
+          </template>
+          <a-input v-model="form.assignShow" placeholder="选择部门(暂不可用)" disabled>
+            <template #addonAfter>
+              <a href="javascript:" :disabled="showable" @click="selectDeptShow" >选择部门</a>
             </template>
           </a-input>
         </a-form-model-item>
@@ -141,6 +175,7 @@ export default {
         nodeName: '',
         skip: false,
         multi: false,
+        sequential: false,
         assignType: undefined,
         assignRaw: '',
         assignShow: ''
@@ -254,6 +289,24 @@ export default {
         this.$set(this.form, 'assignShow', userNames)
       } else {
         this.$set(this.form, 'assignShow', roleInfo?.name)
+      }
+      this.$refs.form.validateField('assignShow')
+    },
+    /**
+     * 选择部门
+     */
+    selectDeptShow () {
+    },
+    /**
+     * 选中部门回调
+     */
+    selectDept (deptId, deptInfo) {
+      this.$set(this.form, 'assignRaw', deptId)
+      if (this.form.multi) {
+        const userNames = deptInfo.map(o => o.name).join(',')
+        this.$set(this.form, 'assignShow', userNames)
+      } else {
+        this.$set(this.form, 'assignShow', deptInfo?.name)
       }
       this.$refs.form.validateField('assignShow')
     }

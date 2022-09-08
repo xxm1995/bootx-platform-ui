@@ -34,7 +34,7 @@
           label="多任务"
           prop="multi"
         >
-          <a-switch checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
+          <a-switch @change="" checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
         </a-form-model-item>
         <a-form-model-item
           label="是否串行"
@@ -75,6 +75,7 @@
           </a-input>
         </a-form-model-item>
         <a-form-model-item
+          label="分配角色"
           prop="assignShow"
           v-if="[ROLE_GROUP, ROLE].includes(form.assignType)"
         >
@@ -200,12 +201,6 @@ export default {
       }
     }
   },
-  watch: {
-    'form.assignType': function () {
-      this.form.assignRaw = undefined
-      this.form.assignShow = undefined
-    }
-  },
   methods: {
     /**
      * 编辑
@@ -309,6 +304,13 @@ export default {
         this.$set(this.form, 'assignShow', deptInfo?.name)
       }
       this.$refs.form.validateField('assignShow')
+    },
+    /**
+     * 分配类型改变时, 清空分配数据信息
+     */
+    assignTypeChange () {
+      this.form.assignRaw = undefined
+      this.form.assignShow = undefined
     }
   },
   mounted () {

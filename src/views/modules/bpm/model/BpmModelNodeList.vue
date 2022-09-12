@@ -33,9 +33,16 @@
         <template v-slot="{row}">{{ row.multi? '是':'否' }}</template>
       </vxe-table-column>
       <vxe-table-column field="sequential" title="串行/并行">
-        <template v-slot="{row}">{{ row.sequential? '串行':'并行' }}</template>
+        <template v-slot="{row}">
+          <template v-if="row.multi">
+            {{ row.sequential? '串行':'并行' }}
+          </template>
+          <template v-else>
+            无
+          </template>
+        </template>
       </vxe-table-column>
-      <vxe-table-column field="assignType" title="跳过">
+      <vxe-table-column field="assignType" title="跳过当前节点">
         <template v-slot="{row}">{{ row.skip? '是':'否' }}</template>
       </vxe-table-column>
 <!--      <vxe-table-column field="reject" title="允许驳回">-->

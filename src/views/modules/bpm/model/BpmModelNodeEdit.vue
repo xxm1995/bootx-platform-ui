@@ -25,29 +25,58 @@
           <a-input v-model="form.nodeId" disabled/>
         </a-form-model-item>
         <a-form-model-item
+          label="任务节点名称"
+          prop="nodeName"
+        >
+          <a-input v-model="form.nodeName" disabled/>
+        </a-form-model-item>
+        <a-form-model-item
           label="跳过节点"
           prop="skip"
         >
           <a-switch checked-children="是" un-checked-children="否" v-model="form.skip" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
-          label="多任务"
+          label="多实例"
           prop="multi"
+          v-if="showable"
         >
-          <a-switch @change="" checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.multi" disabled />
         </a-form-model-item>
         <a-form-model-item
           label="是否串行"
           prop="sequential"
-          v-if="form.multi"
+          v-if="form.multi && showable"
         >
           <a-switch checked-children="串行" un-checked-children="并行" v-model="form.sequential" disabled />
         </a-form-model-item>
         <a-form-model-item
-          label="任务节点名称"
-          prop="nodeName"
+          label="是否或签"
+          prop="orSign"
+          v-if="form.multi"
         >
-          <a-input v-model="form.nodeName" :disabled="showable"/>
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.orSign" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="按比例通过"
+          prop="ratioPass"
+          v-if="form.multi && !form.sequential"
+        >
+          <a-switch checked-children="是" un-checked-children="否" v-model="form.ratioPass" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="通过比例"
+          prop="passRatio"
+          v-if="form.ratioPass"
+        >
+          <a-input-number
+            style="width: 100%"
+            :min="1"
+            :max="100"
+            :precision="0"
+            :disabled="showable"
+            v-model="form.passRatio"
+            placeholder="请输入通过比例" />
         </a-form-model-item>
         <a-form-model-item
           label="分配类型"
@@ -77,7 +106,7 @@
         <a-form-model-item
           label="分配角色"
           prop="assignShow"
-          v-if="[ROLE_GROUP, ROLE].includes(form.assignType)"
+          v-if="[ROLE].includes(form.assignType)"
         >
           <template #label>
             <apan>
@@ -141,8 +170,6 @@ import {
   DEPT_MEMBER_OPTION,
   ROLE,
   ROLE_OPTION,
-  ROLE_GROUP,
-  ROLE_GROUP_OPTION,
   USER,
   USER_OPTION,
   USER_GROUP,
@@ -164,8 +191,6 @@ export default {
       DEPT_MEMBER_OPTION,
       ROLE,
       ROLE_OPTION,
-      ROLE_GROUP,
-      ROLE_GROUP_OPTION,
       USER,
       USER_OPTION,
       USER_GROUP,
@@ -177,6 +202,9 @@ export default {
         skip: false,
         multi: false,
         sequential: false,
+        orSign: undefined,
+        ratioPass: undefined,
+        passRatio: undefined,
         assignType: undefined,
         assignRaw: '',
         assignShow: ''
@@ -190,12 +218,18 @@ export default {
         nodeName: [{ required: true, message: '请输入任务节点名称!' }],
         assignType: [{ required: true, message: '请选择处理人分配类型!' }],
         assignShow: [{ required: true, message: '请选择处理人!' }],
-        skip: [{ required: true, message: '' }]
+        skip: [{ required: true, message: '' }],
+        orSign: [{ required: this.form.multi, message: '' }],
+        ratioPass: [{ required: this.form.multi, message: '' }],
+        passRatio: [{ required: this.form.ratioPass, message: '请输入通过比例' }]
       }
     },
+    /**
+     * 分配类型列表
+     */
     assignTypeList () {
       if (this.form.multi) {
-        return [SPONSOR_OPTION, SELECT_OPTION, USER_GROUP_OPTION, ROLE_OPTION, ROLE_GROUP_OPTION, DEPT_LEADER_OPTION, DEPT_MEMBER_OPTION]
+        return [SPONSOR_OPTION, SELECT_OPTION, USER_GROUP_OPTION, ROLE_OPTION, DEPT_LEADER_OPTION, DEPT_MEMBER_OPTION]
       } else {
         return [SPONSOR_OPTION, SELECT_OPTION, USER_OPTION, ROLE_OPTION, DEPT_LEADER_OPTION]
       }

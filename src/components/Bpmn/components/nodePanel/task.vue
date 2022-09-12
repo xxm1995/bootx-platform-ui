@@ -124,7 +124,7 @@ export default {
         loopCharacteristics['elementVariable'] = 'item'
         // 注入任务完成条件
         // eslint-disable-next-line no-template-curly-in-string
-        loopCharacteristics['completionCondition'] = this.modeler.get('moddle').create('bpmn:Expression', { body: '${userTaskCompletionFlag}' })
+        // loopCharacteristics['completionCondition'] = this.modeler.get('moddle').create('bpmn:Expression', { body: '${userTaskCompletionFlag}' })
         this.updateProperties({ loopCharacteristics: loopCharacteristics })
       } else {
         this.updateProperties({ loopCharacteristics: null })

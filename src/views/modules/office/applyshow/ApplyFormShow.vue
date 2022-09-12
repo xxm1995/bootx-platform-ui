@@ -66,9 +66,6 @@
                 <a-descriptions-item label="流程定义的名称">
                   {{ instance.defName }}
                 </a-descriptions-item>
-                <a-descriptions-item label="流程定义的名称">
-                  {{ instance.defName }}
-                </a-descriptions-item>
                 <a-descriptions-item label="发起人名称">
                   {{ instance.startUserName }}
                 </a-descriptions-item>

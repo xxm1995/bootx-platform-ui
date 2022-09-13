@@ -62,12 +62,6 @@
           <a-switch checked-children="开" un-checked-children="关" v-model="form.captcha" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
-          label="启用状态"
-          prop="enable"
-        >
-          <a-switch checked-children="开" un-checked-children="关" v-model="form.enable" :disabled="showable||form.system" />
-        </a-form-model-item>
-        <a-form-model-item
           label="超时时间(分钟)"
           prop="timeout"
         >

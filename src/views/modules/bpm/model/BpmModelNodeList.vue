@@ -76,7 +76,7 @@
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { listByModelId, del, sync } from '@/api/bpm/modelTask'
+import { listByModelId, del, sync } from '@/api/bpm/modelNode'
 import BpmModelNodeEdit from './BpmModelNodeEdit'
 
 export default {

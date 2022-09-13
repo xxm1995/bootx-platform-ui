@@ -45,22 +45,11 @@ export function getNodeTasks (instanceId) {
 }
 
 /**
- * 通过任务
+ * 任务处理
  */
-export function pass (obj) {
+export function approve (obj) {
   return axios({
     url: '/bpm/task/pass',
-    method: 'POST',
-    data: obj
-  })
-}
-
-/**
- * 驳回任务
- */
-export function reject (obj) {
-  return axios({
-    url: '/bpm/task/reject',
     method: 'POST',
     data: obj
   })

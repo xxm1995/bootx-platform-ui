@@ -120,3 +120,4 @@ export function copy (id) {
     params: { id }
   })
 }
+

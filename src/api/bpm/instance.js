@@ -65,3 +65,14 @@ export function getFlowNodes (instanceId) {
     params: { instanceId }
   })
 }
+
+/**
+ * 获取当前任务节点信息
+ */
+export function getCurrentNode (instanceId) {
+  return axios({
+    url: '/bpm/instance/getCurrentNode',
+    method: 'POST',
+    params: { instanceId }
+  })
+}

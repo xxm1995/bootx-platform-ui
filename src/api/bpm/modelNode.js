@@ -76,3 +76,14 @@ export function sync (modelId) {
     params: { modelId }
   })
 }
+
+/**
+ * 获取节点信息
+ */
+export function getNode (defId, nodeId) {
+  return axios({
+    url: '/bpm/model/node/findByDefIdAndTaskId',
+    method: 'GET',
+    params: { defId, nodeId }
+  })
+}

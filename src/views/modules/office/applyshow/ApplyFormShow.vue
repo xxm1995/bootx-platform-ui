@@ -25,6 +25,8 @@
                 <a-radio-group v-model="form.type" :default-value="1" button-style="solid">
                   <a-radio-button value="pass">通过</a-radio-button>
                   <a-radio-button value="reject">驳回</a-radio-button>
+                  <a-radio-button v-if="currentNode.multi" value="notPass">不通过</a-radio-button>
+                  <a-radio-button v-if="currentNode.multi" value="abstain">弃权</a-radio-button>
                 </a-radio-group>
               </a-form-model-item>
               <a-form-model-item label="审批意见" prop="reason">
@@ -101,8 +103,9 @@ import { get as getDynamicForm } from '@/api/develop/dynamicForm'
 import { toStringJSON } from 'xe-utils'
 import WorkflowBpmnModeler from '@/components/Bpmn'
 import ProcessViewer from '@/components/Bpmn/ProcessViewer'
-import { findAllByInstanceId, getNodeTasks, pass, reject } from '@/api/bpm/task'
+import { findAllByInstanceId, getNodeTasks, approve } from '@/api/bpm/task'
 import { dictConvert } from '@/components/Bootx/Dict/DictUtils'
+import { getNode } from '@/api/bpm/modelNode'
 
 export default {
   name: 'ApplyFormShow',
@@ -121,6 +124,8 @@ export default {
       instanceId: '',
       // 流程节点, 染色用
       flowNodeList: [],
+      // 当前任务所在的节点
+      currentNode: {},
       // 任务列表组
       taskList: [],
       // 节点任务列表
@@ -163,6 +168,12 @@ export default {
       // 任务列表 历史
       findAllByInstanceId(instanceId).then(res => {
         this.taskList = res.data
+        // 获取当前任务节点
+        const task = this.taskList.find(o => o.taskId === taskId)
+        console.log(task)
+        getNode(this.instance.defId, task.nodeId).then(res => {
+          this.currentNode = res.data
+        })
       })
       // 获取流程节点的分组任务信息 节点显示
       getNodeTasks(instanceId).then(res => {
@@ -170,7 +181,7 @@ export default {
       })
       if (this.bpmModel.formId) {
         // 获取关联动态表单
-        await getDynamicForm(this.bpmModel.formId).then(res => {
+        getDynamicForm(this.bpmModel.formId).then(res => {
           this.dynamicFormStatic = toStringJSON(res.data.value)
           this.$nextTick(() => {
             this.$refs.kfb.setData(this.instance.formVariables)
@@ -194,13 +205,8 @@ export default {
             okText: '确定',
             onOk: async () => {
               this.confirmLoading = true
-              if (this.form.type === 'pass') {
-                await pass(form)
-                this.$message.success('任务已通过')
-              } else {
-                await reject(form)
-                this.$message.success('任务已驳回')
-              }
+              await approve(form)
+              this.$message.success('任务已处理')
               this.confirmLoading = false
               this.$emit('ok')
               this.handleClose()

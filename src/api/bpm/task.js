@@ -49,7 +49,7 @@ export function getNodeTasks (instanceId) {
  */
 export function approve (obj) {
   return axios({
-    url: '/bpm/task/pass',
+    url: '/bpm/task/approve',
     method: 'POST',
     data: obj
   })

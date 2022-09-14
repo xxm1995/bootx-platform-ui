@@ -87,3 +87,14 @@ export function getNode (defId, nodeId) {
     params: { defId, nodeId }
   })
 }
+
+/**
+ * 获取下一环节列表
+ */
+export function getNextNodes (defId, nodeId) {
+  return axios({
+    url: '/bpm/model/node/getNextNodes',
+    method: 'GET',
+    params: { defId, nodeId }
+  })
+}

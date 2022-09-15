@@ -8,6 +8,7 @@
               <p>开始时间: {{ o.startTime }}</p>
               <p>环节: {{ o.nodeName }}</p>
               <p>状态：{{ stateNameConvert(o.state) }}</p>
+              <p>处理结果：{{ dictConvert('BpmTaskResult',o.result) }}</p>
               <p>处理人: {{ o.userName }}</p>
               <p>结束时间: {{ o.endTime }}</p>
             </a-timeline-item>
@@ -57,6 +58,9 @@ export default {
      */
     stateNameConvert (state) {
       return dictConvert('BpmTaskState', state)
+    },
+    dictConvert (dictCode, code) {
+      return dictConvert(dictCode, code)
     }
   }
 }

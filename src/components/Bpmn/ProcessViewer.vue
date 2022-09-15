@@ -15,8 +15,8 @@
             <a-timeline>
               <a-timeline-item v-for="o in currentTaskList" :key="o.id">
                 <p>开始时间: {{ o.startTime }}</p>
-                <p>环节: {{ o.nodeName }}</p>
                 <p>状态：{{ stateNameConvert(o.state) }}</p>
+                <p>处理结果：{{ dictConvert('BpmTaskResult',o.result) }}</p>
                 <p>处理人: {{ o.userName }}</p>
                 <p>结束时间: {{ o.endTime? o.endTime : '' }}</p>
                 <p>审批意见：{{ o.reason ? o.reason : '' }}</p>
@@ -165,10 +165,9 @@ export default {
         if (tasks) {
           const task = tasks[0]
           if (task) {
-            const taskState = this.stateNameConvert(task.state)
             html += `<span>执行人：${task.userName}</span>
-                  <span>状态：${taskState}</span>
-                  <span>开始时间：${task.startTime}</span>
+                  <span>状态：${this.stateNameConvert(task.state)}</span>
+                  <span>处理结果：${dictConvert('BpmTaskResult', task.result)}</span>
                   <span>结束时间：${task.endTime ? task.endTime : '' }</span>
                   <span>审批意见：${task.reason ? task.reason : ''}</span>`
           }
@@ -279,6 +278,9 @@ export default {
      */
     stateNameConvert (state) {
       return dictConvert('BpmTaskState', state)
+    },
+    dictConvert (dictCode, code) {
+      return dictConvert(dictCode, code)
     }
   },
   mounted () {

@@ -1,57 +1,91 @@
 <template>
   <a-card :bordered="false">
-    <div style="display: flex;justify-content: center">
-      <a-form-model
-        ref="form"
-        style="width: 50%"
-        :label-col="labelCol"
-        :wrapper-col="wrapperCol"
-        :model="form"
-        :rules="rules"
-      >
-        <a-form-model-item label="处理方式" prop="type">
-          <a-radio-group v-model="form.type" :default-value="1" button-style="solid">
-            <a-radio-button value="pass">通过</a-radio-button>
-            <a-radio-button value="reject">驳回</a-radio-button>
-            <a-radio-button v-if="currentNode.multi" value="notPass">不通过</a-radio-button>
-            <a-radio-button v-if="currentNode.multi" value="abstain">弃权</a-radio-button>
-          </a-radio-group>
-        </a-form-model-item>
-        <a-form-model-item v-show="nextModes.length > 1" label="下一步环节" prop="nextNodeId">
-          <a-select
-            allowClear
-            v-model="form.nextNodeId"
-            style="width: 100%"
-            placeholder="选择下一步环节"
-            @change="changeNextNode"
-            :options="nextModes"
-          />
-        </a-form-model-item>
-        <a-form-model-item v-if="nextModes.length === 1" label="下一步环节">
-          {{ nextNode.nodeName }}
-        </a-form-model-item>
-        <a-form-model-item label="处理人" prop="assignShow">
-          <a-input v-model="form.assignShow" placeholder="请选择下一步环节处理用户" disabled>
-            <template #addonAfter>
-              <a href="javascript:" :disabled="showable" @click="selectUserShow">选择用户</a>
-            </template>
-          </a-input>
-        </a-form-model-item>
-        <a-form-model-item label="主键" prop="assignShow" hidden="true" >
-          <a-input v-model="form.assignShow" :disabled="showable"/>
-        </a-form-model-item>
-        <a-form-model-item label="审批意见" prop="reason">
-          <a-textarea v-model="form.reason" placeholder="请输入审批意见"/>
-        </a-form-model-item>
-      </a-form-model>
-    </div>
-    <div style="display: flex;justify-content: center">
-      <a-button type="primary" @click="handleOk">
-        确定
-      </a-button>
-    </div>
-    <!--  用户分配 -->
-    <b-user-select-modal ref="userSelectModal" @ok="selectUser" :multiple="nextMulti"/>
+    <a-row :gutter="64">
+      <a-col :span="8">
+        <a-card :bordered="false" v-if="nextNode">
+          <a-descriptions :column="{md: 1}" bordered>
+            <a-descriptions-item label="下一环节名称">
+              {{ nextNode.nodeName }}
+            </a-descriptions-item>
+            <a-descriptions-item label="处理人类型">
+              {{ dictConvert('BpmTaskAssignType', nextNode.assignType) }}
+            </a-descriptions-item>
+            <a-descriptions-item label="处理人">
+              {{ nextNode.assignShow }}
+            </a-descriptions-item>
+            <a-descriptions-item label="多实例">
+              {{ nextNode.multi?'是':'否' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="多实例类型" v-if="nextNode.multi">
+              {{ nextNode.sequential?'串行':'并行' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="或签" v-if="nextNode.multi">
+              {{ nextNode.orSign?'是':'否' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="按比例通过" v-if="nextNode.multi">
+              {{ nextNode.ratioPass?'是':'否' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="通过比例" v-if="nextNode.ratioPass">
+              {{ nextNode.passRatio }} %
+            </a-descriptions-item>
+          </a-descriptions>
+        </a-card>
+      </a-col>
+      <a-col :span="16">
+        <a-card :bordered="false">
+          <div style="display: flex;justify-content: left">
+            <a-form-model
+              ref="form"
+              style="width: 60%"
+              :label-col="labelCol"
+              :wrapper-col="wrapperCol"
+              :model="form"
+              :rules="rules"
+            >
+              <a-form-model-item label="处理方式" prop="type">
+                <a-radio-group v-model="form.type" :default-value="1" button-style="solid">
+                  <a-radio-button value="pass">通过</a-radio-button>
+                  <a-radio-button value="reject">驳回</a-radio-button>
+                  <a-radio-button value="notPass">不通过</a-radio-button>
+                  <a-radio-button value="abstain">弃权</a-radio-button>
+                </a-radio-group>
+              </a-form-model-item>
+              <a-form-model-item v-show="nextModes.length > 1" label="下一步环节" prop="nextNodeId">
+                <a-select
+                  allowClear
+                  v-model="form.nextNodeId"
+                  style="width: 100%"
+                  placeholder="选择下一步环节"
+                  @change="changeNextNode"
+                  :options="nextModes"
+                />
+              </a-form-model-item>
+              <a-form-model-item label="处理人" prop="assignShow">
+                <a-input v-model="form.assignShow" placeholder="请选择下一步环节处理用户" disabled>
+                  <template #addonAfter>
+                    <a href="javascript:" :disabled="showable" @click="selectUserShow">选择用户</a>
+                  </template>
+                </a-input>
+              </a-form-model-item>
+              <a-form-model-item prop="nextAssign" hidden="true" >
+                <a-input v-model="form.nextAssign" :disabled="showable"/>
+              </a-form-model-item>
+              <a-form-model-item label="审批意见" prop="reason">
+                <a-textarea v-model="form.reason" placeholder="请输入审批意见"/>
+              </a-form-model-item>
+              <a-form-model-item style="padding-left: 30%;margin-top: 25px">
+                <a-space>
+                  <a-button type="primary" @click="handleOk">处理</a-button>
+                  <a-button @click="close">取消</a-button>
+                </a-space>
+              </a-form-model-item>
+            </a-form-model>
+          </div>
+        </a-card>
+      </a-col>
+      <!--  用户分配 -->
+      <b-user-select-modal ref="userSelectModal" @ok="selectUser" :multiple="nextMulti"/>
+    </a-row>
   </a-card>
 </template>
 
@@ -59,7 +93,7 @@
 import { FormMixin } from '@/mixins/FormMixin'
 import { approve } from '@/api/bpm/task'
 import { getNextNodes, listByModelId } from '@/api/bpm/modelNode'
-import { SELECT_OPTION, USER, USER_GROUP } from '@/views/modules/bpm/model/BpmModelNodeCode'
+import { SELECT } from '@/views/modules/bpm/model/BpmModelNodeCode'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 
 export default {
@@ -83,7 +117,9 @@ export default {
       form: {
         type: 'pass',
         reason: '',
-        nextNodeId: undefined
+        nextNodeId: undefined,
+        assignShow: '',
+        nextAssign: undefined
       }
     }
   },
@@ -97,8 +133,13 @@ export default {
       return {
         type: [{ required: true, message: '请选择类型!' }],
         reason: [{ required: true, message: '请输入审批意见!' }],
-        nextNodeId: [{ required: this.nextModes.length > 1, message: '请选择下一环节的任务节点!' }],
-        assignShow: [{ required: [SELECT_OPTION].includes(this.nextNode?.assignType), message: '请选择下一环节的处理人!' }]
+        nextNodeId: [{ required: this.nextModes.length > 1 && this.form.type !== 'reject', message: '请选择下一环节的任务节点!' }],
+        assignShow: [
+          {
+            required: [SELECT].includes(this.nextNode?.assignType) && this.form.type !== 'reject',
+            message: '请选择下一环节的处理人!'
+          }
+        ]
       }
     },
     nextMulti () {
@@ -159,6 +200,10 @@ export default {
         }
       })
     },
+    close () {
+      this.confirmLoading = false
+      this.$emit('close')
+    },
     /**
      * 开启选择用户界面
      */
@@ -169,7 +214,7 @@ export default {
      * 选中用户回调
      */
     selectUser (userId, userInfo) {
-      this.$set(this.form, 'assignRaw', userId)
+      this.$set(this.form, 'nextAssign', userId)
       if (this.nextMulti) {
         const userNames = userInfo.map(o => o.name).join(',')
         this.$set(this.form, 'assignShow', userNames)

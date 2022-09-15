@@ -15,6 +15,7 @@
           :task-list="taskList"
           :task-id="taskId"
           :instance="instance"
+          @close="handleClose"
           @ok="handleClose"
         />
       </a-tab-pane>
@@ -78,7 +79,7 @@ export default {
   },
   methods: {
     async edit (instanceId, type, taskId) {
-      this.currentActiveKey = 'flowChart'
+      this.currentActiveKey = 'form'
       this.instanceId = instanceId
       this.taskId = taskId
       // 获取流程信息

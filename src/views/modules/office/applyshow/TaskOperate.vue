@@ -4,6 +4,27 @@
       <a-col :span="8">
         <a-card :bordered="false" v-if="nextNode">
           <a-descriptions :column="{md: 1}" bordered>
+            <a-descriptions-item label="当前环节名称">
+              {{ currentNode.nodeName }}
+            </a-descriptions-item>
+            <a-descriptions-item label="处理人类型">
+              {{ dictConvert('BpmTaskAssignType', currentNode.assignType) }}
+            </a-descriptions-item>
+            <a-descriptions-item label="处理人">
+              {{ currentNode.assignShow }}
+            </a-descriptions-item>
+            <a-descriptions-item label="多实例">
+              {{ currentNode.multi?currentNode.sequential?'串行':'并行':'否' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="或签" v-if="currentNode.orSign">
+              {{ currentNode.orSign?'是':'否' }}
+            </a-descriptions-item>
+            <a-descriptions-item label="按比例通过" v-if="currentNode.ratioPass">
+              {{ currentNode.passRatio }} %
+            </a-descriptions-item>
+          </a-descriptions>
+          <a-divider/>
+          <a-descriptions :column="{md: 1}" bordered>
             <a-descriptions-item label="下一环节名称">
               {{ nextNode.nodeName }}
             </a-descriptions-item>
@@ -14,18 +35,12 @@
               {{ nextNode.assignShow }}
             </a-descriptions-item>
             <a-descriptions-item label="多实例">
-              {{ nextNode.multi?'是':'否' }}
+              {{ nextNode.multi?nextNode.sequential?'串行':'并行':'否' }}
             </a-descriptions-item>
-            <a-descriptions-item label="多实例类型" v-if="nextNode.multi">
-              {{ nextNode.sequential?'串行':'并行' }}
-            </a-descriptions-item>
-            <a-descriptions-item label="或签" v-if="nextNode.multi">
+            <a-descriptions-item label="或签" v-if="nextNode.orSign">
               {{ nextNode.orSign?'是':'否' }}
             </a-descriptions-item>
-            <a-descriptions-item label="按比例通过" v-if="nextNode.multi">
-              {{ nextNode.ratioPass?'是':'否' }}
-            </a-descriptions-item>
-            <a-descriptions-item label="通过比例" v-if="nextNode.ratioPass">
+            <a-descriptions-item label="按比例通过" v-if="nextNode.ratioPass">
               {{ nextNode.passRatio }} %
             </a-descriptions-item>
           </a-descriptions>

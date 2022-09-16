@@ -60,21 +60,29 @@ export default {
      * 发起流程
      */
     async handleOk () {
-      let dynamicForm
-      this.confirmLoading = true
       if (this.bpmModel.formId) {
-        dynamicForm = await this.$refs.kfb.getData()
+        this.$refs.kfb.getData().then(dynamicForm => {
+          this.confirmLoading = true
+          const form = {
+            modelId: this.bpmModel.id,
+            name: dynamicForm?.name,
+            formVariables: dynamicForm
+          }
+          start(form).then(() => {
+            this.$emit('ok')
+            this.confirmLoading = false
+            this.handleClose()
+          })
+        }).catch(() => {
+        })
+      } else {
+        this.confirmLoading = true
+        start({ modelId: this.bpmModel.id }).then(() => {
+          this.$emit('ok')
+          this.confirmLoading = false
+          this.handleClose()
+        })
       }
-      const form = {
-        modelId: this.bpmModel.id,
-        name: dynamicForm?.name,
-        formVariables: dynamicForm
-      }
-      start(form).then(() => {
-        this.$emit('ok')
-        this.confirmLoading = false
-        this.handleClose()
-      })
     },
     /**
      * 关闭处理

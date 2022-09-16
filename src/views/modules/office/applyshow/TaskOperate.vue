@@ -2,8 +2,8 @@
   <a-card :bordered="false">
     <a-row :gutter="64">
       <a-col :span="8">
-        <a-card :bordered="false" v-if="nextNode">
-          <a-descriptions :column="{md: 1}" bordered>
+        <a-card :bordered="false" v-if="currentNode||nextNode">
+          <a-descriptions :column="{md: 1}" bordered v-if="currentNode">
             <a-descriptions-item label="当前环节名称">
               {{ currentNode.nodeName }}
             </a-descriptions-item>
@@ -24,7 +24,7 @@
             </a-descriptions-item>
           </a-descriptions>
           <a-divider/>
-          <a-descriptions :column="{md: 1}" bordered>
+          <a-descriptions :column="{md: 1}" bordered v-if="nextNode">
             <a-descriptions-item label="下一环节名称">
               {{ nextNode.nodeName }}
             </a-descriptions-item>
@@ -75,7 +75,7 @@
                   :options="nextModes"
                 />
               </a-form-model-item>
-              <a-form-model-item label="处理人" prop="assignShow">
+              <a-form-model-item label="处理人" prop="assignShow" v-if="nextNode">
                 <a-input v-model="form.assignShow" placeholder="请选择下一步环节处理用户" disabled>
                   <template #addonAfter>
                     <a href="javascript:" :disabled="showable" @click="selectUserShow">选择用户</a>

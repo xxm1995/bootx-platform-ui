@@ -76,3 +76,14 @@ export function getCurrentNode (instanceId) {
     params: { instanceId }
   })
 }
+
+/**
+ * 取消流程
+ */
+export function close (instanceId) {
+  return axios({
+    url: '/bpm/instance/close',
+    method: 'POST',
+    params: { instanceId }
+  })
+}

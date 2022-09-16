@@ -28,13 +28,18 @@
       <vxe-table-column field="defMame" title="流程名称" />
       <vxe-table-column field="instanceId" title="实例ID" />
       <vxe-table-column field="startUserName" title="发起人" />
+      <vxe-table-column field="state" title="状态">
+        <template v-slot="{row}">
+          {{ dictConvert('BpmInstanceState',row.state) }}
+        </template>
+      </vxe-table-column>
       <vxe-table-column field="startTime" title="开始时间" />
       <vxe-table-column field="endTime" title="结束时间" />
       <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
-<!--          <a-divider type="vertical"/>-->
-<!--          <a href="javascript:" @click="invalid(row)">作废</a>-->
+          <a-divider type="vertical"/>
+          <a href="javascript:" @click="close(row)">取消</a>
         </template>
       </vxe-table-column>
     </vxe-table>
@@ -79,7 +84,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { findMainProcess } from '@/api/bpm/model'
 import ApplyForm from '@/views/modules/office/myapply/ApplyForm'
-import { pageMyApply } from '@/api/bpm/instance'
+import { close, pageMyApply } from '@/api/bpm/instance'
 import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 
 export default {
@@ -137,8 +142,17 @@ export default {
     /**
      * 作废流程
      */
-    invalid (record) {
-
+    close (record) {
+      this.$confirm({
+        title: '警告',
+        content: '是否取消此流程',
+        onOk: () => {
+          this.loading = true
+          close(record.instanceId).then(() => {
+            this.init()
+          })
+        }
+      })
     },
     /**
      * 显示小弹窗

@@ -228,7 +228,7 @@ export default {
           canvas.addMarker(n.id, 'highlight-todo')
         } else if (state === 'reject') {
           canvas.addMarker(n.id, 'highlight-reject')
-        } else if (['back', 'retrieve'].includes(state)) {
+        } else if (['back', 'cancel', 'retrieve'].includes(state)) {
           canvas.addMarker(n.id, 'highlight-cancel')
         } else {
           // 其他状态不进行处理

@@ -241,6 +241,8 @@ export default {
       const that = this
       this.$confirm({
         title: type ? '是否锁定选中的用户' : '是否解锁选中的用户',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async function () {
           if (type) {
             await lockUser(userId)
@@ -260,6 +262,8 @@ export default {
       const that = this
       this.$confirm({
         title: type ? '是否锁定选中的用户' : '是否解锁选中的用户',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async function () {
           if (type) {
             await lockUserBatch(userIds)

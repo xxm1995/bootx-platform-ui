@@ -147,6 +147,8 @@ export default {
       const that = this
       this.$confirm({
         title: type ? '是否停用该储值卡' : '是否启用该储值卡',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async () => {
           if (type) {
             await lock(voucherId)

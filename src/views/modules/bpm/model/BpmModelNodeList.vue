@@ -131,6 +131,8 @@ export default {
       this.$confirm({
         title: '删除',
         content: '是否删除流程模型',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           del(record.id).then(_ => {
@@ -147,6 +149,8 @@ export default {
       this.$confirm({
         title: '同步',
         content: '是否同步流程业务节点',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           sync(this.modelId).then(() => {

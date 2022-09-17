@@ -159,6 +159,8 @@ export default {
       this.$confirm({
         title: '通知',
         content: '是否导入当前微信自定义菜单到系统中',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           importMenu().then(() => {
             this.$message.success('导入成功')
@@ -174,6 +176,8 @@ export default {
       this.$confirm({
         title: '警告',
         content: '是否清除当前微信配置的自定义菜单',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           clearMenu().then(() => {
             this.$message.success('清除成功')
@@ -188,6 +192,8 @@ export default {
       this.$confirm({
         title: '通知',
         content: '是否将当前微信自定义菜单进行发布',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           publish(record.id).then(() => {
             this.$message.success('菜单发布成功')

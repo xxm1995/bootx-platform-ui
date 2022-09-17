@@ -75,7 +75,7 @@
       </template>
     </a-modal>
     <apply-form ref="applyForm" @ok="init"/>
-    <apply-form-show is-view ref="applyFormShow"/>
+    <apply-form-show is-view ref="applyFormShow" @ok="init"/>
   </a-card>
 </template>
 
@@ -146,6 +146,8 @@ export default {
       this.$confirm({
         title: '警告',
         content: '是否取消此流程',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           close(record.instanceId).then(() => {

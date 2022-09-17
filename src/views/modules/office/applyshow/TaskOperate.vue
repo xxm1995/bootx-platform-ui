@@ -10,7 +10,7 @@
             <a-descriptions-item label="处理人类型">
               {{ dictConvert('BpmTaskAssignType', currentNode.assignType) }}
             </a-descriptions-item>
-            <a-descriptions-item label="处理人">
+            <a-descriptions-item label="处理人" v-if="currentNode.assignShow">
               {{ currentNode.assignShow }}
             </a-descriptions-item>
             <a-descriptions-item label="多实例">
@@ -31,7 +31,7 @@
             <a-descriptions-item label="处理人类型">
               {{ dictConvert('BpmTaskAssignType', nextNode.assignType) }}
             </a-descriptions-item>
-            <a-descriptions-item label="处理人">
+            <a-descriptions-item label="处理人" v-if="nextNode.assignShow">
               {{ nextNode.assignShow }}
             </a-descriptions-item>
             <a-descriptions-item label="多实例">
@@ -202,6 +202,7 @@ export default {
             title: '警告',
             content: '确实确定处理当前任务!',
             okText: '确定',
+            cancelText: '取消',
             onOk: async () => {
               this.confirmLoading = true
               await approve(form)

@@ -77,6 +77,8 @@ export default {
         this.$confirm({
           title: '警告',
           content: '是否退出自定义菜单编辑，内容将不会被保存?',
+          okText: '确定',
+          cancelText: '取消',
           onOk: () => {
             this.handleCancel()
           }

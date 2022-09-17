@@ -374,6 +374,8 @@ export default {
       this.$confirm({
         title: '警告',
         content: '是否要清空画布',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.newDiagram()
         }

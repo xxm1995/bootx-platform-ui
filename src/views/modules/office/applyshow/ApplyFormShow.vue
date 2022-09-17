@@ -16,7 +16,7 @@
           :task-id="taskId"
           :instance="instance"
           @close="handleClose"
-          @ok="handleClose"
+          @ok="handleOk"
         />
       </a-tab-pane>
       <a-tab-pane key="history" tab="历史信息" force-render>
@@ -115,6 +115,13 @@ export default {
       }
     },
     /**
+     * 处理成功
+     */
+    handleOk () {
+      this.handleClose()
+      this.$emit('ok')
+    },
+    /**
      * 关闭处理
      */
     handleClose () {
@@ -122,6 +129,7 @@ export default {
       this.dynamicFormStatic = {}
       this.flowNodeList = []
       this.$refs.kfb.reset()
+      this.$emit('close')
       this.handleCancel()
     },
     handleTabChange (activeKey) {

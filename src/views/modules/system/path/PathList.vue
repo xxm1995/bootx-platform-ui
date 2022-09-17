@@ -174,6 +174,8 @@ export default {
       const that = this
       this.$confirm({
         title: '是否批量删除选中的数据',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async function () {
           delBatch(ids).then(() => {
             that.init()
@@ -198,6 +200,8 @@ export default {
       const that = this
       this.$confirm({
         title: type ? '是否批量启用' : '是否批量停用',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async function () {
           batchUpdateEnable({
             permPathIds: ids,

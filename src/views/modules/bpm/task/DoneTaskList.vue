@@ -87,6 +87,8 @@ export default {
       this.$confirm({
         title: '警告',
         content: '确实要完成当前任务!',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           this.$message.success('取回成功')

@@ -55,6 +55,8 @@ export default {
       this.$confirm({
         title: '保存',
         content: '是否保存该流程图',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async () => {
           this.confirmLoading = true
           await uploadBpmn(this.bpmModel.id, data.xml)
@@ -69,6 +71,8 @@ export default {
         this.$confirm({
           title: '警告',
           content: '关闭后后将不对编辑的内容进行保存',
+          okText: '确定',
+          cancelText: '取消',
           onOk: () => {
             this.handleCancel()
           }

@@ -149,6 +149,8 @@ export default {
       const that = this
       this.$confirm({
         title: '是否解除绑定的第三方平台账号',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async function () {
           await unbindThird(clientCode)
           that.init()

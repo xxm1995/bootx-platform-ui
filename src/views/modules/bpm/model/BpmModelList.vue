@@ -158,6 +158,8 @@ export default {
       this.$confirm({
         title: '删除',
         content: '是否删除流程模型',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           del(record.id).then(_ => {
@@ -174,6 +176,8 @@ export default {
       this.$confirm({
         title: '警告',
         content: '是否发布当前流程模型',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           publish(record.id).then(() => {
@@ -190,6 +194,8 @@ export default {
       this.$confirm({
         title: '复制',
         content: '是否要复制该流程模型',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           this.loading = true
           copy(record.id).then(_ => {

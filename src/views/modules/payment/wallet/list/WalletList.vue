@@ -155,6 +155,8 @@ export default {
       const that = this
       this.$confirm({
         title: type ? '是否锁定该钱包' : '是否解锁该钱包',
+        okText: '确定',
+        cancelText: '取消',
         onOk: async () => {
           if (type) {
             await lock(walletId)

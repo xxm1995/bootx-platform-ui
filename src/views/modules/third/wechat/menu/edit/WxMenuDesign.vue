@@ -156,6 +156,8 @@ export default {
           this.$confirm({
             title: '提示',
             content: '添加子菜单将会清空菜单信息',
+            okText: '确定',
+            cancelText: '取消',
             onOk: () => {
               console.log(mainMenu)
               // 清空其他数据
@@ -190,6 +192,8 @@ export default {
       this.$confirm({
         title: '提示',
         content: '是否删除该菜单及包含的内容?',
+        okText: '确定',
+        cancelText: '取消',
         onOk: () => {
           // 主菜单
           if ([MenuTypeMain, MenuTypeMainSubject].includes(this.currentMenuTyp)) {

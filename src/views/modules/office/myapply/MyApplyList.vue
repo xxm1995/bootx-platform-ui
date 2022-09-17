@@ -39,7 +39,7 @@
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
-          <a href="javascript:" @click="close(row)">取消</a>
+          <a href="javascript:" :disabled="row.state !== 'running'" @click="close(row)">取消</a>
         </template>
       </vxe-table-column>
     </vxe-table>

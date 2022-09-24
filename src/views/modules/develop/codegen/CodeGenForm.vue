@@ -171,7 +171,7 @@ export default {
       this.form.controllerPack = `${basePack}.controller`
 
       this.form.requestPath = `/${module}`
-      this.form.vueApiPath = `/api/${module}/`
+      this.form.vueApiPath = `/api/${module}`
       this.genPackFlag = true
     },
     handleCancel () {

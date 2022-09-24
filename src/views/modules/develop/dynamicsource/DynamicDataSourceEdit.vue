@@ -1,10 +1,11 @@
 <template>
-  <vxe-modal
-    v-model="visible"
-    title="渲染测试"
+  <a-modal
+    :title="title"
     :width="modalWidth"
-    :position="vxePosition"
-    @close="handleCancel"
+    :visible="visible"
+    :confirmLoading="confirmLoading"
+    :maskClosable="false"
+    @cancel="handleCancel"
   >
     <a-spin :spinning="confirmLoading">
       <a-form-model
@@ -18,91 +19,106 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="编号"
+          label="数据源编码"
           prop="code"
         >
           <a-input v-model="form.code" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="名称"
+          label="数据源名称"
           prop="name"
         >
           <a-input v-model="form.name" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="模板类型"
-          prop="type"
+          label="数据库类型"
+          prop="databaseType"
         >
-          <a-select
-            :disabled="showable"
-            allowClear
-            v-model="form.type"
-            style="width: 100%"
-            placeholder="选择消息模板类型"
-          >
-            <a-select-option v-for="item in messageTemplateCodeList" :key="item.code">{{ item.name }}</a-select-option>
-          </a-select>
+          <a-input v-model="form.databaseType" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="内容"
-          prop="data"
+          label="驱动类"
+          prop="dbDriver"
         >
-          <a-textarea :rows="4" v-model="form.data" :disabled="showable"/>
+          <a-input v-model="form.dbDriver" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="数据库地址"
+          prop="dbUrl"
+        >
+          <a-input v-model="form.dbUrl" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="数据库名称"
+          prop="dbName"
+        >
+          <a-input v-model="form.dbName" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="用户名"
+          prop="dbUsername"
+        >
+          <a-input v-model="form.dbUsername" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="密码"
+          prop="dbPassword"
+        >
+          <a-input v-model="form.dbPassword" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
           label="备注"
           prop="remark"
         >
-          <a-textarea v-model="form.remark" :disabled="showable"/>
+          <a-input v-model="form.remark" :disabled="showable"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-
     <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
     </template>
-  </vxe-modal>
+  </a-modal>
 </template>
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/messageTemplate'
-
+import { get, add, update } from '@/api/develop/dynamicDataSource'
 export default {
-  name: 'TemplateEdit',
+  name: 'DynamicDataSourceEdit',
   mixins: [FormMixin],
   data () {
     return {
-      MessageTemplateCode: 'MessageTemplateCode',
-      messageTemplateCodeList: [],
       form: {
-        code: '',
-        name: '',
-        date: '',
-        remark: '',
-        type: 0
+        id: null,
+        code: null,
+        name: null,
+        databaseType: null,
+        dbDriver: null,
+        dbUrl: null,
+        dbName: null,
+        dbUsername: null,
+        dbPassword: null,
+        remark: null,
       },
       rules: {
-        code: [
-          { required: true, message: '请输入模板编码' },
-          { validator: this.validateCode, trigger: 'blur' }
-        ],
-        name: [
-          { required: true, message: '请输入模板名称' }
-        ],
-        date: [
-          { required: true, message: '请数据模板数据' }
-        ],
-        type: [
-          { required: true, message: '请选择模板类型' }
-        ]
+        code: [],
+        name: [],
+        databaseType: [],
+        dbDriver: [],
+        dbUrl: [],
+        dbName: [],
+        dbUsername: [],
+        dbPassword: [],
+        remark: [],
       }
     }
   },
   methods: {
+    /**
+     * 编辑
+     */
     edit (id, type) {
-      this.messageTemplateCodeList = this.getDictItemsByNumber(this.MessageTemplateCode)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {
@@ -113,6 +129,9 @@ export default {
         this.confirmLoading = false
       }
     },
+    /**
+     * 提交
+     */
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
@@ -122,35 +141,21 @@ export default {
           } else if (this.type === 'edit') {
             await update(this.form)
           }
-          setTimeout(() => {
-            this.confirmLoading = false
-            this.$emit('ok')
-            this.visible = false
-          }, 200)
+          this.confirmLoading = false
+          this.$emit('ok')
+          this.visible = false
         } else {
           return false
         }
       })
     },
+    /**
+     * 重置表单
+     */
     resetForm () {
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })
-    },
-    // 验证字典编码
-    async validateCode (rule, value, callback) {
-      const { code, id } = this.form
-      let res
-      if (this.type === 'edit') {
-        res = await existsByCodeNotId(code, id)
-      } else {
-        res = await existsByCode(code)
-      }
-      if (!res.data) {
-        callback()
-      } else {
-        callback('该编码已存在!')
-      }
     }
   }
 }

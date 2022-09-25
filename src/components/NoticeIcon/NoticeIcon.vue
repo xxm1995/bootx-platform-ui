@@ -16,7 +16,9 @@
               <a-list-item-meta :description="o.senderTime">
                 <template #title>
                   <a-tag color="red">未读</a-tag>
-                  {{ o.title }}
+                  <ellipsis :length="25" tooltip>
+                    {{ o.title }}
+                  </ellipsis>
                 </template>
               </a-list-item-meta>
             </a>
@@ -40,9 +42,11 @@
 
 import { countByReceiveNotRead, pageByReceive, read } from '@/api/notice/siteMessage'
 import { NOTICE_MESSAGE_UPDATE, NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
+import Ellipsis from '@/components/Ellipsis'
 
 export default {
   name: 'HeaderNotice',
+  components: { Ellipsis },
   data () {
     return {
       // 事件标示

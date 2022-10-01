@@ -65,10 +65,11 @@
           <a-divider type="vertical"/>
           <a-popconfirm
             title="是否删除"
+            :disabled="row.system"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" style="color: red">删除</a>
+            <a href="javascript:" :disabled="row.system" :style="{color: row.system?'grey':'red'}">删除</a>
           </a-popconfirm>
         </template>
       </vxe-table-column>

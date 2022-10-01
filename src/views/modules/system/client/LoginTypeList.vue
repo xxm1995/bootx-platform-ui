@@ -72,7 +72,7 @@
           <a-divider type="vertical"/>
           <a-popconfirm
             :disabled="row.system"
-            title="是否删除终端"
+            title="是否删除登录方式"
             @confirm="remove(row)"
             okText="是"
             cancelText="否">

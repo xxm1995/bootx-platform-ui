@@ -22,14 +22,11 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="数据源编码"/>
-      <vxe-table-column field="name" title="数据源名称"/>
-      <vxe-table-column field="databaseType" title="数据库类型"/>
+      <vxe-table-column field="code" title="编码"/>
+      <vxe-table-column field="name" title="名称"/>
+      <vxe-table-column field="databaseType" title="类型"/>
       <vxe-table-column field="dbDriver" title="驱动类"/>
-      <vxe-table-column field="dbUrl" title="数据库地址"/>
       <vxe-table-column field="dbName" title="数据库名称"/>
-      <vxe-table-column field="dbUsername" title="用户名"/>
-      <vxe-table-column field="dbPassword" title="密码"/>
       <vxe-table-column field="remark" title="备注"/>
       <vxe-table-column field="createTime" title="创建时间" />
       <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">

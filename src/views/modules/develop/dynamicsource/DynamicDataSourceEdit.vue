@@ -19,58 +19,60 @@
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
         <a-form-model-item
-          label="数据源编码"
+          label="编码"
           prop="code"
         >
-          <a-input v-model="form.code" :disabled="showable"/>
+          <a-input v-model="form.code" :disabled="showable" placeholder="请输入编码"/>
         </a-form-model-item>
         <a-form-model-item
-          label="数据源名称"
+          label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable"/>
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="数据库类型"
           prop="databaseType"
         >
-          <a-input v-model="form.databaseType" :disabled="showable"/>
+          <a-select v-model="form.databaseType" :disabled="showable">
+            <a-select-option key="mysql">MySQL</a-select-option>
+          </a-select>
         </a-form-model-item>
         <a-form-model-item
           label="驱动类"
           prop="dbDriver"
         >
-          <a-input v-model="form.dbDriver" :disabled="showable"/>
+          <a-input v-model="form.dbDriver" disabled/>
         </a-form-model-item>
         <a-form-model-item
           label="数据库地址"
           prop="dbUrl"
         >
-          <a-input v-model="form.dbUrl" :disabled="showable"/>
+          <a-input v-model="form.dbUrl" :disabled="showable" placeholder="请输入数据库地址"/>
         </a-form-model-item>
         <a-form-model-item
           label="数据库名称"
           prop="dbName"
         >
-          <a-input v-model="form.dbName" :disabled="showable"/>
+          <a-input v-model="form.dbName" :disabled="showable" placeholder="请输入数据库名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="用户名"
           prop="dbUsername"
         >
-          <a-input v-model="form.dbUsername" :disabled="showable"/>
+          <a-input v-model="form.dbUsername" :disabled="showable" placeholder="请输入数据库用户名"/>
         </a-form-model-item>
         <a-form-model-item
           label="密码"
           prop="dbPassword"
         >
-          <a-input v-model="form.dbPassword" :disabled="showable"/>
+          <a-input v-model="form.dbPassword" :disabled="showable" placeholder="请输入数据库密码"/>
         </a-form-model-item>
         <a-form-model-item
           label="备注"
           prop="remark"
         >
-          <a-input v-model="form.remark" :disabled="showable"/>
+          <a-textarea v-model="form.remark" :disabled="showable" placeholder="请输入备注"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -93,24 +95,45 @@ export default {
         id: null,
         code: null,
         name: null,
-        databaseType: null,
-        dbDriver: null,
+        databaseType: 'mysql',
+        dbDriver: 'com.mysql.cj.jdbc.Driver',
         dbUrl: null,
         dbName: null,
         dbUsername: null,
         dbPassword: null,
-        remark: null,
+        remark: null
       },
       rules: {
-        code: [],
-        name: [],
-        databaseType: [],
-        dbDriver: [],
-        dbUrl: [],
-        dbName: [],
-        dbUsername: [],
-        dbPassword: [],
-        remark: [],
+        code: [ { required: true, message: '请输入' } ],
+        name: [ { required: true, message: '请输入' } ],
+        databaseType: [ { required: true, message: '请选择' } ],
+        dbDriver: [ { required: true, message: '请输入' } ],
+        dbUrl: [ { required: true, message: '请输入' } ],
+        dbName: [ { required: true, message: '请输入' } ],
+        dbUsername: [ { required: true, message: '请输入' } ],
+        dbPassword: [ { required: true, message: '请输入' } ],
+        remark: []
+      }
+    }
+  },
+  watch: {
+    'form.databaseType': function (val) {
+      console.log(val)
+      switch (val) {
+        case 'mysql': {
+          this.form.dbDriver = 'com.mysql.cj.jdbc.Driver'
+          break
+        }
+        default: {
+          this.form.dbDriver = ''
+        }
+      }
+    }
+  },
+  computed: {
+    diff () {
+      return {
+        dbPassword: this.diffForm(this.form.dbPassword, this.rawForm.dbPassword)
       }
     }
   },
@@ -123,6 +146,7 @@ export default {
         this.confirmLoading = true
         get(id).then(res => {
           this.form = res.data
+          this.rawForm = { ...res.data }
           this.confirmLoading = false
         })
       } else {
@@ -139,7 +163,11 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update(this.form)
+            const form = {
+              ...this.form,
+              ...this.diff
+            }
+            await update(form)
           }
           this.confirmLoading = false
           this.$emit('ok')

@@ -85,24 +85,15 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { pageFile, deleteFile } from '@/api/third/weChatMedia'
-import storage from 'store'
-import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { UploadMixin } from '@/mixins/UploadMixin'
 
 export default {
   name: 'WeChatMediaList',
-  mixins: [TableMixin],
+  mixins: [TableMixin, UploadMixin],
   computed: {
     // 上传地址
     uploadAction () {
       return process.env.VUE_APP_API_BASE_URL + '/wechat/media/uploadFile'
-    },
-    // 请求头消息
-    tokenHeader () {
-      // 从 localstorage 获取 token
-      const token = storage.get(ACCESS_TOKEN)
-      return {
-        AccessToken: token
-      }
     },
     // 表单信息
     uploadData () {
@@ -164,19 +155,11 @@ export default {
       })
     },
     /**
-     * 上传变动
+     * 上传成功
      */
-    uploadChange (info) {
-      if (info.file.status === 'done') {
-        if (!info.file.response.code) {
-          this.init()
-          this.$message.success(`${info.file.name} 上传成功!`)
-        } else {
-          this.$message.error(`${info.file.response.msg}`)
-        }
-      } else if (info.file.status === 'error') {
-        this.$message.error('上传失败')
-      }
+    uploadSuccess (info) {
+      this.$message.success(`${info.file.name} 上传成功!`)
+      this.init()
     }
   },
   created () {

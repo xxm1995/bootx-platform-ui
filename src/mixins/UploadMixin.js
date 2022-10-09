@@ -38,7 +38,6 @@ export const UploadMixin = {
      */
     uploadSuccess (info) {
       this.$message.success(`${info.file.name} 上传成功!`)
-      this.init()
     },
 
     /**

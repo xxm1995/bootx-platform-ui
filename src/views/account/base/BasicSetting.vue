@@ -18,7 +18,7 @@
               label="名称"
               prop="name"
             >
-              <a-input v-model="user.name"/>
+              <a-input v-model="user.name" :disabled="!edit" placeholder="请输入名称"/>
             </a-form-model-item>
             <a-form-model-item
               label="性别"
@@ -27,6 +27,8 @@
               <a-select
                 style="width: 100px"
                 v-model="user.sex"
+                :disabled="!edit"
+                placeholder="请选择性别"
               >
                 <a-select-option v-for="sex in sexList" :key="sex.code">{{ sex.name }}</a-select-option>
               </a-select>
@@ -38,19 +40,24 @@
               <a-date-picker
                 placeholder="请选择日期"
                 valueFormat="yyyy-MM-DD"
+                :disabled="!edit"
                 v-model="user.birthday"/>
             </a-form-model-item>
             <a-form-model-item>
-              <a-button type="primary" @click="handleOk">更新基础信息</a-button>
+              <a-button v-if="edit" type="primary" @click="handleOk">更新基础信息</a-button>
+              <a-button v-else @click="edit = true">编辑基础信息</a-button>
             </a-form-model-item>
           </a-form-model>
         </a-col>
         <a-col :order="1" :md="12" :lg="12" :style="{ minHeight: '180px' }">
-          <div class="ant-upload-preview" @click="$refs.modal.edit(1)" >
+          <div v-if="edit" class="ant-upload-preview" @click="$refs.modal.edit(1)" >
             <a-icon type="cloud-upload-o" class="upload-icon"/>
             <div class="mask">
               <a-icon type="plus" />
             </div>
+            <img :src="avatarUrl||'/avatar2.jpg'"/>
+          </div>
+          <div v-else class="ant-upload-preview">
             <img :src="avatarUrl||'/avatar2.jpg'"/>
           </div>
         </a-col>
@@ -75,6 +82,7 @@ export default {
   },
   data () {
     return {
+      edit: false,
       labelCol: {
         sm: { span: 3 }
       },
@@ -96,6 +104,7 @@ export default {
   },
   methods: {
     async init () {
+      this.edit = false
       this.confirmLoading = true
       // 获取用户信息
       await getUserBaseInfo().then(res => {
@@ -116,8 +125,19 @@ export default {
     handleOk () {
       this.$refs.form.validate(async valid => {
         if (valid) {
-          this.confirmLoading = true
-          updateBaseInfo(this.user).then(_ => this.confirmLoading = false)
+          this.$confirm({
+            title: '警告',
+            content: '是否更新用户基础信息',
+            okText: '确定',
+            cancelText: '取消',
+            onOk: () => {
+              this.confirmLoading = true
+              updateBaseInfo(this.user).then(() => {
+                this.confirmLoading = false
+                this.edit = false
+              })
+            }
+          })
         }
       })
     },

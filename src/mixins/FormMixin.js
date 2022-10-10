@@ -34,6 +34,10 @@ export const FormMixin = {
     init (record, type, ...vars) {
       this.type = type
       this.visible = true
+      this.visible = true
+      this.addable = false
+      this.editable = false
+      this.showable = false
       if (type && type === 'add') {
         this.addable = true
         this.title = '新增'

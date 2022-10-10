@@ -40,6 +40,5 @@ VXETable.setup({
     position: { top: '9%', left: '35%' },
     // transfer: true,
     escClosable: true
-
   }
 })

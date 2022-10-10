@@ -54,7 +54,7 @@
             :filter-option="search"
             :disabled="showable"
             style="width: 100%"
-            placeholder="选择关联的终端"
+            placeholder="选择关联的登录方式"
           >
             <a-select-option v-for="o in loginTypes" :key="o.id">
               {{ o.name }}

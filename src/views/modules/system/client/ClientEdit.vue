@@ -158,6 +158,7 @@ export default {
         this.$refs.form.resetFields()
       })
     },
+    // 校验编码重复
     async validateCode (rule, value, callback) {
       const { code, id } = this.form
       let res

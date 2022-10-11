@@ -17,11 +17,7 @@
       <a-form-model-item label="功能模块名称" prop="module">
         <a-row>
           <a-col :span="18">
-            <a-input v-model="form.module">
-<!--              <template #suffix>-->
-<!--                <a-tooltip title="提示文本"><a-icon type="info-circle"/></a-tooltip>-->
-<!--              </template>-->
-            </a-input>
+            <a-input v-model="form.module"/>
           </a-col>
           <a-col :span="6">
             <a-button style="width: 100%" @click="genParams">生成其他参数</a-button>
@@ -39,10 +35,21 @@
         <a-input v-model="form.entityName"/>
       </a-form-model-item>
       <a-form-model-item
+        label="vue版本"
+        prop="vueVersion">
+        <a-select
+          v-model="form.vueVersion"
+          :default-value="form.vueVersion"
+          style="width: 100%"
+          placeholder="选择vue版本">
+          <a-select-option key="v2">Vue2</a-select-option>
+          <a-select-option key="v3">Vue3</a-select-option>
+        </a-select>
+      </a-form-model-item>
+      <a-form-model-item
         label="基类"
         prop="baseEntity">
         <a-select
-          allowClear
           v-model="form.baseEntity"
           :default-value="form.baseEntity"
           style="width: 100%"
@@ -111,6 +118,7 @@ export default {
         tableName: '',
         entityName: '',
         baseEntity: 'MpBaseEntity',
+        vueVersion: 'v2',
         corePack: '',
         paramPack: '',
         dtoPack: '',

@@ -21,13 +21,13 @@
           label="编码"
           prop="code"
         >
-          <a-input v-model="form.code" :disabled="showable||form.system"/>
+          <a-input v-model="form.code" :disabled="showable||form.system" placeholder="请输入登录方式编码"/>
         </a-form-model-item>
         <a-form-model-item
           label="名称"
           prop="name"
         >
-          <a-input v-model="form.name" :disabled="showable"/>
+          <a-input v-model="form.name" :disabled="showable" placeholder="请输入登录方式名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="类型"
@@ -68,8 +68,10 @@
           <a-input-number
             v-model="form.timeout"
             :disabled="showable"
+            :precision="0"
             :min="5"
             :step="5"
+            placeholder="请输入超时时间(分钟)"
           />
         </a-form-model-item>
         <a-form-model-item
@@ -79,16 +81,18 @@
         >
           <a-input-number
             v-model="form.pwdErrNum"
+            :precision="0"
             :disabled="showable"
             :min="-1"
             :step="1"
+            placeholder="请输入密码可错误次数"
           />
         </a-form-model-item>
         <a-form-model-item
           label="描述"
           prop="description"
         >
-          <a-textarea v-model="form.description" :disabled="showable"/>
+          <a-textarea v-model="form.description" :disabled="showable" placeholder="请输入描述"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>

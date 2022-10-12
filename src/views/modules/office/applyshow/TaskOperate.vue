@@ -2,7 +2,7 @@
   <a-card :bordered="false">
     <a-row :gutter="64">
       <a-col :span="8">
-        <a-card :bordered="false" v-if="currentNode||nextNode">
+        <a-card :bordered="false" v-if="currentNode||nextOrBackNode">
           <a-descriptions :column="{md: 1}" bordered v-if="currentNode">
             <a-descriptions-item label="当前环节名称">
               {{ currentNode.nodeName }}
@@ -24,24 +24,24 @@
             </a-descriptions-item>
           </a-descriptions>
           <a-divider/>
-          <a-descriptions :column="{md: 1}" bordered v-if="nextNode">
+          <a-descriptions :column="{md: 1}" bordered v-if="nextOrBackNode">
             <a-descriptions-item label="下一环节名称">
-              {{ nextNode.nodeName }}
+              {{ nextOrBackNode.nodeName }}
             </a-descriptions-item>
             <a-descriptions-item label="处理人类型">
-              {{ dictConvert('BpmTaskAssignType', nextNode.assignType) }}
+              {{ dictConvert('BpmTaskAssignType', nextOrBackNode.assignType) }}
             </a-descriptions-item>
-            <a-descriptions-item label="处理人" v-if="nextNode.assignShow">
-              {{ nextNode.assignShow }}
+            <a-descriptions-item label="处理人" v-if="nextOrBackNode.assignShow">
+              {{ nextOrBackNode.assignShow }}
             </a-descriptions-item>
             <a-descriptions-item label="多实例">
-              {{ nextNode.multi?nextNode.sequential?'串行':'并行':'否' }}
+              {{ nextOrBackNode.multi ? nextOrBackNode.sequential ? '串行' : '并行' : '否' }}
             </a-descriptions-item>
-            <a-descriptions-item label="或签" v-if="nextNode.orSign">
-              {{ nextNode.orSign?'是':'否' }}
+            <a-descriptions-item label="或签" v-if="nextOrBackNode.orSign">
+              {{ nextOrBackNode.orSign ? '是' : '否' }}
             </a-descriptions-item>
-            <a-descriptions-item label="按比例通过" v-if="nextNode.ratioPass">
-              {{ nextNode.passRatio }} %
+            <a-descriptions-item label="按比例通过" v-if="nextOrBackNode.ratioPass">
+              {{ nextOrBackNode.passRatio }} %
             </a-descriptions-item>
           </a-descriptions>
         </a-card>
@@ -58,25 +58,36 @@
               :rules="rules"
             >
               <a-form-model-item label="处理方式" prop="type">
-                <a-radio-group v-model="form.type" :default-value="1" button-style="solid">
+                <a-radio-group v-model="form.type" :default-value="1" button-style="solid" @change="changeType">
                   <a-radio-button value="pass">通过</a-radio-button>
                   <a-radio-button value="reject">驳回</a-radio-button>
+                  <a-radio-button value="back">退回</a-radio-button>
                   <a-radio-button value="notPass">不通过</a-radio-button>
                   <a-radio-button value="abstain">弃权</a-radio-button>
                 </a-radio-group>
               </a-form-model-item>
-              <a-form-model-item v-show="nextModes.length > 1" label="下一步环节" prop="nextNodeId">
+              <a-form-model-item v-show="nextModes.length > 1 && !['reject','back'].includes(this.form.type)" label="下一步环节" prop="nextNodeId">
                 <a-select
                   allowClear
                   v-model="form.nextNodeId"
                   style="width: 100%"
                   placeholder="选择下一步环节"
-                  @change="changeNextNode"
+                  @change="changeNextOrBackNode"
                   :options="nextModes"
                 />
               </a-form-model-item>
-              <a-form-model-item label="处理人" prop="assignShow" v-if="nextNode">
-                <a-input v-model="form.assignShow" placeholder="请选择下一步环节处理用户" disabled>
+              <a-form-model-item v-show="['back'].includes(this.form.type)" label="退回环节" prop="backNodeId">
+                <a-select
+                  allowClear
+                  v-model="form.backNodeId"
+                  style="width: 100%"
+                  placeholder="选择要退回的环节"
+                  @change="changeNextOrBackNode"
+                  :options="backModes"
+                />
+              </a-form-model-item>
+              <a-form-model-item label="处理人" prop="assignShow" v-if="nextOrBackNode && !['back'].includes(this.form.type)">
+                <a-input v-model="form.assignShow" placeholder="请选择下一步处理人" disabled>
                   <template #addonAfter>
                     <a href="javascript:" :disabled="showable" @click="selectUserShow">选择用户</a>
                   </template>
@@ -110,6 +121,7 @@ import { approve } from '@/api/bpm/task'
 import { getNextNodes, listByModelId } from '@/api/bpm/modelNode'
 import { SELECT } from '@/views/modules/bpm/model/BpmModelNodeCode'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
+import { getBackNodes } from '@/api/bpm/instance'
 
 export default {
   name: 'TaskOperate',
@@ -126,13 +138,15 @@ export default {
   data () {
     return {
       nextModes: [],
+      backModes: [],
       currentNode: {},
-      nextNode: { },
+      nextOrBackNode: {},
       userTaskNodes: {},
       form: {
         type: 'pass',
         reason: '',
         nextNodeId: undefined,
+        backNodeId: undefined,
         assignShow: '',
         nextAssign: undefined
       }
@@ -149,16 +163,17 @@ export default {
         type: [{ required: true, message: '请选择类型!' }],
         reason: [{ required: true, message: '请输入审批意见!' }],
         nextNodeId: [{ required: this.nextModes.length > 1 && this.form.type !== 'reject', message: '请选择下一环节的任务节点!' }],
+        backNodeId: [{ required: this.form.type === 'back', message: '请选择要退回的任务节点!' }],
         assignShow: [
           {
-            required: [SELECT].includes(this.nextNode?.assignType) && this.form.type !== 'reject',
+            required: [SELECT].includes(this.nextOrBackNode?.assignType) && !['reject', 'back'].includes(this.form.type),
             message: '请选择下一环节的处理人!'
           }
         ]
       }
     },
     nextMulti () {
-      return this.nextNode?.multi
+      return this.nextOrBackNode?.multi
     }
   },
   methods: {
@@ -179,14 +194,41 @@ export default {
       getNextNodes(this.instance.defId, task.nodeId).then(res => {
         this.nextModes = res.data
         if (this.nextModes.length === 1) {
-          this.nextNode = this.userTaskNodes.find(o => o.nodeId === this.nextModes[0].value)
+          this.nextOrBackNode = this.userTaskNodes.find(o => o.nodeId === this.nextModes[0].value)
         } else {
-          this.nextNode = null
+          this.nextOrBackNode = null
         }
       })
+      // 可回退的任务节点
+      getBackNodes(this.instance.instanceId).then(res => {
+        this.backModes = res.data
+      })
     },
-    changeNextNode () {
-      this.nextNode = this.userTaskNodes.find(o => o.nodeId === this.form.nextNodeId)
+    /**
+     * 类型切换
+     */
+    changeType () {
+      this.form.backNodeId = undefined
+      this.form.nextNodeId = undefined
+      if (this.form.type === 'back') {
+        this.nextOrBackNode = null
+        return
+      }
+      if (this.form.type === 'reject') {
+        this.nextOrBackNode = null
+        return
+      }
+      if (this.nextModes.length === 1) {
+        this.nextOrBackNode = this.userTaskNodes.find(o => o.nodeId === this.nextModes[0].value)
+      } else {
+        this.nextOrBackNode = null
+      }
+    },
+    /**
+     * 回退节点变动
+     */
+    changeNextOrBackNode () {
+      this.nextOrBackNode = this.userTaskNodes.find(o => o.nodeId === this.form.backNodeId)
     },
     /**
      * 提交处理
@@ -240,6 +282,7 @@ export default {
       this.$refs.form.validateField('assignShow')
     },
     resetForm () {
+      this.nextOrBackNode = null
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })

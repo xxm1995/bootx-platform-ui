@@ -72,7 +72,18 @@ export function getFlowNodes (instanceId) {
 export function getCurrentNode (instanceId) {
   return axios({
     url: '/bpm/instance/getCurrentNode',
-    method: 'POST',
+    method: 'GET',
+    params: { instanceId }
+  })
+}
+
+/**
+ * 获取可回退节点信息
+ */
+export function getBackNodes (instanceId) {
+  return axios({
+    url: '/bpm/instance/getBackNodes',
+    method: 'GET',
     params: { instanceId }
   })
 }

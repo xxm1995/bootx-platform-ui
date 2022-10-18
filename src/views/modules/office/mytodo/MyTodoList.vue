@@ -71,7 +71,7 @@ export default {
       assigneeTaskId: '',
       fields: [
         { field: 'code', type: STRING, name: '流程编号', placeholder: '请输入流程编号' },
-        { field: 'code', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
+        { field: 'name', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
       ]
     }
   },

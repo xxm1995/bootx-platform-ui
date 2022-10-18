@@ -1,25 +1,13 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="编码">
-              <a-input v-model="queryParam.code" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      query-param="queryParam"
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       :refresh="{query: init}"
@@ -104,6 +92,7 @@ import { del, page } from '@/api/system/dataScope'
 import DataScopeEdit from './DataScopeEdit'
 import DeptScopeModal from './DeptScopeModal'
 import UserScopeModal from './UserScopeModal'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'DataScopeList',
@@ -119,7 +108,11 @@ export default {
       queryParam: {
         code: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'code', type: STRING, name: '编码', placeholder: '请输入权限编码' },
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入权限名称' }
+      ]
     }
   },
   methods: {

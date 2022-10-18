@@ -1,35 +1,13 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="权限路径">
-              <a-input v-model="queryParam.path" placeholder="请输入要查询的权限路径"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="权限标识">
-              <a-input v-model="queryParam.code" placeholder="请输入要查询的权限标识"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="权限名称">
-              <a-input v-model="queryParam.name" placeholder="请输入要查询的权限名称"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="权限分组">
-              <a-input v-model="queryParam.groupName" placeholder="请输入要查询的权限分组"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      query-param="queryParam"
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -49,7 +27,7 @@
                   <a @click="batchUpdateEnable(false)">批量停用</a>
                 </a-menu-item>
                 <a-menu-item>
-                  <a @click="assignDataScopeBatch()">批量删除</a>
+                  <a @click="removeDataScopeBatch()">批量删除</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -72,7 +50,7 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-column type="checkbox" width="40"/>
+      <vxe-table-column type="checkbox" width="40"/>
       <vxe-table-column field="path" title="请求路径" />
       <vxe-table-column field="name" title="权限名称" />
       <vxe-table-column field="code" title="权限标识" />
@@ -127,6 +105,7 @@
 import { batchUpdateEnable, del, delBatch, page, syncSystem } from '@/api/system/permPath'
 import PathEdit from './PathEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'PathList',
   components: {
@@ -136,9 +115,17 @@ export default {
   data () {
     return {
       queryParam: {
+        path: '',
         code: '',
-        name: ''
-      }
+        name: '',
+        groupName: ''
+      },
+      fields: [
+        { field: 'path', type: STRING, name: '权限路径', placeholder: '请输入权限路径' },
+        { field: 'code', type: STRING, name: '权限标识', placeholder: '请输入流程标识' },
+        { field: 'name', type: STRING, name: '权限名称', placeholder: '请输入权限名称' },
+        { field: 'groupName', type: STRING, name: '权限分组', placeholder: '请输入权限分组' }
+      ]
     }
   },
   methods: {
@@ -169,7 +156,7 @@ export default {
       })
     },
     // 批量删除
-    assignDataScopeBatch () {
+    removeDataScopeBatch () {
       const ids = this.$refs.table.getCheckboxRecords().map(o => o.id)
       const that = this
       this.$confirm({

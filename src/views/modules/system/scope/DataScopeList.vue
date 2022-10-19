@@ -1,7 +1,6 @@
 <template>
   <a-card :bordered="false">
     <b-query
-      query-param="queryParam"
       v-model="queryParam"
       :fields="fields"
       :default-item-md="6"

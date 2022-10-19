@@ -1,25 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form-model layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="参数名称">
-              <a-input v-model="queryParam.name" placeholder=""/>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="参数键名">
-              <a-input v-model="queryParam.paramKey" placeholder=""/>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -87,6 +74,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import SystemParamEdit from './SystemParamEdit'
 import { page, del } from '@/api/system/param'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'SystemParamList',
@@ -100,7 +88,11 @@ export default {
       queryParam: {
         paramKey: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '参数名称', placeholder: '请输入字典名称' },
+        { field: 'paramKey', type: STRING, name: '分组标签', placeholder: '请输入分组标签' }
+      ]
     }
   },
   methods: {

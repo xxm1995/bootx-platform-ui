@@ -1,31 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="字典编码">
-              <a-input v-model="queryParam.code" placeholder="请输入字典编码" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="字典名称">
-              <a-input v-model="queryParam.name" placeholder="请输入字典名称"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="分组标签">
-              <a-input v-model="queryParam.groupTag" placeholder="请输入分组标签" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
-
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -90,6 +71,7 @@ import { page, del } from '@/api/system/dict'
 import DictEdit from './DictEdit'
 import DictItemList from './DictItemList'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'DictList',
   components: {
@@ -103,7 +85,12 @@ export default {
         code: '',
         name: '',
         groupTag: ''
-      }
+      },
+      fields: [
+        { field: 'code', type: STRING, name: '字典编码', placeholder: '请输入字典编码' },
+        { field: 'name', type: STRING, name: '字典名称', placeholder: '请输入字典名称' },
+        { field: 'groupTag', type: STRING, name: '分组标签', placeholder: '请输入分组标签' }
+      ]
     }
   },
   methods: {

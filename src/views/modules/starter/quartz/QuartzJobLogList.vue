@@ -19,8 +19,8 @@
                 v-model="queryParam.success"
                 placeholder="请选择状态"
               >
-                <a-select-option :value="true">成功</a-select-option>
-                <a-select-option :value="false">失败</a-select-option>
+                <a-select-option value="true">成功</a-select-option>
+                <a-select-option value="false">失败</a-select-option>
               </a-select>
             </a-form-model-item>
           </a-col>

@@ -1,35 +1,13 @@
 <template>
   <a-card :bordered="false">
     <!-- 查询区域 -->
-    <div class="table-page-search-wrapper">
-      <a-form-model :model="queryParam" layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="任务类名" prop="jobClassName">
-              <a-input placeholder="请输入任务类名" v-model="queryParam.jobClassName"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="任务状态" prop="status">
-              <a-select
-                allowClear
-                style="width: 220px"
-                v-model="queryParam.status"
-                placeholder="请选择状态"
-              >
-                <a-select-option value="">全部</a-select-option>
-                <a-select-option value="1">正常</a-select-option>
-                <a-select-option value="0">停止</a-select-option>
-              </a-select>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -138,6 +116,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { page, del, start, stop, execute, syncJobStatus } from '@/api/starter/quartz'
 import QuartzJobEdit from './QuartzJobEdit'
 import QuartzJobLogList from './QuartzJobLogList'
+import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'QuartzJobList',
@@ -151,7 +130,21 @@ export default {
       queryParam: {
         jobClassName: '',
         status: ''
-      }
+      },
+      fields: [
+        { field: 'jobClassName', type: STRING, name: '任务类名', placeholder: '请输入任务类名' },
+        { field: 'status',
+          type: LIST,
+          name: '任务状态',
+          placeholder: '请选择状态',
+          md: 4,
+          list: [
+            { label: '全部', value: '' },
+            { label: '正常', value: '1' },
+            { label: '停止', value: '0' }
+          ]
+        }
+      ]
     }
   },
   methods: {

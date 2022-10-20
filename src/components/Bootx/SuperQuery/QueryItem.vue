@@ -4,12 +4,14 @@
       <!-- 文本输入 -->
       <a-input
         allowClear
+        @keyup.enter="query"
         v-if="field.type === STRING"
         :placeholder="field.placeholder?field.placeholder:'请输入查询值'"
         v-model="queryParam[field.field]"/>
       <!-- 数字输入 -->
       <a-input-number
         allowClear
+        @keyup.enter="query"
         style="width: 100%"
         v-else-if="field.type === NUMBER"
         :placeholder="field.placeholder?field.placeholder:'请输入查询值'"
@@ -54,7 +56,12 @@
         :valueFormat="queryParam.format?queryParam.format:'yyyy-MM-DD HH:mm:ss'"
         v-model="queryParam[field.field]"/>
       <!-- 默认文本输入 -->
-      <a-input allowClear v-else :placeholder="field.placeholder?field.placeholder:'请输入查询值'" v-model="queryParam[field.field]"/>
+      <a-input
+        @keyup.enter="query"
+        allowClear
+        v-else
+        :placeholder="field.placeholder?field.placeholder:'请输入查询值'"
+        v-model="queryParam[field.field]"/>
     </a-form-item>
   </a-col>
 </template>
@@ -89,6 +96,9 @@ export default {
     }
   },
   methods: {
+    query () {
+      this.$emit('query')
+    }
   }
 }
 </script>

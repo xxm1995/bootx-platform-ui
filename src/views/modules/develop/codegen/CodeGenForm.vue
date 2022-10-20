@@ -140,7 +140,6 @@ export default {
       this.form.tableName = tableName
       this.type = type
       this.genPackFlag = false
-      console.log(this.form)
       this.getGenConfigParam()
     },
     // 确定

@@ -8,6 +8,7 @@
           v-for="(field, i) in fields"
           :field="field"
           :md="defaultItemMd"
+          @query="query"
           v-model="queryParam"
         />
         <a-col :md="defaultItemMd" :sm="24">

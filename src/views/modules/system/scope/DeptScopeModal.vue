@@ -52,7 +52,7 @@
 
 <script>
 import { tree } from '@/api/system/dept'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import { saveDeptAssign, getDeptIds } from '@/api/system/dataScope'
 import XEUtils from 'xe-utils'
 

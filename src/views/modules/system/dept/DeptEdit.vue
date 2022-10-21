@@ -112,7 +112,7 @@
 <script>
 import { get, add, update, tree } from '@/api/system/dept'
 import { FormMixin } from '@/mixins/FormMixin'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import { validateMobile } from '@/utils/validate'
 export default {
   name: 'DeptEdit',

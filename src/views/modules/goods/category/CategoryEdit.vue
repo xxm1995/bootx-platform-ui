@@ -80,7 +80,7 @@
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import { findTree, update, get, add, existsByName, existsByNameNotId } from '@/api/goods/category'
 
 export default {

@@ -59,7 +59,7 @@
 
 <script>
 import { findPermissionIdsByRole, save } from '@/api/system/roleMenu'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import { allTree } from '@/api/system/permMenu'
 import XEUtils from 'xe-utils'
 import { findAll } from '@/api/system/client'

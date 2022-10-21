@@ -208,7 +208,7 @@
 
 <script>
 import { add, update, findById, menuTree } from '@/api/system/permMenu'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import { FormMixin } from '@/mixins/FormMixin'
 import IconSelector from '@/components/IconSelector'
 export default {

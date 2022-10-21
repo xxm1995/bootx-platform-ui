@@ -1,42 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="账号">
-              <a-input v-model="queryParam.account" placeholder="请输入账号" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="终端">
-              <a-select
-                allowClear
-                placeholder="请选择终端"
-                v-model="queryParam.client">
-                <a-select-option v-for="o in clients" :key="o.code">{{ o.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="登录方式">
-              <a-select
-                allowClear
-                placeholder="请输入登录方式"
-                v-model="queryParam.loginType">
-                <a-select-option v-for="o in loginTypes" :key="o.code">{{ o.name }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="() => this.queryParam = {}">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -102,7 +72,8 @@ import { loginPage } from '@/api/starter/log'
 import LoginLogInfo from './LoginLogInfo'
 import { findAll as findClients } from '@/api/system/client'
 import { findAll as findLoginTypes } from '@/api/system/loginType'
-import { findOneByField } from '@/utils/entityUtil'
+import { dropdownTranslate, findOneByField } from '@/utils/dataUtil'
+import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'LoginLogList',
@@ -119,6 +90,15 @@ export default {
         client: undefined,
         loginType: undefined
       }
+    }
+  },
+  computed: {
+    fields () {
+      return [
+        { field: 'code', type: STRING, name: '账号', placeholder: '请输入账号名称' },
+        { field: 'client', type: LIST, name: '终端', placeholder: '请选择终端', list: dropdownTranslate(this.clients, 'name', 'code') },
+        { field: 'loginType', type: LIST, name: '登录方式', placeholder: '请选择登录方式', list: dropdownTranslate(this.loginTypes, 'name', 'code') }
+      ]
     }
   },
   methods: {

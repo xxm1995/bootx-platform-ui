@@ -52,7 +52,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { loginInfo } from '@/api/starter/log'
-import { findOneByField } from '@/utils/entityUtil'
+import { findOneByField } from '@/utils/dataUtil'
 
 export default {
   name: 'LoginLogInfo',

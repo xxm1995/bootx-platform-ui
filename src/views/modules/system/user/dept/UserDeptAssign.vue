@@ -53,7 +53,7 @@
 <script>
 import { tree } from '@/api/system/dept'
 import { addUserDept, findDeptIdsByUser } from '@/api/system/userAssign'
-import { treeDataTranslate } from '@/utils/util'
+import { treeDataTranslate } from '@/utils/dataUtil'
 import XEUtils from 'xe-utils'
 export default {
   name: 'UserDeptAssign',

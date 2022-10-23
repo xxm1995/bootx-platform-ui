@@ -1,27 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="操作模块">
-              <a-input v-model="queryParam.title" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="账号">
-              <a-input v-model="queryParam.username" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="() => this.queryParam = {}">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -51,7 +36,7 @@
       <vxe-table-column field="operateIp" title="IP" />
       <vxe-table-column field="errorMsg" title="错误消息" />
       <vxe-table-column field="operateTime" title="操作时间" />
-      <vxe-table-column title="操作" fixed="right" width="120">
+      <vxe-table-column title="操作" fixed="right" width="60">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -78,6 +63,8 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { operatePage } from '@/api/starter/log'
 import OperateLogInfo from './OperateLogInfo'
+import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { dropdownTranslate } from '@/utils/dataUtil'
 
 export default {
   name: 'OperateLogList',
@@ -91,7 +78,11 @@ export default {
       queryParam: {
         title: '',
         username: ''
-      }
+      },
+      fields: [
+        { field: 'title', type: STRING, name: '操作模块', placeholder: '请输入操作模块' },
+        { field: 'username', type: STRING, name: '账号', placeholder: '请输入账号名称' }
+      ]
     }
   },
   methods: {

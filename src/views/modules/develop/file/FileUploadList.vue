@@ -1,5 +1,12 @@
 <template>
   <a-card :bordered="false">
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -55,6 +62,7 @@ import { page } from '@/api/develop/fileUpload'
 import { getFileDownloadUrl, getFilePreviewUrl } from '@/api/common/fileUpload'
 import storage from 'store'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'FileUploadList',
@@ -62,7 +70,9 @@ export default {
   data () {
     return {
       queryParam: {
-      }
+      },
+      fields: [
+    ]
     }
   },
   computed: {

@@ -57,7 +57,7 @@
                 </a-menu-item>
                 <a-menu-item>
                   <a-popconfirm
-                    title="是否删除模板"
+                    title="是否删除"
                     @confirm="remove(row)"
                     okText="是"
                     cancelText="否">

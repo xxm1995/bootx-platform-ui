@@ -1,32 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper" >
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="请输入名称"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.code" placeholder="请输入编码"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.templateId" placeholder="请输入模板ID"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      :query-param="queryParam"
+      :default-item-md="8"
+      :disabled-query="superQueryFlag"
+      :fields="fields"
+      @query="query"
+      @reset="() => queryParam = {}"/>
     <vxe-toolbar
       custom
       zoom
@@ -39,7 +19,7 @@
             @confirm="sync()"
             okText="是"
             cancelText="否">
-            <a-button icon="sync">同步微信模板</a-button>
+            <a-button @click="sync" icon="sync">同步微信模板</a-button>
           </a-popconfirm>
         </a-space>
       </template>
@@ -86,6 +66,8 @@
 import { page, sync } from '@/api/third/weChatTemplate'
 import WeChatTemplateEdit from './WeChatTemplateEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { uploadBpmn } from '@/api/bpm/model'
 export default {
   name: 'WeChatTemplateList',
   components: {
@@ -98,7 +80,12 @@ export default {
         code: '',
         name: '',
         templateId: ''
-      }
+      },
+      fields: [
+        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'templateId', type: STRING, name: '模板ID', placeholder: '请输入模板ID' }
+      ]
     }
   },
   methods: {
@@ -117,9 +104,17 @@ export default {
     show (record) {
       this.$refs.weChatTemplateEdit.init(record.id, 'show')
     },
-    sync(){
-      sync().then(()=>{
-        this.$message.info('开始同步微信消息模板')
+    sync () {
+      this.$confirm({
+        title: '保存',
+        content: '是否保存该流程图',
+        okText: '确定',
+        cancelText: '取消',
+        onOk: () => {
+          sync().then(() => {
+            this.$message.info('开始同步微信消息模板')
+          })
+        }
       })
     }
   },

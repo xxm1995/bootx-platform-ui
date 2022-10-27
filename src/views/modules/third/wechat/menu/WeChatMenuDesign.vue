@@ -10,7 +10,7 @@
     destroy-on-close
   >
     <a-spin :spinning="confirmLoading">
-      <wx-menu-editor
+      <wx-menu-design
         :showable="showable"
         v-model="form.menuInfo"
       />
@@ -23,13 +23,13 @@
 </template>
 
 <script>
-import WxMenuEditor from '@/views/modules/third/wechat/menu/edit/WxMenuDesign'
+import WxMenuDesign from '@/views/modules/third/wechat/menu/edit/WxMenuDesign'
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, update } from '@/api/third/weChatMenu'
 
 export default {
   name: 'WeChatMenuDesign',
-  components: { WxMenuEditor },
+  components: { WxMenuDesign },
   mixins: [FormMixin],
   data () {
     return {

@@ -65,7 +65,7 @@ export default {
     prop: 'menu'
   },
   props: {
-    // 查询条件
+    // 菜单信息
     menu: {
       type: Object,
       default: () => {
@@ -110,7 +110,6 @@ export default {
       } else {
         this.currentMenuTyp = MenuTypeMain
       }
-      console.log(menu)
       this.currentMenu = menu
       this.currentSubMenuIndex = -1
       this.currentMenuIndex = i
@@ -214,10 +213,7 @@ export default {
           }
         }
       })
-    },
-  },
-  mounted () {
-    console.log(this.showable)
+    }
   }
 }
 </script>

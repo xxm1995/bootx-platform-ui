@@ -108,7 +108,6 @@ export default {
         this.menuTypeChange(newV)
       },
       immediate: true
-
     }
   },
   data () {

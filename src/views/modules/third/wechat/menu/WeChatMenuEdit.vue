@@ -54,7 +54,6 @@ export default {
       },
       rules: {
         name: [],
-        remark: []
       }
     }
   },

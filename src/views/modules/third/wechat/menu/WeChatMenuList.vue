@@ -1,22 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="请输入名称"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      :query-param="queryParam"
+      :default-item-md="8"
+      :disabled-query="superQueryFlag"
+      :fields="fields"
+      @query="query"
+      @reset="() => queryParam = {}"/>
     <vxe-toolbar
       custom
       zoom
@@ -107,6 +97,7 @@ import { page, del, importMenu, publish, clearMenu } from '@/api/third/weChatMen
 import WeChatMenuEdit from './WeChatMenuEdit'
 import WeChatMenuDesign from './WeChatMenuDesign'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'WeChatMenuList',
   components: {
@@ -118,7 +109,10 @@ export default {
     return {
       queryParam: {
         name: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' }
+      ]
     }
   },
   methods: {

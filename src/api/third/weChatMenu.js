@@ -86,7 +86,7 @@ export function publish (id) {
 }
 
 /**
- * 发布菜单
+ * 导入微信配置的菜单
  */
 export function importMenu () {
   return axios({

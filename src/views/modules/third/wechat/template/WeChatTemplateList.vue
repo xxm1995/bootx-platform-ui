@@ -13,15 +13,7 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-space>
-          <a-popconfirm
-            title="是否同步同步微信模板"
-            @confirm="sync()"
-            okText="是"
-            cancelText="否">
-            <a-button @click="sync" icon="sync">同步微信模板</a-button>
-          </a-popconfirm>
-        </a-space>
+        <a-button @click="sync" icon="sync">同步微信模板</a-button>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -67,7 +59,6 @@ import { page, sync } from '@/api/third/weChatTemplate'
 import WeChatTemplateEdit from './WeChatTemplateEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { uploadBpmn } from '@/api/bpm/model'
 export default {
   name: 'WeChatTemplateList',
   components: {
@@ -82,8 +73,8 @@ export default {
         templateId: ''
       },
       fields: [
-        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
         { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'code', type: STRING, name: '编码', placeholder: '请输入编码' },
         { field: 'templateId', type: STRING, name: '模板ID', placeholder: '请输入模板ID' }
       ]
     }
@@ -106,8 +97,8 @@ export default {
     },
     sync () {
       this.$confirm({
-        title: '保存',
-        content: '是否保存该流程图',
+        title: '同步',
+        content: '是否同步消息模板',
         okText: '确定',
         cancelText: '取消',
         onOk: () => {

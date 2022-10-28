@@ -32,7 +32,7 @@
       </a-input-password>
     </a-form-model-item>
 
-    <a-row :span="24" v-if="client.captcha">
+    <a-row :span="24" v-if="loginType.captcha">
       <a-col :span="16">
         <a-form-model-item prop="captcha">
           <a-input
@@ -94,7 +94,7 @@ export default {
         value: '',
         len: 4
       },
-      client: {
+      loginType: {
         captcha: false,
         enable: true
       },
@@ -108,9 +108,10 @@ export default {
   methods: {
     ...mapActions(['Login', 'Logout']),
     init () {
+      // 获取登录方式
       findByCode(this.form.loginType).then(res => {
-        this.client = res.data || {}
-        if (this.client && this.client.captcha && this.client.enable) {
+        this.loginType = res.data || {}
+        if (this.loginType && this.loginType.captcha && this.loginType.enable) {
           this.getCaptcha()
         }
       })

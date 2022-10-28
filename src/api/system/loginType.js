@@ -57,7 +57,7 @@ export function findAll () {
 }
 
 /**
- * 根据code获取终端信息
+ * 根据code获取登录方式
  */
 export function findByCode (code) {
   return axios({

@@ -10,26 +10,13 @@
   >
     <vxe-toolbar>
       <template #buttons>
-        <div class="table-page-search-wrapper">
-          <a-form layout="inline">
-            <a-row :gutter="12">
-              <a-col :md="8" :sm="12">
-                <a-form-item label="名称">
-                  <a-input v-model="queryParam.name" placeholder="输入用户名称" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="12">
-                <a-form-item label="账号">
-                  <a-input v-model="queryParam.username" placeholder="输入用户账号" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-button type="primary" @click="queryPage">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
+        <b-query
+          v-model="queryParam"
+          :fields="fields"
+          :default-item-md="8"
+          @query="query"
+          @reset="() => queryParam = {}"
+        />
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -64,6 +51,7 @@
 <script>
 import { page } from '@/api/system/user'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'BUserSelectModal',
@@ -104,7 +92,11 @@ export default {
       queryParam: {
         name: '',
         username: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '账号', placeholder: '输入用户名称' },
+        { field: 'username', type: STRING, name: '账号', placeholder: '输入用户账号' }
+      ]
     }
   },
   methods: {

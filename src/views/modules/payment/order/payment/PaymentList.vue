@@ -1,5 +1,12 @@
 <template>
   <a-card :bordered="false">
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <div class="table-page-search-wrapper" >
       <a-form layout="inline">
         <a-row :gutter="10">
@@ -145,7 +152,12 @@ export default {
         paymentId: '',
         businessId: '',
         title: ''
-      }
+      },
+      fields: [
+        { field: 'paymentId', type: STRING, name: '支付单号', placeholder: '请输入支付单号' },
+        { field: 'businessId', type: STRING, name: '业务ID', placeholder: '请输入业务ID' },
+        { field: 'title', type: STRING, name: '标题', placeholder: '请输入标题' }
+      ]
     }
   },
   computed: {

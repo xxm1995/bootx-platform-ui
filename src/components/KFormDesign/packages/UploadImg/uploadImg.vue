@@ -57,22 +57,22 @@
  * description 上传图片组件
  */
 export default {
-  name: "KUploadImg",
+  name: 'KUploadImg',
   // eslint-disable-next-line vue/require-prop-types
-  props: ["record", "value", "config", "parentDisabled"],
-  data() {
+  props: ['record', 'value', 'config', 'parentDisabled'],
+  data () {
     return {
       fileList: [],
       previewVisible: false,
-      previewImageUrl: ""
-    };
+      previewImageUrl: ''
+    }
   },
   watch: {
     value: {
       // value 需要深度监听及默认先执行handler函数
-      handler(val) {
+      handler (val) {
         if (val) {
-          this.setFileList();
+          this.setFileList()
         }
       },
       immediate: true,
@@ -80,89 +80,89 @@ export default {
     }
   },
   computed: {
-    optionsData() {
+    optionsData () {
       try {
-        return JSON.parse(this.record.options.data);
+        return JSON.parse(this.record.options.data)
       } catch (err) {
-        console.error(err);
-        return {};
+        console.error(err)
+        return {}
       }
     }
   },
   methods: {
-    setFileList() {
+    setFileList () {
       // 当传入value改变时，fileList也要改变
       // 如果传入的值为字符串，则转成json
-      if (typeof this.value === "string") {
-        this.fileList = JSON.parse(this.value);
+      if (typeof this.value === 'string') {
+        this.fileList = JSON.parse(this.value)
         // 将转好的json覆盖组件默认值的字符串
-        this.handleSelectChange();
+        this.handleSelectChange()
       } else {
-        this.fileList = this.value;
+        this.fileList = this.value
       }
     },
-    handleSelectChange() {
+    handleSelectChange () {
       setTimeout(() => {
         const arr = this.fileList.map(item => {
-          if (typeof item.response !== "undefined") {
-            const res = item.response;
+          if (typeof item.response !== 'undefined') {
+            const res = item.response
             return {
-              type: "img",
+              type: 'img',
               name: item.name,
               status: item.status,
               uid: item.uid,
-              url: res.data.url || ""
-            };
+              url: res.data.url || ''
+            }
           } else {
             return {
-              type: "img",
+              type: 'img',
               name: item.name,
               status: item.status,
               uid: item.uid,
-              url: item.url || ""
-            };
+              url: item.url || ''
+            }
           }
-        });
+        })
 
-        this.$emit("change", arr);
-        this.$emit("input", arr);
-      }, 10);
+        this.$emit('change', arr)
+        this.$emit('input', arr)
+      }, 10)
     },
-    handlePreview(file) {
+    handlePreview (file) {
       // 预览图片
-      this.previewImageUrl = file.url || file.thumbUrl;
-      this.previewVisible = true;
+      this.previewImageUrl = file.url || file.thumbUrl
+      this.previewVisible = true
     },
-    handleCancel() {
+    handleCancel () {
       // 取消操作
-      this.previewVisible = false;
+      this.previewVisible = false
     },
-    remove() {
-      this.handleSelectChange();
+    remove () {
+      this.handleSelectChange()
     },
-    beforeUpload(e, files) {
+    beforeUpload (e, files) {
       if (files.length + this.fileList.length > this.record.options.limit) {
-        this.$message.warning(`最大上传数量为${this.record.options.limit}`);
-        files.splice(this.record.options.limit - this.fileList.length);
+        this.$message.warning(`最大上传数量为${this.record.options.limit}`)
+        files.splice(this.record.options.limit - this.fileList.length)
       }
     },
-    handleChange(info) {
+    handleChange (info) {
       // 上传数据改变时
-      this.fileList = info.fileList;
-      if (info.file.status === "done") {
-        const res = info.file.response;
+      this.fileList = info.fileList
+      if (info.file.status === 'done') {
+        const res = info.file.response
         if (res.code === 0) {
-          this.handleSelectChange();
+          this.handleSelectChange()
         } else {
-          this.fileList.pop();
-          this.$message.error(`图片上传失败`);
+          this.fileList.pop()
+          this.$message.error(`图片上传失败`)
         }
-      } else if (info.file.status === "error") {
-        this.$message.error(`图片上传失败`);
+      } else if (info.file.status === 'error') {
+        this.$message.error(`图片上传失败`)
       }
     }
   }
-};
+}
 </script>
 <style lang="less">
 .upload-img-box-9136076486841527 {

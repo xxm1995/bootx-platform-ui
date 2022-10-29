@@ -1,43 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="支付单号">
-              <a-input v-model="queryParam.paymentId" placeholder="请输入支付单号" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="支付通道">
-              <a-select
-                allowClear
-                v-model="queryParam.payChannel"
-                placeholder="选择支付通道"
-                :options="asyncPayChannel"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col><a-col :md="6" :sm="24">
-            <a-form-item label="处理状态">
-              <a-select
-                allowClear
-                v-model="queryParam.status"
-                placeholder="选择消息处理状态"
-                :options="payNotifyProcess"
-              >
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -90,6 +59,7 @@
 import { page, del } from '@/api/payment/payNotifyRecord'
 import PayNotifyRecordEdit from './PayNotifyRecordInfo'
 import { TableMixin } from '@/mixins/TableMixin'
+import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'PayNotifyRecordList',
   components: {
@@ -106,6 +76,28 @@ export default {
         status: undefined
       }
     }
+  },
+  computed: {
+    fields () {
+      return [
+        { field: 'paymentId', type: STRING, name: '支付单号', placeholder: '请输入支付单号' },
+        {
+          field: 'payChannel',
+          type: LIST,
+          name: '支付通道',
+          placeholder: '请选择支付通道',
+          list: this.asyncPayChannel
+        },
+        {
+          field: 'status',
+          type: LIST,
+          name: '处理状态',
+          placeholder: '请选择消息处理状态',
+          list: this.payNotifyProcess
+        }
+      ]
+    }
+
   },
   methods: {
     init () {

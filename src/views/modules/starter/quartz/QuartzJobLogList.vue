@@ -8,29 +8,13 @@
     @close="handleCancel"
     :visible="visible"
   >
-    <div class="table-page-search-wrapper">
-      <a-form-model :model="queryParam" layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="执行状态">
-              <a-select
-                allowClear
-                style="width: 220px"
-                v-model="queryParam.success"
-                placeholder="请选择状态"
-              >
-                <a-select-option value="true">成功</a-select-option>
-                <a-select-option value="false">失败</a-select-option>
-              </a-select>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -74,6 +58,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { logPage } from '@/api/starter/quartz'
 import TemplateEdit from '@/views/modules/notice/template/TemplateEdit'
+import { LIST } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'QuartzJobLogList',
@@ -86,6 +71,9 @@ export default {
       queryParam: {
         success: undefined
       },
+      fields: [
+      { field: 'success', type: LIST, name: '执行状态', placeholder: '请选择执行状态', list: [{ label: '成功', value: 'true' }, { label: '失败', value: 'false' }] }
+    ],
       visible: false,
       className: ''
     }

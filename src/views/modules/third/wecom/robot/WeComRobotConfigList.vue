@@ -1,30 +1,12 @@
 <template>
   <a-card >
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item>
-              <a-input v-model="queryParam.code" placeholder="编码" allowClear/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24" >
-            <a-form-item>
-              <a-input v-model="queryParam.name" placeholder="名称" allowClear/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item >
-              <a-input v-model="queryParam.accessToken" placeholder="AccessToken" allowClear/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => this.queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -79,6 +61,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import WecomRobotConfigEdit from './WecomRobotConfigEdit'
 import { del, page } from '@/api/third/weComRobotConfig'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'WeComRobotConfigList',
@@ -91,6 +74,12 @@ export default {
         name: '',
         accessToken: ''
       }
+      ,
+      fields: [
+        { field: 'code', type: STRING, name: '编号', placeholder: '请输入编号' },
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'accessToken', type: STRING, name: 'AccessToken', placeholder: '请输入AccessToken' }
+      ]
     }
   },
   methods: {

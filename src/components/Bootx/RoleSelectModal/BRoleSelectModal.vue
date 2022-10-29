@@ -10,26 +10,13 @@
   >
     <vxe-toolbar>
       <template #buttons>
-        <div class="table-page-search-wrapper">
-          <a-form layout="inline">
-            <a-row :gutter="12">
-              <a-col :md="8" :sm="12">
-                <a-form-item label="名称">
-                  <a-input v-model="queryParam.name" placeholder="输入角色名称" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="12">
-                <a-form-item label="账号">
-                  <a-input v-model="queryParam.code" placeholder="输入角色编码" />
-                </a-form-item>
-              </a-col>
-              <a-col :md="8" :sm="24">
-                <a-button type="primary" @click="queryPage">查询</a-button>
-                <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              </a-col>
-            </a-row>
-          </a-form>
-        </div>
+        <b-query
+          v-model="queryParam"
+          :fields="fields"
+          :default-item-md="8"
+          @query="query"
+          @reset="() => queryParam = {}"
+        />
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -64,6 +51,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { page } from '@/api/system/role'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'RoleSelectModel',
@@ -104,7 +92,11 @@ export default {
       queryParam: {
         code: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入角色名称' },
+        { field: 'code', type: STRING, name: '编号', placeholder: '请输入角色编号' }
+      ]
     }
   },
   methods: {

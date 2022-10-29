@@ -1,27 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="数据名称">
-              <a-input v-model="queryParam.dataName" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="数据主键">
-              <a-input v-model="queryParam.dataId" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="() => this.queryParam = {}">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -64,6 +49,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { dataVersionPage } from '@/api/starter/log'
 import DataVersionLogInfo from './DataVersionLogInfo'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'DataVersionLogList',
@@ -77,7 +63,11 @@ export default {
       queryParam: {
         dataName: '',
         dataId: ''
-      }
+      },
+      fields: [
+        { field: 'dataName', type: STRING, name: '数据名称', placeholder: '请输入数据名称' },
+        { field: 'dataId', type: STRING, name: '数据主键', placeholder: '请输入数据主键' }
+      ]
     }
   },
   methods: {

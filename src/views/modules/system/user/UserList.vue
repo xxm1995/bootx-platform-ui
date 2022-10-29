@@ -1,25 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
-            <a-form-item label="账号">
-              <a-input v-model="queryParam.username" placeholder="请输入要查询的账号"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-item label="姓名">
-              <a-input v-model="queryParam.name" placeholder="请输入要查询的姓名"/>
-            </a-form-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -155,6 +142,7 @@ import UserEdit from './UserEdit'
 import UserShow from './UserShow'
 import UserResetPassword from './UserResetPassword'
 import { TableMixin } from '@/mixins/TableMixin'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'UserList',
@@ -180,7 +168,11 @@ export default {
       queryParam: {
         account: '',
         name: ''
-      }
+      },
+      fields: [
+        { field: 'username', type: STRING, name: '账号', placeholder: '请输入要查询的账号' },
+        { field: 'name', type: STRING, name: '姓名', placeholder: '请输入要查询的姓名' }
+      ]
     }
   },
   methods: {

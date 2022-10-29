@@ -1,25 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form-model :model="queryParam" layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="名称" prop="jobClassName">
-              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-form-model-item label="AppId" prop="appId">
-              <a-input placeholder="请输入AppId" v-model="queryParam.appId"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="8" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="8"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -108,6 +95,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import AliPayConfigEdit from './AliPayConfigEdit'
 import { page, del, setUpActivity, clearActivity } from '@/api/payment/alipayConfig'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'AliPayConfigList',
@@ -120,7 +108,11 @@ export default {
       queryParam: {
         name: '',
         appId: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'appId', type: STRING, name: 'AppId', placeholder: '请输入AppId' }
+      ]
     }
   },
   methods: {

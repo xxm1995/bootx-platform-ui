@@ -1,30 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form-model layout="inline">
-        <a-row :gutter="24">
-          <a-col :md="6" :sm="24">
-            <a-form-model-item label="名称">
-              <a-input placeholder="请输入名称" v-model="queryParam.name"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-model-item label="AppId">
-              <a-input placeholder="请输入AppId" v-model="queryParam.appId"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-model-item label="商户号">
-              <a-input placeholder="请输入商户号" v-model="queryParam.mchId"></a-input>
-            </a-form-model-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-button type="primary" @click="query">查询</a-button>
-            <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-          </a-col>
-        </a-row>
-      </a-form-model>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -115,6 +97,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { clearActivity, del, page, setUpActivity } from '@/api/payment/wechatPayConfig'
 import WeChatConfigEdit from './WeChatConfigEdit'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 export default {
   name: 'WeChatConfigList',
   mixins: [TableMixin],
@@ -125,9 +108,14 @@ export default {
     return {
       queryParam: {
         name: '',
-        appId: '',
-        mchId: ''
-      }
+        mchId: '',
+        appId: ''
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'appId', type: STRING, name: 'AppId', placeholder: '请输入AppId' },
+        { field: 'mchId', type: STRING, name: '商户号', placeholder: '请输入商户号' }
+      ]
     }
   },
   methods: {

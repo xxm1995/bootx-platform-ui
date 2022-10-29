@@ -1,32 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="名称">
-              <a-input v-model="queryParam.name" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="创建人">
-              <a-input v-model="queryParam.creatorName" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="备注">
-              <a-input v-model="queryParam.remark" placeholder="" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="() => this.queryParam = {}">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -87,6 +67,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { del, page } from '@/api/demo/dataPermDemo'
 import DataPermDemoEdit from './DataPermDemoEdit'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'DataPermDemoList',
@@ -100,7 +81,12 @@ export default {
         name: '',
         creatorName: '',
         remark: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '名称', placeholder: '请输入名称' },
+        { field: 'creatorName', type: STRING, name: '创建人', placeholder: '请输入创建人' },
+        { field: 'remark', type: STRING, name: '备注', placeholder: '请输入备注' }
+      ]
     }
   },
   methods: {

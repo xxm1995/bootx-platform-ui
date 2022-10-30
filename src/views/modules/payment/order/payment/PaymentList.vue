@@ -3,37 +3,10 @@
     <b-query
       v-model="queryParam"
       :fields="fields"
-      :default-item-md="8"
+      :default-item-md="6"
       @query="query"
       @reset="() => queryParam = {}"
     />
-    <div class="table-page-search-wrapper" >
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="支付单号">
-              <a-input v-model="queryParam.paymentId" placeholder="请输入支付单号" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="业务ID">
-              <a-input v-model="queryParam.businessId" placeholder="请输入业务ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="标题">
-              <a-input v-model="queryParam.title" placeholder="请输入标题" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
     <vxe-toolbar
       custom
       zoom

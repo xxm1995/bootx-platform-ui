@@ -1,32 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="支付记录ID">
-              <a-input v-model="queryParam.paymentId" placeholder="请输入支付记录ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="业务ID">
-              <a-input v-model="queryParam.businessId" placeholder="请输入业务ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="标题">
-              <a-input v-model="queryParam.title" placeholder="请输入标题" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -39,7 +19,7 @@
       :data="tableData"
     >
       <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="paymentId" title="支付记录ID">
+      <vxe-table-column field="paymentId" title="支付记录单号">
         <template v-slot="{row}">
           <a @click="showPayment(row.paymentId)">
             {{ row.paymentId }}
@@ -81,6 +61,7 @@
   import RefundRecordInfo from './RefundRecordInfo'
   import { TableMixin } from '@/mixins/TableMixin'
   import PaymentInfo from '@/views/modules/payment/order/payment/PaymentInfo'
+  import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
   export default {
     name: 'RefundRecordList',
     components: {
@@ -91,7 +72,15 @@
     data () {
       return {
         queryParam: {
-        }
+          paymentId: '',
+          businessId: '',
+          title: ''
+        },
+        fields: [
+          { field: 'paymentId', type: STRING, name: '支付单号', placeholder: '请输入支付单号' },
+          { field: 'businessId', type: STRING, name: '业务ID', placeholder: '请输入业务ID' },
+          { field: 'title', type: STRING, name: '标题', placeholder: '请输入标题' }
+        ]
       }
     },
     methods: {

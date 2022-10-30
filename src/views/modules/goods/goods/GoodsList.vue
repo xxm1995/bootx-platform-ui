@@ -1,22 +1,12 @@
 <template>
   <a-card>
-    <div class="table-page-search-wrapper">
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="查询">
-              <a-input v-model="queryParam.name" allow-clear placeholder="请输入商品名称" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -77,6 +67,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { page } from '@/api/goods/goods'
 import GoodsEdit from './GoodsEdit'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'GoodsList',
@@ -88,7 +79,10 @@ export default {
     return {
       queryParam: {
         name: ''
-      }
+      },
+      fields: [
+        { field: 'name', type: STRING, name: '商品名称', placeholder: '请输入商品名称' }
+      ]
     }
   },
   methods: {

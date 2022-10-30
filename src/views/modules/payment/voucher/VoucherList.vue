@@ -1,27 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper" >
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="卡号">
-              <a-input v-model="queryParam.cardNo" placeholder="请输入储值卡卡号" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="批次号">
-              <a-input v-model="queryParam.batchNo" placeholder="请输入批次号" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -100,6 +85,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { lock, page, unlock } from '@/api/payment/voucher'
 import VoucherGeneration from './VoucherGeneration'
 import VoucherInfo from './VoucherInfo'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'VoucherList',
@@ -113,7 +99,11 @@ export default {
       queryParam: {
         cardNo: '',
         batchNo: ''
-      }
+      },
+      fields: [
+        { field: 'cardNo', type: STRING, name: '卡号', placeholder: '请输入储值卡卡号' },
+        { field: 'batchNo', type: STRING, name: '批次号', placeholder: '请输入批次号' }
+      ]
     }
   },
   methods: {

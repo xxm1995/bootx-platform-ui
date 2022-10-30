@@ -1,27 +1,12 @@
 <template>
   <a-card :bordered="false">
-    <div class="table-page-search-wrapper" >
-      <a-form layout="inline">
-        <a-row :gutter="10">
-          <a-col :md="6" :sm="24">
-            <a-form-item label="钱包ID">
-              <a-input v-model="queryParam.walletId" placeholder="请输入钱包ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-form-item label="用户ID">
-              <a-input v-model="queryParam.userId" placeholder="请输入用户ID" />
-            </a-form-item>
-          </a-col>
-          <a-col :md="6" :sm="24">
-            <a-space>
-              <a-button :disabled="superQueryFlag" type="primary" @click="query">查询</a-button>
-              <a-button @click="resetQuery">重置</a-button>
-            </a-space>
-          </a-col>
-        </a-row>
-      </a-form>
-    </div>
+    <b-query
+      v-model="queryParam"
+      :fields="fields"
+      :default-item-md="6"
+      @query="query"
+      @reset="() => queryParam = {}"
+    />
     <vxe-toolbar
       custom
       zoom
@@ -96,6 +81,7 @@ import WalletInfo from './WalletInfo'
 import UserSelectModal from './UserSelectModal'
 import WalletChanger from './WalletChanger'
 import WalletLogList from './WalletLogList'
+import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'WalletList',
@@ -111,7 +97,11 @@ export default {
       queryParam: {
         walletId: '',
         userId: ''
-      }
+      },
+      fields: [
+        { field: 'walletId', type: STRING, name: '钱包ID', placeholder: '请输入钱包ID' },
+        { field: 'userId', type: STRING, name: '用户ID', placeholder: '请输入用户ID' }
+      ]
     }
   },
   methods: {

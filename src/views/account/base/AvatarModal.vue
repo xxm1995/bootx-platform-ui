@@ -78,7 +78,6 @@ export default {
     edit (id) {
       this.visible = true
       this.id = id
-      /* 获取原始头像 */
     },
     close () {
       this.id = null

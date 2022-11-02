@@ -159,14 +159,14 @@ export default {
     /**
      * 后台校验手机号是否被使用
      */
-    validateNewPhone (rule, value, callback) {
+    async validateNewPhone (rule, value, callback) {
       if (this.currentTab !== 1) {
         callback()
         return
       }
       const { msg, result } = validateMobile(value)
       result ? callback() : callback(msg)
-      const { data } = existsPhone(value)
+      const { data } = await existsPhone(value)
       data ? callback('手机号已被使用') : callback()
     },
     /**

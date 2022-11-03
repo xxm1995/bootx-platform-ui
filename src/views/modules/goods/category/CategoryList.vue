@@ -36,14 +36,14 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="name" title="名称" tree-node/>
-      <vxe-table-column field="enable" title="状态">
+      <vxe-column field="name" title="名称" tree-node/>
+      <vxe-column field="enable" title="状态">
         <template v-slot="{row}">
           {{ row.enable ? '启用':'停用' }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="描述"/>
-      <vxe-table-column title="操作">
+      </vxe-column>
+      <vxe-column field="remark" title="描述"/>
+      <vxe-column title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -80,7 +80,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <category-edit ref="categoryEdit" @ok="handleOk"/>
     <bind-brand-model ref="bindBrandModel"/>

@@ -21,15 +21,15 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="code" title="编码"/>
-      <vxe-table-column field="templateId" title="模板ID"/>
-      <vxe-table-column field="title" title="模板标题"/>
-      <vxe-table-column field="primaryIndustry" title="模板所属行业的一级行业"/>
-      <vxe-table-column field="deputyIndustry" title="模板所属行业的二级行业"/>
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="100" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称"/>
+      <vxe-column field="code" title="编码"/>
+      <vxe-column field="templateId" title="模板ID"/>
+      <vxe-column field="title" title="模板标题"/>
+      <vxe-column field="primaryIndustry" title="模板所属行业的一级行业"/>
+      <vxe-column field="deputyIndustry" title="模板所属行业的二级行业"/>
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="100" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -39,7 +39,7 @@
             <a href="javascript:" @click="edit(row)">编辑</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

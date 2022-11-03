@@ -26,12 +26,12 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="creatorName" title="创建人" />
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="creatorName" title="创建人" />
+      <vxe-column field="remark" title="备注" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -49,7 +49,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

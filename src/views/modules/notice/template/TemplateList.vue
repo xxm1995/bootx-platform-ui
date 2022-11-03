@@ -26,17 +26,17 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编码" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="data" title="内容" />
-      <vxe-table-column field="type" title="模板类型">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="code" title="编码" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="data" title="内容" />
+      <vxe-column field="type" title="模板类型">
         <template v-slot="{row}">
           {{ dictConvert(MessageTemplateCode, row.type) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="160" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -68,7 +68,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

@@ -50,26 +50,26 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="checkbox" width="40"/>
-      <vxe-table-column field="path" title="请求路径" />
-      <vxe-table-column field="name" title="权限名称" />
-      <vxe-table-column field="code" title="权限标识" />
-      <vxe-table-column field="groupName" title="请求分组" />
-      <vxe-table-column field="enable" title="启用鉴权" >
+      <vxe-column type="checkbox" width="40"/>
+      <vxe-column field="path" title="请求路径" />
+      <vxe-column field="name" title="权限名称" />
+      <vxe-column field="code" title="权限标识" />
+      <vxe-column field="groupName" title="请求分组" />
+      <vxe-column field="enable" title="启用鉴权" >
         <template v-slot="{row}">
           <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">停用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="generate" title="系统生成" >
+      </vxe-column>
+      <vxe-column field="generate" title="系统生成" >
         <template v-slot="{row}">
           <a-tag v-if="row.generate" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="remark" title="描述" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -83,7 +83,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

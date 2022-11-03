@@ -139,7 +139,7 @@ export default {
       data ? callback() : callback('验证码错误')
     },
     /**
-     * 发送验证码 绑定邮箱
+     * 发送验证码 绑定手机
      */
     sendPhoneCaptcha () {
       this.$refs.form.validateField(['phone'], async valid => {

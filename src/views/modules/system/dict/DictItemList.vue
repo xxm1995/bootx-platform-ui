@@ -23,12 +23,12 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="code" title="字典项编码" />
-      <vxe-table-column field="name" title="字典项名称" />
-      <vxe-table-column field="sortNo" title="字典项排序" />
-      <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column title="操作" fixed="right" width="220" :showOverflow="false">
+      <vxe-column type="seq" title="序号" width="60"/>
+      <vxe-column field="code" title="字典项编码" />
+      <vxe-column field="name" title="字典项名称" />
+      <vxe-column field="sortNo" title="字典项排序" />
+      <vxe-column field="remark" title="描述" />
+      <vxe-column title="操作" fixed="right" width="220" :showOverflow="false">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -44,7 +44,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

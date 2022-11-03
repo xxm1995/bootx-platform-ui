@@ -18,28 +18,28 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="paymentId" title="支付号" />
-      <vxe-table-column field="notifyInfo" title="通知消息" />
-      <vxe-table-column field="payChannel" title="支付通道">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="paymentId" title="支付号" />
+      <vxe-column field="notifyInfo" title="通知消息" />
+      <vxe-column field="payChannel" title="支付通道">
         <template v-slot="{row}">
           {{ dictConvert('PayChannel',row.payChannel) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="status" title="处理状态">
+      </vxe-column>
+      <vxe-column field="status" title="处理状态">
         <template v-slot="{row}">
           {{ dictConvert('PayNotifyProcess',row.status) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="msg" title="提示信息" />
-      <vxe-table-column field="notifyTime" title="通知时间" />
-      <vxe-table-column fixed="right" width="70" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="msg" title="提示信息" />
+      <vxe-column field="notifyTime" title="通知时间" />
+      <vxe-column fixed="right" width="70" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

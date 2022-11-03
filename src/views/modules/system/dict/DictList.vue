@@ -22,16 +22,16 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="code" title="编码" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="groupTag" title="分类标签">
+      <vxe-column type="seq" title="序号" width="60"/>
+      <vxe-column field="code" title="编码" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="groupTag" title="分类标签">
         <template v-slot="{row}">
           <a-tag color="green">{{ row.groupTag||'空' }}</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column title="操作" fixed="right" width="220">
+      </vxe-column>
+      <vxe-column field="remark" title="描述" />
+      <vxe-column title="操作" fixed="right" width="220">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
@@ -47,7 +47,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

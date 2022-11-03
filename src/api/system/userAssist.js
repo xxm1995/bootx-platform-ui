@@ -112,7 +112,7 @@ export function sendCurrentEmailChangeCaptcha () {
  */
 export function validateCurrentEmailChangeCaptcha (captcha) {
   return axios({
-    url: `/user/validateCurrentEmailChangeCaptcha`,
+    url: `/user/validateCurrentChangeEmailCaptcha`,
     method: 'get',
     params: { captcha }
   })

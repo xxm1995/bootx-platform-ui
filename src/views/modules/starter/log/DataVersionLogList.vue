@@ -20,19 +20,19 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="checkbox" width="40"/>
-      <vxe-table-column field="dataName" title="数据名称" />
-      <vxe-table-column field="dataId" title="数据主键" />
-      <vxe-table-column field="dataContent" title="数据内容" />
-      <vxe-table-column field="version" title="数据版本" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column title="操作" fixed="right" width="120">
+      <vxe-column type="checkbox" width="40"/>
+      <vxe-column field="dataName" title="数据名称" />
+      <vxe-column field="dataId" title="数据主键" />
+      <vxe-column field="dataContent" title="数据内容" />
+      <vxe-column field="version" title="数据版本" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column title="操作" fixed="right" width="120">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

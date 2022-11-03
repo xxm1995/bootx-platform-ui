@@ -35,15 +35,15 @@
       :tree-config="{children: 'children'}"
       :data="tableData"
     >
-      <vxe-table-column field="deptName" title="机构/部门名称" tree-node/>
-      <vxe-table-column field="orgCategory" title="机构类别">
+      <vxe-column field="deptName" title="机构/部门名称" tree-node/>
+      <vxe-column field="orgCategory" title="机构类别">
         <template v-slot="{row}">
           <span v-show="String(row.orgCategory) === '1'">公司</span>
           <span v-show="String(row.orgCategory) === '2'">组织机构</span>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="orgCode" title="机构编码"/>
-      <vxe-table-column title="操作">
+      </vxe-column>
+      <vxe-column field="orgCode" title="机构编码"/>
+      <vxe-column title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row.id)">编辑</a>
           <a-divider type="vertical" />
@@ -71,7 +71,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <dept-edit
       ref="deptEdit"

@@ -27,10 +27,10 @@
       :radio-config="radioConfig"
       :loading="loading"
       :data="tableData">
-      <vxe-table-column v-if="multiple" type="checkbox" width="40"/>
-      <vxe-table-column v-if="!multiple" type="radio" width="40"/>
-      <vxe-table-column field="name" title="用户名称" />
-      <vxe-table-column field="username" title="用户账号" />
+      <vxe-column v-if="multiple" type="checkbox" width="40"/>
+      <vxe-column v-if="!multiple" type="radio" width="40"/>
+      <vxe-column field="name" title="用户名称" />
+      <vxe-column field="username" title="用户账号" />
     </vxe-table>
     <vxe-pager
       border

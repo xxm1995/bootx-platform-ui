@@ -20,31 +20,31 @@
       row-id="id"
       :loading="loading"
       :data="tableData">
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="appId" title="商户appId">
-      </vxe-table-column>
-      <vxe-table-column field="authType" title="认证方式" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称"/>
+      <vxe-column field="appId" title="商户appId">
+      </vxe-column>
+      <vxe-column field="authType" title="认证方式" >
         <template v-slot="{row}">
           <a-tag v-show="row.authType === 1">公钥</a-tag>
           <a-tag v-show="row.authType === 2">证书</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="signType" title="签名类型" >
-      </vxe-table-column>
-      <vxe-table-column field="sandbox" title="沙箱" >
+      </vxe-column>
+      <vxe-column field="signType" title="签名类型" >
+      </vxe-column>
+      <vxe-column field="sandbox" title="沙箱" >
         <template v-slot="{row}">
           <a-tag v-if="row.sandbox">是</a-tag>
           <a-tag v-else>否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="activity" title="活动状态" >
+      </vxe-column>
+      <vxe-column field="activity" title="活动状态" >
         <template v-slot="{row}">
           <a-tag color="green" v-if="row.activity">启用</a-tag>
           <a-tag color="red" v-else>未启用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column fixed="right" width="170" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
@@ -73,7 +73,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

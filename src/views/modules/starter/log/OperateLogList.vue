@@ -18,31 +18,31 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="id" title="ID"/>
-      <vxe-table-column field="operateId" title="操作人员ID" />
-      <vxe-table-column field="username" title="操作人员" />
-      <vxe-table-column field="title" title="操作模块" />
-      <vxe-table-column field="success" title="状态">
+      <vxe-column field="id" title="ID"/>
+      <vxe-column field="operateId" title="操作人员ID" />
+      <vxe-column field="username" title="操作人员" />
+      <vxe-column field="title" title="操作模块" />
+      <vxe-column field="success" title="状态">
         <template v-slot="{row}">
           <a-tag v-if="row.success" color="green">成功</a-tag>
           <a-tag v-else color="red">失败</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="businessType" title="业务类型">
+      </vxe-column>
+      <vxe-column field="businessType" title="业务类型">
         <template v-slot="{row}">
           {{ dictConvert(logBusinessType,row.businessType) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="operateIp" title="IP" />
-      <vxe-table-column field="errorMsg" title="错误消息" />
-      <vxe-table-column field="operateTime" title="操作时间" />
-      <vxe-table-column title="操作" fixed="right" width="60">
+      </vxe-column>
+      <vxe-column field="operateIp" title="IP" />
+      <vxe-column field="errorMsg" title="错误消息" />
+      <vxe-column field="operateTime" title="操作时间" />
+      <vxe-column title="操作" fixed="right" width="60">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

@@ -26,17 +26,17 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="title" title="资源名称" />
-      <vxe-table-column field="permCode" title="权限编码" />
-      <vxe-table-column field="effect" title="是否有效">
+      <vxe-column type="seq" title="序号" width="60"/>
+      <vxe-column field="title" title="资源名称" />
+      <vxe-column field="permCode" title="权限编码" />
+      <vxe-column field="effect" title="是否有效">
         <template v-slot="{row}">
           <a-tag v-if="row.effect" color="green">有效</a-tag>
           <a-tag v-else color="red">无效</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column title="操作" fixed="right" width="200" :showOverflow="false">
+      </vxe-column>
+      <vxe-column field="remark" title="备注" />
+      <vxe-column title="操作" fixed="right" width="200" :showOverflow="false">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -52,7 +52,7 @@
             <a href="javascript:" :disabled="row.admin" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <resource-perm-edit ref="resourcePermEdit" @ok="queryList"/>
   </a-drawer>

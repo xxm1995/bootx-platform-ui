@@ -37,9 +37,9 @@
       @radio-change="radioChange"
     >
       <vxe-column width="50" type="radio" />
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="mediaId" title="媒体ID"/>
-      <vxe-table-column field="updateTime" title="上传时间" />
+      <vxe-column field="name" title="名称"/>
+      <vxe-column field="mediaId" title="媒体ID"/>
+      <vxe-column field="updateTime" title="上传时间" />
     </vxe-table>
     <vxe-pager
       size="medium"

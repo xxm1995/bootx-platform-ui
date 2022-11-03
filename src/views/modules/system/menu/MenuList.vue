@@ -48,26 +48,26 @@
       :tree-config="{children: 'children'}"
       :data="tableData"
     >
-      <vxe-table-column field="title" title="菜单名称" tree-node />
-      <vxe-table-column field="name" title="路由名称" />
-      <vxe-table-column field="menuType" title="菜单类型">
+      <vxe-column field="title" title="菜单名称" tree-node />
+      <vxe-column field="name" title="路由名称" />
+      <vxe-column field="menuType" title="菜单类型">
         <template v-slot="{row}">
           <span v-show="String(row.menuType) === '0'">一级菜单</span>
           <span v-show="String(row.menuType) === '1'">子菜单</span>
           <span v-show="String(row.menuType) === '2'">按钮/权限</span>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="path" title="请求路径"/>
-      <vxe-table-column field="sortNo" title="排序" :visible="false"/>
-      <vxe-table-column field="component" title="组件" />
-      <vxe-table-column field="icon" title="图标">
+      </vxe-column>
+      <vxe-column field="path" title="请求路径"/>
+      <vxe-column field="sortNo" title="排序" :visible="false"/>
+      <vxe-column field="component" title="组件" />
+      <vxe-column field="icon" title="图标">
         <template v-slot="{row}">
           <div v-if="row.icon !== ''">
             <a-icon :type="row.icon"/>
           </div>
         </template>
-      </vxe-table-column>
-      <vxe-table-column title="操作" fixed="right" width="240" :showOverflow="false" >
+      </vxe-column>
+      <vxe-column title="操作" fixed="right" width="240" :showOverflow="false" >
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row.id)">查看</a>
           <a-divider type="vertical" />
@@ -101,7 +101,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <menu-edit ref="menuEdit" @ok="handleOk"/>
     <resource-perm-list ref="resourcePermList"/>

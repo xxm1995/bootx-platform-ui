@@ -32,28 +32,28 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="businessId" title="业务ID"/>
-      <vxe-table-column field="title" title="标题"/>
-      <vxe-table-column field="amount" title="金额" sortable/>
-      <vxe-table-column field="refundableBalance" title="可退余额" sortable/>
-      <vxe-table-column field="payStatus" title="支付状态" sortable>
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="businessId" title="业务ID"/>
+      <vxe-column field="title" title="标题"/>
+      <vxe-column field="amount" title="金额" sortable/>
+      <vxe-column field="refundableBalance" title="可退余额" sortable/>
+      <vxe-column field="payStatus" title="支付状态" sortable>
         <template v-slot="{row}">
           {{ dictConvert('PayStatus',row.payStatus) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="asyncPayMode" title="是否是异步支付">
+      </vxe-column>
+      <vxe-column field="asyncPayMode" title="是否是异步支付">
         <template v-slot="{row}">
           {{ row.asyncPayMode?'是':'否' }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="asyncPayChannel" title="异步支付方式">
+      </vxe-column>
+      <vxe-column field="asyncPayChannel" title="异步支付方式">
         <template v-slot="{row}">
           {{ dictConvert('PayChannel', row.asyncPayChannel) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间" sortable/>
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间" sortable/>
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -84,7 +84,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

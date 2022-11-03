@@ -22,29 +22,29 @@
       :data="tableData"
     >
 
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="mchId" title="商户号"/>
-      <vxe-table-column field="appId" title="应用编号"/>
-<!--      <vxe-table-column field="apiVersion" title="API版本" >-->
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称"/>
+      <vxe-column field="mchId" title="商户号"/>
+      <vxe-column field="appId" title="应用编号"/>
+<!--      <vxe-column field="apiVersion" title="API版本" >-->
 <!--        <template v-slot="{row}">-->
 <!--          {{ dictConvert('wechatApiVersion',row.apiVersion) }}-->
 <!--        </template>-->
-<!--      </vxe-table-column>-->
-      <vxe-table-column field="sandbox" title="沙箱" >
+<!--      </vxe-column>-->
+      <vxe-column field="sandbox" title="沙箱" >
         <template v-slot="{row}">
           <a-tag v-if="row.sandbox">是</a-tag>
           <a-tag v-else>否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="activity" title="活动状态" >
+      </vxe-column>
+      <vxe-column field="activity" title="活动状态" >
         <template v-slot="{row}">
           <a-tag color="green" v-if="row.activity">启用</a-tag>
           <a-tag color="red" v-else>未启用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="170" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -77,7 +77,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

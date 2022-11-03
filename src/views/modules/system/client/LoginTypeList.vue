@@ -22,30 +22,30 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="代码" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="captcha" title="系统内置" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="code" title="代码" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="captcha" title="系统内置" >
         <template v-slot="{row}">
           <a-tag v-if="row.system" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="captcha" title="启用验证码" >
+      </vxe-column>
+      <vxe-column field="captcha" title="启用验证码" >
         <template v-slot="{row}">
           <a-tag v-if="row.captcha" color="green">开启</a-tag>
           <a-tag v-else color="red">关闭</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="enable" title="启用状态" >
+      </vxe-column>
+      <vxe-column field="enable" title="启用状态" >
         <template v-slot="{row}">
           <a-tag v-if="row.enable" color="green">启用</a-tag>
           <a-tag v-else color="red">停用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="description" title="描述" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="description" title="描述" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -64,7 +64,7 @@
             <a href="javascript:" :disabled="row.system" :style="{color: row.system?'grey':'red'}">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

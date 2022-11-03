@@ -50,23 +50,23 @@
       :loading="loading"
       :data="tableData">
       <vxe-column type="checkbox" width="40"/>
-      <vxe-table-column field="name" title="姓名" />
-      <vxe-table-column field="username" title="账号" />
-      <vxe-table-column field="phone" title="手机号" />
-      <vxe-table-column field="email" title="邮箱" />
-      <vxe-table-column field="admin" title="是否管理员">
+      <vxe-column field="name" title="姓名" />
+      <vxe-column field="username" title="账号" />
+      <vxe-column field="phone" title="手机号" />
+      <vxe-column field="email" title="邮箱" />
+      <vxe-column field="admin" title="是否管理员">
         <template v-slot="{row}">
           <a-tag v-if="row.admin" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="status" title="用户状态">
+      </vxe-column>
+      <vxe-column field="status" title="用户状态">
         <template v-slot="{row}">
           {{ dictConvert(userStatusCode,row.status) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="registerTime" title="注册时间" />
-      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="registerTime" title="注册时间" />
+      <vxe-column fixed="right" width="170" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
@@ -98,7 +98,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

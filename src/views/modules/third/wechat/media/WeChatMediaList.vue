@@ -50,11 +50,11 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称"/>
-      <vxe-table-column field="mediaId" title="媒体ID"/>
-      <vxe-table-column field="updateTime" title="上传时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称"/>
+      <vxe-column field="mediaId" title="媒体ID"/>
+      <vxe-column field="updateTime" title="上传时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看素材URL</a>
@@ -70,7 +70,7 @@
             </a-popconfirm>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

@@ -21,20 +21,20 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编号" />
-      <vxe-table-column field="name" title="配置名称" />
-      <vxe-table-column field="accessToken" title="AccessToken" />
-      <vxe-table-column field="enableSignatureCheck" title="是否开启验签" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="code" title="编号" />
+      <vxe-column field="name" title="配置名称" />
+      <vxe-column field="accessToken" title="AccessToken" />
+      <vxe-column field="enableSignatureCheck" title="是否开启验签" >
         <template v-slot="{row}">
           <a-tag v-if="row.enableSignatureCheck" color="green">开启</a-tag>
           <a-tag v-else color="red">关闭</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="signSecret" title="验签秘钥" />
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="signSecret" title="验签秘钥" />
+      <vxe-column field="remark" title="备注" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -52,7 +52,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

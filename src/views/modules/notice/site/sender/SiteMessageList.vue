@@ -26,25 +26,25 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="title" title="标题">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="title" title="标题">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">{{ row.title }}</a>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="receiveType" title="接收类型">
+      </vxe-column>
+      <vxe-column field="receiveType" title="接收类型">
         <template v-slot="{row}">
           {{ dictConvert('SiteMessageReceive',row.receiveType) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="sendState" title="发布状态">
+      </vxe-column>
+      <vxe-column field="sendState" title="发布状态">
         <template v-slot="{row}">
           {{ dictConvert('SiteMessageState',row.sendState) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="senderTime" title="发送时间" />
-      <vxe-table-column field="efficientTime" title="截至有效期" />
-      <vxe-table-column fixed="right" width="200" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="senderTime" title="发送时间" />
+      <vxe-column field="efficientTime" title="截至有效期" />
+      <vxe-column fixed="right" width="200" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -84,7 +84,7 @@
             </a-popconfirm>
           </template>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

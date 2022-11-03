@@ -19,16 +19,16 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="chineseName" title="中文名字" />
-      <vxe-table-column field="password" title="密码" />
-      <vxe-table-column field="idCard" title="身份证号" />
-      <vxe-table-column field="mobilePhone" title="手机号" />
-      <vxe-table-column field="carLicense" title="车牌号" />
-      <vxe-table-column field="email" title="电子邮件" />
-      <vxe-table-column field="other" title="其他" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="chineseName" title="中文名字" />
+      <vxe-column field="password" title="密码" />
+      <vxe-column field="idCard" title="身份证号" />
+      <vxe-column field="mobilePhone" title="手机号" />
+      <vxe-column field="carLicense" title="车牌号" />
+      <vxe-column field="email" title="电子邮件" />
+      <vxe-column field="other" title="其他" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -46,7 +46,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

@@ -31,25 +31,25 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="age" title="年龄" />
-      <vxe-table-column field="vip" title="是否vip">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="age" title="年龄" />
+      <vxe-column field="vip" title="是否vip">
         <template v-slot="{row}">
           <a-tag v-if="row.vip" color="green">是</a-tag>
           <a-tag v-else color="red">否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="birthday" title="生日" />
-      <vxe-table-column field="workTime" title="上班时间" />
-      <vxe-table-column field="registrationTime" title="注册时间" />
-      <vxe-table-column field="political" title="政治面貌" >
+      </vxe-column>
+      <vxe-column field="birthday" title="生日" />
+      <vxe-column field="workTime" title="上班时间" />
+      <vxe-column field="registrationTime" title="注册时间" />
+      <vxe-column field="political" title="政治面貌" >
         <template v-slot="{row}">
           {{ dictConvert('Political',row.political) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="备注" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="remark" title="备注" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -67,7 +67,7 @@
             <a href="javascript:" style="color: red">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

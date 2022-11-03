@@ -23,27 +23,27 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="code" title="编号" />
-      <vxe-table-column field="name" title="名称" />
-      <vxe-table-column field="host" title="地址" />
-      <vxe-table-column field="port" title="端口" />
-      <vxe-table-column field="username" title="账号" />
-      <vxe-table-column field="sender" title="发送人" />
-      <vxe-table-column field="from" title="from" />
-      <vxe-table-column field="enable" title="启用状态" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="code" title="编号" />
+      <vxe-column field="name" title="名称" />
+      <vxe-column field="host" title="地址" />
+      <vxe-column field="port" title="端口" />
+      <vxe-column field="username" title="账号" />
+      <vxe-column field="sender" title="发送人" />
+      <vxe-column field="from" title="from" />
+      <vxe-column field="enable" title="启用状态" >
         <template v-slot="{row}">
           <a-tag v-if="row.activity" color="green">启用</a-tag>
           <a-tag v-else color="red">未启用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="securityType" title="安全方式" >
+      </vxe-column>
+      <vxe-column field="securityType" title="安全方式" >
         <template v-slot="{row}">
           {{ dictConvert(mailSecurityCode,row.securityType) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="160" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="160" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
@@ -77,7 +77,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

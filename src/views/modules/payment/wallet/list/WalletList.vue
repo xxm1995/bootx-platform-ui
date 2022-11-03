@@ -22,17 +22,17 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="userId" title="用户ID"/>
-      <vxe-table-column field="id" title="钱包ID"/>
-      <vxe-table-column field="balance" title="余额"/>
-      <vxe-table-column field="payStatus" title="状态">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="userId" title="用户ID"/>
+      <vxe-column field="id" title="钱包ID"/>
+      <vxe-column field="balance" title="余额"/>
+      <vxe-column field="payStatus" title="状态">
         <template v-slot="{row}">
           {{ dictConvert('WalletStatus',row.status) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间"/>
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间"/>
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -58,7 +58,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

@@ -208,7 +208,6 @@ export default {
      */
     sendNewEmailCaptcha () {
       this.$refs.form.validateField(['email'], async valid => {
-        console.log(valid)
         if (!valid) {
           sendEmailChangeCaptcha(this.form.email).then(() => {
             this.$message.info('发送验证码成功')

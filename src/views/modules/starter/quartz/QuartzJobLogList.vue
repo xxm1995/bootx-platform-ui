@@ -26,20 +26,20 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="handlerName" title="处理器名字" />
-      <vxe-table-column field="className" title="全限定名" />
-      <vxe-table-column field="success" title="执行状态">
+      <vxe-column type="seq" title="序号" width="60"/>
+      <vxe-column field="handlerName" title="处理器名字" />
+      <vxe-column field="className" title="全限定名" />
+      <vxe-column field="success" title="执行状态">
         <template v-slot="{row}">
           <a-tag v-if="row.success" color="green">成功</a-tag>
           <a-tag v-else color="red">失败</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="startTime" title="开始时间" />
-      <vxe-table-column field="endTime" title="结束时间" />
-      <vxe-table-column field="duration" title="执行时长(毫秒)" />
-      <vxe-table-column field="errorMessage" title="错误信息" />
-      <vxe-table-column field="createTime" title="创建时间" />
+      </vxe-column>
+      <vxe-column field="startTime" title="开始时间" />
+      <vxe-column field="endTime" title="结束时间" />
+      <vxe-column field="duration" title="执行时长(毫秒)" />
+      <vxe-column field="errorMessage" title="错误信息" />
+      <vxe-column field="createTime" title="创建时间" />
     </vxe-table>
     <vxe-pager
       border

@@ -21,24 +21,24 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="参数名称" />
-      <vxe-table-column field="paramKey" title="参数键名" />
-      <vxe-table-column field="value" title="参数值" />
-      <vxe-table-column field="type" title="参数类型" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="参数名称" />
+      <vxe-column field="paramKey" title="参数键名" />
+      <vxe-column field="value" title="参数值" />
+      <vxe-column field="type" title="参数类型" >
         <template v-slot="{row}">
           <a-tag>{{ dictConvert(paramType,row.type) }}</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column align="" field="internal" title="内置参数" >
+      </vxe-column>
+      <vxe-column align="" field="internal" title="内置参数" >
         <template v-slot="{row}">
           <a-tag v-if="row.internal" color="red">是</a-tag>
           <a-tag v-else color="green">否</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="mark" title="备注" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="210" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="mark" title="备注" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="210" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -52,7 +52,7 @@
             <a href="javascript:" :disabled="row.internal" :style="row.internal?{}:{color: 'red'}">删除</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

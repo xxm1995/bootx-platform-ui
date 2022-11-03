@@ -18,18 +18,18 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="tableName" title="表名称" />
-      <vxe-table-column field="engine" title="引擎类型" />
-      <vxe-table-column field="tableComment" title="表表述" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="tableName" title="表名称" />
+      <vxe-column field="engine" title="引擎类型" />
+      <vxe-column field="tableComment" title="表表述" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <!--          <a href="javascript:" @click="previewShow(row)">预览</a>-->
           <!--          <a-divider type="vertical" />-->
           <a href="javascript:" @click="generateShow(row)">生成</a>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

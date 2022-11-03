@@ -19,26 +19,26 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60"/>
-      <vxe-table-column field="type" title="类型" >
+      <vxe-column type="seq" title="序号" width="60"/>
+      <vxe-column field="type" title="类型" >
         <template v-slot="{row}">
           {{ dictConvert('WalletLogType',row.type) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="amount" title="金额" />
-      <vxe-table-column field="operationSource" title="操作类型" >
+      </vxe-column>
+      <vxe-column field="amount" title="金额" />
+      <vxe-column field="operationSource" title="操作类型" >
         <template v-slot="{row}">
           {{ dictConvert('WalletLogOperation',row.operationSource) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="备注" />
-<!--      <vxe-table-column title="操作" fixed="right" width="120" :showOverflow="false">-->
+      </vxe-column>
+      <vxe-column field="remark" title="备注" />
+<!--      <vxe-column title="操作" fixed="right" width="120" :showOverflow="false">-->
 <!--        <template v-slot="{row}">-->
 <!--          <span>-->
 <!--            <a href="javascript:" @click="show(row)">查看</a>-->
 <!--          </span>-->
 <!--        </template>-->
-<!--      </vxe-table-column>-->
+<!--      </vxe-column>-->
     </vxe-table>
     <vxe-pager
       :loading="loading"

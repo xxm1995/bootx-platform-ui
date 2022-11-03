@@ -25,20 +25,20 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="任务名称" />
-      <vxe-table-column field="jobClassName" title="任务类名" />
-      <vxe-table-column field="cron" title="cron" />
-      <vxe-table-column field="parameter" title="参数" />
-      <vxe-table-column field="state" title="状态" >
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="任务名称" />
+      <vxe-column field="jobClassName" title="任务类名" />
+      <vxe-column field="cron" title="cron" />
+      <vxe-column field="parameter" title="参数" />
+      <vxe-column field="state" title="状态" >
         <template v-slot="{row}">
           <a-tag v-if="row.state === 1" color="green">运行</a-tag>
           <a-tag v-else color="red">停用</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="remark" title="描述" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="170" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="remark" title="描述" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="170" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="edit(row)">编辑</a>
           <a-divider type="vertical" />
@@ -93,7 +93,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

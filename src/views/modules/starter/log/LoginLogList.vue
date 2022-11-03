@@ -18,36 +18,36 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="id" title="ID"/>
-      <vxe-table-column field="account" title="账号" />
-      <vxe-table-column field="login" title="状态">
+      <vxe-column field="id" title="ID"/>
+      <vxe-column field="account" title="账号" />
+      <vxe-column field="login" title="状态">
         <template v-slot="{row}">
           <a-tag v-if="row.login" color="green">成功</a-tag>
           <a-tag v-else color="red">失败</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="ip" title="IP" />
-      <vxe-table-column field="client" title="终端">
+      </vxe-column>
+      <vxe-column field="ip" title="IP" />
+      <vxe-column field="client" title="终端">
         <template v-slot="{row}">
           {{ getClient(row.client) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="loginType" title="登录方式">
+      </vxe-column>
+      <vxe-column field="loginType" title="登录方式">
         <template v-slot="{row}">
           {{ getLoginType(row.loginType) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="browser" title="浏览器类型" />
-      <vxe-table-column field="os" title="操作系统" />
-      <vxe-table-column field="msg" title="提示消息" />
-      <vxe-table-column field="loginTime" title="访问时间" />
-      <vxe-table-column title="操作" fixed="right" width="50">
+      </vxe-column>
+      <vxe-column field="browser" title="浏览器类型" />
+      <vxe-column field="os" title="操作系统" />
+      <vxe-column field="msg" title="提示消息" />
+      <vxe-column field="loginTime" title="访问时间" />
+      <vxe-column title="操作" fixed="right" width="50">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

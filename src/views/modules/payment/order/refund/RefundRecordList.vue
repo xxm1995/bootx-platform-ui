@@ -18,31 +18,31 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="paymentId" title="支付记录单号">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="paymentId" title="支付记录单号">
         <template v-slot="{row}">
           <a @click="showPayment(row.paymentId)">
             {{ row.paymentId }}
           </a>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="businessId" title="原业务ID"/>
-      <vxe-table-column field="title" title="原支付标题"/>
-      <vxe-table-column field="amount" title="退款金额"/>
-      <vxe-table-column field="refundableBalance" title="剩余可退金额"/>
-      <vxe-table-column field="refundTime" title="退款时间"/>
-      <vxe-table-column field="refundStatus" title="状态">
+      </vxe-column>
+      <vxe-column field="businessId" title="原业务ID"/>
+      <vxe-column field="title" title="原支付标题"/>
+      <vxe-column field="amount" title="退款金额"/>
+      <vxe-column field="refundableBalance" title="剩余可退金额"/>
+      <vxe-column field="refundTime" title="退款时间"/>
+      <vxe-column field="refundStatus" title="状态">
         <template v-slot="{row}">
           <a-tag>{{ row.refundStatus?'成功':'失败' }}</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column fixed="right" width="50" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column fixed="right" width="50" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

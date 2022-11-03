@@ -23,26 +23,26 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="title" title="标题">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="title" title="标题">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">{{ row.title }}</a>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="senderTime" title="发送时间" />
-      <vxe-table-column field="haveRead" title="是否已读">
+      </vxe-column>
+      <vxe-column field="senderTime" title="发送时间" />
+      <vxe-column field="haveRead" title="是否已读">
         <template v-slot="{row}">
           <a-tag color="green" v-if="row.haveRead">已读</a-tag>
           <a-tag v-else color="red">未读</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column fixed="right" width="70" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column fixed="right" width="70" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
           </span>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

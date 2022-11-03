@@ -25,25 +25,25 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="cardNo" title="卡号"/>
-      <vxe-table-column field="batchNo" title="生成批次号"/>
-      <vxe-table-column field="faceValue" title="面值"/>
-      <vxe-table-column field="balance" title="余额"/>
-      <vxe-table-column field="startTime" title="开始时间"/>
-      <vxe-table-column field="endTime" title="结束时间"/>
-      <vxe-table-column field="enduring" title="长期有效">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="cardNo" title="卡号"/>
+      <vxe-column field="batchNo" title="生成批次号"/>
+      <vxe-column field="faceValue" title="面值"/>
+      <vxe-column field="balance" title="余额"/>
+      <vxe-column field="startTime" title="开始时间"/>
+      <vxe-column field="endTime" title="结束时间"/>
+      <vxe-column field="enduring" title="长期有效">
         <template v-slot="{row}">
           <a-tag>{{ row.enduring?'长期':'期限' }}</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="status" title="状态">
+      </vxe-column>
+      <vxe-column field="status" title="状态">
         <template v-slot="{row}">
           {{ dictConvert('VoucherStatus',row.status) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="createTime" title="创建时间"/>
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="createTime" title="创建时间"/>
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -66,7 +66,7 @@
             </template>
           </a-dropdown>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       size="medium"

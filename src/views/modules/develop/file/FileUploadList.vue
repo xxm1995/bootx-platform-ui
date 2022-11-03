@@ -32,19 +32,19 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="fileName" title="文件名称" />
-      <vxe-table-column field="fileSuffix" title="文件后缀" />
-      <vxe-table-column field="fileType" title="文件类型" />
-      <vxe-table-column field="fileSize" title="文件大小" />
-      <vxe-table-column field="createTime" title="创建时间" />
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="fileName" title="文件名称" />
+      <vxe-column field="fileSuffix" title="文件后缀" />
+      <vxe-column field="fileType" title="文件类型" />
+      <vxe-column field="fileSize" title="文件大小" />
+      <vxe-column field="createTime" title="创建时间" />
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical" />
           <a href="javascript:" @click="down(row)">下载</a>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       :loading="loading"

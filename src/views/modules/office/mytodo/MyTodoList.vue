@@ -22,15 +22,15 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="instanceName" title="业务标题" />
-      <vxe-table-column field="defName" title="流程名称" />
-      <vxe-table-column field="nodeName" title="环节" />
-      <vxe-table-column field="taskId" title="任务id"/>
-      <vxe-table-column field="instanceId" title="流程id"/>
-      <vxe-table-column field="startUserName" title="发起人" />
-      <vxe-table-column field="startTime" title="任务开始时间" />
-      <vxe-table-column fixed="right" width="150" :showOverflow="false" title="操作">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="instanceName" title="业务标题" />
+      <vxe-column field="defName" title="流程名称" />
+      <vxe-column field="nodeName" title="环节" />
+      <vxe-column field="taskId" title="任务id"/>
+      <vxe-column field="instanceId" title="流程id"/>
+      <vxe-column field="startUserName" title="发起人" />
+      <vxe-column field="startTime" title="任务开始时间" />
+      <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="handle(row)">办理</a>
           <!--          <a-divider type="vertical"/>-->
@@ -38,7 +38,7 @@
           <a-divider type="vertical"/>
           <a href="javascript:" @click="assignee(row)">委派</a>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

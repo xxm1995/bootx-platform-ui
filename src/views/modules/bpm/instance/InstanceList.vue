@@ -20,25 +20,25 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column type="seq" title="序号" width="60" />
-      <vxe-table-column field="name" title="标题" />
-      <vxe-table-column field="defMame" title="流程名称" />
-      <vxe-table-column field="instanceId" title="实例ID" />
-      <vxe-table-column field="startUserName" title="发起人" />
-      <vxe-table-column field="state" title="状态">
+      <vxe-column type="seq" title="序号" width="60" />
+      <vxe-column field="name" title="标题" />
+      <vxe-column field="defMame" title="流程名称" />
+      <vxe-column field="instanceId" title="实例ID" />
+      <vxe-column field="startUserName" title="发起人" />
+      <vxe-column field="state" title="状态">
         <template v-slot="{row}">
           {{ dictConvert('BpmInstanceState',row.state) }}
         </template>
-      </vxe-table-column>
-      <vxe-table-column field="startTime" title="开始时间" />
-      <vxe-table-column field="endTime" title="结束时间" />
-      <vxe-table-column fixed="right" width="120" :showOverflow="false" title="操作">
+      </vxe-column>
+      <vxe-column field="startTime" title="开始时间" />
+      <vxe-column field="endTime" title="结束时间" />
+      <vxe-column fixed="right" width="120" :showOverflow="false" title="操作">
         <template v-slot="{row}">
           <a href="javascript:" @click="show(row)">查看</a>
           <a-divider type="vertical"/>
           <a href="javascript:" :disabled="row.state !== 'running'" @click="close(row)">取消</a>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

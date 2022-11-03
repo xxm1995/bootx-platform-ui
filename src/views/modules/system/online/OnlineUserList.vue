@@ -15,17 +15,17 @@
       :loading="loading"
       :data="tableData"
     >
-      <vxe-table-column field="userId" title="用户ID" />
-      <vxe-table-column field="name" title="用户名称" />
-      <vxe-table-column field="userName" title="用户账号" />
-      <vxe-table-column field="timeout" title="剩余有效时间(秒)" />
-      <vxe-table-column field="creationTime" title="创建时间" />
-      <vxe-table-column field="tokenSigns" title="登录终端">
+      <vxe-column field="userId" title="用户ID" />
+      <vxe-column field="name" title="用户名称" />
+      <vxe-column field="userName" title="用户账号" />
+      <vxe-column field="timeout" title="剩余有效时间(秒)" />
+      <vxe-column field="creationTime" title="创建时间" />
+      <vxe-column field="tokenSigns" title="登录终端">
         <template v-slot="{row}">
           <a-tag :key="device" v-for="{device} in row.tokenSigns" color="green">{{ device }}</a-tag>
         </template>
-      </vxe-table-column>
-      <vxe-table-column title="操作" fixed="right" width="120">
+      </vxe-column>
+      <vxe-column title="操作" fixed="right" width="120">
         <template v-slot="{row}">
           <a-popconfirm
             title="是否将该用户踢下线"
@@ -35,7 +35,7 @@
             <a href="javascript:" style="color: red">强退</a>
           </a-popconfirm>
         </template>
-      </vxe-table-column>
+      </vxe-column>
     </vxe-table>
     <vxe-pager
       border

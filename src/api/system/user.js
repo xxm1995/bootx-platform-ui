@@ -142,11 +142,11 @@ export function bindThird (obj) {
 /**
  * 解除用户绑定三方开放平台
  */
-export function unbindThird (clientCode) {
+export function unbindThird (loginType) {
   return axios({
     url: `/user/third/unbind`,
     method: 'post',
-    params: { clientCode }
+    params: { loginType }
   })
 }
 

@@ -99,10 +99,10 @@ export default {
     /**
      * 绑定账号
      */
-    bindThird (clientCode) {
-      this.currentClientCode = clientCode
-      const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${clientCode}`
-      window.open(url, `login ${clientCode}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
+    bindThird (loginType) {
+      this.currentLoginType = loginType
+      const url = process.env.VUE_APP_API_BASE_URL + `/auth/third/toLoginUrl/${loginType}`
+      window.open(url, `login ${loginType}`, 'height=600, width=500, top=0, left=0, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=n o, status=no')
 
       // 监听回调
       window.addEventListener('message', this.bindThirdCallback, false)
@@ -118,7 +118,7 @@ export default {
       this.loading = true
       bindThird({
         ...data,
-        clientCode: this.currentClientCode
+        loginType: this.currentLoginType
       }).then(() => {
         this.$message.success('绑定成功')
       }).finally(() => {
@@ -145,14 +145,13 @@ export default {
     /**
      * 解绑账号
      */
-    unBindThird (clientCode) {
+    unBindThird (loginType) {
       const that = this
       this.$confirm({
-        title: '是否解除绑定的第三方平台账号',
-        okText: '确定',
-        cancelText: '取消',
+        title: '警告',
+        content: '是否解除绑定的第三方平台账号',
         onOk: async function () {
-          await unbindThird(clientCode)
+          await unbindThird(loginType)
           that.init()
         }
       })

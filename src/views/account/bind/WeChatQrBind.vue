@@ -20,7 +20,6 @@
 <script>
 import { applyQrCode, getQrStatus } from '@/api/login/login'
 import VueQr from 'vue-qr'
-import { bindThird } from '@/api/system/user'
 
 export default {
   name: 'WeChatQrBind',

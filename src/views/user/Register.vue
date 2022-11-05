@@ -114,7 +114,6 @@ export default {
           { validator: this.compareToFirstPassword }
         ],
         captcha: [{ required: true, message: '请输入验证码!' }]
-
       },
       registerBtn: false
     }

@@ -87,8 +87,20 @@
       </a-form-model-item>
 
       <a-form-model-item :wrapperCol="{span: 24}">
-        <a-button v-show="currentTab === 0" size="large" type="primary" @click="nextStep" style="width: 100%" :disabled="confirmLoading">下一步</a-button>
-        <a-button v-show="currentTab === 1" size="large" type="primary" @click="handleOk" style="width: 100%" :disabled="confirmLoading">提交</a-button>
+        <a-button
+          v-show="currentTab === 0"
+          size="large"
+          type="primary"
+          @click="nextStep"
+          style="width: 100%"
+          :disabled="confirmLoading">下一步</a-button>
+        <a-button
+          v-show="currentTab === 1"
+          size="large"
+          type="primary"
+          @click="handleOk"
+          style="width: 100%"
+          :disabled="confirmLoading">提交</a-button>
       </a-form-model-item>
     </a-form-model>
     <router-link style="float: right; margin-top: -20px" :to="{ name: 'login' }">
@@ -158,7 +170,7 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.currentTab = 1
-          this.getUsernameByCaptcha()
+          await this.getUsernameByCaptcha()
         }
         this.confirmLoading = false
       })

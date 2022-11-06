@@ -54,9 +54,9 @@ export default {
       const { Login } = this
       this.$emit('loginLoading', true)
       Login({
+        ...data,
         client: this.client,
-        loginType: this.currentLoginType,
-        ...data
+        loginType: this.currentLoginType
       }).then(() => this.$emit('loginSuccess'))
         .finally(() => this.$emit('loginLoading', false))
     }

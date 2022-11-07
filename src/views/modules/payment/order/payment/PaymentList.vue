@@ -105,7 +105,6 @@ import RefundModel from './RefundModel'
 import { TableMixin } from '@/mixins/TableMixin'
 import { cancelByPaymentId, syncByBusinessId } from '@/api/payment/pay'
 import { BOOLEAN, DATE_TIME, LIST, NUMBER, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 export default {
   name: 'PaymentList',
   components: {
@@ -154,10 +153,10 @@ export default {
   methods: {
     // 初始化查询数据
     initData () {
-      getDictDropDown('PayStatus').then(res => {
+      this.getDictDropDownAsync('PayStatus').then(res => {
         this.payStatusList = res
       })
-      getDictDropDown('PayChannel').then(res => {
+      this.getDictDropDownAsync('PayChannel').then(res => {
         this.syncPayChannelList = res
       })
     },

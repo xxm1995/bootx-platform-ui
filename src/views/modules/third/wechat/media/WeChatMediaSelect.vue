@@ -60,7 +60,6 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { pageFile } from '@/api/third/weChatMedia'
-import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'WeChatMediaSelect',
@@ -78,7 +77,7 @@ export default {
   methods: {
     show () {
       this.visible = true
-      getDictDropDown('WeChatMediaType').then(res => {
+      this.getDictDropDownAsync('WeChatMediaType').then(res => {
         this.mediaTypes = res
       })
       this.query()

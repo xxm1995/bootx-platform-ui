@@ -68,7 +68,6 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/messageTemplate'
-import { getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'TemplateEdit',
@@ -103,7 +102,7 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.messageTemplateCodeList = getDictItemsByNumber(this.MessageTemplateCode)
+      this.messageTemplateCodeList = this.getDictItemsByNumber(this.MessageTemplateCode)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

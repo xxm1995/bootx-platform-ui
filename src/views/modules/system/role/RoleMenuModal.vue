@@ -72,7 +72,7 @@ export default {
       searchName: '',
       // 终端列表
       clients: [],
-      clientCode: '',
+      clientCode: 'admin',
       // 父子选项默认不受控
       checkStrictly: true,
       // 所有的key
@@ -122,7 +122,6 @@ export default {
     },
     init (roleId) {
       this.roleId = roleId
-      this.clientCode = process.env.VUE_APP_CLIENT
       this.initClients()
       this.initAssign()
     },
@@ -172,7 +171,6 @@ export default {
         clientCode: this.clientCode,
         permissionIds: this.checkedKeys
       }).then(() => {
-        this.$message.success('保存菜单配置成功')
         this.handleCancel()
       })
     },

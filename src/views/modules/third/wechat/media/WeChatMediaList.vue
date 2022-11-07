@@ -86,7 +86,6 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { pageFile, deleteFile } from '@/api/third/weChatMedia'
 import { UploadMixin } from '@/mixins/UploadMixin'
-import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'WeChatMediaList',
@@ -130,7 +129,7 @@ export default {
   },
   methods: {
     initData () {
-      getDictDropDown('WeChatMediaType').then(res => {
+      this.getDictDropDownAsync('WeChatMediaType').then(res => {
         this.mediaTypes = res
       })
     },

@@ -105,7 +105,6 @@ import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 import { pageBySender, del, cancel, send } from '@/api/notice/siteMessage'
 import SiteMessageEdit from './SiteMessageEdit'
 import { NOTICE_SHOW_MESSAGE } from '@/assets/code/VueBusCode'
-import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'SiteMessageList',
@@ -131,10 +130,10 @@ export default {
      * 初始化基础数据
      */
     initData () {
-      getDictDropDown('SiteMessageState').then(res => {
+      this.getDictDropDownAsync('SiteMessageState').then(res => {
         this.sendStateList = res
       })
-      getDictDropDown('SiteMessageReceive').then(res => {
+      this.getDictDropDownAsync('SiteMessageReceive').then(res => {
         this.receiveTypeList = res
       })
     },

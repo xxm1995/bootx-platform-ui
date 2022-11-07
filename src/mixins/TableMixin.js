@@ -1,7 +1,7 @@
 import {
   dictConvert as c,
-  getDictItems,
-  getDictItemsByNumber
+  getDictItemsAsync,
+  getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
 import BSuperQuery from '@/components/Bootx/SuperQuery/BSuperQuery'
 import BQuery from '@/components/Bootx/SuperQuery/BQuery'
@@ -84,6 +84,28 @@ export const TableMixin = {
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, String(code))
+    },
+    // 获取字典列表 异步
+    async getDictItemsAsync (dictCode) {
+      return getDictItemsAsync(dictCode)
+    },
+    // 获取字典下拉框数据列表
+    async getDictDropDownAsync (dictCode) {
+      const list = await getDictItemsAsync(dictCode)
+      return list.map(o => {
+        return { label: o.name, value: o.code }
+      })
+    },
+    /**
+     * 获取字典项列表(code值为数字) 异步
+     * 字段有  code name dictCode
+     */
+    getDictItemsByNumberAsync (dictCode) {
+      return getDictItemsByNumberAsync(dictCode)
+    },
+    // 获取系统参数值
+    getParam (key) {
+      return findByParamKey(key)
     }
   }
 }

@@ -89,7 +89,6 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, get, update, existsByKey, existsByKeyNotId } from '@/api/system/param'
-import { getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'SystemParamEdit',
@@ -120,7 +119,7 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.paramTypeList = getDictItemsByNumber(this.paramType)
+      this.paramTypeList = this.getDictItemsByNumber(this.paramType)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

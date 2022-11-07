@@ -1,7 +1,7 @@
 import {
   dictConvert as c,
-  getDictItems,
-  getDictItemsByNumber
+  getDictItemsAsync,
+  getDictItemsByNumber, getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
 import { findByParamKey } from '@/api/system/param'
 
@@ -76,6 +76,32 @@ export const FormMixin = {
     // 字典翻译
     dictConvert (dictCode, code) {
       return c(dictCode, code)
+    },
+    // 获取字典列表 异步
+    async getDictItemsAsync (dictCode) {
+      return getDictItemsAsync(dictCode)
+    },
+    // 获取字典下拉框数据列表
+    async getDictDropDownAsync (dictCode) {
+      const list = await getDictItemsAsync(dictCode)
+      return list.map(o => {
+        return { label: o.name, value: o.code }
+      })
+    },
+    /**
+     * 获取字典项列表(code值为数字)
+     * 字段 name code 结构
+     */
+    getDictItemsByNumber (dictCode) {
+      return getDictItemsByNumber(dictCode)
+    },
+    // 获取字典项列表(code值为数字) 异步
+    getDictItemsByNumberAsync (dictCode) {
+      return getDictItemsByNumberAsync(dictCode)
+    },
+    // 获取系统参数值
+    getParam (key) {
+      return findByParamKey(key)
     },
     // 判断脱敏参数是否被修改的参数, 未修改返回空值
     diffForm (o1, o2) {

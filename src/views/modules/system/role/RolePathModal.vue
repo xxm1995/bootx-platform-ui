@@ -25,10 +25,8 @@
       </vxe-table>
     </a-spin>
     <div class="drawer-button">
-      <a-space>
-        <a-button @click="handleCancel()">取消</a-button>
-        <a-button @click="handleSubmit()" type="primary" :loading="loading">保存</a-button>
-      </a-space>
+      <a-button @click="handleCancel()" style="margin-right: .8rem">取消</a-button>
+      <a-button @click="handleSubmit()" type="primary" :loading="loading" style="margin-right: 0.8rem">保存</a-button>
     </div>
   </a-drawer>
 </template>

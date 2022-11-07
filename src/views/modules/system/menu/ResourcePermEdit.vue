@@ -75,6 +75,7 @@ export default {
     return {
       form: {
         id: null,
+        parentId: null,
         title: '',
         permCode: '',
         effect: true,
@@ -82,6 +83,7 @@ export default {
         remark: ''
       },
       rules: {
+        parentId: [{ required: true, message: '数据非法' }],
         permCode: [
           { required: true, message: '请输入权限编码' },
           { validator: this.validateCode, trigger: 'blur' }

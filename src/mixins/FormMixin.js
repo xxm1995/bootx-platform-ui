@@ -88,6 +88,13 @@ export const FormMixin = {
         return { label: o.name, value: o.code }
       })
     },
+    // 获取字典下拉框数据列表
+    async getDictDropDownNumberAsync (dictCode) {
+      const list = await getDictItemsByNumberAsync(dictCode)
+      return list.map(o => {
+        return { label: o.name, value: o.code }
+      })
+    },
     /**
      * 获取字典项列表(code值为数字)
      * 字段 name code 结构
@@ -96,12 +103,8 @@ export const FormMixin = {
       return getDictItemsByNumber(dictCode)
     },
     // 获取字典项列表(code值为数字) 异步
-    getDictItemsByNumberAsync (dictCode) {
+    async getDictItemsByNumberAsync (dictCode) {
       return getDictItemsByNumberAsync(dictCode)
-    },
-    // 获取系统参数值
-    getParam (key) {
-      return findByParamKey(key)
     },
     // 判断脱敏参数是否被修改的参数, 未修改返回空值
     diffForm (o1, o2) {

@@ -84,7 +84,6 @@ export default {
     },
     // 选中用户, 进行保存
     selectUser (userIds) {
-      console.log(userIds)
       this.loading = true
       saveUserAssign({
         dataScopeId: this.dataScopeId,

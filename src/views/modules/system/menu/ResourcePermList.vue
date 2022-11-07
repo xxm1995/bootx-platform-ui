@@ -17,12 +17,7 @@
       </template>
     </vxe-toolbar>
     <vxe-table
-      resizable
-      border
-      stripe
-      show-overflow
       row-id="id"
-      size="medium"
       :loading="loading"
       :data="tableData"
     >

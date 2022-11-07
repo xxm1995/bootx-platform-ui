@@ -18,51 +18,24 @@
         <a-form-model-item label="主键" prop="id" hidden="true" >
           <a-input v-model="form.id" :disabled="showable"/>
         </a-form-model-item>
-        <a-form-model-item
-          label="名称"
-          prop="name"
-        >
-          <a-input
-            :disabled="showable"
-            v-model="form.name"
-          />
+        <a-form-model-item label="名称" prop="name">
+          <a-input :disabled="showable" v-model="form.name" placeholder="请输入名称" />
         </a-form-model-item>
-        <a-form-model-item
-          label="编码"
-          prop="code"
-        >
-          <a-input
-            :disabled="showable"
-            v-model="form.code"
-          />
+        <a-form-model-item label="编码" prop="code">
+          <a-input :disabled="showable" v-model="form.code" placeholder="请输入编码"/>
         </a-form-model-item>
-        <a-form-model-item
-          label="权限范围"
-          prop="type"
-        >
+        <a-form-model-item label="权限范围" prop="type">
           <a-select
             :disabled="!addable"
+            :options="dataScopeTypes"
             v-model="form.type"
             style="width: 100%"
-            placeholder="选择支付方式"
+            placeholder="选择权限范围类型"
           >
-            <a-select-option :value="1">自身数据</a-select-option>
-            <a-select-option :value="2">用户范围</a-select-option>
-            <a-select-option :value="3">部门范围</a-select-option>
-            <a-select-option :value="4">部门和用户范围</a-select-option>
-            <a-select-option :value="5">全部数据</a-select-option>
-            <a-select-option :value="6">所在部门</a-select-option>
-            <a-select-option :value="7">所在及下级部门</a-select-option>
           </a-select>
         </a-form-model-item>
-        <a-form-model-item
-          label="备注"
-          prop="remark"
-        >
-          <a-textarea
-            :disabled="showable"
-            v-model="form.remark"
-          />
+        <a-form-model-item label="备注" prop="remark">
+          <a-textarea :disabled="showable" v-model="form.remark" placeholder="请输入备注"/>
         </a-form-model-item>
       </a-form-model>
     </a-spin>
@@ -82,6 +55,7 @@ export default {
   mixins: [FormMixin],
   data () {
     return {
+      dataScopeTypes: [],
       form: {
         id: '',
         name: '',
@@ -104,6 +78,9 @@ export default {
   },
   methods: {
     edit (id, type) {
+      this.getDictDropDownNumberAsync('DataScopePerm').then((data) => {
+        this.dataScopeTypes = data
+      })
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

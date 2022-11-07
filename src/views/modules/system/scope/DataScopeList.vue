@@ -24,13 +24,7 @@
       <vxe-column field="name" title="名称" />
       <vxe-column field="type" title="类型">
         <template v-slot="{row}">
-          <span v-show="row.type === 1">自身数据</span>
-          <span v-show="row.type === 2">用户范围</span>
-          <span v-show="row.type === 3">部门范围</span>
-          <span v-show="row.type === 4">部门和用户范围</span>
-          <span v-show="row.type === 5">全部数据</span>
-          <span v-show="row.type === 6">所在部门</span>
-          <span v-show="row.type === 7">所在及下级部门</span>
+          {{ dictConvert('DataScopePerm',row.type) }}
         </template>
       </vxe-column>
       <vxe-column field="remark" title="备注" />
@@ -58,11 +52,11 @@
               </a>
               <template #overlay>
                 <a-menu>
-                  <a-menu-item v-if="[2,4].includes(row.type)">
-                    <a href="javascript:" @click="handleUserScope(row)">关联用户</a>
+                  <a-menu-item :disabled="![2,4].includes(row.type)">
+                    <a :disabled="![2,4].includes(row.type)" href="javascript:" @click="handleUserScope(row)">关联用户</a>
                   </a-menu-item>
-                  <a-menu-item v-if="[3,4].includes(row.type)">
-                    <a href="javascript:" @click="handleDeptScope(row)">关联部门</a>
+                  <a-menu-item :disabled="![3,4].includes(row.type)">
+                    <a href="javascript:" :disabled="![3,4].includes(row.type)" @click="handleDeptScope(row)">关联部门</a>
                   </a-menu-item>
                 </a-menu>
               </template>

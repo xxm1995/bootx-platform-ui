@@ -102,17 +102,6 @@ export function del (id) {
 }
 
 /**
- * 保存关联部门
- */
-export function saveDeptAssign (obj) {
-  return axios({
-    url: '/data/scope/saveDeptAssign',
-    method: 'POST',
-    data: obj
-  })
-}
-
-/**
  * 获取关联部门id
  */
 export function getDeptIds (id) {
@@ -120,6 +109,17 @@ export function getDeptIds (id) {
     url: '/data/scope/getDeptIds',
     method: 'GET',
     params: { id }
+  })
+}
+
+/**
+ * 保存关联部门
+ */
+export function saveDeptAssign (obj) {
+  return axios({
+    url: '/data/scope/saveDeptAssign',
+    method: 'POST',
+    data: obj
   })
 }
 

@@ -173,12 +173,6 @@ export default {
      */
     banCheckbox ({ row }) {
       return !this.selectUserIds.includes(row.id)
-    },
-    /**
-     * 默认选中的行 单选
-     */
-    selectedRadio () {
-
     }
   }
 }

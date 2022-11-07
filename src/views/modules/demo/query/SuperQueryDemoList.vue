@@ -88,6 +88,7 @@ import { page, del, superPage } from '@/api/demo/superQueryDemo'
 import SuperQueryDemoEdit from './SuperQueryDemoEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import { BOOLEAN, DATE, DATE_TIME, LIST, NUMBER, STRING, TIME } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 export default {
   name: 'SuperQueryDemoList',
   components: {
@@ -123,7 +124,7 @@ export default {
   methods: {
     init () {
       this.loading = true
-      this.getDictDropDownAsync('Political').then(res => {
+      getDictDropDown('Political').then(res => {
         this.politicalList = res
       })
       page({

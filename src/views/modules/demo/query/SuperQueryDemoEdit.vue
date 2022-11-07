@@ -85,6 +85,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update } from '@/api/demo/superQueryDemo'
+import { getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 export default {
   name: 'SuperQueryDemoEdit',
   mixins: [FormMixin],
@@ -114,7 +115,7 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.politicalList = this.getDictItemsByNumber('Political')
+      this.politicalList = getDictItemsByNumber('Political')
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

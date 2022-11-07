@@ -60,6 +60,7 @@ import { page, del } from '@/api/payment/payNotifyRecord'
 import PayNotifyRecordEdit from './PayNotifyRecordInfo'
 import { TableMixin } from '@/mixins/TableMixin'
 import { LIST, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { getDictDropDown } from '@/components/Bootx/Dict/DictUtils'
 export default {
   name: 'PayNotifyRecordList',
   components: {
@@ -103,11 +104,11 @@ export default {
     init () {
       this.loading = true
       // 异步支付方式
-      this.getDictDropDownAsync('AsyncPayChannel').then(res => {
+      getDictDropDown('AsyncPayChannel').then(res => {
         this.asyncPayChannel = res
       })
       // 回调状态
-      this.getDictDropDownAsync('PayNotifyProcess').then(res => {
+      getDictDropDown('PayNotifyProcess').then(res => {
         this.payNotifyProcess = res
       })
       page({

@@ -115,6 +115,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, get, update, existsByCode, existsByCodeNotId } from '@/api/notice/mailConfig'
+import { getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'MailConfigEdit',
@@ -176,7 +177,7 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.securityTypeList = this.getDictItemsByNumber(this.mailSecurityCode)
+      this.securityTypeList = getDictItemsByNumber(this.mailSecurityCode)
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

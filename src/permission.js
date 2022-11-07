@@ -46,6 +46,8 @@ router.beforeEach((to, from, next) => {
               if ((!to?.meta?.ignoreLogin === true)) {
                 initWebSocket().then()
               }
+              // 字典初始化
+              store.dispatch('InitDictList').then()
             })
           })
           .catch(() => {

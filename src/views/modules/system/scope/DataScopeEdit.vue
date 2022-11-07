@@ -41,8 +41,9 @@
           prop="type"
         >
           <a-select
-            :disabled="!addable"
             v-model="form.type"
+            :disabled="!addable"
+            op
             style="width: 100%"
             placeholder="选择支付方式"
           >
@@ -76,12 +77,14 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { add, existsByCode, existsByCodeNotId, existsByName, existsByNameNotId, get, update } from '@/api/system/dataScope'
+import { getDictDropDownNumber, getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'DataScopeEdit',
   mixins: [FormMixin],
   data () {
     return {
+      dataScopePerms: [],
       form: {
         id: '',
         name: '',
@@ -104,6 +107,7 @@ export default {
   },
   methods: {
     edit (id, type) {
+      this.dataScopePerms = getDictDropDownNumber('DataScopePerm')
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

@@ -73,6 +73,7 @@ import { baseMixin } from '@/store/app-mixin'
 import { FormMixin } from '@/mixins/FormMixin'
 import { getUserBaseInfo, updateBaseInfo } from '@/api/system/user'
 import { getFilePreviewUrlPrefix, getFilePreviewUrl } from '@/api/common/fileUpload'
+import { getDictItemsByNumber } from '@/components/Bootx/Dict/DictUtils'
 
 export default {
   name: 'BasicSetting',
@@ -114,12 +115,7 @@ export default {
         })
       })
       // 初始化性别列表
-      setTimeout(() => {
-        this.getDictItemsByNumberAsync('Sex').then(res => {
-          this.sexList = res
-        })
-        this.confirmLoading = false
-      }, 200)
+      this.sexList = getDictItemsByNumber('Sex')
     },
     // 保存
     handleOk () {

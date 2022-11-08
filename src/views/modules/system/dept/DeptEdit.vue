@@ -26,7 +26,7 @@
           >
             <a-radio :value="1">公司</a-radio>
             <a-radio :value="2">部门</a-radio>
-<!--            <a-radio :value="3">岗位</a-radio>-->
+            <!--            <a-radio :value="3">岗位</a-radio>-->
           </a-radio-group>
         </a-form-model-item>
         <a-form-model-item
@@ -103,8 +103,10 @@
       </a-form-model>
     </a-spin>
     <div class="drawer-button" >
-      <a-button @click="handleCancel" style="margin-right: .8rem">取消</a-button>
-      <a-button @click="handleOk" type="primary" :loading="confirmLoading">提交</a-button>
+      <a-space>
+        <a-button @click="handleCancel">取消</a-button>
+        <a-button @click="handleOk" type="primary" :loading="confirmLoading">提交</a-button>
+      </a-space>
     </div>
   </a-drawer>
 </template>

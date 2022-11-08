@@ -5,7 +5,7 @@
         <a-row :gutter="10">
           <a-col :md="8" :sm="24">
             <a-form-item label="查询">
-              <a-input v-model="searchName" @change="search" allow-clear placeholder="请输入部门名称或编码" />
+              <a-input allow-clear v-model="searchName" @keyup.enter="search" placeholder="请输入部门名称或编码" />
             </a-form-item>
           </a-col>
         </a-row>
@@ -17,14 +17,11 @@
       :refresh="{query: init}"
     >
       <template #buttons>
-        <a-button
-          type="primary"
-          icon="plus"
-          @click="add()">
-          新建
-        </a-button>
-        <a-button style="margin-left: 8px" @click="allTreeExpand(true)">展开所有</a-button>
-        <a-button style="margin-left: 8px" @click="allTreeExpand(false)">关闭所有</a-button>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add()">新建</a-button>
+          <a-button @click="allTreeExpand(true)">展开所有</a-button>
+          <a-button @click="allTreeExpand(false)">关闭所有</a-button>
+        </a-space>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -38,8 +35,8 @@
       <vxe-column field="deptName" title="机构/部门名称" tree-node/>
       <vxe-column field="orgCategory" title="机构类别">
         <template v-slot="{row}">
-          <span v-show="String(row.orgCategory) === '1'">公司</span>
-          <span v-show="String(row.orgCategory) === '2'">组织机构</span>
+          <span v-show="row.orgCategory === 1">公司</span>
+          <span v-show="row.orgCategory === 2">组织机构</span>
         </template>
       </vxe-column>
       <vxe-column field="orgCode" title="机构编码"/>

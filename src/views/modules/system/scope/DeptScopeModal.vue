@@ -8,7 +8,7 @@
     @close="handleCancel"
     :visible="visible"
   >
-    <a-spin :spinning="loading" style="margin-bottom: 2rem">
+    <a-spin :spinning="loading">
       <a-input style="margin-bottom: 8px" placeholder="筛选" allowClear v-model="searchName" @change="search"/>
       <a-tree
         :checkable="true"
@@ -20,7 +20,7 @@
         @check="onCheck"
         @expand="onExpand"
       >
-        <template #title v-slot="{ title }">
+        <template #title="{ title }">
           <span v-if="title.indexOf(searchName) > -1">
             {{ title.substr(0, title.indexOf(searchName)) }}
             <span style="color: #f50">{{ searchName }}</span>
@@ -60,7 +60,6 @@ export default {
   name: 'DeptScopeModal',
   data () {
     return {
-      title: '关联部门配置',
       dataScopeId: '',
       searchName: '',
       // 所有的key

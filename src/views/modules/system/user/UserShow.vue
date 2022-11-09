@@ -12,7 +12,7 @@
         :labelCol="labelCol"
         :wrapperCol="wrapperCol"
         :model="form">
-        <a-form-model-item label="用户账号" :labelCol="labelCol" :wrapperCol="wrapperCol" prop="username">
+        <a-form-model-item label="用户账号" prop="username">
           <a-input v-model="form.username" disabled/>
         </a-form-model-item>
         <a-form-model-item label="用户名称" prop="name">

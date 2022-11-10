@@ -37,7 +37,7 @@
           <a-tag color="green" v-for="o in clientIds" :key="o.id">{{ o.name }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="数据权限">
-          <a-tag color="green" v-for="o in dataScopes" :key="o.id">{{ o.name }}</a-tag>
+          <a-tag color="green" v-show="dataScope.name">{{ dataScope.name }}</a-tag>
         </a-form-model-item>
         <a-form-model-item label="部门列表">
           <a-tag color="green" v-for="o in deptList" :key="o.id">{{ o.deptName }}</a-tag>
@@ -50,7 +50,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get } from '@/api/system/user'
-import { getRoles, getDataScopes, getDeptList } from '@/api/system/userAssign'
+import { getRoles, getDataScopeByUser, getDeptList } from '@/api/system/userAssign'
 import { findAll } from '@/api/system/client'
 
 export default {
@@ -64,7 +64,7 @@ export default {
       roles: [],
       clients: [],
       clientIds: [],
-      dataScopes: [],
+      dataScope: {},
       deptList: []
     }
   },
@@ -80,8 +80,8 @@ export default {
       await getDeptList(id).then(res => {
         this.deptList = res.data
       })
-      await getDataScopes(id).then(res => {
-        this.dataScopes = res.data
+      await getDataScopeByUser(id).then(res => {
+        this.dataScope = res.data
       })
       this.confirmLoading = false
     },

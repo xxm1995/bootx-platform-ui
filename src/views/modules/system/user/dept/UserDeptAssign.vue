@@ -82,7 +82,7 @@ export default {
       this.userId = userId
       this.searchName = ''
       this.expandedKeys = []
-      // 权限树
+      // 部门树
       await tree().then(res => {
         this.treeData = treeDataTranslate(res.data, 'id', 'deptName')
         this.generateTreeList(res.data)

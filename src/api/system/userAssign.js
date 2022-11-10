@@ -89,22 +89,22 @@ export function addUserRoleBatch (data) {
 }
 
 /**
- * 获取用户拥有数据权限id集合
+ * 获取用户拥有数据权限id
  */
-export function findDataScopeIdsByUser (id) {
+export function getDataScopeIdByUser (id) {
   return axios({
-    url: `/user/data/scope/findIdsByUser`,
+    url: `/user/data/scope/findDataScopeIdByUser`,
     method: 'GET',
     params: { id }
   })
 }
 
 /**
- * 获取用户拥有数据权限集合
+ * 获取用户拥有数据权限
  */
-export function getDataScopes (id) {
+export function getDataScopeByUser (id) {
   return axios({
-    url: `/user/data/scope/findAllByUser`,
+    url: `/user/data/scope/findDataScopeByUser`,
     method: 'GET',
     params: { id }
   })

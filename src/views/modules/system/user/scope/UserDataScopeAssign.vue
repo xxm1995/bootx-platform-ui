@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { addUserDataScope, findDataScopeIdsByUser } from '@/api/system/userAssign'
+import { addUserDataScope, getDataScopeIdByUser } from '@/api/system/userAssign'
 import { list as dataScopeList } from '@/api/system/dataScope'
 
 export default {
@@ -81,13 +81,13 @@ export default {
       this.form.userId = userInfo.id
       this.visible = true
       this.confirmLoading = true
-      // 获取数据角色列表
+      // 获取数据权限列表
       await dataScopeList().then(value => {
         this.dataScopeList = value.data
       })
-      // 获取角色信息
-      await findDataScopeIdsByUser(userInfo.id).then(({ data }) => {
-        this.form.dataScopeId = data
+      // 获取权限信息
+      await getDataScopeIdByUser(userInfo.id).then(({ data }) => {
+        this.form.dataScopeId = data || undefined
       })
       this.confirmLoading = false
     },

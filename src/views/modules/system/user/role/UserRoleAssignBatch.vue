@@ -22,8 +22,6 @@
         <a-form-model-item
           label="角色"
           prop="roleIds"
-          :labelCol="labelCol"
-          :wrapperCol="wrapperCol"
         >
           <a-select
             allowClear

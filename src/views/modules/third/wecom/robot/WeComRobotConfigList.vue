@@ -53,19 +53,19 @@
       :page-size="pagination.size"
       :total="pagination.total"
       @page-change="handleTableChange"/>
-    <wecom-robot-config-edit ref="wecomRobotConfigEdit" @ok="init"/>
+    <we-com-robot-config-edit ref="wecomRobotConfigEdit" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import WecomRobotConfigEdit from './WecomRobotConfigEdit'
+import WeComRobotConfigEdit from './WeComRobotConfigEdit'
 import { del, page } from '@/api/third/weComRobotConfig'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'WeComRobotConfigList',
-  components: { WecomRobotConfigEdit },
+  components: { WeComRobotConfigEdit },
   mixins: [TableMixin],
   data () {
     return {

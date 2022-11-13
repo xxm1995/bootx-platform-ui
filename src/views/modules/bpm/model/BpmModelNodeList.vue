@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :visible="visible"
-    :title="title"
+    :title="title + ' 列表'"
     :maskClosable="true"
     width="85%"
     placement="right"
@@ -89,8 +89,8 @@ export default {
     return {
       model: {},
       modelPublish: false,
-      title: '',
       isEdit: true,
+      title: '',
       visible: false,
       modelId: null
     }
@@ -99,10 +99,10 @@ export default {
     /**
      * 展示列表
      */
-    list (record, edit) {
+    list (record) {
       this.model = record
       this.modelPublish = record.publish === 'published'
-      this.isEdit = edit
+      this.isEdit = record.publish !== 'published'
       this.modelId = record.id
       this.title = record.name
       this.visible = true

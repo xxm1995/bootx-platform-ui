@@ -1,17 +1,6 @@
 import { axios } from '@/utils/request'
 
 /**
- * 分页
- */
-export function page (params) {
-  return axios({
-    url: '/bpm/model/node/page',
-    method: 'GET',
-    params: params
-  })
-}
-
-/**
  * 查询全部
  */
 export function listByModelId (modelId) {

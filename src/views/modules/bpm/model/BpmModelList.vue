@@ -151,8 +151,8 @@ export default {
     /**
      * 任务节点列表
      */
-    taskNodeShow (record, edit) {
-      this.$refs.bpmModelNodeList.list(record, edit)
+    taskNodeShow (record) {
+      this.$refs.bpmModelNodeList.list(record)
     },
     remove (record) {
       this.$confirm({

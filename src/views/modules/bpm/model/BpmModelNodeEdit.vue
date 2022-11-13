@@ -20,7 +20,7 @@
         </a-form-model-item>
         <a-form-model-item
           label="任务节点id"
-          prop="taskId"
+          prop="nodeId"
         >
           <a-input v-model="form.nodeId" disabled/>
         </a-form-model-item>

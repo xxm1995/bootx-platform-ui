@@ -56,7 +56,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import { close, pageMyApply } from '@/api/bpm/instance'
+import { close } from '@/api/bpm/instance'
 import ApplyFormShow from '@/views/modules/office/applyshow/ApplyFormShow'
 import { page } from '@/api/bpm/instanceAdmin'
 
@@ -66,7 +66,6 @@ export default {
   mixins: [TableMixin],
   data () {
     return {
-      currentBpmModelId: undefined,
       fields: [
         { field: 'code', type: STRING, name: '流程编号', placeholder: '请输入流程编号' },
         { field: 'name', type: STRING, name: '流程名称', placeholder: '请输入流程名称' }
@@ -111,7 +110,6 @@ export default {
     }
   },
   mounted () {
-    this.initData()
     this.init()
   }
 }

@@ -90,6 +90,7 @@
             :options="assignTypeList"
             style="width: 100%"
             placeholder="选择处理人分配类型"
+            @change="assignTypeChange"
           />
         </a-form-model-item>
         <a-form-model-item

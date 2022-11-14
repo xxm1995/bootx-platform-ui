@@ -17,7 +17,7 @@ export function start (obj) {
 export function suspend (instanceId) {
   return axios({
     url: '/bpm/instance/suspend',
-    method: 'GET',
+    method: 'POST',
     params: { instanceId }
   })
 }
@@ -28,7 +28,7 @@ export function suspend (instanceId) {
 export function activate (instanceId) {
   return axios({
     url: '/bpm/instance/activate',
-    method: 'GET',
+    method: 'POST',
     params: { instanceId }
   })
 }

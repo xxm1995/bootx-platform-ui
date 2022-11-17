@@ -56,7 +56,7 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
-import { save, findById } from '@/api/notice/siteMessage'
+import { saveOrUpdate, findById } from '@/api/notice/siteMessage'
 import '@wangeditor/editor/dist/css/style.css'
 import XEUtils from 'xe-utils'
 
@@ -108,7 +108,7 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await save(this.form)
+          await saveOrUpdate(this.form)
           this.confirmLoading = false
           this.$emit('ok')
           this.visible = false
@@ -132,7 +132,6 @@ export default {
   mounted () {
     const date = XEUtils.getWhatDay(new Date(), 30)
     this.efficientTime = XEUtils.toDateString(date, 'yyyy-MM-dd')
-    console.log(this.efficientTime)
   }
 }
 </script>

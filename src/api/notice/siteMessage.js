@@ -90,9 +90,9 @@ export function send (id) {
 /**
  * 保存草稿
  */
-export function save (obj) {
+export function saveOrUpdate (obj) {
   return axios({
-    url: '/site/message/save',
+    url: '/site/message/saveOrUpdate',
     method: 'POST',
     data: obj
   })

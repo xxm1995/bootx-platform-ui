@@ -86,7 +86,7 @@ export default {
     retrieve (record) {
       this.$confirm({
         title: '警告',
-        content: '确实要完成当前任务!',
+        content: '确实要取回当前任务!',
         okText: '确定',
         cancelText: '取消',
         onOk: () => {

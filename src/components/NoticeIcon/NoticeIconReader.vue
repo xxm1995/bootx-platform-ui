@@ -13,7 +13,7 @@
         :description="'发布人：'+message.senderName + ' 发布时间： ' + message.senderTime">
       </a-card-meta>
       <a-divider />
-      <span v-html="message.content" class="article-content"></span>
+      <div class="editor-content-view" v-html="message.content"/>
     </a-card>
     <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
@@ -80,28 +80,4 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.daily-article {
-  .article-button {
-    font-size: 1.2rem !important;
-  }
-  .ant-card-body {
-    padding: 18px !important;
-  }
-  .ant-card-head {
-    padding: 0 1rem;
-  }
-  .ant-card-meta {
-    margin-bottom: 1rem;
-  }
-  .article-content {
-    p {
-      word-wrap: break-word;
-      word-break: break-all;
-      text-overflow: initial;
-      white-space: normal;
-      font-size: .9rem !important;
-      margin-bottom: .8rem;
-    }
-  }
-}
 </style>

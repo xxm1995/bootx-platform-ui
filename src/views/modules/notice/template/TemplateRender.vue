@@ -67,7 +67,6 @@ export default {
     init (id) {
       this.visible = true
       this.renderContent = ''
-      this.renderContent = ''
       this.template = {}
       this.confirmLoading = true
       get(id).then(({ data }) => {
@@ -83,7 +82,7 @@ export default {
       try {
         json = JSON.parse(this.paramMap || '{}')
       } catch (err) {
-        this.$message.error('测试数据格式不对')
+        this.$message.error('测试数据格式不不正确，请检查是否是json格式数据')
         return
       }
       render(this.template.code, json).then(({ data }) => {

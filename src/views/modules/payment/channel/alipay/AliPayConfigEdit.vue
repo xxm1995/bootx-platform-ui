@@ -14,21 +14,23 @@
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
-        <a-form-model-item prop="id" hidden="true" />
+        <a-form-model-item prop="id" hidden="true">
+          <a-input disabled v-model="form.id"/>
+        </a-form-model-item>
         <a-form-model-item label="名称" prop="name" >
-          <a-input :disabled="showable" v-model="form.name"/>
+          <a-input :disabled="showable" v-model="form.name" placeholder="请输入名称"/>
         </a-form-model-item>
         <a-form-model-item label="AppId" prop="appId" >
-          <a-input :disabled="showable" v-model="form.appId"/>
+          <a-input :disabled="showable" v-model="form.appId" placeholder="请输入AppId"/>
         </a-form-model-item>
         <a-form-model-item label="异步通知URL" prop="notifyUrl" >
-          <a-input :disabled="showable" v-model="form.notifyUrl"/>
+          <a-input :disabled="showable" v-model="form.notifyUrl" placeholder="请输入异步通知URL"/>
         </a-form-model-item>
         <a-form-model-item label="同步通知URL" prop="returnUrl" >
-          <a-input :disabled="showable" v-model="form.returnUrl"/>
+          <a-input :disabled="showable" v-model="form.returnUrl" placeholder="请输入同步通知URL"/>
         </a-form-model-item>
         <a-form-model-item label="支付网关URL" prop="serverUrl" >
-          <a-input :disabled="showable" v-model="form.serverUrl"/>
+          <a-input :disabled="showable" v-model="form.serverUrl" placeholder="请输入支付网关URL"/>
         </a-form-model-item>
         <a-form-model-item label="默认支付超时配置(分钟)" prop="expireTime" >
           <a-input-number
@@ -36,6 +38,7 @@
             :max="12000"
             :step="1"
             :disabled="showable"
+            placeholder="请输入超时配置"
             v-model="form.expireTime"/>
         </a-form-model-item>
         <a-form-model-item label="支持支付方式" prop="payWayList">
@@ -85,25 +88,24 @@
           </a-select>
         </a-form-model-item>
         <a-form-model-item v-show="form.authType === 1" label="支付宝公钥" prop="alipayPublicKey" >
-          <a-textarea :disabled="showable" v-model="form.alipayPublicKey"/>
+          <a-textarea :disabled="showable" v-model="form.alipayPublicKey" placeholder="请输入支付宝公钥内容"/>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="应用公钥证书" prop="appCert" >
-          <a-textarea :disabled="showable" v-model="form.appCert">
+        <a-form-model-item v-show="form.authType === 2" label="应用公钥证书" prop="appCert" >
+          <a-textarea :disabled="showable" v-model="form.appCert" placeholder="请输入应用公钥证书内容"/>
+        </a-form-model-item>
+        <a-form-model-item v-show="form.authType === 2" label="支付宝公钥证书" prop="alipayCert" >
+          <a-textarea :disabled="showable" v-model="form.alipayCert" placeholder="请输入支付宝公钥证书内容">
           </a-textarea>
         </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="支付宝公钥证书" prop="alipayCert" >
-          <a-textarea :disabled="showable" v-model="form.alipayCert">
-          </a-textarea>
-        </a-form-model-item>
-        <a-form-model-item v-show="form.authType === 2 " label="CA根证书文件" prop="alipayRootCert" >
-          <a-textarea :disabled="showable" v-model="form.alipayRootCert">
+        <a-form-model-item v-show="form.authType === 2" label="支付宝CA根证书" prop="alipayRootCert" >
+          <a-textarea :disabled="showable" v-model="form.alipayRootCert" placeholder="请输入支付宝CA根证书内容">
           </a-textarea>
         </a-form-model-item>
         <a-form-model-item label="应用私钥" prop="privateKey" >
-          <a-textarea :disabled="showable" v-model="form.privateKey"/>
+          <a-textarea :disabled="showable" v-model="form.privateKey" placeholder="请输入应用私钥内容"/>
         </a-form-model-item>
         <a-form-model-item label="备注" prop="remark" >
-          <a-textarea :disabled="showable" v-model="form.remark"/>
+          <a-textarea :disabled="showable" v-model="form.remark" placeholder="请输入备注"/>
         </a-form-model-item>
 
       </a-form-model>

@@ -109,6 +109,14 @@ export const FormMixin = {
     // 判断脱敏参数是否被修改的参数, 未修改返回空值
     diffForm (o1, o2) {
       return o1 === o2 ? null : o1
+    },
+    // 判断脱敏参数是否被修改的参数, 未修改返回空值 rawForm 后端获取到的原始数据, editForm 修改后的数据, keys 字段名称
+    diffFormNew (rawForm, editForm, ...keys) {
+      const form = {}
+      for (const key of keys) {
+        form[key] = rawForm[key] === editForm[key] ? undefined : editForm[key]
+      }
+      return form
     }
   }
 }

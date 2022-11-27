@@ -12,7 +12,7 @@
       </a-button>
     </a-tooltip>
     <a-button v-else style="margin-left: 8px" @click="supperQueryShow">{{ buttonTitle }}</a-button>
-    <super-query-modal
+    <super-query-model
       ref="superQueryModal"
       :fields="fields"
       :width="width"
@@ -23,11 +23,11 @@
 </template>
 
 <script>
-import SuperQueryModal from './SuperQueryModel'
+import SuperQueryModel from './SuperQueryModel'
 export default {
   name: 'BSupperQuery',
   components: {
-    SuperQueryModal
+    SuperQueryModel
   },
   props: {
     // 是否在进行查询

@@ -21,7 +21,6 @@
       :loading="loading"
       :data="tableData"
     >
-
       <vxe-column type="seq" title="序号" width="60" />
       <vxe-column field="name" title="名称"/>
       <vxe-column field="mchId" title="商户号"/>

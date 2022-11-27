@@ -21,15 +21,6 @@ export function get (id) {
     params: { id }
   })
 }
-/**
- * 获取微信支持支付方式
- */
-export function findPayTypeList () {
-  return axios({
-    url: '/wechat/pay/findPayTypeList',
-    method: 'GET'
-  })
-}
 
 export function add (obj) {
   return axios({

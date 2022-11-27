@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="超级查询器"
+    :title="modelTitle"
     :width="width"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -38,7 +38,7 @@
 
 import SuperQueryItem from './SuperQueryItem'
 export default {
-  name: 'SuperQueryModal',
+  name: 'SuperQueryModel',
   components: {
     SuperQueryItem
   },
@@ -47,8 +47,6 @@ export default {
       visible: false,
       // 查询条件
       queryParams: [],
-      // 查询字段属性
-      fieldList: [],
       confirmLoading: false
     }
   },

@@ -133,7 +133,8 @@ export default {
         { type: 'is_null', name: '为空' },
         { type: 'not_null', name: '不为空' }
       ],
-      fieldTemps: []
+      // 页面中查询字段对应的字段属性相关信息的存储, 顺序与查询条件参数一致
+      queryFields: []
     }
   },
   methods: {
@@ -150,20 +151,20 @@ export default {
     // 删除
     handleDel (index) {
       this.queryParams.splice(index, 1)
-      this.fieldTemps.splice(index, 1)
+      this.queryFields.splice(index, 1)
     },
     // 变更查询字段
     fieldChange (value, index, queryParam) {
       // 查询出对应的字段
       const field = this.fields.filter(o => o.field === value)
       if (field && field.length > 0) {
-        this.$set(this.fieldTemps, index, field[0])
+        this.$set(this.queryFields, index, field[0])
         this.$delete(queryParam, 'paramValue')
       }
     },
     // 输入类型切换判断
     paramTypeJudge (index, types) {
-      const field = this.fieldTemps[index]
+      const field = this.queryFields[index]
       for (const argument of arguments) {
         if (field && field.type === argument) {
           return true
@@ -173,7 +174,7 @@ export default {
     },
     // 获取下拉选择的数据
     getSelectData (index) {
-      return this.fieldTemps[index].list || []
+      return this.queryFields[index].list || []
     }
   }
 }

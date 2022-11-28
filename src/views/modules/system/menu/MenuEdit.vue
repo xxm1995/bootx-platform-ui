@@ -31,12 +31,8 @@
         <a-form-model-item
           v-show="form.menuType!==0"
           label="上级菜单"
-          :validate-status="validateStatus"
-          :hasFeedback="true"
-          :required="true">
-          <template #help>
-            <span>{{ validateStatus==='error'?'请选择上级菜单':'&nbsp;&nbsp;' }}</span>
-          </template>
+          prop="parentId"
+          :hasFeedback="true">
           <a-tree-select
             style="width:100%"
             :dropdown-style="{ maxHeight: '200px', overflow: 'auto' }"
@@ -220,7 +216,7 @@ export default {
       clientCode: '',
       form: {
         id: '',
-        parentId: '',
+        parentId: undefined,
         title: '',
         name: '',
         path: '',
@@ -244,6 +240,7 @@ export default {
   computed: {
     rules () {
       return {
+        parentId: [{ required: this.form.menuType === 1, message: '请选择父级菜单', trigger: ['blur', 'change'] }],
         title: [ { required: true, message: '请输入菜单或权限名称' } ],
         name: [ { required: true, message: '请输入路由名称' } ],
         path: [ { required: true, message: '请输入菜单路径' } ],

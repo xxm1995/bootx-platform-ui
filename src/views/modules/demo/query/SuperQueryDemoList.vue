@@ -114,7 +114,7 @@ export default {
       politicalList: [],
       fields: [
         { field: 'name', name: '姓名', type: STRING },
-        { field: 'remark', name: '姓名', type: STRING }
+        { field: 'remark', name: '备注', type: STRING }
       ],
       queryParam: {
       }

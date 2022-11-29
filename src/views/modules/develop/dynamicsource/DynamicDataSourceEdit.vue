@@ -130,13 +130,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        dbPassword: this.diffForm(this.form.dbPassword, this.rawForm.dbPassword)
-      }
-    }
-  },
   methods: {
     /**
      * 编辑
@@ -163,11 +156,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            const form = {
-              ...this.form,
-              ...this.diff
-            }
-            await update(form)
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'dbPassword') })
           }
           this.confirmLoading = false
           this.$emit('ok')

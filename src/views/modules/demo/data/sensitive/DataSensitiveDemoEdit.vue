@@ -93,19 +93,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        chineseName: this.diffForm(this.form.chineseName, this.rawForm.chineseName),
-        password: this.diffForm(this.form.password, this.rawForm.password),
-        idCard: this.diffForm(this.form.idCard, this.rawForm.idCard),
-        mobilePhone: this.diffForm(this.form.mobilePhone, this.rawForm.mobilePhone),
-        carLicense: this.diffForm(this.form.carLicense, this.rawForm.carLicense),
-        email: this.diffForm(this.form.email, this.rawForm.email),
-        other: this.diffForm(this.form.other, this.rawForm.other)
-      }
-    }
-  },
   methods: {
     edit (id, type) {
       if (['edit', 'show'].includes(type)) {
@@ -126,11 +113,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            const form = {
-              ...this.form,
-              ...this.diff
-            }
-            await update(form)
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'chineseName', 'password', 'idCard', 'mobilePhone', 'carLicense', 'email', 'other') })
           }
           setTimeout(() => {
             this.confirmLoading = false

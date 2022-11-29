@@ -21,13 +21,13 @@
         label="名称"
         prop="name"
       >
-        <a-input v-model="form.name" :disabled="showable"/>
+        <a-input v-model="form.name" :disabled="showable" placeholder="请输入名称"/>
       </a-form-model-item>
       <a-form-model-item
         label="年龄"
         prop="age"
       >
-        <a-input-number v-model="form.age" :disabled="showable" :precision="0"/>
+        <a-input-number v-model="form.age" :disabled="showable" :precision="0" placeholder="请输入年龄"/>
       </a-form-model-item>
       <a-form-model-item
         label="是否vip"
@@ -63,9 +63,7 @@
         label="政治面貌"
         prop="political"
       >
-        <a-select v-model="form.political" :disabled="showable">
-          <a-select-option v-for="o in politicalList" :key="o.code">{{ o.name }}</a-select-option>
-        </a-select>
+        <a-select v-model="form.political" :options="politicalList" :disabled="showable" placeholder="请选择政治面貌"/>
       </a-form-model-item>
       <a-form-model-item
         label="备注"
@@ -114,7 +112,9 @@ export default {
   },
   methods: {
     edit (id, type) {
-      this.politicalList = this.getDictItemsByNumber('Political')
+      this.getDictDropDownNumberAsync('Political').then((value) => {
+        this.politicalList = value
+      })
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         get(id).then(res => {

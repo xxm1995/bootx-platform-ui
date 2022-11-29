@@ -168,16 +168,6 @@ export default {
         expireTime: [ { required: true, message: '请输入默认超时配置' } ],
         payWayList: [ { required: true, message: '请选择支持的支付类型' } ]
       }
-    },
-    diff () {
-      return {
-        appId: this.diffForm(this.form.appId, this.rawForm.appId),
-        alipayPublicKey: this.diffForm(this.form.alipayPublicKey, this.rawForm.alipayPublicKey),
-        appCert: this.diffForm(this.form.appCert, this.rawForm.appCert),
-        alipayCert: this.diffForm(this.form.alipayCert, this.rawForm.alipayCert),
-        alipayRootCert: this.diffForm(this.form.alipayRootCert, this.rawForm.alipayRootCert),
-        privateKey: this.diffForm(this.form.privateKey, this.rawForm.privateKey)
-      }
     }
   },
   methods: {
@@ -203,11 +193,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            const form = {
-              ...this.form,
-              ...this.diff
-            }
-            await update(form)
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'appId', 'alipayPublicKey', 'appCert', 'alipayCert', 'alipayRootCert', 'privateKey') })
           }
           setTimeout(() => {
             this.confirmLoading = false

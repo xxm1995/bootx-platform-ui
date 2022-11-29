@@ -166,14 +166,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        username: this.diffForm(this.form.username, this.rawForm.username),
-        password: this.diffForm(this.form.password, this.rawForm.password)
-      }
-    }
-  },
   methods: {
     edit (id, type) {
       this.securityTypeList = this.getDictItemsByNumber(this.mailSecurityCode)
@@ -195,10 +187,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update({
-              ...this.form,
-              ...this.diff
-            })
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'username', 'password') })
           }
           setTimeout(() => {
             this.confirmLoading = false

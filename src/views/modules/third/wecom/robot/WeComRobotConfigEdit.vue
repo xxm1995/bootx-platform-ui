@@ -82,13 +82,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        webhookKey: this.diffForm(this.form.webhookKey, this.rawForm.webhookKey)
-      }
-    }
-  },
   methods: {
     edit (id, type) {
       if (['edit', 'show'].includes(type)) {
@@ -109,10 +102,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update({
-              ...this.form,
-              ...this.diff
-            })
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'webhookKey') })
           }
           this.confirmLoading = false
           this.$emit('ok')

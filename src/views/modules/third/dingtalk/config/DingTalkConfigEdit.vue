@@ -80,14 +80,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        appKey: this.diffForm(this.form.appKey, this.rawForm.appKey),
-        appSecret: this.diffForm(this.form.appSecret, this.rawForm.appSecret)
-      }
-    }
-  },
   methods: {
     edit (id, type) {
       if (['edit', 'show'].includes(type)) {
@@ -108,11 +100,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            const form = {
-              ...this.form,
-              ...this.diff
-            }
-            await update(form)
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'appKey', 'appSecret') })
           }
           setTimeout(() => {
             this.confirmLoading = false

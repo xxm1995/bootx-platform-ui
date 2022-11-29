@@ -84,14 +84,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        phone: this.diffForm(this.form.phone, this.rawForm.phone),
-        email: this.diffForm(this.form.email, this.rawForm.email)
-      }
-    }
-  },
   methods: {
     edit (id) {
       this.confirmLoading = true
@@ -107,15 +99,10 @@ export default {
       this.$refs.form.validate(async valid => {
         if (valid) {
           this.confirmLoading = true
-          await update({
-            ...this.form,
-            ...this.diff
-          })
-          setTimeout(() => {
-            this.confirmLoading = false
-            this.$emit('ok')
-            this.visible = false
-          }, 200)
+          await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'phone', 'email') })
+          this.confirmLoading = false
+          this.$emit('ok')
+          this.visible = false
         } else {
           return false
         }

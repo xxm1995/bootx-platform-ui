@@ -22,7 +22,7 @@
           <a-input :disabled="showable" v-model="form.mchId" placeholder="请输入商户号"/>
         </a-form-model-item>
         <a-form-model-item label="应用编号" prop="appId" >
-          <a-input :disabled="showable" v-model="form.appId" placeholder="请输入应用编号"/>
+          <a-input :disabled="showable" v-model="form.appId" placeholder="请输入应用编号(AppId)"/>
         </a-form-model-item>
         <a-form-model-item label="AppSecret" prop="appSecret" >
           <a-input :disabled="showable" v-model="form.appSecret" placeholder="请输入AppSecret"/>
@@ -107,10 +107,10 @@
           <a-textarea :disabled="showable" v-model="form.keyPem" placeholder="请填入私钥内容"/>
         </a-form-model-item>
         <a-form-model-item label="异步通知URL" prop="notifyUrl" >
-          <a-input :disabled="showable" v-model="form.notifyUrl" placeholder="请输入备注"/>
+          <a-input :disabled="showable" v-model="form.notifyUrl" placeholder="请输入异步通知URL"/>
         </a-form-model-item>
         <a-form-model-item label="同步通知URL" prop="returnUrl" >
-          <a-input :disabled="showable" v-model="form.returnUrl" placeholder="请输入备注"/>
+          <a-input :disabled="showable" v-model="form.returnUrl" placeholder="请输入同步通知URL"/>
         </a-form-model-item>
         <a-form-model-item label="应用域名" prop="domain" >
           <a-input :disabled="showable" v-model="form.domain" placeholder="请输入domain"/>
@@ -154,17 +154,6 @@ export default {
         sandbox: [ { required: true, message: '请选择是否为沙箱环境' } ],
         expireTime: [ { required: true, message: '请输入默认超时配置' } ],
         payWayList: [ { required: true, message: '请选择支持的支付类型' } ]
-      }
-    },
-    diff () {
-      return {
-        mchId: this.diffForm(this.form.mchId, this.rawForm.mchId),
-        appId: this.diffForm(this.form.appId, this.rawForm.appId),
-        appSecret: this.diffForm(this.form.appSecret, this.rawForm.appSecret),
-        apiKeyV2: this.diffForm(this.form.apiKeyV2, this.rawForm.apiKeyV2),
-        apiKeyV3: this.diffForm(this.form.apiKeyV3, this.rawForm.apiKeyV3),
-        keyPem: this.diffForm(this.form.keyPem, this.rawForm.keyPem),
-        certPem: this.diffForm(this.form.certPem, this.rawForm.certPem)
       }
     },
     // 上传地址
@@ -230,12 +219,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            const form = {
-              ...this.form,
-              ...this.diff
-            }
-            console.log(form)
-            await update(form)
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'mchId', 'appId', 'appSecret', 'apiKeyV2', 'apiKeyV3', 'keyPem', 'certPem') })
           }
           setTimeout(() => {
             this.confirmLoading = false

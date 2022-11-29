@@ -99,14 +99,6 @@ export default {
       }
     }
   },
-  computed: {
-    diff () {
-      return {
-        accessToken: this.diffForm(this.form.accessToken, this.rawForm.accessToken),
-        signSecret: this.diffForm(this.form.signSecret, this.rawForm.signSecret)
-      }
-    }
-  },
   methods: {
     edit (id, type) {
       if (['edit', 'show'].includes(type)) {
@@ -127,10 +119,7 @@ export default {
           if (this.type === 'add') {
             await add(this.form)
           } else if (this.type === 'edit') {
-            await update({
-              ...this.form,
-              ...this.diff
-            })
+            await update({ ...this.form, ...this.diffForm(this.rawForm, this.form, 'accessToken', 'signSecret') })
           }
           this.confirmLoading = false
           this.$emit('ok')

@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="退款"
+    title="退款申请"
     :width="300"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -13,7 +13,6 @@
       <a-form-model
         ref="form"
         :model="form"
-        :rules="rules"
         :label-col="labelCol"
         :wrapper-col="wrapperCol"
       >
@@ -39,13 +38,6 @@ import { refund } from '@/api/payment/pay'
 export default {
   name: 'RefundModel',
   mixins: [FormMixin],
-  computed: {
-    rules () {
-      return {
-
-      }
-    }
-  },
   data () {
     return {
       // 订单
@@ -68,13 +60,18 @@ export default {
       })
     },
     handleOk () {
-      this.confirmLoading = true
-      refund(this.form).then(_ => {
-        this.visible = false
-        this.$emit('ok')
+      this.$confirm({
+        title: '警告',
+        content: '确实要申请退款',
+        onOk: () => {
+          this.confirmLoading = true
+          refund(this.form).then(_ => {
+            this.visible = false
+            this.$emit('ok')
+          })
+        }
       })
     }
-
   }
 }
 </script>

@@ -7,30 +7,32 @@
     :maskClosable="false"
     @cancel="handleCancel"
   >
-    <a-descriptions
-      title=""
-      :column="{md: 1, sm: 1, xs: 1}"
-    >
-      <a-descriptions-item label="业务id">
-        {{ form.paymentId }}
-      </a-descriptions-item>
-      <a-descriptions-item label="支付通道">
-        {{ dictConvert('PayChannel',form.payChannel) }}
-      </a-descriptions-item>
-      <a-descriptions-item label="通知消息">
-        {{ form.notifyInfo }}
-      </a-descriptions-item>
-      <a-descriptions-item label="状态">
-        {{ form.status === 1 ? '成功':'失败' }}
-      </a-descriptions-item>
-      <a-descriptions-item label="提示消息">
-        {{ form.msg }}
-      </a-descriptions-item>
-      <a-descriptions-item label="通知时间">
-        {{ form.notifyTime }}
-      </a-descriptions-item>
+    <a-spin :spinning="confirmLoading">
+      <a-descriptions
+        title=""
+        :column="{md: 1, sm: 1, xs: 1}"
+      >
+        <a-descriptions-item label="业务id">
+          {{ form.paymentId }}
+        </a-descriptions-item>
+        <a-descriptions-item label="支付通道">
+          {{ dictConvert('PayChannel',form.payChannel) }}
+        </a-descriptions-item>
+        <a-descriptions-item label="通知消息">
+          <json-viewer preview-mode boxed :value="JSON.parse(form.notifyInfo || '{}')"/>
+        </a-descriptions-item>
+        <a-descriptions-item label="状态">
+          {{ form.status === 1 ? '成功':'失败' }}
+        </a-descriptions-item>
+        <a-descriptions-item label="提示消息">
+          {{ form.msg }}
+        </a-descriptions-item>
+        <a-descriptions-item label="通知时间">
+          {{ form.notifyTime }}
+        </a-descriptions-item>
 
-    </a-descriptions>
+      </a-descriptions>
+    </a-spin>
     <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
     </template>
@@ -39,10 +41,12 @@
 
 <script>
   import { FormMixin } from '@/mixins/FormMixin'
+  import JsonViewer from 'vue-json-viewer'
   import { get, add, update } from '@/api/payment/payNotifyRecord'
   export default {
     name: 'PayNotifyRecordInfo',
     mixins: [FormMixin],
+    components: { JsonViewer },
     data () {
       return {
         form: {

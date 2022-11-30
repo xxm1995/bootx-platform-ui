@@ -20,7 +20,6 @@
     >
       <vxe-column type="seq" title="序号" width="60" />
       <vxe-column field="paymentId" title="支付号" />
-      <vxe-column field="notifyInfo" title="通知消息" />
       <vxe-column field="payChannel" title="支付通道">
         <template v-slot="{row}">
           {{ dictConvert('PayChannel',row.payChannel) }}

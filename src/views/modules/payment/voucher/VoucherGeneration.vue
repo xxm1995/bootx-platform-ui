@@ -1,7 +1,6 @@
 <template>
   <a-modal
     title="储值卡生成"
-    :destroyOnClose="true"
     :width="640"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -51,10 +50,11 @@
         </a-form-model-item>
         <a-form-model-item
           label="有效期"
-          prop="enduring"
+          prop="dataTime"
           v-if="!form.enduring"
         >
           <a-range-picker
+            v-model="form.dataTime"
             valueFormat="yyyy-MM-DD"
             @change="changeTime"
           />
@@ -91,7 +91,7 @@ export default {
         count: [{ required: true, message: '请输入要生成的数量' }],
         faceValue: [{ required: true, message: '请输入储值卡的面值' }],
         enduring: [{ required: true, message: '请选择储值卡有效期类型' }],
-        dataTime: [{ required: !this.enduring, message: '请选择有效时间范围' }],
+        dataTime: [{ required: !this.form.enduring, message: '请选择有效时间范围' }],
         status: [{ required: true, message: '请选择默认状态' }]
       }
     }
@@ -135,6 +135,7 @@ export default {
       this.form.endTime = times[1] + ' 23:59:59'
     },
     resetForm () {
+      console.log(123)
       this.$nextTick(() => {
         this.$refs.form.resetFields()
       })

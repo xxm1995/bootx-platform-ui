@@ -8,6 +8,7 @@
     @cancel="handleCancel"
   >
     <a-descriptions
+      bordered
       title=""
       :column="{md: 1, sm: 1, xs: 1}"
     >

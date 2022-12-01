@@ -134,7 +134,6 @@ export default {
      * @param type true 锁定, false 解锁
      */
     lockConfirm (voucherId, type) {
-      const that = this
       this.$confirm({
         title: type ? '是否停用该储值卡' : '是否启用该储值卡',
         okText: '确定',
@@ -145,7 +144,7 @@ export default {
           } else {
             await unlock(voucherId)
           }
-          that.init()
+          this.init()
         }
       })
     }

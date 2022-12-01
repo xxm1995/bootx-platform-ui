@@ -3,7 +3,7 @@
     <a-row :gutter="64">
       <a-col :span="8">
         <a-card :bordered="false" v-if="currentNode||nextOrBackNode">
-          <a-descriptions :column="{md: 1}" bordered v-if="currentNode">
+          <a-descriptions bordered :column="{md: 1}" v-if="currentNode">
             <a-descriptions-item label="当前环节名称">
               {{ currentNode.nodeName }}
             </a-descriptions-item>
@@ -24,7 +24,7 @@
             </a-descriptions-item>
           </a-descriptions>
           <a-divider/>
-          <a-descriptions :column="{md: 1}" bordered v-if="nextOrBackNode">
+          <a-descriptions bordered :column="{md: 1}" v-if="nextOrBackNode">
             <a-descriptions-item label="下一环节名称">
               {{ nextOrBackNode.nodeName }}
             </a-descriptions-item>

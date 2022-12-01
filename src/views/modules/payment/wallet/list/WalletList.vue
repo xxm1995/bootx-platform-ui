@@ -137,7 +137,7 @@ export default {
       this.$refs.walletChanger.init(walletId)
     },
     /**
-     * 禁用钱包
+     * 锁定/解锁 钱包
      * @param walletId 钱包id
      * @param type true 锁定, false 解锁
      */

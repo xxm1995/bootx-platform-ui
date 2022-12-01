@@ -17,7 +17,7 @@
       </a-col>
       <a-col :span="16">
         <a-card title="流程信息" :bordered="false">
-          <a-descriptions :column="{md: 1}" bordered>
+          <a-descriptions bordered :column="{md: 1}">
             <a-descriptions-item label="流程实例名称">
               {{ instance.instanceName }}
             </a-descriptions-item>

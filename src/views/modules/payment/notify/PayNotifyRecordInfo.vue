@@ -9,6 +9,7 @@
   >
     <a-spin :spinning="confirmLoading">
       <a-descriptions
+        bordered
         title=""
         :column="{md: 1, sm: 1, xs: 1}"
       >
@@ -19,7 +20,7 @@
           {{ dictConvert('PayChannel',form.payChannel) }}
         </a-descriptions-item>
         <a-descriptions-item label="通知消息">
-          <json-viewer preview-mode boxed :value="JSON.parse(form.notifyInfo || '{}')"/>
+          <json-viewer preview-mode :value="JSON.parse(form.notifyInfo || '{}')"/>
         </a-descriptions-item>
         <a-descriptions-item label="状态">
           {{ form.status === 1 ? '成功':'失败' }}

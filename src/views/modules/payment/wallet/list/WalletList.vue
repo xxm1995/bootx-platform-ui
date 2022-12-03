@@ -69,16 +69,16 @@
       @page-change="handleTableChange"/>
     <wallet-info ref="walletInfo"/>
     <wallet-log-list ref="walletLogList"/>
-    <user-select-modal ref="userSelectModal" @ok="createWalletBatch"/>
+    <b-user-select-modal ref="userSelectModal" :data-source="pageByNotWallet" @ok="createWalletBatch"/>
     <wallet-changer ref="walletChanger" @ok="init"/>
   </a-card>
 </template>
 
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
-import { createWalletBatch, lock, page, unlock } from '@/api/payment/wallet'
+import { createWalletBatch, lock, page, pageByNotWallet, unlock } from '@/api/payment/wallet'
 import WalletInfo from './WalletInfo'
-import UserSelectModal from './UserSelectModal'
+import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 import WalletChanger from './WalletChanger'
 import WalletLogList from './WalletLogList'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
@@ -89,7 +89,7 @@ export default {
   components: {
     WalletLogList,
     WalletInfo,
-    UserSelectModal,
+    BUserSelectModal,
     WalletChanger
   },
   data () {
@@ -113,6 +113,10 @@ export default {
       }).then(res => {
         this.pageQueryResHandel(res, this)
       })
+    },
+    // 查询为未开通钱包的用户
+    pageByNotWallet (params) {
+      return pageByNotWallet(params)
     },
     // 查看详情
     show (record) {

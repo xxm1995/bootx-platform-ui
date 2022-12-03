@@ -1,7 +1,7 @@
 <template>
   <a-drawer
     :visible="visible"
-    title="字典列表"
+    title="钱包日志列表"
     :maskClosable="true"
     :width="1000"
     placement="right"
@@ -64,7 +64,6 @@ export default {
       visible: false,
       walletId: null,
       queryParam: {
-
       }
     }
   },

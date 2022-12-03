@@ -67,6 +67,13 @@ export default {
       default () {
         return true
       }
+    },
+    // 数据源
+    dataSource: {
+      type: Function,
+      default () {
+        return page
+      }
     }
   },
   computed: {
@@ -118,7 +125,7 @@ export default {
      */
     queryPage () {
       this.loading = true
-      page({
+      this.dataSource({
         ...this.queryParam,
         ...this.pages
       }).then(res => {

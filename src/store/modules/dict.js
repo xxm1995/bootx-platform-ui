@@ -1,4 +1,4 @@
-import { findAllItem } from '@/api/system/dict'
+import { findAllEnableItem } from '@/api/system/dict'
 const dict = {
   state: {
     dictList: []
@@ -14,7 +14,7 @@ const dict = {
     // 获取字典列表
     InitDictList ({ commit }) {
       return new Promise((resolve, reject) => {
-        findAllItem().then(response => {
+        findAllEnableItem().then(response => {
           const dictList = response.data.map(response => {
             return {
               dictCode: response.dictCode,

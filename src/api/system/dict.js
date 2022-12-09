@@ -7,6 +7,13 @@ export function findAllItem () {
   })
 }
 
+export function findAllEnableItem () {
+  return axios({
+    url: '/dict/item/findAllByEnable',
+    method: 'GET'
+  })
+}
+
 export function page (params) {
   return axios({
     url: '/dict/page',

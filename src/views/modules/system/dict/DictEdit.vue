@@ -25,6 +25,7 @@
           <a-input
             :disabled="showable"
             v-model="form.code"
+            placeholder="请输入字典编码"
           />
         </a-form-model-item>
         <a-form-model-item
@@ -34,7 +35,14 @@
           <a-input
             :disabled="showable"
             v-model="form.name"
+            placeholder="请输入名称"
           />
+        </a-form-model-item>
+        <a-form-model-item
+          label="是否启用"
+          prop="enable"
+        >
+          <a-switch checked-children="启用" un-checked-children="停用" v-model="form.enable" :disabled="showable" />
         </a-form-model-item>
         <a-form-model-item
           label="分类标签"
@@ -43,6 +51,7 @@
           <a-input
             :disabled="showable"
             v-model="form.groupTag"
+            placeholder="请输入分类标签"
           />
         </a-form-model-item>
         <a-form-model-item
@@ -52,6 +61,7 @@
           <a-textarea
             :disabled="showable"
             v-model="form.remark"
+            placeholder="请输入描述"
           />
         </a-form-model-item>
       </a-form-model>
@@ -74,6 +84,7 @@ export default {
       form: {
         code: '',
         name: '',
+        enable: true,
         groupTag: '',
         remark: ''
       },

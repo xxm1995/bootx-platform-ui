@@ -26,6 +26,12 @@
       <vxe-column type="seq" title="序号" width="60"/>
       <vxe-column field="code" title="字典项编码" />
       <vxe-column field="name" title="字典项名称" />
+      <vxe-column field="enable" title="启用状态">
+        <template v-slot="{row}">
+          <a-tag v-if="row.enable" color="green">启用</a-tag>
+          <a-tag v-else color="red">停用</a-tag>
+        </template>
+      </vxe-column>
       <vxe-column field="sortNo" title="字典项排序" />
       <vxe-column field="remark" title="描述" />
       <vxe-column title="操作" fixed="right" width="220" :showOverflow="false">

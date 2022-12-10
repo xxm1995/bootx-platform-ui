@@ -62,6 +62,12 @@
           </a-select>
         </a-form-model-item>
         <a-form-model-item
+          label="是否启用"
+          prop="enable"
+        >
+          <a-switch checked-children="启用" un-checked-children="停用" v-model="form.enable" :disabled="showable" />
+        </a-form-model-item>
+        <a-form-model-item
           v-show="showable"
           label="系统内置"
           prop="internal"
@@ -102,6 +108,7 @@ export default {
         name: '',
         paramKey: '',
         value: '',
+        enable: true,
         type: 2,
         internal: false,
         remark: ''

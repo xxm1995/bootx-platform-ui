@@ -30,6 +30,12 @@
           <a-tag>{{ dictConvert(paramType,row.type) }}</a-tag>
         </template>
       </vxe-column>
+      <vxe-column field="enable" title="启用状态">
+        <template v-slot="{row}">
+          <a-tag v-if="row.enable" color="green">启用</a-tag>
+          <a-tag v-else color="red">停用</a-tag>
+        </template>
+      </vxe-column>
       <vxe-column align="" field="internal" title="内置参数" >
         <template v-slot="{row}">
           <a-tag v-if="row.internal" color="red">是</a-tag>

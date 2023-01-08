@@ -7,30 +7,31 @@
     :maskClosable="false"
     @cancel="handleCancel"
   >
-    <a-form-model
-      ref="form"
-      :model="form"
-      :rules="rules"
-      :label-col="labelCol"
-      :wrapper-col="wrapperCol"
-    >
-      <a-form-model-item label="主键" prop="id" hidden="true" >
-        <a-input v-model="form.id" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="名称"
-        prop="name"
+    <a-spin :spinning="confirmLoading">
+      <a-form-model
+        ref="form"
+        :model="form"
+        :rules="rules"
+        :label-col="labelCol"
+        :wrapper-col="wrapperCol"
       >
-        <a-input v-model="form.name" :disabled="showable"/>
-      </a-form-model-item>
-      <a-form-model-item
-        label="备注"
-        prop="remark"
-      >
-        <a-input v-model="form.remark" :disabled="showable"/>
-      </a-form-model-item>
-    </a-form-model>
-
+        <a-form-model-item label="主键" prop="id" hidden="true" >
+          <a-input v-model="form.id" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="名称"
+          prop="name"
+        >
+          <a-input v-model="form.name" :disabled="showable"/>
+        </a-form-model-item>
+        <a-form-model-item
+          label="备注"
+          prop="remark"
+        >
+          <a-input v-model="form.remark" :disabled="showable"/>
+        </a-form-model-item>
+      </a-form-model>
+    </a-spin>
     <template #footer>
       <a-button key="cancel" @click="handleCancel">取消</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>

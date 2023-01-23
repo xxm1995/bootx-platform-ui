@@ -3,7 +3,7 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="10">
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="终端">
               <a-select
                 v-model="clientCode"
@@ -15,10 +15,21 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="8" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="查询">
               <a-input-search v-model="searchName" @search="search" @keyup.enter="search" allow-clear placeholder="请输入菜单名称、路由名称、请求路径或组件名称"/>
             </a-form-item>
+          </a-col>
+          <a-col :md="4" :sm="24">
+            <a-form-item label="同时显示权限码">
+              <a-radio-group v-model="showPermCode">
+                <a-radio :value="true">是</a-radio>
+                <a-radio :value="false">否</a-radio>
+              </a-radio-group>
+            </a-form-item>
+          </a-col>
+          <a-col :md="6" :sm="24">
+            <a-button type="primary" @click="init">查询</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -67,51 +78,55 @@
           </div>
         </template>
       </vxe-column>
-      <vxe-column title="操作" fixed="right" width="240" :showOverflow="false" >
+      <vxe-column title="操作" fixed="right" width="220" :showOverflow="false" >
         <template v-slot="{row}">
-          <a href="javascript:" @click="show(row.id)">查看</a>
-          <a-divider type="vertical" />
-          <a href="javascript:" :disabled="row.admin" @click="edit(row.id)">编辑</a>
-          <a-divider type="vertical" />
-          <a href="javascript:" @click="resourceList(row)">权限资源</a>
-          <a-divider type="vertical" />
-          <a-dropdown>
-            <a class="ant-dropdown-link">
-              更多 <a-icon type="down" />
-            </a>
-            <template #overlay>
-              <a-menu>
-                <a-menu-item>
-                  <a @click="addChildren(row)">添加下级</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a @click="copy(row.id)">复制</a>
-                </a-menu-item>
-                <a-menu-item>
-                  <a-popconfirm
-                    title="是否删除菜单或权限"
-                    @confirm="remove(row)"
-                    okText="是"
-                    cancelText="否">
-                    <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
-                    <a href="javascript:" v-else disabled>删除</a>
-                  </a-popconfirm>
-                </a-menu-item>
-              </a-menu>
-            </template>
-          </a-dropdown>
+          <a href="javascript:" @click="show(row)">查看</a>
+          <template v-if="String(row.menuType) !== '2'">
+            <a-divider type="vertical" />
+            <a href="javascript:" :disabled="row.admin" @click="edit(row)">编辑</a>
+            <a-divider type="vertical" />
+            <a href="javascript:" @click="resourceList(row)">权限码</a>
+            <a-divider type="vertical" />
+            <a-dropdown>
+              <a class="ant-dropdown-link">
+                更多 <a-icon type="down" />
+              </a>
+              <template #overlay>
+                <a-menu>
+                  <a-menu-item>
+                    <a @click="addChildren(row)">添加菜单</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a @click="copy(row.id)">复制</a>
+                  </a-menu-item>
+                  <a-menu-item>
+                    <a-popconfirm
+                      title="是否删除菜单"
+                      @confirm="remove(row)"
+                      okText="是"
+                      cancelText="否">
+                      <a href="javascript:" v-if="!row.admin" style="color: red">删除</a>
+                      <a href="javascript:" v-else disabled>删除</a>
+                    </a-popconfirm>
+                  </a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
+          </template>
         </template>
       </vxe-column>
     </vxe-table>
     <menu-edit ref="menuEdit" @ok="handleOk"/>
     <resource-perm-list ref="resourcePermList"/>
+    <resource-perm-edit ref="resourcePermEdit"/>
   </a-card>
 </template>
 
 <script>
-import { menuTree, del } from '@/api/system/permMenu'
+import { menuTree, del, allTree } from '@/api/system/permMenu'
 import MenuEdit from './MenuEdit'
 import ResourcePermList from './ResourcePermList'
+import ResourcePermEdit from './ResourcePermEdit'
 import { TableMixin } from '@/mixins/TableMixin'
 import XEUtils from 'xe-utils'
 import { findAll } from '@/api/system/client'
@@ -120,7 +135,8 @@ export default {
   name: 'MenuList',
   components: {
     MenuEdit,
-    ResourcePermList
+    ResourcePermList,
+    ResourcePermEdit
   },
   mixins: [TableMixin],
   data () {
@@ -130,19 +146,24 @@ export default {
       // 终端列表
       clients: [],
       searchName: '',
+      showPermCode: false,
       // 默认树关闭
       treeExpand: false,
       remoteTableData: []
     }
   },
   methods: {
-    init () {
+    async init () {
       this.loading = true
-      menuTree(this.clientCode).then(res => {
-        this.remoteTableData = res.data
-        this.search()
-        this.loading = false
-      })
+      if (this.showPermCode) {
+        const { data } = await allTree(this.clientCode)
+        this.remoteTableData = data
+      } else {
+        const { data } = await menuTree(this.clientCode)
+        this.remoteTableData = data
+      }
+      this.search()
+      this.loading = false
     },
     add () {
       this.$refs.menuEdit.init('', 'add', null, this.clientCode)
@@ -153,11 +174,15 @@ export default {
     copy (id) {
       this.$refs.menuEdit.init(id, 'copy', null, this.clientCode)
     },
-    edit (id) {
-      this.$refs.menuEdit.init(id, 'edit', null, this.clientCode)
+    edit (row) {
+      this.$refs.menuEdit.init(row.id, 'edit', null, this.clientCode)
     },
-    show (id) {
-      this.$refs.menuEdit.init(id, 'show', null, this.clientCode)
+    show (row) {
+      if (String(row.menuType) === '2') {
+        this.$refs.resourcePermEdit.init(row, 'show')
+      } else {
+        this.$refs.menuEdit.init(row.id, 'show', null, this.clientCode)
+      }
     },
     remove (record) {
       del(record.id).then(_ => {

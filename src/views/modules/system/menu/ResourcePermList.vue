@@ -1,6 +1,6 @@
 <template>
   <a-drawer
-    title="权限资源列表"
+    title="权限码列表"
     :visible="visible"
     :maskClosable="true"
     :width="1000"
@@ -83,7 +83,7 @@ export default {
       })
     },
     add () {
-      this.$refs.resourcePermEdit.init(this.menu, 'add')
+      this.$refs.resourcePermEdit.init(this.menu, 'add', this.menu.clientCode)
     },
     edit (record) {
       this.$refs.resourcePermEdit.init(record, 'edit')

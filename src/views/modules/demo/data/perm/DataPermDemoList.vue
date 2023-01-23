@@ -28,7 +28,7 @@
     >
       <vxe-column type="seq" title="序号" width="60" />
       <vxe-column field="name" title="名称" />
-      <vxe-column field="creatorName" title="创建人" />
+      <vxe-column field="creatorName" title="创建人" v-if="$auth('123')"123/>
       <vxe-column field="remark" title="备注" />
       <vxe-column field="createTime" title="创建时间" />
       <vxe-column fixed="right" width="150" :showOverflow="false" title="操作">

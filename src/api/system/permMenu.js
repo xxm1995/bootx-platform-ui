@@ -1,5 +1,8 @@
 import { axios } from '@/utils/request'
 
+/**
+ * 菜单树
+ */
 export function menuTree (clientCode) {
   return axios({
     url: '/perm/menu/menuTree',
@@ -8,6 +11,9 @@ export function menuTree (clientCode) {
   })
 }
 
+/**
+ * 菜单和权限码树
+ */
 export function allTree (clientCode) {
   return axios({
     url: '/perm/menu/allTree',

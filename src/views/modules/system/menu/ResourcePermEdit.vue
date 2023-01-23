@@ -75,8 +75,11 @@ export default {
     return {
       form: {
         id: null,
+        parentId: null,
         title: '',
+        clientCode: '',
         permCode: '',
+        sortNo: 0,
         effect: true,
         menuType: 2,
         remark: ''
@@ -93,7 +96,7 @@ export default {
     }
   },
   methods: {
-    edit (record, type) {
+    edit (record, type, clientCode) {
       if (['edit', 'show'].includes(type)) {
         this.confirmLoading = true
         findById(record.id).then(res => {
@@ -104,6 +107,7 @@ export default {
         this.confirmLoading = false
         this.$nextTick(() => {
           this.form.parentId = record.id
+          this.form.clientCode = clientCode
         })
       }
     },

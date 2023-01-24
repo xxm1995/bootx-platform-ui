@@ -72,7 +72,7 @@ export default {
         success: undefined
       },
       fields: [
-      { field: 'success', type: LIST, name: '执行状态', placeholder: '请选择执行状态', list: [{ label: '成功', value: 'true' }, { label: '失败', value: 'false' }] }
+      { field: 'success', type: LIST, name: '执行状态', placeholder: '请选择执行状态', selectList: [{ label: '成功', value: 'true' }, { label: '失败', value: 'false' }] }
     ],
       visible: false,
       className: ''

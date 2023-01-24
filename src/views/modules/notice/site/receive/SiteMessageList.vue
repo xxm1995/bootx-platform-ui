@@ -74,7 +74,7 @@ export default {
           type: LIST,
           name: '是否已读',
           placeholder: '请选择是否已读',
-          list: [{ label: '已读', value: 'true' }, { label: '未读', value: 'false' }]
+          selectList: [{ label: '已读', value: 'true' }, { label: '未读', value: 'false' }]
         }
       ],
       queryParam: {

@@ -104,7 +104,7 @@ export default {
         { field: 'birthday', name: '生日', type: DATE },
         { field: 'workTime', name: '上班时间', type: TIME },
         { field: 'registrationTime', name: '注册时间', type: DATE_TIME },
-        { field: 'political', name: '政治面貌', type: LIST, list: this.politicalList }
+        { field: 'political', name: '政治面貌', type: LIST, selectList: this.politicalList }
       ]
     }
   },

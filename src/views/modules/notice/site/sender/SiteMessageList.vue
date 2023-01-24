@@ -114,8 +114,8 @@ export default {
     fields () {
       return [
         { field: 'title', type: STRING, name: '标题', placeholder: '请输入标题' },
-        { field: 'receiveType', type: LIST, name: '接收类型', placeholder: '请选择接收类型', list: this.receiveTypeList },
-        { field: 'sendState', type: LIST, name: '发送状态', placeholder: '请选择发送状态', list: this.sendStateList }
+        { field: 'receiveType', type: LIST, name: '接收类型', placeholder: '请选择接收类型', selectList: this.receiveTypeList },
+        { field: 'sendState', type: LIST, name: '发送状态', placeholder: '请选择发送状态', selectList: this.sendStateList }
       ]
     }
   },

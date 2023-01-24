@@ -144,9 +144,9 @@ export default {
         { field: 'amount', name: '金额', type: NUMBER, precision: 2 },
         { field: 'errorCode', name: '错误码', type: STRING },
         { field: 'asyncPayMode', name: '异步支付', type: BOOLEAN },
-        { field: 'asyncPayChannel', name: '异步支付方式', type: LIST, list: this.syncPayChannelList },
+        { field: 'asyncPayChannel', name: '异步支付方式', type: LIST, selectList: this.syncPayChannelList },
         { field: 'payTime', name: '支付时间', type: DATE_TIME },
-        { field: 'payStatus', name: '支付状态', type: LIST, list: this.payStatusList }
+        { field: 'payStatus', name: '支付状态', type: LIST, selectList: this.payStatusList }
       ]
     }
   },

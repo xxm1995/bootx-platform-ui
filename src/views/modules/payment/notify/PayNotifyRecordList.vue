@@ -85,14 +85,14 @@ export default {
           type: LIST,
           name: '支付通道',
           placeholder: '请选择支付通道',
-          list: this.asyncPayChannel
+          selectList: this.asyncPayChannel
         },
         {
           field: 'status',
           type: LIST,
           name: '处理状态',
           placeholder: '请选择消息处理状态',
-          list: this.payNotifyProcess
+          selectList: this.payNotifyProcess
         }
       ]
     }

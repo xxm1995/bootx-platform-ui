@@ -5,7 +5,7 @@
         <a-textarea v-model="rabbitMQMsg"></a-textarea>
         <a-button @click="pushRabbitMQ">发送</a-button>
       </a-tab-pane>
-      <a-tab-pane key="2" tab="MQTT" force-render>
+      <a-tab-pane key="2" disabled tab="MQTT" force-render>
         <a-textarea v-model="mqttMsg"></a-textarea>
         <a-button @click="pushMqtt">发送</a-button>
       </a-tab-pane>

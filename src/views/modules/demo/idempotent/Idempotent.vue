@@ -27,7 +27,7 @@ export default {
     genToken () {
       this.idempotentToken = new Date().getTime()
     },
-    // 发起请求
+    // 发起请求时携带幂等token
     req () {
       idempotentDemo(this.idempotentToken).then(res => {
         this.$message.info(res.data)

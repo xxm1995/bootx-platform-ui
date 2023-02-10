@@ -13,7 +13,7 @@
       :mode="mode"
       @onCreated="onCreated"
     />
-    <a-textarea v-model="html"/>
+    <a-textarea disabled v-model="html"/>
     <div class="editor-content-view" v-html="html"/>
   </div>
 </template>

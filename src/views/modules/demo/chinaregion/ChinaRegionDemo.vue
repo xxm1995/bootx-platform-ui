@@ -43,7 +43,7 @@
 
 <script>
 import { Cascader } from 'ant-design-vue'
-import {cloneDeep} from 'lodash'
+import { cloneDeep } from 'lodash'
 import {
   findAllProvinceAndCity,
   findAllProvinceAndCityAndArea,

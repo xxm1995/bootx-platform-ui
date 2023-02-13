@@ -3,7 +3,7 @@
     <b-query
       v-model="queryParam"
       :fields="fields"
-      :default-item-md="8"
+      :default-item-md="6"
       @query="query"
       @reset="() => queryParam = {}"
     />
@@ -21,12 +21,12 @@
       :data="tableData"
     >
       <vxe-column type="checkbox" width="40"/>
+      <   <vxe-column field="tableName" title="表名称" />
       <vxe-column field="dataName" title="数据名称" />
       <vxe-column field="dataId" title="数据主键" />
-      <vxe-column field="dataContent" title="数据内容" />
       <vxe-column field="version" title="数据版本" />
       <vxe-column field="createTime" title="创建时间" />
-      <vxe-column title="操作" fixed="right" width="120">
+      <vxe-column title="操作" fixed="right" width="60">
         <template v-slot="{row}">
           <span>
             <a href="javascript:" @click="show(row)">查看</a>
@@ -49,7 +49,7 @@
 import { TableMixin } from '@/mixins/TableMixin'
 import { dataVersionPage } from '@/api/starter/log'
 import DataVersionLogInfo from './DataVersionLogInfo'
-import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
+import { NUMBER, STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
 
 export default {
   name: 'DataVersionLogList',
@@ -66,7 +66,9 @@ export default {
       },
       fields: [
         { field: 'dataName', type: STRING, name: '数据名称', placeholder: '请输入数据名称' },
-        { field: 'dataId', type: STRING, name: '数据主键', placeholder: '请输入数据主键' }
+        { field: 'tableName', type: STRING, name: '表名称', placeholder: '请输入表名称' },
+        { field: 'dataId', type: STRING, name: '数据主键', placeholder: '请输入数据主键' },
+        { field: 'version', type: NUMBER, name: '数据版本', placeholder: '请输入数据版本' },
       ]
     }
   },

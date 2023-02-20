@@ -9,8 +9,8 @@
       <a-form-model-item label="标题" prop="subject">
         <a-input v-model="form.subject" placeholder="请输入邮件名称"/>
       </a-form-model-item>
-      <a-form-model-item label="发送人" prop="email">
-        <a-input v-model="form.email" placeholder="请输入用户账号"/>
+      <a-form-model-item label="邮箱" prop="email">
+        <a-input v-model="form.email" placeholder="请输入用户邮箱"/>
       </a-form-model-item>
       <a-form-model-item ref="message" label="内容" prop="message">
         <div style="border: 1px solid #ccc">

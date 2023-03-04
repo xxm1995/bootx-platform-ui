@@ -54,7 +54,7 @@
             @confirm="remove(row)"
             okText="是"
             cancelText="否">
-            <a href="javascript:" :disabled="row.system" :style="{color: row.system?'grey':'red'}">删除</a>
+            <a href="javascript:" :disabled="row.system" :style="{color: row.system?'rgba(0, 0, 0, 0.25)':'red'}">删除</a>
           </a-popconfirm>
         </template>
       </vxe-column>

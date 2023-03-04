@@ -62,7 +62,7 @@
                   <a href="javascript:" @click="copyInfo(row)">复制</a>
                 </a-menu-item>
                 <a-menu-item v-if="row.edit">
-                  <a href="javascript:" @click="enableEdit(row)">应用编辑</a>
+                  <a href="javascript:" @click="enableEdit(row)">保存编辑</a>
                 </a-menu-item>
                 <a-menu-item v-if="row.edit">
                   <a href="javascript:" @click="resetEdit(row)">重置编辑</a>
@@ -73,8 +73,8 @@
                 <a-menu-item v-if="row.state === 1">
                   <a href="javascript:" @click="unPublishInfo(row)">取消发布</a>
                 </a-menu-item>
-                <a-menu-item>
-                  <a href="javascript:" style="color: red" :disabled="row.state === 1" @click="remove(row)">删除</a>
+                <a-menu-item :disabled="row.state === 1">
+                  <a href="javascript:" :style="{color: row.state === 1?'rgba(0, 0, 0, 0.25)':'red'}" :disabled="row.state === 1" @click="remove(row)">删除</a>
                 </a-menu-item>
               </a-menu>
             </template>
@@ -204,8 +204,8 @@ export default {
     // 应用编辑中的信息
     enableEdit (record) {
       this.$confirm({
-        title: '应用编辑数据',
-        content: '是否应用编辑中的信息，确定后发布的数据将会更新?',
+        title: '保存编辑',
+        content: '是否保存编辑中的信息，保存后发布的数据将会更新',
         okText: '是',
         cancelText: '否',
         onOk: () => {
@@ -221,7 +221,7 @@ export default {
     resetEdit (record) {
       this.$confirm({
         title: '重置编辑',
-        content: '是否重置编辑中的信息，确定后编辑的内容将会恢复为当前已发布的内容',
+        content: '是否重置编辑中的信息，确定后编辑的内容将会恢复为之前保存的内容',
         okText: '是',
         cancelText: '否',
         onOk: () => {

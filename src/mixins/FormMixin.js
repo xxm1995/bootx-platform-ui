@@ -3,7 +3,6 @@ import {
   getDictItemsAsync,
   getDictItemsByNumber, getDictItemsByNumberAsync
 } from '@/components/Bootx/Dict/DictUtils'
-import { findByParamKey } from '@/api/system/param'
 
 export const FormMixin = {
   data () {

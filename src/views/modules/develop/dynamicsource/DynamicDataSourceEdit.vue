@@ -1,12 +1,11 @@
 <template>
-  <a-modal
-    :title="title"
-    :width="modalWidth"
+  <a-drawer
+    title="数据源管理"
+    width="40%"
     :visible="visible"
-    :confirmLoading="confirmLoading"
+    :destroyOnClose="true"
     :maskClosable="false"
-    @cancel="handleCancel"
-  >
+    @close="handleCancel">
     <a-spin :spinning="confirmLoading">
       <a-form-model
         ref="form"
@@ -34,27 +33,25 @@
           label="数据库类型"
           prop="databaseType"
         >
-          <a-select v-model="form.databaseType" :disabled="showable">
-            <a-select-option key="mysql">MySQL</a-select-option>
-          </a-select>
+          <a-select
+            v-model="form.databaseType"
+            :disabled="showable"
+            :options="databaseTypes"
+            @change="changeDatabaseType"
+            placeholder="请选择数据库类型"
+          />
         </a-form-model-item>
         <a-form-model-item
           label="驱动类"
           prop="dbDriver"
         >
-          <a-input v-model="form.dbDriver" disabled/>
+          <a-input v-model="form.dbDriver" placeholder="请输入驱动类"/>
         </a-form-model-item>
         <a-form-model-item
           label="数据库地址"
           prop="dbUrl"
         >
           <a-input v-model="form.dbUrl" :disabled="showable" placeholder="请输入数据库地址"/>
-        </a-form-model-item>
-        <a-form-model-item
-          label="数据库名称"
-          prop="dbName"
-        >
-          <a-input v-model="form.dbName" :disabled="showable" placeholder="请输入数据库名称"/>
         </a-form-model-item>
         <a-form-model-item
           label="用户名"
@@ -66,7 +63,7 @@
           label="密码"
           prop="dbPassword"
         >
-          <a-input v-model="form.dbPassword" :disabled="showable" placeholder="请输入数据库密码"/>
+          <a-input-password v-model="form.dbPassword" :disabled="showable" placeholder="请输入数据库密码"/>
         </a-form-model-item>
         <a-form-model-item
           label="备注"
@@ -76,16 +73,25 @@
         </a-form-model-item>
       </a-form-model>
     </a-spin>
-    <template #footer>
+    <div class="drawer-button" >
       <a-button key="cancel" @click="handleCancel">取消</a-button>
+      <a-button v-if="addable" preIcon="ant-design:api-outlined" @click="testConnectionInfo">测试连接</a-button>
       <a-button v-if="!showable" key="forward" :loading="confirmLoading" type="primary" @click="handleOk">保存</a-button>
-    </template>
-  </a-modal>
+    </div>
+  </a-drawer>
 </template>
 
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
-import { get, add, update } from '@/api/develop/dynamicDataSource'
+import {
+  get,
+  add,
+  update,
+  databaseTypeMap,
+  databaseTypes,
+  existsByCodeNotId,
+  existsByCode, testConnection
+} from '@/api/develop/dynamicDataSource'
 export default {
   name: 'DynamicDataSourceEdit',
   mixins: [FormMixin],
@@ -95,38 +101,27 @@ export default {
         id: null,
         code: null,
         name: null,
-        databaseType: 'mysql',
-        dbDriver: 'com.mysql.cj.jdbc.Driver',
+        databaseType: undefined,
+        dbDriver: undefined,
         dbUrl: null,
         dbName: null,
         dbUsername: null,
         dbPassword: null,
         remark: null
       },
+      databaseTypes,
+      databaseTypeMap,
       rules: {
-        code: [ { required: true, message: '请输入' } ],
-        name: [ { required: true, message: '请输入' } ],
-        databaseType: [ { required: true, message: '请选择' } ],
-        dbDriver: [ { required: true, message: '请输入' } ],
-        dbUrl: [ { required: true, message: '请输入' } ],
-        dbName: [ { required: true, message: '请输入' } ],
-        dbUsername: [ { required: true, message: '请输入' } ],
-        dbPassword: [ { required: true, message: '请输入' } ],
-        remark: []
-      }
-    }
-  },
-  watch: {
-    'form.databaseType': function (val) {
-      console.log(val)
-      switch (val) {
-        case 'mysql': {
-          this.form.dbDriver = 'com.mysql.cj.jdbc.Driver'
-          break
-        }
-        default: {
-          this.form.dbDriver = ''
-        }
+        code: [
+          { required: true, message: '编码不可为空' },
+          { validator: this.validateCode, trigger: 'blur' }
+        ],
+        name: [{ required: true, message: '名称不可为空' }],
+        databaseType: [{ required: true, message: '请选择数据库类型' }],
+        dbDriver: [{ required: true, message: '驱动不可为空' }],
+        dbUrl: [{ required: true, message: '数据源地址不可为空' }],
+        dbUsername: [{ required: true, message: '用户名不可为空' }],
+        dbPassword: [{ required: true, message: '密码不可为空' }]
       }
     }
   },
@@ -165,6 +160,40 @@ export default {
           return false
         }
       })
+    },
+    // 验证编码
+    async validateCode (rule, value, callback) {
+      const { code, id } = this.form
+      let res
+      if (this.type === 'edit') {
+        res = await existsByCodeNotId(code, id)
+      } else {
+        res = await existsByCode(code)
+      }
+      if (!res.data) {
+        callback()
+      } else {
+        callback('该编码已存在!')
+      }
+    },
+    // 测试连接
+    async testConnectionInfo () {
+      this.$refs.form.validateField(['dbDriver', 'dbUrl', 'dbUsername', 'dbPassword'])
+      const { dbDriver, dbUrl, dbUsername, dbPassword } = this.form
+      if (dbDriver && dbUrl && dbUsername && dbPassword) {
+        const { data } = await testConnection(this.form)
+        if (data) {
+          this.$message.warn(data)
+        } else {
+          this.$message.success('连接成功')
+        }
+      }
+    },
+    // 数据源类型变换回调
+    changeDatabaseType () {
+      const e = this.form.databaseType
+      this.form.dbDriver = databaseTypeMap[e]?.dbDriver
+      this.form.dbUrl = databaseTypeMap[e]?.dbUrl
     },
     /**
      * 重置表单

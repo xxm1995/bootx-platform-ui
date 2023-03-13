@@ -13,7 +13,10 @@
       :refresh="{query: init}"
     >
       <template v-slot:buttons>
-        <a-button type="primary" icon="plus" @click="add">新建</a-button>
+        <a-space>
+          <a-button type="primary" icon="plus" @click="add">新建</a-button>
+          <a-button icon="sync" @click="loginGoView">一键登录大屏</a-button>
+        </a-space>
       </template>
     </vxe-toolbar>
     <vxe-table
@@ -108,6 +111,8 @@ import {
 } from '@/api/develop/projectInfo'
 import ProjectInfoEdit from './ProjectInfoEdit'
 import { TableMixin } from '@/mixins/TableMixin'
+import storage from 'store'
+import { ACCESS_TOKEN } from '@/store/mutation-types'
 export default {
   name: 'ProjectInfoList',
   components: {
@@ -246,6 +251,18 @@ export default {
             this.$message.info('删除成功')
             this.init()
           })
+        }
+      })
+    },
+    // 删除
+    loginGoView (record) {
+      this.$confirm({
+        title: '一键登录',
+        content: '是否一键登录可视化大屏平台?',
+        okText: '登录',
+        onOk: () => {
+          const token = storage.get(ACCESS_TOKEN)
+          this.$message.info('等待下一个版本实装')
         }
       })
     }

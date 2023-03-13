@@ -119,7 +119,7 @@
 import { FormMixin } from '@/mixins/FormMixin'
 import { approve } from '@/api/bpm/task'
 import { getNextNodes, listByModelId } from '@/api/bpm/modelNode'
-import { SELECT } from '@/views/modules/bpm/model/BpmModelNodeCode'
+import { SELECT } from '@/views/modules/bpm/model/node/BpmModelNodeCode'
 import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
 import { getBackNodes } from '@/api/bpm/instance'
 

@@ -103,7 +103,7 @@ import { TableMixin } from '@/mixins/TableMixin'
 import { copy, del, page, publish, verifyModel } from '@/api/bpm/model'
 import BpmModelEdit from './BpmModelEdit'
 import { STRING } from '@/components/Bootx/SuperQuery/superQueryCode'
-import BpmModelNodeList from './BpmModelNodeList'
+import BpmModelNodeList from './node/BpmModelNodeList.vue'
 import BpmModeler from './BpmModeler'
 
 export default {

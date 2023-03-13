@@ -77,7 +77,7 @@
 <script>
 import { TableMixin } from '@/mixins/TableMixin'
 import { listByModelId, del, sync } from '@/api/bpm/modelNode'
-import BpmModelNodeEdit from './BpmModelNodeEdit'
+import BpmModelNodeEdit from './BpmModelNodeEdit.vue'
 
 export default {
   name: 'BpmModelNodeList',

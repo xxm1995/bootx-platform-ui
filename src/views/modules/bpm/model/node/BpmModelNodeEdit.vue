@@ -160,8 +160,8 @@
 <script>
 import { FormMixin } from '@/mixins/FormMixin'
 import { get, add, update } from '@/api/bpm/modelNode'
-import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal'
-import BRoleSelectModal from '@/components/Bootx/RoleSelectModal/BRoleSelectModal'
+import BUserSelectModal from '@/components/Bootx/UserSelectModal/BUserSelectModal.vue'
+import BRoleSelectModal from '@/components/Bootx/RoleSelectModal/BRoleSelectModal.vue'
 import {
   DEPT_LEADER,
   DEPT_LEADER_OPTION,

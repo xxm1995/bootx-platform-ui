@@ -6,7 +6,6 @@
     :esc-closable="false"
     :show-footer="false"
     :show-header="isView"
-    @close="handleCancel"
   >
     <workflow-bpmn-modeler
       :xml="modelEditorXml"
@@ -45,7 +44,6 @@ export default {
         this.modelEditorXml = this.bpmModel.modelEditorXml
         this.isEdit = this.bpmModel.publish !== this.PUBLISHED
         this.title = `查看 ${this.bpmModel.name} 流程图`
-        this.confirmLoading = false
       })
     },
     /**
@@ -58,16 +56,14 @@ export default {
         okText: '确定',
         cancelText: '取消',
         onOk: async () => {
-          this.confirmLoading = true
           await uploadBpmn(this.bpmModel.id, data.xml)
-          this.confirmLoading = false
-          this.$emit('ok')
+          this.$message.success('保存成功')
           this.visible = false
         }
       })
     },
     cancel () {
-      if (this.isEdit){
+      if (this.isEdit) {
         this.$confirm({
           title: '警告',
           content: '关闭后后将不对编辑的内容进行保存',

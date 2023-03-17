@@ -17,7 +17,7 @@
     "@wangeditor/plugin-md": "^1.0.0",
     "ant-design-vue": "^1.7.8",
     "axios": "^0.27.2",
-    "bpmn-js": "^7.5.0",
+    "bpmn-js": "^8.9.0",
     "core-js": "^3.24.0",
     "cron-parser": "^4.5.0",
     "echarts": "^5.3.3",

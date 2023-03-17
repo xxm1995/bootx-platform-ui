@@ -2,12 +2,12 @@
  * 存储流程设计相关参数
  */
 export default class BpmData {
-  constructor() {
+  constructor () {
     this.controls = [] // 设计器控件
     this.init()
   }
 
-  init() {
+  init () {
     this.controls = [
       {
         action: 'hand-tool',
@@ -78,7 +78,7 @@ export default class BpmData {
   }
 
   //  获取控件配置信息
-  getControl(action) {
+  getControl (action) {
     const result = this.controls.filter(item => item.action === action)
     return result[0] || {}
   }

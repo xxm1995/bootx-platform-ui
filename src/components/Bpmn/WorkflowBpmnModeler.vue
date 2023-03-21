@@ -84,7 +84,7 @@
             width="400px"
             placement="right"
             :closable="false"
-            :visible="panelVisible && panelExist"
+            v-show="panelVisible && panelExist"
             :get-container="false"
             :wrap-style="{ position: 'absolute' }"
           >
